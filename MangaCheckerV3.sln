@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaCheckerV3", "MangaCheckerV3\MangaCheckerV3.csproj", "{7DCCB58B-72D8-4F5E-9B55-944C438536E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaChecker.Interfaces", "MangaChecker.Interfaces\MangaChecker.Interfaces.csproj", "{F5132764-7A38-42F8-B54F-F7D4DCCBB4BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaChecker.Database", "MangaChecker.Database\MangaChecker.Database.csproj", "{BC2C4EAE-6D63-4594-A062-80330ED4B591}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{B89C7E07-0BAE-40FA-B249-D62CE58DCC14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mangastream", "Mangastream\Mangastream.csproj", "{32A4F25F-AC05-4341-BA5F-5E50E0A737DF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7DCCB58B-72D8-4F5E-9B55-944C438536E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DCCB58B-72D8-4F5E-9B55-944C438536E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DCCB58B-72D8-4F5E-9B55-944C438536E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DCCB58B-72D8-4F5E-9B55-944C438536E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5132764-7A38-42F8-B54F-F7D4DCCBB4BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5132764-7A38-42F8-B54F-F7D4DCCBB4BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5132764-7A38-42F8-B54F-F7D4DCCBB4BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5132764-7A38-42F8-B54F-F7D4DCCBB4BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC2C4EAE-6D63-4594-A062-80330ED4B591}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC2C4EAE-6D63-4594-A062-80330ED4B591}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC2C4EAE-6D63-4594-A062-80330ED4B591}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC2C4EAE-6D63-4594-A062-80330ED4B591}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32A4F25F-AC05-4341-BA5F-5E50E0A737DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32A4F25F-AC05-4341-BA5F-5E50E0A737DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32A4F25F-AC05-4341-BA5F-5E50E0A737DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32A4F25F-AC05-4341-BA5F-5E50E0A737DF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{32A4F25F-AC05-4341-BA5F-5E50E0A737DF} = {B89C7E07-0BAE-40FA-B249-D62CE58DCC14}
+	EndGlobalSection
+EndGlobal
