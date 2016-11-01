@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using MangaChecker.Interfaces;
+using MangaCheckerV3.Common;
 using MangaCheckerV3.Helpers;
 using MangaCheckerV3.Models;
 using MangaCheckerV3.SQLite;
@@ -17,15 +18,24 @@ namespace MangaCheckerV3.ViewModels {
 	public class SettingsViewModel {
 		public static SettingsViewModel Instance;
 		
-		private ObservableCollection<SiteModel> _siteSetting = new ObservableCollection<SiteModel>();
-		public ReadOnlyObservableCollection<SiteModel> Sitesettings { get; }
-		public SiteModel SelectedSetting { get; set; }
+		private readonly ObservableCollection<object> _siteSetting = new ObservableCollection<object>();
+		public ReadOnlyObservableCollection<object> Sitesettings { get; }
+		public object SelectedSetting { get; set; }
 		
 
 		public SettingsViewModel() {
 			Instance = this;
-			Sitesettings= new ReadOnlyObservableCollection<SiteModel>( _siteSetting);
-			MangaListViewModel.Instance.Sites.Where(s => s.SettingsView != null).ToList().ForEach(_siteSetting.Add);
+			Sitesettings= new ReadOnlyObservableCollection<object>( _siteSetting);
+
+			foreach (var instanceSite in PluginHost.Instance.Sites) {
+				if (instanceSite.Value.SettingsView()==null) {
+					continue;
+				}
+				_siteSetting.Add(new SiteModel(instanceSite));
+			}
+			foreach (var instanceSetting in PluginHost.Instance.Settings) {
+				_siteSetting.Add(new SettingsModel(instanceSetting));
+			}
 		}
 	}
 }

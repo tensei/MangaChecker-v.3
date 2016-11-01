@@ -6,5 +6,6 @@ namespace Mangastream.ViewModel {
 		/// </summary>
 		public SettingsViewModel() {
 		}
+		
 	}
 }

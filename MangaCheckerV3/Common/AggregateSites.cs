@@ -30,21 +30,7 @@ namespace MangaCheckerV3.Common {
 		public object AddView() {
 			return null;
 		}
-
-		public void Stop() {
-			foreach (var site in _sites) {
-				site.Stop();
-			}
-		}
-
-		public string Name() {
-			return null;
-		}
-
-		public string Version() {
-			return null;
-		}
-
+		
 	public void Dispose() {
 		foreach (var site in _sites) {
 			site.Dispose();

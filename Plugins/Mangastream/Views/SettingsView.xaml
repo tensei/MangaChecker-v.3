@@ -9,7 +9,6 @@
 			 d:DesignHeight="300" d:DesignWidth="300"
 			 d:DataContext="{d:DesignInstance {x:Type viewModel:SettingsViewModel}, IsDesignTimeCreatable=False}">
 	<Grid>
-			<Label HorizontalAlignment="Center" VerticalAlignment="Center">settings ms</Label>
 		<ToggleButton HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Height="35"></ToggleButton>
 	</Grid>
 </UserControl>

@@ -25,7 +25,7 @@
 					 Grid.RowSpan="2">
 				<ListBox.ItemTemplate>
 					<DataTemplate>
-						<TextBlock Text="{Binding Name}"></TextBlock>
+						<TextBlock Text="{Binding Name, Mode=OneWay}"></TextBlock>
 					</DataTemplate>
 				</ListBox.ItemTemplate>
 			</ListBox>

@@ -19,9 +19,11 @@ namespace MangaCheckerV3.Common {
 
 
 		private readonly CompositionContainer container;
-		
+
 		[ImportMany]
 		public IEnumerable<Lazy<ISite, IPluginMetadata>> Sites { get; set; }
+		[ImportMany]
+		public IEnumerable<Lazy<ISettingsPlugin, IPluginMetadata>> Settings { get; set; }
 
 
 		private PluginHost() {

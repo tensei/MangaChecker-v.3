@@ -1,13 +1,8 @@
 ﻿using System;
 
 namespace MangaChecker.Interfaces {
-	public interface ISite : IDisposable{
+	public interface ISite : ISettingsPlugin{
 		object View();
-		object SettingsView();
 		object AddView();
-		void Stop();
-		string Name();
-		string Version();
-		void Initialize();
 	}
 }

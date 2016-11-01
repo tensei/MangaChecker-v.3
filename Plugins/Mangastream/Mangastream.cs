@@ -20,6 +20,9 @@ namespace Mangastream {
 
 
 		private UserControl _view;
+
+		public static Mangastream Instance;
+
 		public object View() {
 			return _view;
 		}
@@ -47,6 +50,7 @@ namespace Mangastream {
 		public void Initialize() {
 			_settingsView = new SettingsView {DataContext = new SettingsViewModel()};
 			_view = new MainView {DataContext = new MainViewModel()};
+			Instance = this;
 		}
 
 		public void Dispose() {

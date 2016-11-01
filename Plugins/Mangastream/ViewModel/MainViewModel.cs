@@ -14,7 +14,11 @@ namespace Mangastream.ViewModel {
 
 		private string _error;
 		private Manga _selectedManga;
+		private string _teststring;
 		public ReadOnlyObservableCollection<Manga> Mangas { get; }
+
+		public static MainViewModel Instance;
+		
 
 		public string Error {
 			get { return _error; }
@@ -33,6 +37,7 @@ namespace Mangastream.ViewModel {
 		}
 
 		public MainViewModel() {
+			Instance = this;
 			Mangas = new ReadOnlyObservableCollection<Manga>(_mangas);
 			fill();
 		}
