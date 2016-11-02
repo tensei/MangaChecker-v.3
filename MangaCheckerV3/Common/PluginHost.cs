@@ -15,7 +15,11 @@ namespace MangaCheckerV3.Common {
 
 		public const string PluginsDirectory = "Plugins";
 
-		public static PluginHost Instance { get; } = new PluginHost();
+		private static readonly PluginHost instance = new PluginHost();
+		
+		public static PluginHost Instance {
+			get { return instance; }
+		}
 
 
 		private readonly CompositionContainer container;
@@ -52,7 +56,8 @@ namespace MangaCheckerV3.Common {
 			container.ComposeParts(this);
 			GetSites().Initialize();
 		}
-		public ISite GetSites() {
+
+		private ISite GetSites() {
 			return new AggregateSites(Sites.Select(s=>s.Value));
 		}
 	}

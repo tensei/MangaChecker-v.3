@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using MangaChecker.Interfaces;
+using Mangastream.Common;
 using Mangastream.ViewModel;
 using Mangastream.Views;
 
@@ -51,6 +52,7 @@ namespace Mangastream {
 			_settingsView = new SettingsView {DataContext = new SettingsViewModel()};
 			_view = new MainView {DataContext = new MainViewModel()};
 			Instance = this;
+			new CheckForNewTask().Run();
 		}
 
 		public void Dispose() {

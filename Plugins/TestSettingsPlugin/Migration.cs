@@ -1,16 +1,18 @@
 ﻿using System.ComponentModel.Composition;
 using MangaChecker.Interfaces;
+using TestSettingsPlugin.ViewModels;
+using TestSettingsPlugin.Views;
 
 namespace TestSettingsPlugin {
 	[Export(typeof(ISettingsPlugin))]
-	[ExportMetadata("Title", "SettingsTest")]
-	[ExportMetadata("Description", "settings test")]
+	[ExportMetadata("Title", "Migration")]
+	[ExportMetadata("Description", "Migration tool for old => new db")]
 	[ExportMetadata("Version", "0.1")]
 	[ExportMetadata("Author", "Tensei")]
-	public class TestSettingsPlugin : ISettingsPlugin
+	public class Migration : ISettingsPlugin
 	{
 		public object SettingsView() {
-			return new TestView();
+			return new MainView {DataContext = new MainViewModel()};
 		}
 
 		public void Initialize() {

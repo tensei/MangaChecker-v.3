@@ -11,7 +11,7 @@ namespace MangaCheckerV3.SQLite {
 	public class Database {
 		private readonly string _databasePath = Path.Combine(Directory.GetCurrentDirectory(), "mcv3.sqlite");
 
-		private readonly string _databaseVersion = "1.0.0.4";
+		private readonly string _databaseVersion = "1.0.0.5";
 
 		private static readonly Dictionary<string, string> _defaultDatabaseSettings = new Dictionary<string, string> {
 			{"Mangafox", "http://mangafox.me/"},
@@ -75,6 +75,11 @@ namespace MangaCheckerV3.SQLite {
 			var query = await conn.Table<Settings>().Where(s => s.Setting.Equals(setting)).FirstAsync();
 			return query;
 		}
+		public async Task<int> GetRefreshTime() {
+			var conn = new SQLiteAsyncConnection(_databasePath);
+			var query = await conn.Table<Settings>().Where(s => s.Setting.Equals("RefreshTime")).ToListAsync();
+			return query.First().Active;
+		}
 		public async Task<List<Theme>> GetThemes() {
 			var conn = new SQLiteAsyncConnection(_databasePath);
 			var query = await conn.Table<Theme>().ToListAsync();
@@ -107,7 +112,7 @@ namespace MangaCheckerV3.SQLite {
 						Link = defaultSetting.Value,
 						Active = 0,
 						Created = DateTime.Now,
-						OpenLinks = 1
+						OpenLinks = true
 					});
 				}
 			}
@@ -151,7 +156,7 @@ namespace MangaCheckerV3.SQLite {
 				});
 			}
 			conn.Insert(new Settings {
-				Setting = "RefresTime",
+				Setting = "RefreshTime",
 				Link = "/",
 				Active = 300,
 				Created = DateTime.Now

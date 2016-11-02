@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using MangaCheckerV3.Common;
 using MangaCheckerV3.Helpers;
 using MangaCheckerV3.SQLite;
 using MangaCheckerV3.ViewModels;
@@ -15,6 +16,7 @@ namespace MangaCheckerV3 {
 			//if (!Debugger.IsAttached)
 			//	ExceptionHandler.AddGlobalHandlers();
 			//ThemeHelper.ChangeAccentColorTo("red", "red", false);
+			PluginHost.Instance.Initialize();
 			var mainWindow = new MainWindow {
 				DataContext = new MainWindowViewModel()
 			};

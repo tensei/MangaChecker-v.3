@@ -13,7 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{B89C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mangastream", "Plugins\Mangastream\Mangastream.csproj", "{32A4F25F-AC05-4341-BA5F-5E50E0A737DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestSettingsPlugin", "Plugins\TestSettingsPlugin\TestSettingsPlugin.csproj", "{D8B5A305-3B1A-4CC9-8F35-FF61C90F9D70}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migration", "Plugins\TestSettingsPlugin\Migration.csproj", "{D8B5A305-3B1A-4CC9-8F35-FF61C90F9D70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaChecker.WebClient", "MangaChecker.Cloudflare\MangaChecker.WebClient.csproj", "{11E83B6E-A665-423F-8089-42F7D5A2E98C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{D8B5A305-3B1A-4CC9-8F35-FF61C90F9D70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8B5A305-3B1A-4CC9-8F35-FF61C90F9D70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D8B5A305-3B1A-4CC9-8F35-FF61C90F9D70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11E83B6E-A665-423F-8089-42F7D5A2E98C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11E83B6E-A665-423F-8089-42F7D5A2E98C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11E83B6E-A665-423F-8089-42F7D5A2E98C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11E83B6E-A665-423F-8089-42F7D5A2E98C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
