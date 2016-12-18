@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using MahApps.Metro;
-using MangaCheckerV3.ViewModels;
 using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 
 namespace MangaCheckerV3.Helpers {
 	public class ThemeHelper {
-		public static readonly List<string> Swatches = new SwatchesProvider().Swatches.Select(p=>p.Name).ToList();
-		public static readonly List<string> Accents = new SwatchesProvider().Swatches.Where(a=> a.IsAccented).Select(a=>a.Name).ToList();
+		public static readonly List<string> Swatches = new SwatchesProvider().Swatches.Select(p => p.Name).ToList();
+
+		public static readonly List<string> Accents =
+			new SwatchesProvider().Swatches.Where(a => a.IsAccented).Select(a => a.Name).ToList();
 
 		public static void ChangeAccentColorTo(string accentColor) {
 			//pallet.SetLightDark(theme);

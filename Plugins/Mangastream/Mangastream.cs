@@ -52,7 +52,7 @@ namespace Mangastream {
 			_settingsView = new SettingsView {DataContext = new SettingsViewModel()};
 			_view = new MainView {DataContext = new MainViewModel()};
 			Instance = this;
-			new CheckForNewTask().Run();
+			//new CheckForNewTask().Run();
 		}
 
 		public void Dispose() {

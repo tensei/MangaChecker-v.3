@@ -5,29 +5,17 @@ using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using MangaChecker.Interfaces;
-using MangaCheckerV3.Models;
 
 namespace MangaCheckerV3.Common {
 	public class PluginHost : IDisposable {
-
 		public const string PluginsDirectory = "Plugins";
-
-		private static readonly PluginHost instance = new PluginHost();
-		
-		public static PluginHost Instance {
-			get { return instance; }
-		}
 
 
 		private readonly CompositionContainer container;
 
-		[ImportMany]
-		public IEnumerable<Lazy<ISite, IPluginMetadata>> Sites { get; set; }
-		[ImportMany]
-		public IEnumerable<Lazy<ISettingsPlugin, IPluginMetadata>> Settings { get; set; }
+		static PluginHost() {
+		}
 
 
 		private PluginHost() {
@@ -45,20 +33,25 @@ namespace MangaCheckerV3.Common {
 			container = new CompositionContainer(catalog);
 		}
 
-		static PluginHost() {
+		public static PluginHost Instance { get; } = new PluginHost();
 
-		}
+		[ImportMany]
+		public IEnumerable<Lazy<ISite, IPluginMetadata>> Sites { get; set; }
+
+		[ImportMany]
+		public IEnumerable<Lazy<ISettingsPlugin, IPluginMetadata>> Settings { get; set; }
+
 		public void Dispose() {
 			container.Dispose();
 		}
-		
+
 		public void Initialize() {
 			container.ComposeParts(this);
 			GetSites().Initialize();
 		}
 
 		private ISite GetSites() {
-			return new AggregateSites(Sites.Select(s=>s.Value));
+			return new AggregateSites(Sites.Select(s => s.Value));
 		}
 	}
 }

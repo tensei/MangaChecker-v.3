@@ -11,7 +11,7 @@ namespace MangaCheckerV3.SQLite {
 	public class Database {
 		private readonly string _databasePath = Path.Combine(Directory.GetCurrentDirectory(), "mcv3.sqlite");
 
-		private readonly string _databaseVersion = "1.0.0.5";
+		private readonly string _databaseVersion = "1.0.0.6";
 
 		private static readonly Dictionary<string, string> _defaultDatabaseSettings = new Dictionary<string, string> {
 			{"Mangafox", "http://mangafox.me/"},
@@ -51,7 +51,7 @@ namespace MangaCheckerV3.SQLite {
 
 		public async Task<List<Manga>> GetMangasFrom(string site) {
 			var conn = new SQLiteAsyncConnection(_databasePath);
-			var query = conn.Table<Manga>().Where(m => m.Site.Equals(site));
+			var query = conn.Table<Manga>().Where(m => m.Site.ToLower().Equals(site.ToLower()));
 			return await query.ToListAsync();
 		}
 
@@ -112,7 +112,7 @@ namespace MangaCheckerV3.SQLite {
 						Link = defaultSetting.Value,
 						Active = 0,
 						Created = DateTime.Now,
-						OpenLinks = true
+						//OpenLinks = true
 					});
 				}
 			}

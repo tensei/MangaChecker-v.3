@@ -18,32 +18,32 @@ using Mangastream.ViewModel;
 
 namespace Mangastream.Common {
 	public class CheckForNewTask {
-		public async void Run() {
-			MainViewModel.Instance.Running = "YEEEEEEEEE";
-			//Task.Run(async () => {
-				var time = 3;
-				while (true) {
-					if (time > 1) {
-						time--;
-						await Task.Delay(1000);
-						MainViewModel.Instance.Running = time.ToString();
-					} else if(time <= 1) {
-						var db = new Database();
-						var mangas = await db.GetMangasFrom("mangastream");
-						MainViewModel.Instance.Running = "hmmmmmmm";
-						var feed = await new Client().GetRssFeed("http://mangastream.com/rss");
-						var settings = await db.GetSettingsFor("Mangastream");
-						foreach (var manga in mangas) {
+		//public async void Run() {
+		//	MainViewModel.Instance.Running = "YEEEEEEEEE";
+		//	//Task.Run(async () => {
+		//		var time = 3;
+		//		while (true) {
+		//			if (time > 1) {
+		//				time--;
+		//				await Task.Delay(1000);
+		//				MainViewModel.Instance.Running = time.ToString();
+		//			} else if(time <= 1) {
+		//				var db = new Database();
+		//				var mangas = await db.GetMangasFrom("mangastream");
+		//				MainViewModel.Instance.Running = "hmmmmmmm";
+		//				var feed = await new Client().GetRssFeed("http://mangastream.com/rss");
+		//				var settings = await db.GetSettingsFor("Mangastream");
+		//				foreach (var manga in mangas) {
 
-							MainViewModel.Instance.Running = $"checking {manga.Name}";
-							await CheckForNew(manga, feed, settings.OpenLinks);
-						}
-						time = await new Database().GetRefreshTime();
-					}
-				}
-				// ReSharper disable once FunctionNeverReturns
-			//});
-		}
+		//					MainViewModel.Instance.Running = $"checking {manga.Name}";
+		//					await CheckForNew(manga, feed, settings.OpenLinks);
+		//				}
+		//				time = await new Database().GetRefreshTime();
+		//			}
+		//		}
+		//		// ReSharper disable once FunctionNeverReturns
+		//	//});
+		//}
 
 		private static async Task<bool> CheckForNew(Manga manga, SyndicationFeed feed, bool openlinks) {
 			foreach (var syndicationItem in feed.Items) {

@@ -1,9 +1,6 @@
-﻿using System.IO;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows;
 using MangaCheckerV3.Common;
-using MangaCheckerV3.Helpers;
-using MangaCheckerV3.SQLite;
 using MangaCheckerV3.ViewModels;
 using MangaCheckerV3.ViewModels.Settings_ViewModels;
 

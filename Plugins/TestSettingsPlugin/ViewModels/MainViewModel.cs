@@ -47,7 +47,7 @@ namespace TestSettingsPlugin.ViewModels {
 					Name = batoto1.name,
 					Chapter = float.Parse(batoto1.chapter, CultureInfo.InvariantCulture),
 					Added = DateTime.Now,
-					Updated = DateTime.Now,
+					Updated = DateTime.Parse(batoto1.last_update),
 					Link = batoto1.link,
 					Rss = batoto1.rss_url,
 					Site = "Batoto"
@@ -58,11 +58,12 @@ namespace TestSettingsPlugin.ViewModels {
 			WriteOutput($"backlog {backlog.Count} entries");
 			foreach (var backlog1 in backlog) {
 				WriteOutput($"Inserting {backlog1.name} | {backlog1.chapter} | {backlog1.last_update} | {backlog1.link} | {backlog1.rss_url}");
+				var date = DateTime.Parse(backlog1.last_update);
 				await newdb.InsertAsync(new Manga {
 					Name = backlog1.name,
 					Chapter = float.Parse(backlog1.chapter, CultureInfo.InvariantCulture),
 					Added = DateTime.Now,
-					Updated = DateTime.Now,
+					Updated = date,
 					Link = backlog1.link,
 					Rss = backlog1.rss_url,
 					Site = "Backlog"
@@ -77,7 +78,7 @@ namespace TestSettingsPlugin.ViewModels {
 					Name = GameOfScanlation1.name,
 					Chapter = float.Parse(GameOfScanlation1.chapter, CultureInfo.InvariantCulture),
 					Added = DateTime.Now,
-					Updated = DateTime.Now,
+					Updated = DateTime.Parse(GameOfScanlation1.last_update),
 					Link = GameOfScanlation1.link,
 					Rss = GameOfScanlation1.rss_url,
 					Site = "GameOfScanlation"
@@ -92,7 +93,7 @@ namespace TestSettingsPlugin.ViewModels {
 					Name = HeyManga1.name,
 					Chapter = float.Parse(HeyManga1.chapter, CultureInfo.InvariantCulture),
 					Added = DateTime.Now,
-					Updated = DateTime.Now,
+					Updated = DateTime.Parse(HeyManga1.last_update),
 					Link = HeyManga1.link,
 					Rss = HeyManga1.rss_url,
 					Site = "HeyManga"
@@ -107,7 +108,7 @@ namespace TestSettingsPlugin.ViewModels {
 					Name = Jaiminisbox1.name,
 					Chapter = float.Parse(Jaiminisbox1.chapter, CultureInfo.InvariantCulture),
 					Added = DateTime.Now,
-					Updated = DateTime.Now,
+					Updated = DateTime.Parse(Jaiminisbox1.last_update),
 					Link = Jaiminisbox1.link,
 					Rss = Jaiminisbox1.rss_url,
 					Site = "Jaiminisbox"
@@ -122,7 +123,7 @@ namespace TestSettingsPlugin.ViewModels {
 					Name = KireiCake1.name,
 					Chapter = float.Parse(KireiCake1.chapter, CultureInfo.InvariantCulture),
 					Added = DateTime.Now,
-					Updated = DateTime.Now,
+					Updated = DateTime.Parse(KireiCake1.last_update),
 					Link = KireiCake1.link,
 					Rss = KireiCake1.rss_url,
 					Site = "KireiCake"
@@ -137,7 +138,7 @@ namespace TestSettingsPlugin.ViewModels {
 					Name = Kissmanga1.name,
 					Chapter = float.Parse(Kissmanga1.chapter, CultureInfo.InvariantCulture),
 					Added = DateTime.Now,
-					Updated = DateTime.Now,
+					Updated = DateTime.Parse(Kissmanga1.last_update),
 					Link = Kissmanga1.link,
 					Rss = Kissmanga1.rss_url,
 					Site = "Kissmanga"
@@ -152,7 +153,7 @@ namespace TestSettingsPlugin.ViewModels {
 					Name = Mangafox1.name,
 					Chapter = float.Parse(Mangafox1.chapter, CultureInfo.InvariantCulture),
 					Added = DateTime.Now,
-					Updated = DateTime.Now,
+					Updated = DateTime.Parse(Mangafox1.last_update),
 					Link = Mangafox1.link,
 					Rss = Mangafox1.rss_url,
 					Site = "Mangafox"
@@ -167,7 +168,7 @@ namespace TestSettingsPlugin.ViewModels {
 					Name = Mangahere1.name,
 					Chapter = float.Parse(Mangahere1.chapter, CultureInfo.InvariantCulture),
 					Added = DateTime.Now,
-					Updated = DateTime.Now,
+					Updated = DateTime.Parse(Mangahere1.last_update),
 					Link = Mangahere1.link,
 					Rss = Mangahere1.rss_url,
 					Site = "Mangahere"
@@ -182,7 +183,7 @@ namespace TestSettingsPlugin.ViewModels {
 					Name = Mangareader1.name,
 					Chapter = float.Parse(Mangareader1.chapter, CultureInfo.InvariantCulture),
 					Added = DateTime.Now,
-					Updated = DateTime.Now,
+					Updated = DateTime.Parse(Mangareader1.last_update),
 					Link = Mangareader1.link,
 					Rss = Mangareader1.rss_url,
 					Site = "Mangareader"
@@ -197,7 +198,7 @@ namespace TestSettingsPlugin.ViewModels {
 					Name = Mangastream1.name,
 					Chapter = float.Parse(Mangastream1.chapter, CultureInfo.InvariantCulture),
 					Added = DateTime.Now,
-					Updated = DateTime.Now,
+					Updated = DateTime.Parse(Mangastream1.last_update),
 					Link = Mangastream1.link,
 					Rss = Mangastream1.rss_url,
 					Site = "Mangastream"
@@ -212,7 +213,7 @@ namespace TestSettingsPlugin.ViewModels {
 					Name = YoManga1.name,
 					Chapter = float.Parse(YoManga1.chapter, CultureInfo.InvariantCulture),
 					Added = DateTime.Now,
-					Updated = DateTime.Now,
+					Updated = DateTime.Parse(YoManga1.last_update),
 					Link = YoManga1.link,
 					Rss = YoManga1.rss_url,
 					Site = "YoManga"
@@ -227,7 +228,7 @@ namespace TestSettingsPlugin.ViewModels {
 					Name = Webtoons1.name,
 					Chapter = float.Parse(Webtoons1.chapter, CultureInfo.InvariantCulture),
 					Added = DateTime.Now,
-					Updated = DateTime.Now,
+					Updated = DateTime.Parse(Webtoons1.last_update),
 					Link = Webtoons1.link,
 					Rss = Webtoons1.rss_url,
 					Site = "Webtoons"

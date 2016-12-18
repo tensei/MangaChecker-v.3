@@ -18,7 +18,7 @@ namespace MangaChecker.Database.Tables {
 		[NotNull]
 		public int Active { get; set; }
 
-		[NotNull]
+		//[NotNull]
 		public bool OpenLinks { get; set; }
 	}
 }

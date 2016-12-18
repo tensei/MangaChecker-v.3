@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using MahApps.Metro.Controls;
-using MangaCheckerV3.Common;
-using MangaCheckerV3.Helpers;
 using MangaCheckerV3.SQLite;
-using MangaCheckerV3.SQLite.Tables;
-using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 using PropertyChanged;
 
@@ -38,10 +29,9 @@ namespace MangaCheckerV3.ViewModels {
 			SnackbarQueue.Enqueue("Test message", true);
 			if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "mcv3.sqlite"))) {
 				var updated = new Database().CheckDbVersion();
-				if (updated!= null) {
-					SnackbarQueue.Enqueue(updated);
-				}
-			} else {
+				if (updated != null) SnackbarQueue.Enqueue(updated);
+			}
+			else {
 				new Database().CreateDatabase();
 				SnackbarQueue.Enqueue("Created new Database");
 			}
@@ -77,8 +67,7 @@ namespace MangaCheckerV3.ViewModels {
 		public int DrawerIndex { get; set; }
 
 		public int TransitionerIndex { get; set; }
-		
-		public bool MenuToggleButton { get; set; } = true;
 
+		public bool MenuToggleButton { get; set; } = true;
 	}
 }
