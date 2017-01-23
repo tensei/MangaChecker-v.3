@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows.Controls;
 using System.Windows.Input;
+using MangaChecker.Database;
 using MangaCheckerV3.SQLite;
 using MaterialDesignThemes.Wpf;
 using PropertyChanged;
@@ -18,7 +19,7 @@ namespace MangaCheckerV3.ViewModels {
 			{"Theme", 5}
 		};
 
-		private ListBoxItem _drawerSelectedItem;
+		private PackIcon _drawerSelectedItem;
 
 		/// <summary>
 		///     Initializes a new instance of the MainWindowViewModel class.
@@ -54,7 +55,7 @@ namespace MangaCheckerV3.ViewModels {
 
 		public ICommand DoubleClickCommand { get; }
 
-		public ListBoxItem DrawerSelectedItem {
+		public PackIcon DrawerSelectedItem {
 			get { return _drawerSelectedItem; }
 			set {
 				_drawerSelectedItem = value;

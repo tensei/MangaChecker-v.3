@@ -8,20 +8,14 @@
 	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 	xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
 	xmlns:Views="clr-namespace:MangaCheckerV3.Views"
-	xmlns:Converters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
 	x:Class="MangaCheckerV3.MainWindow"
 	mc:Ignorable="d"
 	Title="MangaChecker" Height="550" Width="725"
 	TitleCharacterCasing="Normal" BorderThickness="1" GlowBrush="Black"
-	NonActiveBorderBrush="{DynamicResource HighlightBrush}"
+	NonActiveBorderBrush="Black"
 	NonActiveGlowBrush="Black"
 	NonActiveWindowTitleBrush="{DynamicResource HighlightBrush}"
 	d:DataContext="{d:DesignInstance {x:Type viewModel:MainWindowViewModel}, IsDesignTimeCreatable=False}">
-
-	<Controls:MetroWindow.Resources>
-		<Converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-	</Controls:MetroWindow.Resources>
-
 	<Controls:MetroWindow.RightWindowCommands>
 		<Controls:WindowCommands>
 			<!--<Button ToolTip="Start/Stop" Command="{Binding StartStopCommand}">
@@ -52,55 +46,24 @@
 				<ColumnDefinition Width="Auto" />
 				<ColumnDefinition Width="*" />
 			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
 			<ListBox Grid.Column="0" SelectedItem="{Binding DrawerSelectedItem}" SelectedIndex="{Binding DrawerIndex}"
 			         Background="{DynamicResource HighlightBrush}"
 			         Visibility="{Binding MenuToggleButton, Converter={StaticResource BooleanToVisibilityConverter}}"
 			         Foreground="{Binding TitleForeground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Controls:MetroWindow}}}">
-				<ListBoxItem ToolTip="Home">
-					<TextBlock>
-						<InlineUIContainer>
-							<materialDesign:PackIcon Kind="Home" Height="20" Width="20" />
-						</InlineUIContainer>
-					</TextBlock>
-				</ListBoxItem>
-				<ListBoxItem ToolTip="Add Manga">
-					<TextBlock>
-						<InlineUIContainer>
-							<materialDesign:PackIcon Kind="PlusBox" Height="20" Width="20" />
-						</InlineUIContainer>
-					</TextBlock>
-				</ListBoxItem>
-				<ListBoxItem ToolTip="History">
-					<TextBlock>
-						<InlineUIContainer>
-							<materialDesign:PackIcon Kind="History" Height="20" Width="20" />
-						</InlineUIContainer>
-					</TextBlock>
-				</ListBoxItem>
-				<Separator Background="{DynamicResource AccentColorBrush2}" />
-				<ListBoxItem ToolTip="Settings">
-					<TextBlock>
-						<InlineUIContainer>
-							<materialDesign:PackIcon Kind="Settings" Height="20" Width="20" />
-						</InlineUIContainer>
-					</TextBlock>
-				</ListBoxItem>
-				<ListBoxItem ToolTip="Plugins">
-					<TextBlock>
-						<InlineUIContainer>
-							<materialDesign:PackIcon Kind="ViewModule" Height="20" Width="20" />
-						</InlineUIContainer>
-					</TextBlock>
-				</ListBoxItem>
-				<ListBoxItem ToolTip="Theme">
-					<TextBlock>
-						<InlineUIContainer>
-							<materialDesign:PackIcon Kind="Brush" Height="20" Width="20" />
-						</InlineUIContainer>
-					</TextBlock>
-				</ListBoxItem>
+
+				<materialDesign:PackIcon Kind="Home" Height="20" Width="20" ToolTip="Home"/>
+				<materialDesign:PackIcon Kind="PlusBox" Height="20" Width="20" ToolTip="Add Manga" />
+				<materialDesign:PackIcon Kind="History" Height="20" Width="20" ToolTip="History" />
+				<Separator Style="{DynamicResource MaterialDesignLightSeparator}" />
+				<materialDesign:PackIcon Kind="Settings" Height="20" Width="20" ToolTip="Settings" />
+				<materialDesign:PackIcon Kind="ViewModule" Height="20" Width="20" ToolTip="Plugins" />
+				<materialDesign:PackIcon Kind="Brush" Height="20" Width="20" ToolTip="Theme" />
 			</ListBox>
-			<materialDesign:Transitioner SelectedIndex="{Binding TransitionerIndex}" Grid.Column="1">
+			<materialDesign:Transitioner SelectedIndex="{Binding TransitionerIndex}" Grid.Row="0" Grid.Column="1">
 				<Views:MangaListView />
 				<Views:AddMangaView />
 				<Views:HistoryView />
@@ -108,7 +71,13 @@
 				<Views:SettingsView />
 				<Views:ThemeView />
 			</materialDesign:Transitioner>
-			<materialDesign:Snackbar x:Name="Snacky" Grid.Column="0" Grid.ColumnSpan="2" MessageQueue="{Binding SnackbarQueue}"
+			<materialDesign:ColorZone Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Padding="4"
+									  materialDesign:ShadowAssist.ShadowDepth="Depth2">
+				<TextBlock>
+					hmmmm
+				</TextBlock>
+			</materialDesign:ColorZone>
+			<materialDesign:Snackbar x:Name="Snacky" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" MessageQueue="{Binding SnackbarQueue}"
 			                         materialDesign:ShadowAssist.ShadowDepth="Depth3" Background="#303030" Foreground="White" />
 		</Grid>
 	</materialDesign:DialogHost>

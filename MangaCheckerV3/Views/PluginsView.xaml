@@ -14,7 +14,7 @@
 		              Foreground="{Binding TitleForeground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Controls:MetroWindow}}}">
 			<ItemsControl.ItemTemplate>
 				<DataTemplate>
-					<Expander Background="{DynamicResource AccentColorBrush}" Margin="10,10,10,0">
+					<Expander Margin="10,10,10,0">
 						<Expander.Header>
 							<Grid>
 								<Grid.ColumnDefinitions>

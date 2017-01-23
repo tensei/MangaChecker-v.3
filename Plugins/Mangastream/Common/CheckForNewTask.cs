@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Xml;
 using MangaChecker.Cloudflare;
+using MangaChecker.Database;
+using MangaChecker.Database.Tables;
 using MangaCheckerV3.SQLite;
 using MangaCheckerV3.SQLite.Tables;
 using Mangastream.ViewModel;

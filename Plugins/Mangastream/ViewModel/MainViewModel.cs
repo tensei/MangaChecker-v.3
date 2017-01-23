@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using MangaChecker.Database;
+using MangaChecker.Database.Tables;
 using MangaCheckerV3.SQLite;
 using MangaCheckerV3.SQLite.Tables;
 using MangaCheckerV3.ViewModels;

@@ -22,19 +22,44 @@
 			<Run Text="Primary" />
 		</TextBlock>
 		<ComboBox Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" IsEditable="False" IsReadOnly="True"
-		          ItemsSource="{Binding PrimaryColors}" Text="{Binding PrimaryColor}" Width="100" VerticalAlignment="Center" />
+		          ItemsSource="{Binding PrimaryColors}" SelectedItem="{Binding PrimaryColor}" MinWidth="100" VerticalAlignment="Center" >
+			<ComboBox.ItemTemplate>
+				<DataTemplate>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="16" Height="16" Margin="4,0">
+							<Border.Background>
+								<SolidColorBrush Color="{Binding ExemplarHue.Color}" />
+							</Border.Background>
+						</Border>
+						<TextBlock Text="{Binding Name}"/>
+					</StackPanel>
+				</DataTemplate>
+			</ComboBox.ItemTemplate>
+		</ComboBox>
 		<TextBlock HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" VerticalAlignment="Top">
 			<Run Text="Accent" />
 		</TextBlock>
 		<ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" IsEditable="False" IsReadOnly="True"
-		          ItemsSource="{Binding AccentColors}" Text="{Binding AccentColor}" Width="100" VerticalAlignment="Center" />
-
+		          ItemsSource="{Binding AccentColors}" SelectedItem="{Binding AccentColor}" MinWidth="100" VerticalAlignment="Center"  >
+			<ComboBox.ItemTemplate>
+				<DataTemplate>
+					<StackPanel Orientation="Horizontal">
+						<Border Width="16" Height="16" Margin="4,0">
+							<Border.Background>
+								<SolidColorBrush Color="{Binding AccentExemplarHue.Color}" />
+							</Border.Background>
+						</Border>
+						<TextBlock Text="{Binding Name}"/>
+					</StackPanel>
+				</DataTemplate>
+			</ComboBox.ItemTemplate>
+		</ComboBox>
 		<TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="0" Grid.Column="2">
 			<Run Text="Theme" />
 		</TextBlock>
 		<ComboBox Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" IsEditable="False"
 		          IsReadOnly="True"
-		          Text="{Binding Theme}" Width="100">
+		          Text="{Binding Theme}" MinWidth="100">
 			<ComboBoxItem>Dark</ComboBoxItem>
 			<ComboBoxItem>Light</ComboBoxItem>
 		</ComboBox>

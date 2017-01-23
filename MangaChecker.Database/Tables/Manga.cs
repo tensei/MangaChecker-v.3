@@ -2,7 +2,7 @@
 using PropertyChanged;
 using SQLite;
 
-namespace MangaCheckerV3.SQLite.Tables {
+namespace MangaChecker.Database.Tables {
 	[ImplementPropertyChanged]
 	public class Manga {
 		[PrimaryKey]

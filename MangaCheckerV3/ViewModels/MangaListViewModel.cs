@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MangaChecker.Database;
+using MangaChecker.Database.Tables;
 using MangaCheckerV3.SQLite;
 using MangaCheckerV3.SQLite.Tables;
 using PropertyChanged;
@@ -20,7 +22,7 @@ namespace MangaCheckerV3.ViewModels {
 
 		private readonly ObservableCollection<string> _sites = new ObservableCollection<string>();
 
-		public readonly Dictionary<string, string> ListboxItemNames = new Dictionary<string, string> {
+	    private readonly Dictionary<string, string> ListboxItemNames = new Dictionary<string, string> {
 			{"All", null},
 			{"Mangareader", null},
 			{"Mangafox", null},
@@ -126,7 +128,6 @@ namespace MangaCheckerV3.ViewModels {
 
 		private async void FillMangaList(string site) {
 			if (_mangas.Count > 0) _mangas.Clear();
-
 			switch (site) {
 				case "All":
 					foreach (var manga in await new Database().GetAllMangas()) _mangas.Add(manga);

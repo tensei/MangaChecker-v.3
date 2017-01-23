@@ -1,6 +1,6 @@
 ﻿using SQLite;
 
-namespace MangaCheckerV3.SQLite.Tables {
+namespace MangaChecker.Database.Tables {
 	public class Versions {
 		[PrimaryKey]
 		public string Name { get; set; }

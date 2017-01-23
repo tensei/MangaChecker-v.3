@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SQLite;
+﻿using SQLite;
 
-namespace MangaCheckerV3.SQLite.Tables {
+namespace MangaChecker.Database.Tables {
 	public class Theme {
 		[PrimaryKey]
 		public string Name { get; set; }

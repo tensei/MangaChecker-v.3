@@ -4,16 +4,15 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using MangaChecker.Database.Tables;
-using MangaCheckerV3.SQLite.Tables;
 using SQLite;
 
-namespace MangaCheckerV3.SQLite {
+namespace MangaChecker.Database {
 	public class Database {
 		private readonly string _databasePath = Path.Combine(Directory.GetCurrentDirectory(), "mcv3.sqlite");
 
 		private readonly string _databaseVersion = "1.0.0.6";
 
-		private static readonly Dictionary<string, string> _defaultDatabaseSettings = new Dictionary<string, string> {
+		private static readonly Dictionary<string, string> DefaultDatabaseSettings = new Dictionary<string, string> {
 			{"Mangafox", "http://mangafox.me/"},
 			{"Mangahere", "http://mangahere.co/"},
 			{"Mangareader", "http://www.mangareader.net/"},
@@ -41,30 +40,27 @@ namespace MangaCheckerV3.SQLite {
 		public async Task<List<Manga>> GetAllMangas() {
 			var conn = new SQLiteAsyncConnection(_databasePath);
 			var query = conn.Table<Manga>();
-			return await query.ToListAsync();
-		}
-
+            var q = await query.ToListAsync();
+            return new List<Manga>(q.OrderByDescending(m => m.Updated));
+        }
 		public async Task InsertManga(Manga manga) {
 			var conn = new SQLiteAsyncConnection(_databasePath);
 			await conn.InsertAsync(manga);
 		}
-
-		public async Task<List<Manga>> GetMangasFrom(string site) {
+		public async Task<IOrderedEnumerable<Manga>> GetMangasFrom(string site) {
 			var conn = new SQLiteAsyncConnection(_databasePath);
 			var query = conn.Table<Manga>().Where(m => m.Site.ToLower().Equals(site.ToLower()));
-			return await query.ToListAsync();
+            var q = await query.ToListAsync();
+		    return q.OrderByDescending(m => m.Updated);
 		}
-
 		public async Task Update(Manga manga) {
 			var conn = new SQLiteAsyncConnection(_databasePath);
 			await conn.UpdateAsync(manga);
 		}
-
 		public async Task Delete(Manga manga) {
 			var conn = new SQLiteAsyncConnection(_databasePath);
 			await conn.DeleteAsync(manga);
 		}
-
 		public async Task<List<Settings>> GetAllSettings() {
 			var conn = new SQLiteAsyncConnection(_databasePath);
 			var query = conn.Table<Settings>();
@@ -87,7 +83,6 @@ namespace MangaCheckerV3.SQLite {
 		}
 		public void UpdateTheme(string name, string color) {
 			var conn = new SQLiteConnection(_databasePath);
-
 			conn.Update(new Theme {
 				Name = name,
 				Color = color
@@ -105,7 +100,7 @@ namespace MangaCheckerV3.SQLite {
 			var theme = conn.Table<Theme>().ToList().Select(t => t.Name).ToList();
 			var versions = conn.Table<Versions>().ToList().Select(v => v.Name).ToList();
 
-			foreach (var defaultSetting in _defaultDatabaseSettings) {
+			foreach (var defaultSetting in DefaultDatabaseSettings) {
 				if (!setting.Contains(defaultSetting.Key)) {
 					conn.Insert(new Settings {
 						Setting = defaultSetting.Key,
@@ -147,7 +142,7 @@ namespace MangaCheckerV3.SQLite {
 				Version = _databaseVersion
 			});
 
-			foreach (var sites in _defaultDatabaseSettings) {
+			foreach (var sites in DefaultDatabaseSettings) {
 				conn.Insert(new Settings {
 					Setting = sites.Key,
 					Link = sites.Value,

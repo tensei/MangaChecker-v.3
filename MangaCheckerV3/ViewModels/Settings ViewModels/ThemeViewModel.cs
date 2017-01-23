@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using MangaChecker.Database;
 using MangaCheckerV3.Helpers;
 using MangaCheckerV3.SQLite;
+using MaterialDesignColors;
 using PropertyChanged;
 
 namespace MangaCheckerV3.ViewModels.Settings_ViewModels {
 	[ImplementPropertyChanged]
 	public class ThemeViewModel {
-		private string _accentColor;
-		private string _primaryColor;
+		private Swatch _accentColor;
+		private Swatch _primaryColor;
 		private string _theme;
 
 		public ThemeViewModel() {
@@ -18,26 +21,26 @@ namespace MangaCheckerV3.ViewModels.Settings_ViewModels {
 		/// <summary>
 		///     Initializes a new instance of the ThemeViewModel class.
 		/// </summary>
-		public static ThemeViewModel Instance { get; set; }
+		public static ThemeViewModel Instance { get; private set; }
 
-		public IEnumerable<string> PrimaryColors => ThemeHelper.Swatches;
-		public IEnumerable<string> AccentColors => ThemeHelper.Accents;
+		public IEnumerable<Swatch> PrimaryColors => ThemeHelper.Swatches;
+		public IEnumerable<Swatch> AccentColors => ThemeHelper.Accents;
 
-		public string PrimaryColor {
+		public Swatch PrimaryColor {
 			get { return _primaryColor; }
 			set {
 				_primaryColor = value;
-				ThemeHelper.ChangePrimaryColorTo(value);
-				new Database().UpdateTheme("Primary", value);
+				ThemeHelper.ChangePrimaryColorTo(value).ConfigureAwait(false);
+				new Database().UpdateTheme("Primary", value.Name);
 			}
 		}
 
-		public string AccentColor {
+		public Swatch AccentColor {
 			get { return _accentColor; }
 			set {
 				_accentColor = value;
-				ThemeHelper.ChangeAccentColorTo(value);
-				new Database().UpdateTheme("Accents", value);
+                ThemeHelper.ChangeAccentColorTo(value).ConfigureAwait(false);
+				new Database().UpdateTheme("Accents", value.Name);
 			}
 		}
 
@@ -45,7 +48,7 @@ namespace MangaCheckerV3.ViewModels.Settings_ViewModels {
 			get { return _theme; }
 			set {
 				_theme = value;
-				ThemeHelper.ChangeThemeTo(value == "Dark");
+				ThemeHelper.ChangeThemeTo(value == "Dark").ConfigureAwait(false);
 				new Database().UpdateTheme("Theme", value);
 			}
 		}
@@ -53,8 +56,8 @@ namespace MangaCheckerV3.ViewModels.Settings_ViewModels {
 		public async Task SetupTheme() {
 			var themes = await new Database().GetThemes();
 			foreach (var theme in themes) {
-				if (theme.Name == "Primary") PrimaryColor = theme.Color;
-				if (theme.Name == "Accents") AccentColor = theme.Color;
+				if (theme.Name == "Primary") PrimaryColor = PrimaryColors.FirstOrDefault(s=>s.Name ==theme.Color);
+				if (theme.Name == "Accents") AccentColor = AccentColors.FirstOrDefault(s => s.Name == theme.Color);
 				if (theme.Name == "Theme") Theme = theme.Color;
 			}
 		}

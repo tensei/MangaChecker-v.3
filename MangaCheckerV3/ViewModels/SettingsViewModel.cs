@@ -10,8 +10,7 @@ namespace MangaCheckerV3.ViewModels {
 
 		private readonly ObservableCollection<object> _siteSetting = new ObservableCollection<object>();
 
-
-		public SettingsViewModel() {
+        public SettingsViewModel() {
 			Instance = this;
 			Sitesettings = new ReadOnlyObservableCollection<object>(_siteSetting);
 
