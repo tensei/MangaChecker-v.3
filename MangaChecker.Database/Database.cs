@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using LiteDB;
 using MangaChecker.Database.Tables;
-using SQLite;
 
 namespace MangaChecker.Database {
 	public class Database {
-		private readonly string _databasePath = Path.Combine(Directory.GetCurrentDirectory(), "mcv3.sqlite");
+		private readonly string _databasePath = Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db");
 
-		private readonly string _databaseVersion = "1.0.0.6";
+		private readonly string _databaseVersion = "1.0.0.8";
 
 		private static readonly Dictionary<string, string> DefaultDatabaseSettings = new Dictionary<string, string> {
 			{"Mangafox", "http://mangafox.me/"},
@@ -31,154 +31,131 @@ namespace MangaChecker.Database {
 		private readonly Dictionary<string, string> _defaultVersions = new Dictionary<string, string> {
 			{"db", "1.0.0.0"}
 		};
-		private readonly Dictionary<string, string> _defaultThemes = new Dictionary<string, string> {
-			{"Primary", "blue"},
-			{"Accents", "blue"},
-			{"Theme", "Dark" }
-		};
-
-		public async Task<List<Manga>> GetAllMangas() {
-			var conn = new SQLiteAsyncConnection(_databasePath);
-			var query = conn.Table<Manga>();
-            var q = await query.ToListAsync();
-            return new List<Manga>(q.OrderByDescending(m => m.Updated));
+        public IOrderedEnumerable<Manga> GetAllMangas() {
+            IEnumerable<Manga> query;
+            using (var conn = new LiteDatabase(_databasePath)) {
+                query = conn.GetCollection<Manga>("Manga").FindAll();
+                //var qquery = conn.GetCollection("Manga").FindAll();
+            }
+            return query.OrderByDescending(m => m.Updated);
         }
-		public async Task InsertManga(Manga manga) {
-			var conn = new SQLiteAsyncConnection(_databasePath);
-			await conn.InsertAsync(manga);
-		}
-		public async Task<IOrderedEnumerable<Manga>> GetMangasFrom(string site) {
-			var conn = new SQLiteAsyncConnection(_databasePath);
-			var query = conn.Table<Manga>().Where(m => m.Site.ToLower().Equals(site.ToLower()));
-            var q = await query.ToListAsync();
-		    return q.OrderByDescending(m => m.Updated);
-		}
-		public async Task Update(Manga manga) {
-			var conn = new SQLiteAsyncConnection(_databasePath);
-			await conn.UpdateAsync(manga);
-		}
-		public async Task Delete(Manga manga) {
-			var conn = new SQLiteAsyncConnection(_databasePath);
-			await conn.DeleteAsync(manga);
-		}
-		public async Task<List<Settings>> GetAllSettings() {
-			var conn = new SQLiteAsyncConnection(_databasePath);
-			var query = conn.Table<Settings>();
-			return await query.ToListAsync();
-		}
-		public async Task<Settings> GetSettingsFor(string setting) {
-			var conn = new SQLiteAsyncConnection(_databasePath);
-			var query = await conn.Table<Settings>().Where(s => s.Setting.Equals(setting)).FirstAsync();
-			return query;
-		}
-		public async Task<int> GetRefreshTime() {
-			var conn = new SQLiteAsyncConnection(_databasePath);
-			var query = await conn.Table<Settings>().Where(s => s.Setting.Equals("RefreshTime")).ToListAsync();
-			return query.First().Active;
-		}
-		public async Task<List<Theme>> GetThemes() {
-			var conn = new SQLiteAsyncConnection(_databasePath);
-			var query = await conn.Table<Theme>().ToListAsync();
-			return query;
-		}
-		public void UpdateTheme(string name, string color) {
-			var conn = new SQLiteConnection(_databasePath);
-			conn.Update(new Theme {
-				Name = name,
-				Color = color
-			});
-		}
+        public IOrderedEnumerable<Manga> GetMangasFrom(string site) {
+            IEnumerable<Manga> query;
+            using (var conn = new LiteDatabase(_databasePath)) {
+                query = conn.GetCollection<Manga>("Manga").Find(s => s.Site == site);
+            }
+            return query.OrderByDescending(m => m.Updated);
+        }
+        public void InsertManga(Manga manga) {
+            using (var conn = new LiteDatabase(_databasePath)) {
+                var query = conn.GetCollection<Manga>("Manga");
+                query.Insert(manga);
+            }
+        }
+        public void Update(Manga manga) {
+            using (var conn = new LiteDatabase(_databasePath)) {
+                var query = conn.GetCollection<Manga>("Manga");
+                query.Update(manga);
+            }
+        }
+        public void Delete(Manga manga) {
+            using (var conn = new LiteDatabase(_databasePath)) {
+                var query = conn.GetCollection<Manga>("Manga");
+                query.Delete(Query.EQ("_id", manga.MangaId));
+            }
+        }
+        public IEnumerable<Settings> GetAllSettings() {
+            IEnumerable<Settings> query;
+            using (var conn = new LiteDatabase(_databasePath)) {
+                query = conn.GetCollection<Settings>("Settings").FindAll();
+            }
+            return query;
+        }
+        public Settings GetSettingsFor(string setting) {
+            Settings query;
+            using (var conn = new LiteDatabase(_databasePath)) {
+                query = conn.GetCollection<Settings>("Settings").FindOne(s=> s.Setting == setting);
+            }
+            return query;
+        }
+        public int GetRefreshTime() {
+            Settings query;
+            using (var conn = new LiteDatabase(_databasePath)) {
+                query = conn.GetCollection<Settings>("Settings").FindOne(s => s.Setting == "RefreshTime");
+            }
+            return query.Active;
+        }
 
 		private void UpdateDatabase(Versions dbv) {
-			var conn = new SQLiteConnection(_databasePath);
-			conn.CreateTable<Settings>();
-			conn.CreateTable<Manga>();
-			conn.CreateTable<Versions>();
-			conn.CreateTable<Theme>();
+            using (var conn = new LiteDatabase(_databasePath)) {
+                var set = conn.GetCollection<Settings>("Settings");
+                conn.GetCollection<Manga>("Manga");
+                var ver = conn.GetCollection<Versions>("Versions");
 
-			var setting = conn.Table<Settings>().ToList().Select(s=>s.Setting).ToList();
-			var theme = conn.Table<Theme>().ToList().Select(t => t.Name).ToList();
-			var versions = conn.Table<Versions>().ToList().Select(v => v.Name).ToList();
+                var setting = set.Find(Query.All(Query.Descending)).Select(s => s.Setting);
+                var versions = ver.Find(Query.All(Query.Descending)).Select(v => v.Name);
 
-			foreach (var defaultSetting in DefaultDatabaseSettings) {
-				if (!setting.Contains(defaultSetting.Key)) {
-					conn.Insert(new Settings {
-						Setting = defaultSetting.Key,
-						Link = defaultSetting.Value,
-						Active = 0,
-						Created = DateTime.Now,
-						//OpenLinks = true
-					});
-				}
-			}
-			foreach (var defaultTheme in _defaultThemes) {
-				if (!theme.Contains(defaultTheme.Key)) {
-					conn.Insert(new Theme {
-						Name = defaultTheme.Key,
-						Color = defaultTheme.Value
-					});
-				}
-			}
-			foreach (var defaultver in _defaultVersions) {
-				if (!versions.Contains(defaultver.Key)) {
-					conn.Insert(new Versions {
-						Name = defaultver.Key,
-						Version = defaultver.Key
-					});
-				}
-			}
-			conn.Update(dbv);
-		}
+                foreach (var defaultSetting in DefaultDatabaseSettings) {
+                    if (!setting.Contains(defaultSetting.Key)) {
+                        set.Insert(new Settings {
+                            Setting = defaultSetting.Key,
+                            Link = defaultSetting.Value,
+                            Active = 0,
+                            Created = DateTime.Now,
+                            //OpenLinks = true
+                        });
+                    }
+                }
+                foreach (var defaultver in _defaultVersions) {
+                    if (!versions.Contains(defaultver.Key)) {
+                        ver.Insert(new Versions {
+                            Name = defaultver.Key,
+                            Version = defaultver.Key
+                        });
+                    }
+                }
+                ver.Update(dbv);
+            }
+        }
 
 		public void CreateDatabase() {
-			var conn = new SQLiteConnection(_databasePath);
-			conn.CreateTable<Settings>();
-			conn.CreateTable<Manga>();
-			conn.CreateTable<Versions>();
-			conn.CreateTable<Theme>();
+		    using (var conn = new LiteDatabase(_databasePath)) {
+		        var set = conn.GetCollection<Settings>("Settings");
+		        conn.GetCollection<Manga>("Manga");
+		        var ver = conn.GetCollection<Versions>("Versions");
 
-			conn.Insert(new Versions {
-				Name = "db",
-				Version = _databaseVersion
-			});
+		        ver.Insert(new Versions {
+		            Name = "db",
+		            Version = _databaseVersion
+		        });
 
-			foreach (var sites in DefaultDatabaseSettings) {
-				conn.Insert(new Settings {
-					Setting = sites.Key,
-					Link = sites.Value,
-					Active = 0,
-					Created = DateTime.Now
-				});
-			}
-			conn.Insert(new Settings {
-				Setting = "RefreshTime",
-				Link = "/",
-				Active = 300,
-				Created = DateTime.Now
-			});
-			conn.Insert(new Theme {
-				Name = "Primary",
-				Color = "blue"
-			});
-			conn.Insert(new Theme {
-				Name = "Accents",
-				Color = "blue"
-			});
-			conn.Insert(new Theme {
-				Name = "Theme",
-				Color = "Dark"
-			});
-
-
+		        foreach (var sites in DefaultDatabaseSettings) {
+		            set.Insert(new Settings {
+		                Setting = sites.Key,
+		                Link = sites.Value,
+		                Active = 0,
+		                Created = DateTime.Now
+		            });
+		        }
+		        if (set.FindOne(Query.EQ("Setting", "RefreshTime")) == null) {
+		            set.Insert(new Settings {
+		                Setting = "RefreshTime",
+		                Link = "/",
+		                Active = 300,
+		                Created = DateTime.Now
+		            });
+		        }
+		    }
 		}
 
 		public string CheckDbVersion() {
-			var conn = new SQLiteConnection(_databasePath);
-			var dbv = conn.Table<Versions>().FirstOrDefault(v => v.Name.Equals("db"));
-			if (dbv.Version == _databaseVersion) return null;
-			dbv.Version = _databaseVersion;
-			UpdateDatabase(dbv);
-			return $"Updated Database to {_databaseVersion}";
+		    using (var conn = new LiteDatabase(_databasePath)) {
+		        var dbv = conn.GetCollection<Versions>("Versions").FindOne(Query.EQ("Name", "db"));
+		        if (dbv.Version == _databaseVersion) return null;
+		        dbv.Version = _databaseVersion;
+		        UpdateDatabase(dbv);
+		        return $"Updated Database to {_databaseVersion}";
+		    }
 		}
 	}
 }

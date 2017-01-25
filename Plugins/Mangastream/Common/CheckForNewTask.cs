@@ -68,7 +68,7 @@ namespace Mangastream.Common {
 				manga.Chapter = chapter;
 				manga.Link = link;
 				manga.Updated = DateTime.Now;
-				await new Database().Update(manga);
+				new Database().Update(manga);
 				return true;
 			}
 			return false;

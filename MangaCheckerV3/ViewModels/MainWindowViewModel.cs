@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using MangaChecker.Database;
@@ -28,28 +29,21 @@ namespace MangaCheckerV3.ViewModels {
 			Instance = this;
 			SnackbarQueue = new SnackbarMessageQueue();
 			SnackbarQueue.Enqueue("Test message", true);
-			if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "mcv3.sqlite"))) {
-				var updated = new Database().CheckDbVersion();
-				if (updated != null) SnackbarQueue.Enqueue(updated);
-			}
-			else {
-				new Database().CreateDatabase();
-				SnackbarQueue.Enqueue("Created new Database");
-			}
-			//Task.Run(async () => {
-			//	for (int i = 0; i < 20; i++) {
-			//		await new Database().InsertManga(new Manga {
-			//			Added = DateTime.Now,
-			//			Chapter = 1,
-			//			Name = "trest",
-			//			Updated = DateTime.Now,
-			//			Site = "lul",
-			//			Link = "jj"
-			//		});
-			//	}
-			//});
-			//MangaListViewModel.Instance.Fill();
-		}
+
+            //Task.Run(async () => {
+            //	for (int i = 0; i < 20; i++) {
+            //		await new Database().InsertManga(new Manga {
+            //			Added = DateTime.Now,
+            //			Chapter = 1,
+            //			Name = "trest",
+            //			Updated = DateTime.Now,
+            //			Site = "lul",
+            //			Link = "jj"
+            //		});
+            //	}
+            //});
+            //MangaListViewModel.Instance.Fill();
+        }
 
 		public static MainWindowViewModel Instance { get; private set; }
 

@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using LiteDB;
 using SQLite;
 using TestSettingsPlugin.New_Tables;
 using TestSettingsPlugin.Old_Tables;
@@ -36,14 +37,15 @@ namespace TestSettingsPlugin.ViewModels {
 			
 			var conn = new SQLiteAsyncConnection("MangaDB.sqlite");
 
-			var newdb = new SQLiteAsyncConnection("mcv3.sqlite");
+			var db = new LiteDatabase("mcv3.db");
+		    var newdb = db.GetCollection<Manga>("Manga");
 
 			var batoto = await conn.Table<batoto>().ToListAsync();
 			WriteOutput($"batoto {batoto.Count} entries");
 			
 			foreach (var batoto1 in batoto) {
 				WriteOutput($"Inserting {batoto1.name} | {batoto1.chapter} | {batoto1.last_update} | {batoto1.link} | {batoto1.rss_url}");
-				await newdb.InsertAsync(new Manga {
+				newdb.Insert(new Manga {
 					Name = batoto1.name,
 					Chapter = float.Parse(batoto1.chapter, CultureInfo.InvariantCulture),
 					Added = DateTime.Now,
@@ -59,7 +61,7 @@ namespace TestSettingsPlugin.ViewModels {
 			foreach (var backlog1 in backlog) {
 				WriteOutput($"Inserting {backlog1.name} | {backlog1.chapter} | {backlog1.last_update} | {backlog1.link} | {backlog1.rss_url}");
 				var date = DateTime.Parse(backlog1.last_update);
-				await newdb.InsertAsync(new Manga {
+				newdb.Insert(new Manga {
 					Name = backlog1.name,
 					Chapter = float.Parse(backlog1.chapter, CultureInfo.InvariantCulture),
 					Added = DateTime.Now,
@@ -74,7 +76,7 @@ namespace TestSettingsPlugin.ViewModels {
 			WriteOutput($"GameOfScanlation {goscan.Count} entries");
 			foreach (var GameOfScanlation1 in goscan) {
 				WriteOutput($"Inserting {GameOfScanlation1.name} | {GameOfScanlation1.chapter} | {GameOfScanlation1.last_update} | {GameOfScanlation1.link} | {GameOfScanlation1.rss_url}");
-				await newdb.InsertAsync(new Manga {
+				newdb.Insert(new Manga {
 					Name = GameOfScanlation1.name,
 					Chapter = float.Parse(GameOfScanlation1.chapter, CultureInfo.InvariantCulture),
 					Added = DateTime.Now,
@@ -89,7 +91,7 @@ namespace TestSettingsPlugin.ViewModels {
 			WriteOutput($"HeyManga {heymang.Count} entries");
 			foreach (var HeyManga1 in heymang) {
 				WriteOutput($"Inserting {HeyManga1.name} | {HeyManga1.chapter} | {HeyManga1.last_update} | {HeyManga1.link} | {HeyManga1.rss_url}");
-				await newdb.InsertAsync(new Manga {
+				newdb.Insert(new Manga {
 					Name = HeyManga1.name,
 					Chapter = float.Parse(HeyManga1.chapter, CultureInfo.InvariantCulture),
 					Added = DateTime.Now,
@@ -104,7 +106,7 @@ namespace TestSettingsPlugin.ViewModels {
 			WriteOutput($"Jaiminisbox {jaim.Count} entries");
 			foreach (var Jaiminisbox1 in jaim) {
 				WriteOutput($"Inserting {Jaiminisbox1.name} | {Jaiminisbox1.chapter} | {Jaiminisbox1.last_update} | {Jaiminisbox1.link} | {Jaiminisbox1.rss_url}");
-				await newdb.InsertAsync(new Manga {
+				newdb.Insert(new Manga {
 					Name = Jaiminisbox1.name,
 					Chapter = float.Parse(Jaiminisbox1.chapter, CultureInfo.InvariantCulture),
 					Added = DateTime.Now,
@@ -119,7 +121,7 @@ namespace TestSettingsPlugin.ViewModels {
 			WriteOutput($"KireiCake {kirei.Count} entries");
 			foreach (var KireiCake1 in kirei) {
 				WriteOutput($"Inserting {KireiCake1.name} | {KireiCake1.chapter} | {KireiCake1.last_update} | {KireiCake1.link} | {KireiCake1.rss_url}");
-				await newdb.InsertAsync(new Manga {
+				newdb.Insert(new Manga {
 					Name = KireiCake1.name,
 					Chapter = float.Parse(KireiCake1.chapter, CultureInfo.InvariantCulture),
 					Added = DateTime.Now,
@@ -134,7 +136,7 @@ namespace TestSettingsPlugin.ViewModels {
 			WriteOutput($"Kissmanga {kiss.Count} entries");
 			foreach (var Kissmanga1 in kiss) {
 				WriteOutput($"Inserting {Kissmanga1.name} | {Kissmanga1.chapter} | {Kissmanga1.last_update} | {Kissmanga1.link} | {Kissmanga1.rss_url}");
-				await newdb.InsertAsync(new Manga {
+				newdb.Insert(new Manga {
 					Name = Kissmanga1.name,
 					Chapter = float.Parse(Kissmanga1.chapter, CultureInfo.InvariantCulture),
 					Added = DateTime.Now,
@@ -149,7 +151,7 @@ namespace TestSettingsPlugin.ViewModels {
 			WriteOutput($"Mangafox {mfox.Count} entries");
 			foreach (var Mangafox1 in mfox) {
 				WriteOutput($"Inserting {Mangafox1.name} | {Mangafox1.chapter} | {Mangafox1.last_update} | {Mangafox1.link} | {Mangafox1.rss_url}");
-				await newdb.InsertAsync(new Manga {
+				newdb.Insert(new Manga {
 					Name = Mangafox1.name,
 					Chapter = float.Parse(Mangafox1.chapter, CultureInfo.InvariantCulture),
 					Added = DateTime.Now,
@@ -164,7 +166,7 @@ namespace TestSettingsPlugin.ViewModels {
 			WriteOutput($"Mangahere {mhere.Count} entries");
 			foreach (var Mangahere1 in mhere) {
 				WriteOutput($"Inserting {Mangahere1.name} | {Mangahere1.chapter} | {Mangahere1.last_update} | {Mangahere1.link} | {Mangahere1.rss_url}");
-				await newdb.InsertAsync(new Manga {
+				newdb.Insert(new Manga {
 					Name = Mangahere1.name,
 					Chapter = float.Parse(Mangahere1.chapter, CultureInfo.InvariantCulture),
 					Added = DateTime.Now,
@@ -179,7 +181,7 @@ namespace TestSettingsPlugin.ViewModels {
 			WriteOutput($"Mangareader {mreader.Count} entries");
 			foreach (var Mangareader1 in mreader) {
 				WriteOutput($"Inserting {Mangareader1.name} | {Mangareader1.chapter} | {Mangareader1.last_update} | {Mangareader1.link} | {Mangareader1.rss_url}");
-				await newdb.InsertAsync(new Manga {
+				newdb.Insert(new Manga {
 					Name = Mangareader1.name,
 					Chapter = float.Parse(Mangareader1.chapter, CultureInfo.InvariantCulture),
 					Added = DateTime.Now,
@@ -194,7 +196,7 @@ namespace TestSettingsPlugin.ViewModels {
 			WriteOutput($"Mangastream {mstream.Count} entries");
 			foreach (var Mangastream1 in mstream) {
 				WriteOutput($"Inserting {Mangastream1.name} | {Mangastream1.chapter} | {Mangastream1.last_update} | {Mangastream1.link} | {Mangastream1.rss_url}");
-				await newdb.InsertAsync(new Manga {
+				newdb.Insert(new Manga {
 					Name = Mangastream1.name,
 					Chapter = float.Parse(Mangastream1.chapter, CultureInfo.InvariantCulture),
 					Added = DateTime.Now,
@@ -209,7 +211,7 @@ namespace TestSettingsPlugin.ViewModels {
 			WriteOutput($"YoManga {yo.Count} entries");
 			foreach (var YoManga1 in yo) {
 				WriteOutput($"Inserting {YoManga1.name} | {YoManga1.chapter} | {YoManga1.last_update} | {YoManga1.link} | {YoManga1.rss_url}");
-				await newdb.InsertAsync(new Manga {
+				newdb.Insert(new Manga {
 					Name = YoManga1.name,
 					Chapter = float.Parse(YoManga1.chapter, CultureInfo.InvariantCulture),
 					Added = DateTime.Now,
@@ -224,7 +226,7 @@ namespace TestSettingsPlugin.ViewModels {
 			WriteOutput($"Webtoons {web.Count} entries");
 			foreach (var Webtoons1 in web) {
 				WriteOutput($"Inserting {Webtoons1.name} | {Webtoons1.chapter} | {Webtoons1.last_update} | {Webtoons1.link} | {Webtoons1.rss_url}");
-				await newdb.InsertAsync(new Manga {
+				newdb.Insert(new Manga {
 					Name = Webtoons1.name,
 					Chapter = float.Parse(Webtoons1.chapter, CultureInfo.InvariantCulture),
 					Added = DateTime.Now,
@@ -234,7 +236,7 @@ namespace TestSettingsPlugin.ViewModels {
 					Site = "Webtoons"
 				});
 			}
-
+            
 		}
 
 		private void WriteOutput(string text) {

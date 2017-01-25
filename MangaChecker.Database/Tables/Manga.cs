@@ -1,22 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
+using LiteDB;
 using PropertyChanged;
-using SQLite;
 
 namespace MangaChecker.Database.Tables {
-	[ImplementPropertyChanged]
+    [ImplementPropertyChanged]
 	public class Manga {
-		[PrimaryKey]
-		[AutoIncrement]
-		[Unique]
-		public int Id { get; set; }
+        [BsonId]
+		public int MangaId { get; set; }
 
-		[NotNull]
 		public string Name { get; set; }
-
-		[NotNull]
+        
 		public float Chapter { get; set; }
 
-		[NotNull]
+        public List<string> OtherChapters { get; set; }
+        
 		public string Site { get; set; }
 		
 		public string Link { get; set; }
@@ -24,14 +22,11 @@ namespace MangaChecker.Database.Tables {
 		public string Rss { get; set; }
 		
 		public string SpecialLink { get; set; }
-
-		[NotNull]
+        
 		public DateTime Added { get; set; } = DateTime.Now;
-
-		[NotNull]
+        
 		public DateTime Updated { get; set; } = DateTime.Now;
-
-		[Ignore]
+        [BsonIgnore]
 		public string DaysAgo => DaysSinceUpdate();
 		private string DaysSinceUpdate() {
 			var dateNow = DateTime.Now;

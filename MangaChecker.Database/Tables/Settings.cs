@@ -1,21 +1,21 @@
 ﻿using System;
-using SQLite;
+//using SQLite;
 
 namespace MangaChecker.Database.Tables {
 	public class Settings {
-		[PrimaryKey, AutoIncrement]
+		//[PrimaryKey, AutoIncrement]
 		public int Id { get; set; }
 
-		[NotNull]
+		//[NotNull]
 		public string Setting { get; set; }
 
-		[NotNull]
+		//[NotNull]
 		public string Link { get; set; }
 
-		[NotNull]
+		//[NotNull]
 		public DateTime Created { get; set; }
 
-		[NotNull]
+		//[NotNull]
 		public int Active { get; set; }
 
 		//[NotNull]

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MangaChecker.Database;
 using MangaCheckerV3.Helpers;
+using MangaCheckerV3.Properties;
 using MangaCheckerV3.SQLite;
 using MaterialDesignColors;
 using PropertyChanged;
@@ -31,8 +32,9 @@ namespace MangaCheckerV3.ViewModels.Settings_ViewModels {
 			set {
 				_primaryColor = value;
 				ThemeHelper.ChangePrimaryColorTo(value).ConfigureAwait(false);
-				new Database().UpdateTheme("Primary", value.Name);
-			}
+			    Settings.Default.Primary = value.Name;
+                Settings.Default.Save();
+            }
 		}
 
 		public Swatch AccentColor {
@@ -40,8 +42,9 @@ namespace MangaCheckerV3.ViewModels.Settings_ViewModels {
 			set {
 				_accentColor = value;
                 ThemeHelper.ChangeAccentColorTo(value).ConfigureAwait(false);
-				new Database().UpdateTheme("Accents", value.Name);
-			}
+                Settings.Default.Accents = value.Name;
+                Settings.Default.Save();
+            }
 		}
 
 		public string Theme {
@@ -49,17 +52,18 @@ namespace MangaCheckerV3.ViewModels.Settings_ViewModels {
 			set {
 				_theme = value;
 				ThemeHelper.ChangeThemeTo(value == "Dark").ConfigureAwait(false);
-				new Database().UpdateTheme("Theme", value);
-			}
+                Settings.Default.Theme = value;
+                Settings.Default.Save();
+            }
 		}
 
-		public async Task SetupTheme() {
-			var themes = await new Database().GetThemes();
-			foreach (var theme in themes) {
-				if (theme.Name == "Primary") PrimaryColor = PrimaryColors.FirstOrDefault(s=>s.Name ==theme.Color);
-				if (theme.Name == "Accents") AccentColor = AccentColors.FirstOrDefault(s => s.Name == theme.Color);
-				if (theme.Name == "Theme") Theme = theme.Color;
-			}
-		}
-	}
+        public void SetupTheme() {
+            var _primary = Settings.Default.Primary;
+            var _accents = Settings.Default.Accents;
+            var _theme  = Settings.Default.Theme;
+            PrimaryColor = PrimaryColors.FirstOrDefault(s => s.Name == _primary);
+            AccentColor = AccentColors.FirstOrDefault(s => s.Name == _accents);
+            Theme = _theme;
+        }
+    }
 }

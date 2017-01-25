@@ -58,20 +58,20 @@ namespace Mangastream.ViewModel {
 
 
 		private async void Fill() {
-			var x = await new Database().GetMangasFrom("Mangastream");
-			x.ForEach(_mangas.Add);
-		}
+			var x = new Database().GetMangasFrom("Mangastream");
+            //x.ForEach(_mangas.Add);
+        }
 
 		private async void IncreaseChapter() {
 			SelectedManga.Chapter++;
 			SelectedManga.Updated = DateTime.Now;
-			await new Database().Update(SelectedManga);
+			new Database().Update(SelectedManga);
 		}
 
 		private async void DecreaseChapter() {
 			SelectedManga.Chapter--;
 			SelectedManga.Updated = SelectedManga.Updated - TimeSpan.FromDays(1);
-			await new Database().Update(SelectedManga);
+			new Database().Update(SelectedManga);
 		}
 
 		private void OpenMangaSite() {
@@ -80,13 +80,13 @@ namespace Mangastream.ViewModel {
 		}
 
 		private async void DeleteManga() {
-			await new Database().Delete(SelectedManga);
+			new Database().Delete(SelectedManga);
 			SnackbarQueue.Enqueue($"Deleted {SelectedManga.Name}", "UNDO", HandleUndoMethod, SelectedManga);
 			_mangas.Remove(SelectedManga);
 		}
 
 		private void HandleUndoMethod(Manga manga) {
-			Task.Run(async () => { await new Database().InsertManga(manga); });
+			Task.Run(async () => { new Database().InsertManga(manga); });
 			_mangas.Add(manga);
 		}
 

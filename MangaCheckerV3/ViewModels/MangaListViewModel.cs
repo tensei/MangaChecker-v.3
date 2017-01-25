@@ -18,11 +18,12 @@ namespace MangaCheckerV3.ViewModels {
 		/// <summary>
 		///     Initializes a new instance of the MangaListViewModel class.
 		/// </summary>
-		private readonly ObservableCollection<Manga> _mangas = new ObservableCollection<Manga>();
+		private ObservableCollection<Manga> _mangas = new ObservableCollection<Manga>();
 
 		private readonly ObservableCollection<string> _sites = new ObservableCollection<string>();
+        private Database _db = new Database();
 
-	    private readonly Dictionary<string, string> ListboxItemNames = new Dictionary<string, string> {
+	    private readonly Dictionary<string, string> _listboxItemNames = new Dictionary<string, string> {
 			{"All", null},
 			{"Mangareader", null},
 			{"Mangafox", null},
@@ -45,7 +46,7 @@ namespace MangaCheckerV3.ViewModels {
 		public MangaListViewModel() {
 			Instance = this;
 			Mangas = new ReadOnlyObservableCollection<Manga>(_mangas);
-			foreach (var key in ListboxItemNames.Keys) _sites.Add(key);
+			foreach (var key in _listboxItemNames.Keys) _sites.Add(key);
 			Sites = new ReadOnlyObservableCollection<string>(_sites);
 			Mangas = new ReadOnlyObservableCollection<Manga>(_mangas);
 			IncreaseCommand = new ActionCommand(IncreaseChapter);
@@ -55,8 +56,7 @@ namespace MangaCheckerV3.ViewModels {
 			RefreshCommand = new ActionCommand(RefreshManga);
 			ViewerCommand = new ActionCommand(ViewManga);
 			DeselectCommand = new ActionCommand(() => { SelectedManga = null; });
-			Fill();
-		}
+        }
 
 		public ReadOnlyObservableCollection<Manga> Mangas { get; }
 		public ReadOnlyObservableCollection<string> Sites { get; }
@@ -84,21 +84,21 @@ namespace MangaCheckerV3.ViewModels {
 		public int SelectedSiteIndex { get; set; }
 
 
-		private async void Fill() {
-			var x = await new Database().GetAllMangas();
-			x.ForEach(_mangas.Add);
-		}
+		private void Fill() {
+			var x = _db.GetAllMangas();
+            foreach (var manga in x) _mangas.Add(manga);
+        }
 
-		private async void IncreaseChapter() {
+		private void IncreaseChapter() {
 			SelectedManga.Chapter++;
 			SelectedManga.Updated = DateTime.Now;
-			await new Database().Update(SelectedManga);
+            _db.Update(SelectedManga);
 		}
 
-		private async void DecreaseChapter() {
+		private void DecreaseChapter() {
 			SelectedManga.Chapter--;
-			SelectedManga.Updated = SelectedManga.Updated - TimeSpan.FromDays(1);
-			await new Database().Update(SelectedManga);
+			SelectedManga.Updated -= TimeSpan.FromDays(1);
+            _db.Update(SelectedManga);
 		}
 
 		private void OpenMangaSite() {
@@ -106,15 +106,15 @@ namespace MangaCheckerV3.ViewModels {
 			Process.Start(SelectedManga.Link);
 		}
 
-		private async void DeleteManga() {
-			await new Database().Delete(SelectedManga);
+		private void DeleteManga() {
+            _db.Delete(SelectedManga);
 			MainWindowViewModel.Instance.SnackbarQueue.Enqueue($"Deleted {SelectedManga.Name}", "UNDO", HandleUndoMethod,
 				SelectedManga);
 			_mangas.Remove(SelectedManga);
 		}
 
 		private void HandleUndoMethod(Manga manga) {
-			Task.Run(async () => { await new Database().InsertManga(manga); });
+            _db.InsertManga(manga);
 			_mangas.Add(manga);
 		}
 
@@ -126,17 +126,17 @@ namespace MangaCheckerV3.ViewModels {
 			throw new NotImplementedException();
 		}
 
-		private async void FillMangaList(string site) {
+		private void FillMangaList(string site) {
 			if (_mangas.Count > 0) _mangas.Clear();
 			switch (site) {
 				case "All":
-					foreach (var manga in await new Database().GetAllMangas()) _mangas.Add(manga);
+					Fill();
 					break;
 				case "GoScanlation":
-					foreach (var manga in await new Database().GetMangasFrom("GameOfScanlation")) _mangas.Add(manga);
+					foreach (var manga in _db.GetMangasFrom("GameOfScanlation")) _mangas.Add(manga);
 					break;
 				default:
-					foreach (var manga in await new Database().GetMangasFrom(site)) _mangas.Add(manga);
+					foreach (var manga in _db.GetMangasFrom(site)) _mangas.Add(manga);
 					break;
 			}
 		}
