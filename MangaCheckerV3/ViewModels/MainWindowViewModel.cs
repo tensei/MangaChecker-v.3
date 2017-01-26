@@ -1,24 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using MangaChecker.Database;
-using MangaCheckerV3.SQLite;
+using MangaChecker;
+using MangaChecker.Parser;
 using MaterialDesignThemes.Wpf;
 using PropertyChanged;
 
 namespace MangaCheckerV3.ViewModels {
 	[ImplementPropertyChanged]
 	public class MainWindowViewModel {
-		private readonly Dictionary<string, int> _transitionerIndexSelector = new Dictionary<string, int> {
-			{"Home", 0},
-			{"Add Manga", 1},
-			{"Settings", 4},
-			{"History", 2},
-			{"Plugins", 3},
-			{"Theme", 5}
-		};
 
 		private PackIcon _drawerSelectedItem;
 
@@ -29,34 +23,15 @@ namespace MangaCheckerV3.ViewModels {
 			Instance = this;
 			SnackbarQueue = new SnackbarMessageQueue();
 			SnackbarQueue.Enqueue("Test message", true);
-
-            //Task.Run(async () => {
-            //	for (int i = 0; i < 20; i++) {
-            //		await new Database().InsertManga(new Manga {
-            //			Added = DateTime.Now,
-            //			Chapter = 1,
-            //			Name = "trest",
-            //			Updated = DateTime.Now,
-            //			Site = "lul",
-            //			Link = "jj"
-            //		});
-            //	}
-            //});
-            //MangaListViewModel.Instance.Fill();
-        }
+		    //var xml = new Client().GetRssFeedAsync("https://yomanga.co/reader/feeds/rss").ConfigureAwait(false);
+      //      new Client().GetRssFeedAsync("https://gameofscanlation.moe/projects/trinity-wonder/index.rss").ConfigureAwait(false);
+      //      new Client().GetRssFeedAsync("http://www.webtoons.com/en/fantasy/tower-of-god/rss?title_no=95").ConfigureAwait(false);
+	    }
 
 		public static MainWindowViewModel Instance { get; private set; }
 
 		public ICommand DoubleClickCommand { get; }
-
-		public PackIcon DrawerSelectedItem {
-			get { return _drawerSelectedItem; }
-			set {
-				_drawerSelectedItem = value;
-				TransitionerIndex = _transitionerIndexSelector[value.ToolTip.ToString()];
-			}
-		}
-
+        
 		public SnackbarMessageQueue SnackbarQueue { get; }
 
 		public int DrawerIndex { get; set; }

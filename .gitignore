@@ -256,3 +256,4 @@ paket-files/
 .idea/
 *.sln.iml
 MangaDB.sqlite
+mcv3.db

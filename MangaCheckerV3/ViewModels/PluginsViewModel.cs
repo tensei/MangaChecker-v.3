@@ -10,9 +10,7 @@ namespace MangaCheckerV3.ViewModels {
 
 		public PluginsViewModel() {
 			Plugins = new ReadOnlyObservableCollection<object>(_plugins);
-
-			foreach (var instanceSite in PluginHost.Instance.Sites) _plugins.Add(new SiteModel(instanceSite));
-			foreach (var instanceSetting in PluginHost.Instance.Settings) _plugins.Add(new SettingsModel(instanceSetting));
+            foreach (var instanceSetting in PluginHost.Instance.Settings) _plugins.Add(new SettingsModel(instanceSetting));
 		}
 
 		public ReadOnlyObservableCollection<object> Plugins { get; }

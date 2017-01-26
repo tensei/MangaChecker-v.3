@@ -50,7 +50,7 @@
 				<RowDefinition/>
 				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
-			<ListBox Grid.Column="0" SelectedItem="{Binding DrawerSelectedItem}" SelectedIndex="{Binding DrawerIndex}"
+			<ListBox Grid.Column="0" SelectedIndex="{Binding DrawerIndex}"
 			         Background="{DynamicResource HighlightBrush}"
 			         Visibility="{Binding MenuToggleButton, Converter={StaticResource BooleanToVisibilityConverter}}"
 			         Foreground="{Binding TitleForeground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Controls:MetroWindow}}}">
@@ -63,12 +63,13 @@
 				<materialDesign:PackIcon Kind="ViewModule" Height="20" Width="20" ToolTip="Plugins" />
 				<materialDesign:PackIcon Kind="Brush" Height="20" Width="20" ToolTip="Theme" />
 			</ListBox>
-			<materialDesign:Transitioner SelectedIndex="{Binding TransitionerIndex}" Grid.Row="0" Grid.Column="1">
+			<materialDesign:Transitioner SelectedIndex="{Binding DrawerIndex}" Grid.Row="0" Grid.Column="1">
 				<Views:MangaListView />
 				<Views:AddMangaView />
 				<Views:HistoryView />
-				<Views:PluginsView />
+				<Separator /> <!--workaround to use same index-->
 				<Views:SettingsView />
+				<Views:PluginsView />
 				<Views:ThemeView />
 			</materialDesign:Transitioner>
 			<materialDesign:ColorZone Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Padding="4"

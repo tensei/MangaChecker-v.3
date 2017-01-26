@@ -14,11 +14,7 @@ namespace MangaCheckerV3.ViewModels {
 			Instance = this;
 			Sitesettings = new ReadOnlyObservableCollection<object>(_siteSetting);
 
-			foreach (var instanceSite in PluginHost.Instance.Sites) {
-				if (instanceSite.Value.SettingsView() == null) continue;
-				_siteSetting.Add(new SiteModel(instanceSite));
-			}
-			foreach (var instanceSetting in PluginHost.Instance.Settings) _siteSetting.Add(new SettingsModel(instanceSetting));
+            foreach (var instanceSetting in PluginHost.Instance.Settings) _siteSetting.Add(new SettingsModel(instanceSetting));
 		}
 
 		public ReadOnlyObservableCollection<object> Sitesettings { get; }

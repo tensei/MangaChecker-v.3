@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26020.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaCheckerV3", "MangaCheckerV3\MangaCheckerV3.csproj", "{7DCCB58B-72D8-4F5E-9B55-944C438536E6}"
 EndProject
@@ -11,11 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaChecker.Database", "Ma
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{B89C7E07-0BAE-40FA-B249-D62CE58DCC14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mangastream", "Plugins\Mangastream\Mangastream.csproj", "{32A4F25F-AC05-4341-BA5F-5E50E0A737DF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migration", "Plugins\TestSettingsPlugin\Migration.csproj", "{D8B5A305-3B1A-4CC9-8F35-FF61C90F9D70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaChecker.WebClient", "MangaChecker.Cloudflare\MangaChecker.WebClient.csproj", "{11E83B6E-A665-423F-8089-42F7D5A2E98C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaChecker.Parser", "MangaChecker.WebClient\MangaChecker.Parser.csproj", "{11E83B6E-A665-423F-8089-42F7D5A2E98C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaChecker.Providers", "MangaChecker.Providers\MangaChecker.Providers.csproj", "{AFE3B063-4C45-4F63-8F3D-48FAB20B7425}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,6 @@ Global
 		{BC2C4EAE-6D63-4594-A062-80330ED4B591}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC2C4EAE-6D63-4594-A062-80330ED4B591}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC2C4EAE-6D63-4594-A062-80330ED4B591}.Release|Any CPU.Build.0 = Release|Any CPU
-		{32A4F25F-AC05-4341-BA5F-5E50E0A737DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{32A4F25F-AC05-4341-BA5F-5E50E0A737DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{32A4F25F-AC05-4341-BA5F-5E50E0A737DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{32A4F25F-AC05-4341-BA5F-5E50E0A737DF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D8B5A305-3B1A-4CC9-8F35-FF61C90F9D70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D8B5A305-3B1A-4CC9-8F35-FF61C90F9D70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8B5A305-3B1A-4CC9-8F35-FF61C90F9D70}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -47,12 +43,15 @@ Global
 		{11E83B6E-A665-423F-8089-42F7D5A2E98C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11E83B6E-A665-423F-8089-42F7D5A2E98C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11E83B6E-A665-423F-8089-42F7D5A2E98C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFE3B063-4C45-4F63-8F3D-48FAB20B7425}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFE3B063-4C45-4F63-8F3D-48FAB20B7425}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFE3B063-4C45-4F63-8F3D-48FAB20B7425}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFE3B063-4C45-4F63-8F3D-48FAB20B7425}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{32A4F25F-AC05-4341-BA5F-5E50E0A737DF} = {B89C7E07-0BAE-40FA-B249-D62CE58DCC14}
 		{D8B5A305-3B1A-4CC9-8F35-FF61C90F9D70} = {B89C7E07-0BAE-40FA-B249-D62CE58DCC14}
 	EndGlobalSection
 EndGlobal

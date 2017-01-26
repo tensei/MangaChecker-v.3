@@ -40,6 +40,9 @@
     <StartupObject>MangaCheckerV3.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AngleSharp, Version=0.9.9.0, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
+      <HintPath>..\packages\AngleSharp.0.9.9\lib\net45\AngleSharp.dll</HintPath>
+    </Reference>
     <Reference Include="CloudFlareUtilities, Version=0.3.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CloudFlareUtilities.0.3.2-alpha\lib\portable45-net45+win8+wpa81\CloudFlareUtilities.dll</HintPath>
       <Private>True</Private>
@@ -96,11 +99,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Common\AggregateSites.cs" />
     <Compile Include="Common\PluginHost.cs" />
     <Compile Include="Helpers\ThemeHelper.cs" />
     <Compile Include="Models\SettingsModel.cs" />
-    <Compile Include="Models\SiteModel.cs" />
     <Compile Include="ViewModels\ActionCommand.cs" />
     <Compile Include="ViewModels\AddMangaViewModel.cs" />
     <Compile Include="ViewModels\HistoryViewModel.cs" />
@@ -197,9 +198,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\MangaChecker.Cloudflare\MangaChecker.WebClient.csproj">
+    <ProjectReference Include="..\MangaChecker.WebClient\MangaChecker.Parser.csproj">
       <Project>{11e83b6e-a665-423f-8089-42f7d5a2e98c}</Project>
-      <Name>MangaChecker.WebClient</Name>
+      <Name>MangaChecker.Parser</Name>
     </ProjectReference>
     <ProjectReference Include="..\MangaChecker.Database\MangaChecker.Database.csproj">
       <Project>{bc2c4eae-6d63-4594-a062-80330ed4b591}</Project>

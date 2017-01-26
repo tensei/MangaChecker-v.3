@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using MangaChecker.Database;
 using MangaChecker.Database.Tables;
-using MangaCheckerV3.SQLite;
-using MangaCheckerV3.SQLite.Tables;
 using PropertyChanged;
 
 namespace MangaCheckerV3.ViewModels {
@@ -18,10 +15,10 @@ namespace MangaCheckerV3.ViewModels {
 		/// <summary>
 		///     Initializes a new instance of the MangaListViewModel class.
 		/// </summary>
-		private ObservableCollection<Manga> _mangas = new ObservableCollection<Manga>();
+		private readonly ObservableCollection<Manga> _mangas = new ObservableCollection<Manga>();
 
 		private readonly ObservableCollection<string> _sites = new ObservableCollection<string>();
-        private Database _db = new Database();
+        private readonly Database _db = new Database();
 
 	    private readonly Dictionary<string, string> _listboxItemNames = new Dictionary<string, string> {
 			{"All", null},

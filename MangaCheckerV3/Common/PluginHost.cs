@@ -34,10 +34,7 @@ namespace MangaCheckerV3.Common {
 		}
 
 		public static PluginHost Instance { get; } = new PluginHost();
-
-		[ImportMany]
-		public IEnumerable<Lazy<ISite, IPluginMetadata>> Sites { get; set; }
-
+        
 		[ImportMany]
 		public IEnumerable<Lazy<ISettingsPlugin, IPluginMetadata>> Settings { get; set; }
 
@@ -47,11 +44,6 @@ namespace MangaCheckerV3.Common {
 
 		public void Initialize() {
 			container.ComposeParts(this);
-			GetSites().Initialize();
-		}
-
-		private ISite GetSites() {
-			return new AggregateSites(Sites.Select(s => s.Value));
 		}
 	}
 }
