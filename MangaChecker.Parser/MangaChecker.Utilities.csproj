@@ -7,12 +7,13 @@
     <ProjectGuid>{11E83B6E-A665-423F-8089-42F7D5A2E98C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MangaChecker.Parser</RootNamespace>
-    <AssemblyName>MangaChecker.Parser</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <RootNamespace>MangaChecker.Utilities</RootNamespace>
+    <AssemblyName>MangaChecker.Utilities</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -60,7 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client.cs" />
+    <Compile Include="WebParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RssItemObject.cs" />
   </ItemGroup>

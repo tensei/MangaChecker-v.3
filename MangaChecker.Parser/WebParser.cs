@@ -11,8 +11,8 @@ using AngleSharp.Parser.Html;
 using AngleSharp.Parser.Xml;
 using CloudFlareUtilities;
 
-namespace MangaChecker.Parser {
-	public class Client {
+namespace MangaChecker.Utilities {
+	public class WebParser {
 	    private async Task<string> GetHtmlSourceStringAsync(string url) {
 			try {
 				// Create the clearance handler.

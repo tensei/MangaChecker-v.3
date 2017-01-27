@@ -36,7 +36,7 @@ namespace MangaCheckerV3.Common {
 		public static PluginHost Instance { get; } = new PluginHost();
         
 		[ImportMany]
-		public IEnumerable<Lazy<ISettingsPlugin, IPluginMetadata>> Settings { get; set; }
+		public IEnumerable<Lazy<IPlugin, IPluginMetadata>> Settings { get; set; }
 
 		public void Dispose() {
 			container.Dispose();

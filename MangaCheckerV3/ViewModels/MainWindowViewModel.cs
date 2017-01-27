@@ -6,16 +6,15 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using MangaChecker.Database;
 using MangaChecker;
-using MangaChecker.Parser;
+using MangaChecker.Database.Tables;
+using MangaChecker.Utilities;
 using MaterialDesignThemes.Wpf;
 using PropertyChanged;
 
 namespace MangaCheckerV3.ViewModels {
 	[ImplementPropertyChanged]
-	public class MainWindowViewModel {
-
-		private PackIcon _drawerSelectedItem;
-
+	public class MainWindowViewModel{
+        
 		/// <summary>
 		///     Initializes a new instance of the MainWindowViewModel class.
 		/// </summary>
@@ -30,14 +29,12 @@ namespace MangaCheckerV3.ViewModels {
 
 		public static MainWindowViewModel Instance { get; private set; }
 
-		public ICommand DoubleClickCommand { get; }
+		//public ICommand DoubleClickCommand { get; }
         
 		public SnackbarMessageQueue SnackbarQueue { get; }
 
 		public int DrawerIndex { get; set; }
-
-		public int TransitionerIndex { get; set; }
-
+        
 		public bool MenuToggleButton { get; set; } = true;
 	}
 }

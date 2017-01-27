@@ -6,7 +6,7 @@
 			 xmlns:local="clr-namespace:TestSettingsPlugin.Views"
 			 xmlns:viewModel="clr-namespace:TestSettingsPlugin.ViewModels"
 			 mc:Ignorable="d" 
-			 d:DesignHeight="300" d:DesignWidth="300"
+			 Height="300" d:DesignWidth="500"
 			 d:DataContext="{d:DesignInstance {x:Type viewModel:MainViewModel}, IsDesignTimeCreatable=False}">
 	<Grid Margin="10">
 		<Grid.RowDefinitions>

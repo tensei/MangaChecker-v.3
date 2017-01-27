@@ -16,9 +16,9 @@ namespace MangaCheckerV3 {
             //	ExceptionHandler.AddGlobalHandlers();
             //ThemeHelper.ChangeAccentColorTo("red", "red", false);
             if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db"))) {
-                new Database().CheckDbVersion();
+                Database.CheckDbVersion();
             } else {
-                new Database().CreateDatabase();
+                Database.CreateDatabase();
             }
             PluginHost.Instance.Initialize();
 			var mainWindow = new MainWindow {

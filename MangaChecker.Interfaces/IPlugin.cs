@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace MangaChecker.Interfaces {
-	public interface ISettingsPlugin :IDisposable {
+	public interface IPlugin :IDisposable {
 		object SettingsView();
 		void Initialize();
 	}

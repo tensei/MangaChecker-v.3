@@ -2,7 +2,7 @@
 //using SQLite;
 
 namespace MangaChecker.Database.Tables {
-	public class Settings {
+    public class Settings {
 		//[PrimaryKey, AutoIncrement]
 		public int Id { get; set; }
 
@@ -16,7 +16,7 @@ namespace MangaChecker.Database.Tables {
 		public DateTime Created { get; set; }
 
 		//[NotNull]
-		public int Active { get; set; }
+        public int Active { get; set; }
 
 		//[NotNull]
 		public bool OpenLinks { get; set; }

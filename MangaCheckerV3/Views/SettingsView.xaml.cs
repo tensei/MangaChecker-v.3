@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System.Text.RegularExpressions;
+using System.Windows.Controls;
+using System.Windows.Input;
 using MangaCheckerV3.ViewModels;
 
 namespace MangaCheckerV3.Views {
@@ -10,5 +12,10 @@ namespace MangaCheckerV3.Views {
 			InitializeComponent();
 			DataContext = new SettingsViewModel();
 		}
-	}
+
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e) {
+            var regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+    }
 }

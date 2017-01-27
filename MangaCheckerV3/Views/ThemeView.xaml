@@ -5,67 +5,79 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:MangaCheckerV3.Views"
              xmlns:viewModel="clr-namespace:MangaCheckerV3.ViewModels.Settings_ViewModels"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:materialDesignColors="clr-namespace:MaterialDesignColors;assembly=MaterialDesignColors"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance {x:Type viewModel:ThemeViewModel}, IsDesignTimeCreatable=False}">
 	<Grid Margin="10">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
-			<RowDefinition Height="35" />
+			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition />
-			<ColumnDefinition />
-			<ColumnDefinition />
-		</Grid.ColumnDefinitions>
-		<TextBlock HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" VerticalAlignment="Top">
-			<Run Text="Primary" />
-		</TextBlock>
-		<ComboBox Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" IsEditable="False" IsReadOnly="True"
-		          ItemsSource="{Binding PrimaryColors}" SelectedItem="{Binding PrimaryColor}" MinWidth="100" VerticalAlignment="Center" >
-			<ComboBox.ItemTemplate>
-				<DataTemplate>
-					<StackPanel Orientation="Horizontal">
-						<Border Width="16" Height="16" Margin="4,0">
-							<Border.Background>
-								<SolidColorBrush Color="{Binding ExemplarHue.Color}" />
-							</Border.Background>
-						</Border>
-						<TextBlock Text="{Binding Name}"/>
-					</StackPanel>
-				</DataTemplate>
-			</ComboBox.ItemTemplate>
-		</ComboBox>
-		<TextBlock HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" VerticalAlignment="Top">
-			<Run Text="Accent" />
-		</TextBlock>
-		<ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" IsEditable="False" IsReadOnly="True"
-		          ItemsSource="{Binding AccentColors}" SelectedItem="{Binding AccentColor}" MinWidth="100" VerticalAlignment="Center"  >
-			<ComboBox.ItemTemplate>
-				<DataTemplate>
-					<StackPanel Orientation="Horizontal">
-						<Border Width="16" Height="16" Margin="4,0">
-							<Border.Background>
-								<SolidColorBrush Color="{Binding AccentExemplarHue.Color}" />
-							</Border.Background>
-						</Border>
-						<TextBlock Text="{Binding Name}"/>
-					</StackPanel>
-				</DataTemplate>
-			</ComboBox.ItemTemplate>
-		</ComboBox>
-		<TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="0" Grid.Column="2">
-			<Run Text="Theme" />
-		</TextBlock>
-		<ComboBox Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" IsEditable="False"
-		          IsReadOnly="True"
-		          Text="{Binding Theme}" MinWidth="100">
-			<ComboBoxItem>Dark</ComboBoxItem>
-			<ComboBoxItem>Light</ComboBoxItem>
-		</ComboBox>
+		<StackPanel Orientation="Horizontal">
+			<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0">
+				<Run Text="Theme" />
+			</TextBlock>
+			<ComboBox HorizontalAlignment="Center" VerticalAlignment="Center" IsEditable="False"
+					  IsReadOnly="True"
+					  Text="{Binding Theme}" MinWidth="100">
+				<ComboBoxItem>Dark</ComboBoxItem>
+				<ComboBoxItem>Light</ComboBoxItem>
+			</ComboBox>
+		</StackPanel>
 		<!--<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0">Settings</TextBlock>
 			<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4" Grid.Column="0">Settings</TextBlock>
 			<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="5" Grid.Column="0">Settings</TextBlock>-->
+		<ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+			<ItemsControl ItemsSource="{Binding PrimaryColors}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<WrapPanel/>
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+				<ItemsControl.ItemTemplate>
+					<DataTemplate DataType="materialDesignColors:Swatch">
+						<materialDesign:Card Margin="6,5,0,0">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition Width="Auto" />
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="30" />
+									<RowDefinition Height="Auto" />
+								</Grid.RowDefinitions>
+								<TextBlock Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center"
+										   Text="{Binding Name}" />
 
+								<Border Grid.Row="1" Grid.Column="0" Width="100" Height="30">
+									<Border.Background>
+										<SolidColorBrush Color="{Binding ExemplarHue.Color}" />
+									</Border.Background>
+
+									<Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ThemeView}}, Path=DataContext.ApplyPrimaryCommand, Mode=OneTime}"
+											CommandParameter="{Binding}" Content="Primary" Background="{Binding ExemplarHue.Color}"
+											Foreground="{Binding ExemplarHue.Foreground}"  BorderThickness="0"/>
+								</Border>
+
+								<Border Grid.Row="1" Grid.Column="1" Width="100" Height="30"
+										Visibility="{Binding IsAccented, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneTime}">
+									<Border.Background>
+										<SolidColorBrush Color="{Binding AccentExemplarHue.Color}" />
+									</Border.Background>
+
+									<Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ThemeView}}, 
+										Path=DataContext.ApplyAccentCommand, Mode=OneTime}"
+										CommandParameter="{Binding}" Content="Accent" Background="{Binding AccentExemplarHue.Color}"
+											Foreground="{Binding AccentExemplarHue.Foreground}" BorderThickness="0" />
+								</Border>
+
+							</Grid>
+						</materialDesign:Card>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</ScrollViewer>
 	</Grid>
 </UserControl>

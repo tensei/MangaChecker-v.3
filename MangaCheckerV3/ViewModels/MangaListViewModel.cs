@@ -18,7 +18,6 @@ namespace MangaCheckerV3.ViewModels {
 		private readonly ObservableCollection<Manga> _mangas = new ObservableCollection<Manga>();
 
 		private readonly ObservableCollection<string> _sites = new ObservableCollection<string>();
-        private readonly Database _db = new Database();
 
 	    private readonly Dictionary<string, string> _listboxItemNames = new Dictionary<string, string> {
 			{"All", null},
@@ -82,20 +81,20 @@ namespace MangaCheckerV3.ViewModels {
 
 
 		private void Fill() {
-			var x = _db.GetAllMangas();
+			var x = Database.GetAllMangas();
             foreach (var manga in x) _mangas.Add(manga);
         }
 
 		private void IncreaseChapter() {
 			SelectedManga.Chapter++;
 			SelectedManga.Updated = DateTime.Now;
-            _db.Update(SelectedManga);
+            Database.Update(SelectedManga);
 		}
 
 		private void DecreaseChapter() {
 			SelectedManga.Chapter--;
 			SelectedManga.Updated -= TimeSpan.FromDays(1);
-            _db.Update(SelectedManga);
+            Database.Update(SelectedManga);
 		}
 
 		private void OpenMangaSite() {
@@ -104,14 +103,14 @@ namespace MangaCheckerV3.ViewModels {
 		}
 
 		private void DeleteManga() {
-            _db.Delete(SelectedManga);
+            Database.Delete(SelectedManga);
 			MainWindowViewModel.Instance.SnackbarQueue.Enqueue($"Deleted {SelectedManga.Name}", "UNDO", HandleUndoMethod,
 				SelectedManga);
 			_mangas.Remove(SelectedManga);
 		}
 
 		private void HandleUndoMethod(Manga manga) {
-            _db.InsertManga(manga);
+            Database.InsertManga(manga);
 			_mangas.Add(manga);
 		}
 
@@ -130,10 +129,10 @@ namespace MangaCheckerV3.ViewModels {
 					Fill();
 					break;
 				case "GoScanlation":
-					foreach (var manga in _db.GetMangasFrom("GameOfScanlation")) _mangas.Add(manga);
+					foreach (var manga in Database.GetMangasFrom("GameOfScanlation")) _mangas.Add(manga);
 					break;
 				default:
-					foreach (var manga in _db.GetMangasFrom(site)) _mangas.Add(manga);
+					foreach (var manga in Database.GetMangasFrom(site)) _mangas.Add(manga);
 					break;
 			}
 		}

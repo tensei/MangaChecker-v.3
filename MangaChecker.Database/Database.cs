@@ -8,11 +8,14 @@ using MangaChecker.Database.Tables;
 
 namespace MangaChecker.Database {
 	public class Database {
-		private readonly string _databasePath = Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db");
+		private static readonly string _databasePath = Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db");
 
-		private readonly string _databaseVersion = "1.0.0.8";
+		private static readonly string _databaseVersion = "1.0.0.1";
+        public static List<IDatabaseObserver> Observers = new List<IDatabaseObserver>();
 
-		private static readonly Dictionary<string, string> DefaultDatabaseSettings = new Dictionary<string, string> {
+        //public static event EventHandler SomethingHappened; //switch to this maybe?
+
+        private static readonly Dictionary<string, string> DefaultDatabaseSettings = new Dictionary<string, string> {
 			{"Mangafox", "http://mangafox.me/"},
 			{"Mangahere", "http://mangahere.co/"},
 			{"Mangareader", "http://www.mangareader.net/"},
@@ -21,72 +24,91 @@ namespace MangaChecker.Database {
 			{"Webtoons", "http://www.webtoons.com/"},
 			{"YoManga", "http://yomanga.co/"},
 			{"Kissmanga", "http://kissmanga.com/"},
-			{"Backlog", "/"},
-			{"GoScanlation", "https://gameofscanlation.moe/"},
+			{"GameofScanlation", "https://gameofscanlation.moe/"},
 			{"KireiCake", "http://kireicake.com/" },
 			{"Jaiminisbox", "https://jaiminisbox.com/" },
 			{"HeyManga", "https://www.heymanga.me/" }
 		};
 
-		private readonly Dictionary<string, string> _defaultVersions = new Dictionary<string, string> {
+		private static readonly Dictionary<string, string> _defaultVersions = new Dictionary<string, string> {
 			{"db", "1.0.0.0"}
 		};
-        public IOrderedEnumerable<Manga> GetAllMangas() {
+        public static IOrderedEnumerable<Manga> GetAllMangas() {
             IEnumerable<Manga> query;
             using (var conn = new LiteDatabase(_databasePath)) {
                 query = conn.GetCollection<Manga>("Manga").FindAll();
-                //var qquery = conn.GetCollection("Manga").FindAll();
             }
-            return query.OrderByDescending(m => m.Updated);
+            var ordered = query.OrderByDescending(m => m.Updated);
+            Observers?.ForEach(o=> o.GetMangaEvent(ordered.ToList(), DatabaseEvent.GET));
+            return ordered;
         }
-        public IOrderedEnumerable<Manga> GetMangasFrom(string site) {
+        public static IOrderedEnumerable<Manga> GetMangasFrom(string site) {
             IEnumerable<Manga> query;
             using (var conn = new LiteDatabase(_databasePath)) {
                 query = conn.GetCollection<Manga>("Manga").Find(s => s.Site == site);
             }
-            return query.OrderByDescending(m => m.Updated);
+            var ordered = query.OrderByDescending(m => m.Updated);
+            Observers?.ForEach(o => o.GetMangaEvent(ordered.ToList(), DatabaseEvent.GET));
+            return ordered;
         }
-        public void InsertManga(Manga manga) {
+        public static void InsertManga(Manga manga) {
             using (var conn = new LiteDatabase(_databasePath)) {
                 var query = conn.GetCollection<Manga>("Manga");
                 query.Insert(manga);
             }
+            Observers?.ForEach(o => o.MangaEvent(manga, DatabaseEvent.INSERT));
         }
-        public void Update(Manga manga) {
+        public static void Update(Manga manga) {
             using (var conn = new LiteDatabase(_databasePath)) {
                 var query = conn.GetCollection<Manga>("Manga");
                 query.Update(manga);
             }
+            Observers?.ForEach(o => o.MangaEvent(manga, DatabaseEvent.UPDATE));
         }
-        public void Delete(Manga manga) {
+        public static void Delete(Manga manga) {
             using (var conn = new LiteDatabase(_databasePath)) {
                 var query = conn.GetCollection<Manga>("Manga");
                 query.Delete(Query.EQ("_id", manga.MangaId));
             }
+            Observers?.ForEach(o => o.MangaEvent(manga, DatabaseEvent.DELETE));
         }
-        public IEnumerable<Settings> GetAllSettings() {
-            IEnumerable<Settings> query;
+        public static List<Settings> GetAllSettings() {
+            List<Settings> query;
             using (var conn = new LiteDatabase(_databasePath)) {
-                query = conn.GetCollection<Settings>("Settings").FindAll();
+                query = conn.GetCollection<Settings>("Settings").FindAll().ToList();
             }
+            Observers?.ForEach(o => o.GetSettingEvent(query.ToList(), DatabaseEvent.GET));
             return query;
         }
-        public Settings GetSettingsFor(string setting) {
+        public static Settings GetSettingsFor(string setting) {
             Settings query;
             using (var conn = new LiteDatabase(_databasePath)) {
-                query = conn.GetCollection<Settings>("Settings").FindOne(s=> s.Setting == setting);
+                query = conn.GetCollection<Settings>("Settings").FindOne(s=> 
+                string.Equals(s.Setting, setting, StringComparison.CurrentCultureIgnoreCase));
             }
+            Observers?.ForEach(o => o.SettingEvent(query, DatabaseEvent.GET));
             return query;
         }
-        public int GetRefreshTime() {
+        public static void SaveSettings(List<Settings> settings) {
+            using (var conn = new LiteDatabase(_databasePath)) {
+                var query = conn.GetCollection<Settings>("Settings");
+                using (var trans1 = conn.BeginTrans()) {
+                    settings.ForEach(s=> query.Update(s));
+                    trans1.Commit();
+                }
+            }
+            Observers?.ForEach(o => o.SaveSettingEvent(settings, DatabaseEvent.UPDATE));
+        }
+        public static int GetRefreshTime() {
             Settings query;
             using (var conn = new LiteDatabase(_databasePath)) {
                 query = conn.GetCollection<Settings>("Settings").FindOne(s => s.Setting == "RefreshTime");
             }
+            Observers?.ForEach(o => o.SettingEvent(query, DatabaseEvent.GET));
             return query.Active;
         }
 
-		private void UpdateDatabase(Versions dbv) {
+		private static void UpdateDatabase(Versions dbv) {
             using (var conn = new LiteDatabase(_databasePath)) {
                 var set = conn.GetCollection<Settings>("Settings");
                 conn.GetCollection<Manga>("Manga");
@@ -106,6 +128,30 @@ namespace MangaChecker.Database {
                         });
                     }
                 }
+                if (!setting.Contains("Refresh Time")) {
+                    set.Insert(new Settings {
+                        Setting = "Refresh Time",
+                        Link = "/",
+                        Active = 300,
+                        Created = DateTime.Now
+                    });
+                }
+                if (!setting.Contains("Open Links")) {
+                    set.Insert(new Settings {
+                        Setting = "Open Links",
+                        Link = "/",
+                        Active = 0,
+                        Created = DateTime.Now
+                    });
+                }
+                if (!setting.Contains("Batoto Rss")) {
+                    set.Insert(new Settings {
+                        Setting = "Batoto Rss",
+                        Link = "/",
+                        Active = 0,
+                        Created = DateTime.Now
+                    });
+                }
                 foreach (var defaultver in _defaultVersions) {
                     if (!versions.Contains(defaultver.Key)) {
                         ver.Insert(new Versions {
@@ -116,9 +162,10 @@ namespace MangaChecker.Database {
                 }
                 ver.Update(dbv);
             }
+            Observers?.ForEach(o => o.DatabaseEvent(DatabaseEvent.DBUPDATE));
         }
 
-		public void CreateDatabase() {
+		public static void CreateDatabase() {
 		    using (var conn = new LiteDatabase(_databasePath)) {
 		        var set = conn.GetCollection<Settings>("Settings");
 		        conn.GetCollection<Manga>("Manga");
@@ -137,18 +184,35 @@ namespace MangaChecker.Database {
 		                Created = DateTime.Now
 		            });
 		        }
-		        if (set.FindOne(Query.EQ("Setting", "RefreshTime")) == null) {
+		        if (set.FindOne(Query.EQ("Setting", "Refresh Time")) == null) {
 		            set.Insert(new Settings {
-		                Setting = "RefreshTime",
+		                Setting = "Refresh Time",
 		                Link = "/",
 		                Active = 300,
 		                Created = DateTime.Now
 		            });
 		        }
-		    }
-		}
+		        if (set.FindOne(Query.EQ("Setting", "Open Links")) == null) {
+		            set.Insert(new Settings {
+		                Setting = "Open Links",
+		                Link = "/",
+		                Active = 300,
+		                Created = DateTime.Now
+		            });
+		        }
+		        if (set.FindOne(Query.EQ("Setting", "Batoto Rss")) == null) {
+		            set.Insert(new Settings {
+		                Setting = "Batoto Rss",
+		                Link = "/",
+		                Active = 0,
+		                Created = DateTime.Now
+		            });
+		        }
+            }
+            Observers?.ForEach(o => o.DatabaseEvent(DatabaseEvent.DBCREATE));
+        }
 
-		public string CheckDbVersion() {
+		public static string CheckDbVersion() {
 		    using (var conn = new LiteDatabase(_databasePath)) {
 		        var dbv = conn.GetCollection<Versions>("Versions").FindOne(Query.EQ("Name", "db"));
 		        if (dbv.Version == _databaseVersion) return null;
@@ -159,3 +223,32 @@ namespace MangaChecker.Database {
 		}
 	}
 }
+
+//http://stackoverflow.com/questions/1249517/super-simple-example-of-c-sharp-observer-observable-with-delegates
+
+//class Observable {
+//    public event EventHandler SomethingHappened;
+
+//    public void DoSomething() {
+//        EventHandler handler = SomethingHappened;
+//        if (handler != null) {
+//            handler(this, EventArgs.Empty);
+//        }
+//    }
+//}
+
+//class Observer {
+//    public void HandleEvent(object sender, EventArgs args) {
+//        Console.WriteLine("Something happened to " + sender);
+//    }
+//}
+
+//class Test {
+//    static void Main() {
+//        Observable observable = new Observable();
+//        Observer observer = new Observer();
+//        observable.SomethingHappened += observer.HandleEvent;
+
+//        observable.DoSomething();
+//    }
+//}

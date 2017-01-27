@@ -18,7 +18,7 @@ namespace TestSettingsPlugin.ViewModels {
 		/// Initializes a new instance of the MainViewModel class.
 		/// </summary>
 		public MainViewModel() {
-			Start = new ActionCommand(StartMigration);
+			Start = new ActionCommand(StartMigrationAsync);
 		}
 
 		public ICommand Start { get; }
@@ -33,7 +33,7 @@ namespace TestSettingsPlugin.ViewModels {
 			}
 		}
 
-		private async void StartMigration() {
+		private async void StartMigrationAsync() {
 			
 			var conn = new SQLiteAsyncConnection("MangaDB.sqlite");
 
@@ -236,7 +236,7 @@ namespace TestSettingsPlugin.ViewModels {
 					Site = "Webtoons"
 				});
 			}
-            
+
 		}
 
 		private void WriteOutput(string text) {
