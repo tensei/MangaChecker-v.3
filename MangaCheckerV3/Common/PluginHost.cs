@@ -5,7 +5,8 @@ using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using MangaChecker.Interfaces;
+using MangaChecker.DataTypes;
+using MangaChecker.DataTypes.Interfaces;
 
 namespace MangaCheckerV3.Common {
 	public class PluginHost : IDisposable {

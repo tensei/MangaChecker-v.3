@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MangaChecker.Interfaces {
+namespace MangaChecker.DataTypes.Interfaces {
 	public interface IPlugin :IDisposable {
 		object SettingsView();
 		void Initialize();

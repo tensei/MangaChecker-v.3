@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using MangaChecker.Database.Tables;
 
-namespace MangaChecker.Interfaces {
+namespace MangaChecker.DataTypes.Interfaces {
 	public interface ISite {
         Task CheckAll();
 	    Task<Manga> CheckOne(Manga manga);

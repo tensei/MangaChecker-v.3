@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.Composition;
-using MangaChecker.Interfaces;
+using MangaChecker.DataTypes;
+using MangaChecker.DataTypes.Interfaces;
 using TestSettingsPlugin.ViewModels;
 using TestSettingsPlugin.Views;
 

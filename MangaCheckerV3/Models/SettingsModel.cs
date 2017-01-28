@@ -1,5 +1,6 @@
 ﻿using System;
-using MangaChecker.Interfaces;
+using MangaChecker.DataTypes;
+using MangaChecker.DataTypes.Interfaces;
 using PropertyChanged;
 
 namespace MangaCheckerV3.Models {

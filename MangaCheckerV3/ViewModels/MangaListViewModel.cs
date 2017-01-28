@@ -29,7 +29,7 @@ namespace MangaCheckerV3.ViewModels {
 			{"Kissmanga", null},
 			{"Webtoons", null},
 			{"YoManga", null},
-			{"GoScanlation", "GameOfScanlation"},
+			{"GameOfScanlation", null},
 			{"KireiCake", null},
 			{"Jaiminisbox", null},
 			{"HeyManga", null},
@@ -128,9 +128,9 @@ namespace MangaCheckerV3.ViewModels {
 				case "All":
 					Fill();
 					break;
-				case "GoScanlation":
-					foreach (var manga in Database.GetMangasFrom("GameOfScanlation")) _mangas.Add(manga);
-					break;
+				//case "GoScanlation":
+				//	foreach (var manga in Database.GetMangasFrom("GameOfScanlation")) _mangas.Add(manga);
+				//	break;
 				default:
 					foreach (var manga in Database.GetMangasFrom(site)) _mangas.Add(manga);
 					break;

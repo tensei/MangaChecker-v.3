@@ -38,6 +38,19 @@
 				</ItemsControl.ItemsPanel>
 				<ItemsControl.ItemTemplate>
 					<DataTemplate DataType="materialDesignColors:Swatch">
+
+						<DataTemplate.Resources>
+							<Style BasedOn="{StaticResource MaterialDesignFlatButton}" TargetType="{x:Type Button}">
+								<Setter Property="Foreground">
+									<Setter.Value>
+										<SolidColorBrush Color="{Binding ExemplarHue.Foreground}" />
+									</Setter.Value>
+								</Setter>
+								<Setter Property="HorizontalAlignment" Value="Stretch" />
+								<Setter Property="Margin" Value="0" />
+								<Setter Property="VerticalAlignment" Value="Stretch" />
+							</Style>
+						</DataTemplate.Resources>
 						<materialDesign:Card Margin="6,5,0,0">
 							<Grid>
 								<Grid.ColumnDefinitions>
@@ -57,8 +70,7 @@
 									</Border.Background>
 
 									<Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ThemeView}}, Path=DataContext.ApplyPrimaryCommand, Mode=OneTime}"
-											CommandParameter="{Binding}" Content="Primary" Background="{Binding ExemplarHue.Color}"
-											Foreground="{Binding ExemplarHue.Foreground}"  BorderThickness="0"/>
+											CommandParameter="{Binding}" Content="Primary" />
 								</Border>
 
 								<Border Grid.Row="1" Grid.Column="1" Width="100" Height="30"
@@ -69,8 +81,7 @@
 
 									<Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ThemeView}}, 
 										Path=DataContext.ApplyAccentCommand, Mode=OneTime}"
-										CommandParameter="{Binding}" Content="Accent" Background="{Binding AccentExemplarHue.Color}"
-											Foreground="{Binding AccentExemplarHue.Foreground}" BorderThickness="0" />
+										CommandParameter="{Binding}" Content="Accent" />
 								</Border>
 
 							</Grid>

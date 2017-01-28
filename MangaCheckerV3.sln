@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaCheckerV3", "MangaCheckerV3\MangaCheckerV3.csproj", "{7DCCB58B-72D8-4F5E-9B55-944C438536E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaChecker.Interfaces", "MangaChecker.Interfaces\MangaChecker.Interfaces.csproj", "{F5132764-7A38-42F8-B54F-F7D4DCCBB4BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaChecker.DataTypes", "MangaChecker.DataTypes\MangaChecker.DataTypes.csproj", "{F5132764-7A38-42F8-B54F-F7D4DCCBB4BA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaChecker.Database", "MangaChecker.Database\MangaChecker.Database.csproj", "{BC2C4EAE-6D63-4594-A062-80330ED4B591}"
 EndProject
@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{B89C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migration", "Plugins\TestSettingsPlugin\Migration.csproj", "{D8B5A305-3B1A-4CC9-8F35-FF61C90F9D70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaChecker.Utilities", "MangaChecker.Parser\MangaChecker.Utilities.csproj", "{11E83B6E-A665-423F-8089-42F7D5A2E98C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaChecker.Utilities", "MangaChecker.Utilities\MangaChecker.Utilities.csproj", "{11E83B6E-A665-423F-8089-42F7D5A2E98C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaChecker.Providers", "MangaChecker.Providers\MangaChecker.Providers.csproj", "{AFE3B063-4C45-4F63-8F3D-48FAB20B7425}"
 EndProject

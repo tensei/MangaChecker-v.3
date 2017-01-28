@@ -7,44 +7,44 @@ using LiteDB;
 using MangaChecker.Database.Tables;
 
 namespace MangaChecker.Database {
-	public class Database {
-		private static readonly string _databasePath = Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db");
+    public static class Database {
+        private static readonly string DatabasePath = Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db");
 
-		private static readonly string _databaseVersion = "1.0.0.1";
+        private const string DatabaseVersion = "1.0.0.1";
         public static List<IDatabaseObserver> Observers = new List<IDatabaseObserver>();
 
         //public static event EventHandler SomethingHappened; //switch to this maybe?
 
         private static readonly Dictionary<string, string> DefaultDatabaseSettings = new Dictionary<string, string> {
-			{"Mangafox", "http://mangafox.me/"},
-			{"Mangahere", "http://mangahere.co/"},
-			{"Mangareader", "http://www.mangareader.net/"},
-			{"Mangastream", "http://mangastream.com/"},
-			{"Batoto", "http://bato.to/"},
-			{"Webtoons", "http://www.webtoons.com/"},
-			{"YoManga", "http://yomanga.co/"},
-			{"Kissmanga", "http://kissmanga.com/"},
-			{"GameofScanlation", "https://gameofscanlation.moe/"},
-			{"KireiCake", "http://kireicake.com/" },
-			{"Jaiminisbox", "https://jaiminisbox.com/" },
-			{"HeyManga", "https://www.heymanga.me/" }
-		};
+            {"Mangafox", "http://mangafox.me/"},
+            {"Mangahere", "http://mangahere.co/"},
+            {"Mangareader", "http://www.mangareader.net/"},
+            {"Mangastream", "http://mangastream.com/"},
+            {"Batoto", "http://bato.to/"},
+            {"Webtoons", "http://www.webtoons.com/"},
+            {"YoManga", "http://yomanga.co/"},
+            {"Kissmanga", "http://kissmanga.com/"},
+            {"GameOfScanlation", "https://gameofscanlation.moe/"},
+            {"KireiCake", "http://kireicake.com/" },
+            {"Jaiminisbox", "https://jaiminisbox.com/" },
+            {"HeyManga", "https://www.heymanga.me/" }
+        };
 
-		private static readonly Dictionary<string, string> _defaultVersions = new Dictionary<string, string> {
-			{"db", "1.0.0.0"}
-		};
+        private static readonly Dictionary<string, string> DefaultVersions = new Dictionary<string, string> {
+            {"db", "1.0.0.0"}
+        };
         public static IOrderedEnumerable<Manga> GetAllMangas() {
             IEnumerable<Manga> query;
-            using (var conn = new LiteDatabase(_databasePath)) {
+            using (var conn = new LiteDatabase(DatabasePath)) {
                 query = conn.GetCollection<Manga>("Manga").FindAll();
             }
             var ordered = query.OrderByDescending(m => m.Updated);
-            Observers?.ForEach(o=> o.GetMangaEvent(ordered.ToList(), DatabaseEvent.GET));
+            Observers?.ForEach(o => o.GetMangaEvent(ordered.ToList(), DatabaseEvent.GET));
             return ordered;
         }
         public static IOrderedEnumerable<Manga> GetMangasFrom(string site) {
             IEnumerable<Manga> query;
-            using (var conn = new LiteDatabase(_databasePath)) {
+            using (var conn = new LiteDatabase(DatabasePath)) {
                 query = conn.GetCollection<Manga>("Manga").Find(s => s.Site == site);
             }
             var ordered = query.OrderByDescending(m => m.Updated);
@@ -52,29 +52,29 @@ namespace MangaChecker.Database {
             return ordered;
         }
         public static void InsertManga(Manga manga) {
-            using (var conn = new LiteDatabase(_databasePath)) {
+            using (var conn = new LiteDatabase(DatabasePath)) {
                 var query = conn.GetCollection<Manga>("Manga");
                 query.Insert(manga);
             }
             Observers?.ForEach(o => o.MangaEvent(manga, DatabaseEvent.INSERT));
         }
         public static void Update(Manga manga) {
-            using (var conn = new LiteDatabase(_databasePath)) {
+            using (var conn = new LiteDatabase(DatabasePath)) {
                 var query = conn.GetCollection<Manga>("Manga");
                 query.Update(manga);
             }
             Observers?.ForEach(o => o.MangaEvent(manga, DatabaseEvent.UPDATE));
         }
         public static void Delete(Manga manga) {
-            using (var conn = new LiteDatabase(_databasePath)) {
+            using (var conn = new LiteDatabase(DatabasePath)) {
                 var query = conn.GetCollection<Manga>("Manga");
-                query.Delete(Query.EQ("_id", manga.MangaId));
+                query.Delete(manga.MangaId);
             }
             Observers?.ForEach(o => o.MangaEvent(manga, DatabaseEvent.DELETE));
         }
         public static List<Settings> GetAllSettings() {
             List<Settings> query;
-            using (var conn = new LiteDatabase(_databasePath)) {
+            using (var conn = new LiteDatabase(DatabasePath)) {
                 query = conn.GetCollection<Settings>("Settings").FindAll().ToList();
             }
             Observers?.ForEach(o => o.GetSettingEvent(query.ToList(), DatabaseEvent.GET));
@@ -82,18 +82,17 @@ namespace MangaChecker.Database {
         }
         public static Settings GetSettingsFor(string setting) {
             Settings query;
-            using (var conn = new LiteDatabase(_databasePath)) {
-                query = conn.GetCollection<Settings>("Settings").FindOne(s=> 
-                string.Equals(s.Setting, setting, StringComparison.CurrentCultureIgnoreCase));
+            using (var conn = new LiteDatabase(DatabasePath)) {
+                query = conn.GetCollection<Settings>("Settings").FindOne(s => s.Setting == setting);
             }
             Observers?.ForEach(o => o.SettingEvent(query, DatabaseEvent.GET));
             return query;
         }
         public static void SaveSettings(List<Settings> settings) {
-            using (var conn = new LiteDatabase(_databasePath)) {
+            using (var conn = new LiteDatabase(DatabasePath)) {
                 var query = conn.GetCollection<Settings>("Settings");
                 using (var trans1 = conn.BeginTrans()) {
-                    settings.ForEach(s=> query.Update(s));
+                    settings.ForEach(s => query.Update(s));
                     trans1.Commit();
                 }
             }
@@ -101,21 +100,21 @@ namespace MangaChecker.Database {
         }
         public static int GetRefreshTime() {
             Settings query;
-            using (var conn = new LiteDatabase(_databasePath)) {
+            using (var conn = new LiteDatabase(DatabasePath)) {
                 query = conn.GetCollection<Settings>("Settings").FindOne(s => s.Setting == "RefreshTime");
             }
             Observers?.ForEach(o => o.SettingEvent(query, DatabaseEvent.GET));
             return query.Active;
         }
 
-		private static void UpdateDatabase(Versions dbv) {
-            using (var conn = new LiteDatabase(_databasePath)) {
+        private static void UpdateDatabase(Versions dbv) {
+            using (var conn = new LiteDatabase(DatabasePath)) {
                 var set = conn.GetCollection<Settings>("Settings");
                 conn.GetCollection<Manga>("Manga");
                 var ver = conn.GetCollection<Versions>("Versions");
 
-                var setting = set.Find(Query.All(Query.Descending)).Select(s => s.Setting);
-                var versions = ver.Find(Query.All(Query.Descending)).Select(v => v.Name);
+                var setting = set.FindAll().Select(s => s.Setting).ToArray();
+                var versions = ver.FindAll().Select(v => v.Name).ToArray();
 
                 foreach (var defaultSetting in DefaultDatabaseSettings) {
                     if (!setting.Contains(defaultSetting.Key)) {
@@ -152,7 +151,7 @@ namespace MangaChecker.Database {
                         Created = DateTime.Now
                     });
                 }
-                foreach (var defaultver in _defaultVersions) {
+                foreach (var defaultver in DefaultVersions) {
                     if (!versions.Contains(defaultver.Key)) {
                         ver.Insert(new Versions {
                             Name = defaultver.Key,
@@ -165,63 +164,63 @@ namespace MangaChecker.Database {
             Observers?.ForEach(o => o.DatabaseEvent(DatabaseEvent.DBUPDATE));
         }
 
-		public static void CreateDatabase() {
-		    using (var conn = new LiteDatabase(_databasePath)) {
-		        var set = conn.GetCollection<Settings>("Settings");
-		        conn.GetCollection<Manga>("Manga");
-		        var ver = conn.GetCollection<Versions>("Versions");
+        public static void CreateDatabase() {
+            using (var conn = new LiteDatabase(DatabasePath)) {
+                var set = conn.GetCollection<Settings>("Settings");
+                conn.GetCollection<Manga>("Manga");
+                var ver = conn.GetCollection<Versions>("Versions");
 
-		        ver.Insert(new Versions {
-		            Name = "db",
-		            Version = _databaseVersion
-		        });
+                ver.Insert(new Versions {
+                    Name = "db",
+                    Version = DatabaseVersion
+                });
 
-		        foreach (var sites in DefaultDatabaseSettings) {
-		            set.Insert(new Settings {
-		                Setting = sites.Key,
-		                Link = sites.Value,
-		                Active = 0,
-		                Created = DateTime.Now
-		            });
-		        }
-		        if (set.FindOne(Query.EQ("Setting", "Refresh Time")) == null) {
-		            set.Insert(new Settings {
-		                Setting = "Refresh Time",
-		                Link = "/",
-		                Active = 300,
-		                Created = DateTime.Now
-		            });
-		        }
-		        if (set.FindOne(Query.EQ("Setting", "Open Links")) == null) {
-		            set.Insert(new Settings {
-		                Setting = "Open Links",
-		                Link = "/",
-		                Active = 300,
-		                Created = DateTime.Now
-		            });
-		        }
-		        if (set.FindOne(Query.EQ("Setting", "Batoto Rss")) == null) {
-		            set.Insert(new Settings {
-		                Setting = "Batoto Rss",
-		                Link = "/",
-		                Active = 0,
-		                Created = DateTime.Now
-		            });
-		        }
+                foreach (var sites in DefaultDatabaseSettings) {
+                    set.Insert(new Settings {
+                        Setting = sites.Key,
+                        Link = sites.Value,
+                        Active = 0,
+                        Created = DateTime.Now
+                    });
+                }
+                if (set.FindOne(s => s.Setting == "Refresh Time") == null) {
+                    set.Insert(new Settings {
+                        Setting = "Refresh Time",
+                        Link = "/",
+                        Active = 300,
+                        Created = DateTime.Now
+                    });
+                }
+                if (set.FindOne(s => s.Setting == "Open Links") == null) {
+                    set.Insert(new Settings {
+                        Setting = "Open Links",
+                        Link = "/",
+                        Active = 300,
+                        Created = DateTime.Now
+                    });
+                }
+                if (set.FindOne(s => s.Setting == "Batoto Rss") == null) {
+                    set.Insert(new Settings {
+                        Setting = "Batoto Rss",
+                        Link = "/",
+                        Active = 0,
+                        Created = DateTime.Now
+                    });
+                }
             }
             Observers?.ForEach(o => o.DatabaseEvent(DatabaseEvent.DBCREATE));
         }
 
-		public static string CheckDbVersion() {
-		    using (var conn = new LiteDatabase(_databasePath)) {
-		        var dbv = conn.GetCollection<Versions>("Versions").FindOne(Query.EQ("Name", "db"));
-		        if (dbv.Version == _databaseVersion) return null;
-		        dbv.Version = _databaseVersion;
-		        UpdateDatabase(dbv);
-		        return $"Updated Database to {_databaseVersion}";
-		    }
-		}
-	}
+        public static string CheckDbVersion() {
+            using (var conn = new LiteDatabase(DatabasePath)) {
+                var dbv = conn.GetCollection<Versions>("Versions").FindOne(v => v.Name == "db");
+                if (dbv.Version == DatabaseVersion) return null;
+                dbv.Version = DatabaseVersion;
+                UpdateDatabase(dbv);
+                return $"Updated Database to {DatabaseVersion}";
+            }
+        }
+    }
 }
 
 //http://stackoverflow.com/questions/1249517/super-simple-example-of-c-sharp-observer-observable-with-delegates
