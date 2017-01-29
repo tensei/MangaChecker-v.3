@@ -1,4 +1,5 @@
 ﻿using System.Windows.Input;
+using MangaChecker.Utilities;
 using MangaCheckerV3.Common;
 using MaterialDesignThemes.Wpf;
 using PropertyChanged;
@@ -6,7 +7,7 @@ using PropertyChanged;
 namespace MangaCheckerV3.ViewModels {
     [ImplementPropertyChanged]
     public class MainWindowViewModel {
-        private readonly ProviderService _providerService;
+        public ProviderService ProviderService { get; }
         public static MainWindowViewModel Instance { get; private set; }
 
         /// <summary>
@@ -18,13 +19,18 @@ namespace MangaCheckerV3.ViewModels {
             SnackbarQueue.Enqueue("Starting...", true);
 
             StartStopCommand = new ActionCommand(StartStop);
-            RefreshCommand = new ActionCommand(() => _providerService.Timer = 5);
+            RefreshCommand = new ActionCommand(() => ProviderService.Timer = 5);
 
-            _providerService = new ProviderService();
-            _providerService.Run();
-            //var xml = new Client().GetRssFeedAsync("https://yomanga.co/reader/feeds/rss").ConfigureAwait(false);
-            //      new Client().GetRssFeedAsync("https://gameofscanlation.moe/projects/trinity-wonder/index.rss").ConfigureAwait(false);
-            //      new Client().GetRssFeedAsync("http://www.webtoons.com/en/fantasy/tower-of-god/rss?title_no=95").ConfigureAwait(false);
+            ProviderService = new ProviderService();
+            ProviderService.Run().ConfigureAwait(false);
+
+            //test PEPE
+            //WebParser.GetRssFeedAsync("https://yomanga.co/reader/feeds/rss").ConfigureAwait(false);
+            //WebParser.GetRssFeedAsync("https://gameofscanlation.moe/projects/trinity-wonder/index.rss").ConfigureAwait(false);
+            //WebParser.GetRssFeedAsync("http://bato.to/myfollows_rss?secret=dd5831f7430c7ed7ea7055db4fe7b7ad&l=English").ConfigureAwait(false);
+            //WebParser.GetRssFeedAsync("http://read.tomochan.today/rss").ConfigureAwait(false);
+            //WebParser.GetRssFeedAsync("http://www.webtoons.com/en/fantasy/tower-of-god/rss?title_no=95").ConfigureAwait(false);
+
         }
 
         public SnackbarMessageQueue SnackbarQueue { get; }
@@ -36,7 +42,7 @@ namespace MangaCheckerV3.ViewModels {
         public ICommand RefreshCommand { get; }
         public PackIconKind PausePlayButtonIcon { get; set; } = PackIconKind.Pause;
 
-        public int Timer => _providerService.Timer;
+        public int Timer { get; set; }
 
         private void StartStop() {
             if (!ProviderService.Pause) {

@@ -11,7 +11,7 @@ using CloudFlareUtilities;
 
 namespace MangaChecker.Utilities {
     public class WebParser {
-        private async Task<string> GetHtmlSourceStringAsync(string url) {
+        private static async Task<string> GetHtmlSourceStringAsync(string url) {
             try {
                 // Create the clearance handler.
                 var handler = new ClearanceHandler {
@@ -37,7 +37,7 @@ namespace MangaChecker.Utilities {
             }
         }
 
-        public async Task<IHtmlDocument> GetHtmlSourceDucumentAsync(string url, bool js = false) {
+        public static async Task<IHtmlDocument> GetHtmlSourceDucumentAsync(string url, bool js = false) {
             try {
                 // Create the clearance handler.
                 var handler = new ClearanceHandler {
@@ -74,7 +74,7 @@ namespace MangaChecker.Utilities {
             }
         }
 
-        public async Task<List<RssItemObject>> GetRssFeedAsync(string url) {
+        public static async Task<List<RssItemObject>> GetRssFeedAsync(string url) {
             try {
                 var allXml = await GetHtmlSourceStringAsync(url);
 
@@ -85,9 +85,13 @@ namespace MangaChecker.Utilities {
 
                 var ot = xml.All.Where(i => i.LocalName == "item");
                 var list = ot.Select(element => new RssItemObject {
-                    Title = element.Children.First(x => x.TagName.ToLower() == "title").TextContent,
-                    Link = element.Children.First(x => x.TagName.ToLower() == "link").TextContent,
-                    PubDate = DateTime.Parse(element.Children.First(x => x.TagName.ToLower() == "pubdate").TextContent)
+                    Title = element.Children.FirstOrDefault(x => x.TagName.ToLower() == "title")?.TextContent,
+                    Link = element.Children.FirstOrDefault(x => x.TagName.ToLower() == "link")?.TextContent,
+                    Category = element.Children.FirstOrDefault(x => x.TagName.ToLower() == "category")?.TextContent,
+                    Description = element.Children.FirstOrDefault(x => x.TagName.ToLower() == "description")?.TextContent,
+                    Guid = element.Children.FirstOrDefault(x => x.TagName.ToLower() == "guid")?.TextContent,
+                    Author = element.Children.FirstOrDefault(x => x.TagName.ToLower() == "author")?.TextContent,
+                    PubDate = DateTime.Parse(element.Children.FirstOrDefault(x => x.TagName.ToLower() == "pubdate")?.TextContent)
                 }).ToList();
 
                 return list;

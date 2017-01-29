@@ -66,8 +66,12 @@
 							<ColumnDefinition />
 						</Grid.ColumnDefinitions>
 						<TextBlock Text="{Binding RefreshTime.Setting}" Margin="8,0" VerticalAlignment="Center" />
-						<TextBox Grid.Column="1" Text="{Binding RefreshTime.Active}" HorizontalAlignment="Right" MinWidth="80"
-						         PreviewTextInput="NumberValidationTextBox" />
+						<StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+							<TextBox Text="{Binding RefreshTime.Active}" MinWidth="80"
+									 PreviewTextInput="NumberValidationTextBox" HorizontalContentAlignment="Right" />
+							<TextBlock Margin="8,0,0,0" VerticalAlignment="Center">seconds.</TextBlock>
+						</StackPanel>
+						
 					</Grid>
 					<Grid Margin="10,5" MinWidth="170" HorizontalAlignment="Stretch">
 						<Grid.ColumnDefinitions>

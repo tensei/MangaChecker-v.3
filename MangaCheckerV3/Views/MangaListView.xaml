@@ -62,10 +62,18 @@
 		         SelectedItem="{Binding SelectedSite, Mode=TwoWay}"
 		         SelectedIndex="{Binding SelectedSiteIndex}" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
 		         Foreground="{Binding TitleForeground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" />
-		<!--<TextBlock  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0"><Run Text="Status: "/><Run Text=" "/><Run Text="{Binding Running}"/></TextBlock>-->
+		
 		<ListBox ItemsSource="{Binding Mangas}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"
 		         HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"
 		         SelectedItem="{Binding SelectedManga}">
+			<!--<ListBox.Template>
+				<ControlTemplate>
+					<ScrollViewer VerticalScrollBarVisibility="Auto" CanContentScroll="True">
+						<VirtualizingStackPanel IsItemsHost="True" IsVirtualizing="True"
+												VirtualizationMode="Recycling" />
+					</ScrollViewer>
+				</ControlTemplate>
+			</ListBox.Template>-->
 			<ListBox.ItemTemplate>
 				<DataTemplate>
 					<Grid>

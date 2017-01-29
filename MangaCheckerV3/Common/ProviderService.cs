@@ -4,8 +4,11 @@ using System.Threading.Tasks;
 using MangaChecker.Database;
 using MangaChecker.DataTypes.Interface;
 using MangaChecker.Providers;
+using MangaCheckerV3.ViewModels;
+using PropertyChanged;
 
 namespace MangaCheckerV3.Common {
+    [ImplementPropertyChanged]
     public class ProviderService {
         public static List<ISite> Providers = new List<ISite> {
             new Webtoons(),
@@ -24,25 +27,27 @@ namespace MangaCheckerV3.Common {
 
         public static bool Pause = false;
         public static bool Stop = false;
-        public int Timer;
+        public int Timer { get; set; }
+        public string Status { get; set; }
 
-        public async void Run() {
+        public async Task Run() {
             Timer = 5;
-            while (!Stop)
+            while (!Stop) {
                 if (Timer > 0) {
+                    Status = $"Checking in {Timer} seconds.";
                     if (!Pause) Timer--;
                     await Task.Delay(1000);
-                    Debug.WriteLine(Timer);
                 }
                 else {
-                    Providers.ForEach(async p => {
-                        await p.CheckAll();
+                    foreach (var provider in Providers) {
+                        Status = $"Checking {provider.GetType().Name}...";
+                        //await p.CheckAll();
                         await Task.Delay(1000);
-                    });
+                    }
                     Timer = Database.GetRefreshTime();
                     await Task.Delay(1000);
-                    Debug.WriteLine($"Resetting Timer => {Timer}");
                 }
+            }
         }
     }
 }
