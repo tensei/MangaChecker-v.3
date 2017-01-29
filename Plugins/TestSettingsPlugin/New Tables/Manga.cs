@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using LiteDB;
-using SQLite;
 
 namespace TestSettingsPlugin.New_Tables {
-	public class Manga {
+    public class Manga {
         [BsonId]
         public int MangaId { get; set; }
-        
+
         public string Name { get; set; }
 
         public float Chapter { get; set; }

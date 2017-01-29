@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database.cs" />
+    <Compile Include="Enums\Genre.cs" />
     <Compile Include="EventEnum.cs" />
     <Compile Include="IDatabaseObserver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

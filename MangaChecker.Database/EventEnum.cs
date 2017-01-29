@@ -5,6 +5,7 @@
         DELETE,
         DBCREATE,
         DBUPDATE,
-        GET
+        GET,
+        GETSITE
     }
 }

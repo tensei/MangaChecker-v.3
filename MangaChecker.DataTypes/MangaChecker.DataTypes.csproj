@@ -45,9 +45,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\IPluginMetadata.cs" />
-    <Compile Include="Interfaces\IPlugin.cs" />
-    <Compile Include="Interfaces\ISite.cs" />
+    <Compile Include="Interface\IPluginMetadata.cs" />
+    <Compile Include="Interface\IPlugin.cs" />
+    <Compile Include="Interface\ISite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -55,6 +55,9 @@
       <Project>{bc2c4eae-6d63-4594-a062-80330ed4b591}</Project>
       <Name>MangaChecker.Database</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -12,33 +12,33 @@
 
 	<Grid>
 		<!--<ScrollViewer VerticalScrollBarVisibility="Auto">-->
-			<ItemsControl ItemsSource="{Binding Plugins}" HorizontalContentAlignment="Stretch"
-						  Foreground="{Binding TitleForeground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Controls:MetroWindow}}}">
-				<ItemsControl.ItemTemplate>
-					<DataTemplate>
-						<Expander Margin="10,10,10,0">
-							<Expander.Header>
-								<Grid>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition />
-										<ColumnDefinition />
-										<ColumnDefinition />
-									</Grid.ColumnDefinitions>
-									<TextBlock HorizontalAlignment="Left">
-										<Run Text="Author: " />
-										<Run Text="{Binding Author, Mode=OneWay}" />
-									</TextBlock>
-									<TextBlock Text="{Binding Name, Mode=OneWay}" Grid.Column="1" HorizontalAlignment="Center" />
-									<TextBlock Grid.Column="2" Text="{Binding Version, Mode=OneWay}" HorizontalAlignment="Right" />
-								</Grid>
-							</Expander.Header>
-							<Grid Margin="4">
-								<ContentControl Content="{Binding SettingsView}"/>
+		<ItemsControl ItemsSource="{Binding Plugins}" HorizontalContentAlignment="Stretch"
+		              Foreground="{Binding TitleForeground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Controls:MetroWindow}}}">
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<Expander Margin="10,10,10,0">
+						<Expander.Header>
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition />
+									<ColumnDefinition />
+									<ColumnDefinition />
+								</Grid.ColumnDefinitions>
+								<TextBlock HorizontalAlignment="Left">
+									<Run Text="Author: " />
+									<Run Text="{Binding Author, Mode=OneWay}" />
+								</TextBlock>
+								<TextBlock Text="{Binding Name, Mode=OneWay}" Grid.Column="1" HorizontalAlignment="Center" />
+								<TextBlock Grid.Column="2" Text="{Binding Version, Mode=OneWay}" HorizontalAlignment="Right" />
 							</Grid>
-						</Expander>
-					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl>	
+						</Expander.Header>
+						<Grid Margin="4">
+							<ContentControl Content="{Binding SettingsView}" />
+						</Grid>
+					</Expander>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
 		<!--</ScrollViewer>-->
 	</Grid>
 </UserControl>

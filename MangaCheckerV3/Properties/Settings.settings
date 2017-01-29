@@ -1,15 +1,17 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="MangaCheckerV3.Properties" GeneratedClassName="Settings">
-  <Profiles />
-  <Settings>
-    <Setting Name="Primary" Type="System.String" Scope="User">
-      <Value Profile="(Default)">blue</Value>
-    </Setting>
-    <Setting Name="Accents" Type="System.String" Scope="User">
-      <Value Profile="(Default)">blue</Value>
-    </Setting>
-    <Setting Name="Theme" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Dark</Value>
-    </Setting>
-  </Settings>
+
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)"
+              GeneratedClassNamespace="MangaCheckerV3.Properties" GeneratedClassName="Settings">
+	<Profiles />
+	<Settings>
+		<Setting Name="Primary" Type="System.String" Scope="User">
+			<Value Profile="(Default)">blue</Value>
+		</Setting>
+		<Setting Name="Accents" Type="System.String" Scope="User">
+			<Value Profile="(Default)">blue</Value>
+		</Setting>
+		<Setting Name="Theme" Type="System.String" Scope="User">
+			<Value Profile="(Default)">Dark</Value>
+		</Setting>
+	</Settings>
 </SettingsFile>

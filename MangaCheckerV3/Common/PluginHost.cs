@@ -3,48 +3,46 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using MangaChecker.DataTypes;
 using MangaChecker.DataTypes.Interfaces;
 
 namespace MangaCheckerV3.Common {
-	public class PluginHost : IDisposable {
-		public const string PluginsDirectory = "Plugins";
+    public class PluginHost : IDisposable {
+        public const string PluginsDirectory = "Plugins";
 
 
-		private readonly CompositionContainer container;
+        private readonly CompositionContainer container;
 
-		static PluginHost() {
-		}
+        static PluginHost() {
+        }
 
 
-		private PluginHost() {
-			var catalog = new AggregateCatalog(new AssemblyCatalog(Assembly.GetExecutingAssembly()));
+        private PluginHost() {
+            var catalog = new AggregateCatalog(new AssemblyCatalog(Assembly.GetExecutingAssembly()));
 
-			var current = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location);
-			if (current != null) {
-				var pluginsPath = Path.Combine(current, PluginsDirectory);
-				if (Directory.Exists(pluginsPath)) {
-					var dcat = new DirectoryCatalog(pluginsPath);
-					catalog.Catalogs.Add(dcat);
-				}
-			}
+            var current = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location);
+            if (current != null) {
+                var pluginsPath = Path.Combine(current, PluginsDirectory);
+                if (Directory.Exists(pluginsPath)) {
+                    var dcat = new DirectoryCatalog(pluginsPath);
+                    catalog.Catalogs.Add(dcat);
+                }
+            }
 
-			container = new CompositionContainer(catalog);
-		}
+            container = new CompositionContainer(catalog);
+        }
 
-		public static PluginHost Instance { get; } = new PluginHost();
-        
-		[ImportMany]
-		public IEnumerable<Lazy<IPlugin, IPluginMetadata>> Settings { get; set; }
+        public static PluginHost Instance { get; } = new PluginHost();
 
-		public void Dispose() {
-			container.Dispose();
-		}
+        [ImportMany]
+        public IEnumerable<Lazy<IPlugin, IPluginMetadata>> Settings { get; set; }
 
-		public void Initialize() {
-			container.ComposeParts(this);
-		}
-	}
+        public void Dispose() {
+            container.Dispose();
+        }
+
+        public void Initialize() {
+            container.ComposeParts(this);
+        }
+    }
 }

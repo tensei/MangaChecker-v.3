@@ -83,6 +83,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Common\PluginHost.cs" />
+    <Compile Include="Common\ProviderService.cs" />
     <Compile Include="Helpers\ThemeHelper.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="ViewModels\ActionCommand.cs" />
@@ -181,6 +182,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\MangaChecker.Providers\MangaChecker.Providers.csproj">
+      <Project>{afe3b063-4c45-4f63-8f3d-48fab20b7425}</Project>
+      <Name>MangaChecker.Providers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MangaChecker.Utilities\MangaChecker.Utilities.csproj">
       <Project>{11e83b6e-a665-423f-8089-42f7d5a2e98c}</Project>
       <Name>MangaChecker.Utilities</Name>

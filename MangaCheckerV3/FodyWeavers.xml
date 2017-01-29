@@ -3,7 +3,9 @@
 	<Costura IncludeDebugSymbols='false'>
 		<ExcludeAssemblies>
 			MangaChecker.Database
-			MangaChecker.Interfaces
+			MangaChecker.DataTypes
+			MangaChecker.Utilities
+			MangaChecker.Providers
 		</ExcludeAssemblies>
 	</Costura>
   <PropertyChanged />

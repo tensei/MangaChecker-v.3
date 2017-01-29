@@ -11,27 +11,27 @@
 	mc:Ignorable="d"
 	d:DesignHeight="300" d:DesignWidth="300"
 	d:DataContext="{d:DesignInstance {x:Type viewModel:SettingsViewModel}, IsDesignTimeCreatable=False}">
-	
+
 	<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="*"/>
-			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 		<ScrollViewer VerticalScrollBarVisibility="Auto">
 			<Grid Margin="4">
 				<Grid.RowDefinitions>
-					<RowDefinition Height="35"/>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition Height="35"/>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition/>
+					<RowDefinition Height="35" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="35" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition />
 				</Grid.RowDefinitions>
-				<TextBlock Text="Enable/Disable Sites" VerticalAlignment="Center" Margin="20,0" FontSize="16"/>
-				<Separator Grid.Row="0" VerticalAlignment="Bottom"/>
+				<TextBlock Text="Enable/Disable Sites" VerticalAlignment="Center" Margin="20,0" FontSize="16" />
+				<Separator Grid.Row="0" VerticalAlignment="Bottom" />
 				<ItemsControl ItemsSource="{Binding Settings}" Grid.Row="1">
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
-							<WrapPanel/>
+							<WrapPanel />
 						</ItemsPanelTemplate>
 					</ItemsControl.ItemsPanel>
 					<ItemsControl.ItemTemplate>
@@ -39,47 +39,47 @@
 							<materialDesign:Card Margin="10,5" MinWidth="170" materialDesign:ShadowAssist.ShadowDepth="Depth2">
 								<Grid VerticalAlignment="Center" Margin="8">
 									<Grid.ColumnDefinitions>
-										<ColumnDefinition/>
-										<ColumnDefinition/>
+										<ColumnDefinition />
+										<ColumnDefinition />
 									</Grid.ColumnDefinitions>
 									<TextBlock Text="{Binding Setting}" Margin="8,0" />
-									<ToggleButton Grid.Column="1" IsChecked="{Binding Active}" HorizontalAlignment="Right"/>
+									<ToggleButton Grid.Column="1" IsChecked="{Binding Active}" HorizontalAlignment="Right" />
 								</Grid>
 							</materialDesign:Card>
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>
-				<TextBlock Grid.Row="2" Text="Other" VerticalAlignment="Center" Margin="20,0" FontSize="16"/>
-				<Separator Grid.Row="2" VerticalAlignment="Bottom"/>
+				<TextBlock Grid.Row="2" Text="Other" VerticalAlignment="Center" Margin="20,0" FontSize="16" />
+				<Separator Grid.Row="2" VerticalAlignment="Bottom" />
 				<StackPanel Grid.Row="3" HorizontalAlignment="Stretch">
-					<Grid  Margin="10,5" MinWidth="170" HorizontalAlignment="Stretch">
+					<Grid Margin="10,5" MinWidth="170" HorizontalAlignment="Stretch">
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition/>
-							<ColumnDefinition/>
+							<ColumnDefinition />
+							<ColumnDefinition />
 						</Grid.ColumnDefinitions>
-						<TextBlock Text="Open New Chapters in Browser" Margin="8,0" VerticalAlignment="Center"/>
-						<ToggleButton Grid.Column="1" IsChecked="{Binding OpenLinks.Active}" HorizontalAlignment="Right"/>
+						<TextBlock Text="Open New Chapters in Browser" Margin="8,0" VerticalAlignment="Center" />
+						<ToggleButton Grid.Column="1" IsChecked="{Binding OpenLinks.Active}" HorizontalAlignment="Right" />
 					</Grid>
 					<Grid Margin="10,5" MinWidth="170" HorizontalAlignment="Stretch">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition />
-							<ColumnDefinition/>
+							<ColumnDefinition />
 						</Grid.ColumnDefinitions>
-						<TextBlock Text="{Binding RefreshTime.Setting}" Margin="8,0" VerticalAlignment="Center"/>
+						<TextBlock Text="{Binding RefreshTime.Setting}" Margin="8,0" VerticalAlignment="Center" />
 						<TextBox Grid.Column="1" Text="{Binding RefreshTime.Active}" HorizontalAlignment="Right" MinWidth="80"
-								 PreviewTextInput="NumberValidationTextBox"/>
+						         PreviewTextInput="NumberValidationTextBox" />
 					</Grid>
 					<Grid Margin="10,5" MinWidth="170" HorizontalAlignment="Stretch">
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto"/>
-							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="*" />
 						</Grid.ColumnDefinitions>
-						<TextBlock Text="{Binding BatotoRss.Setting}" Margin="8,0" VerticalAlignment="Center"/>
+						<TextBlock Text="{Binding BatotoRss.Setting}" Margin="8,0" VerticalAlignment="Center" />
 						<TextBox Grid.Column="1" Text="{Binding BatotoRss.Link}" />
 					</Grid>
 				</StackPanel>
 			</Grid>
 		</ScrollViewer>
-		<Button Grid.Row="1" Margin="8" Content="Save" Command="{Binding SaveCommand}" VerticalAlignment="Bottom"></Button>
+		<Button Grid.Row="1" Margin="8" Content="Save" Command="{Binding SaveCommand}" VerticalAlignment="Bottom" />
 	</Grid>
 </UserControl>

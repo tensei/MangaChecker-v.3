@@ -55,5 +55,15 @@
     <Compile Include="Webtoons.cs" />
     <Compile Include="YoManga.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MangaChecker.Database\MangaChecker.Database.csproj">
+      <Project>{BC2C4EAE-6D63-4594-A062-80330ED4B591}</Project>
+      <Name>MangaChecker.Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MangaChecker.DataTypes\MangaChecker.DataTypes.csproj">
+      <Project>{f5132764-7a38-42f8-b54f-f7d4dccbb4ba}</Project>
+      <Name>MangaChecker.DataTypes</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
