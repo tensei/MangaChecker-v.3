@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using LiteDB;
+using MangaChecker.Database.Enums;
 using MangaChecker.Database.Tables;
 
 namespace MangaChecker.Database {
-    public class Database {
-        private const string DatabaseVersion = "1.0.0.1";
+    class Database {
+        private const string DatabaseVersion = "1.0.0.2";
         private static readonly string DatabasePath = Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db");
-        private static readonly List<IDatabaseObserver> Observers = new List<IDatabaseObserver>();
+
 
         private static readonly Dictionary<string, string> DefaultDatabaseSettings = new Dictionary<string, string> {
             {"Mangafox", "http://mangafox.me/"},
@@ -30,13 +31,36 @@ namespace MangaChecker.Database {
             {"db", "1.0.0.0"}
         };
 
+        public static event EventHandler<MangaEnum> MangaEvent; //switch to this maybe?
+        public static event EventHandler<DatabaseEnum> DbEvent; //switch to this maybe?
+        public static event EventHandler<SettingEnum> SettingEvent; //switch to this maybe?
+
+        public static IOrderedEnumerable<Manga> GetHistory() {
+            IEnumerable<Manga> query;
+            using (var conn = new LiteDatabase(DatabasePath)) {
+                query = conn.GetCollection<Manga>("History").FindAll();
+            }
+            var ordered = query.OrderBy(m => m.Updated);
+            MangaEvent?.Invoke(ordered, MangaEnum.GetHistory);
+            return ordered;
+        }
         public static IOrderedEnumerable<Manga> GetAllMangas() {
             IEnumerable<Manga> query;
             using (var conn = new LiteDatabase(DatabasePath)) {
                 query = conn.GetCollection<Manga>("Manga").FindAll();
             }
             var ordered = query.OrderByDescending(m => m.Updated);
-            Observers?.ForEach(o => o.GetMangaEvent(ordered.ToList(), DatabaseEvent.GET));
+            MangaEvent?.Invoke(ordered, MangaEnum.Get);
+            return ordered;
+        }
+
+        public static IOrderedEnumerable<Manga> GetAllNewMangas() {
+            IEnumerable<Manga> query;
+            using (var conn = new LiteDatabase(DatabasePath)) {
+                query = conn.GetCollection<Manga>("Manga").Find(n => n.New);
+            }
+            var ordered = query.OrderByDescending(m => m.Updated);
+            MangaEvent?.Invoke(ordered, MangaEnum.New);
             return ordered;
         }
 
@@ -46,7 +70,7 @@ namespace MangaChecker.Database {
                 query = conn.GetCollection<Manga>("Manga").Find(s => s.Site == site);
             }
             var ordered = query.OrderByDescending(m => m.Updated);
-            Observers?.ForEach(o => o.GetMangaEvent(ordered.ToList(), DatabaseEvent.GET));
+            MangaEvent?.Invoke(ordered, MangaEnum.Get);
             return ordered;
         }
 
@@ -55,7 +79,14 @@ namespace MangaChecker.Database {
                 var query = conn.GetCollection<Manga>("Manga");
                 query.Insert(manga);
             }
-            Observers?.ForEach(o => o.MangaEvent(manga, DatabaseEvent.INSERT));
+            MangaEvent?.Invoke(manga, MangaEnum.Insert);
+        }
+        public static void InsertHistory(Manga manga) {
+            using (var conn = new LiteDatabase(DatabasePath)) {
+                var query = conn.GetCollection<Manga>("History");
+                query.Insert(manga);
+            }
+            MangaEvent?.Invoke(manga, MangaEnum.InsertHistory);
         }
 
         public static void Update(Manga manga) {
@@ -63,7 +94,17 @@ namespace MangaChecker.Database {
                 var query = conn.GetCollection<Manga>("Manga");
                 query.Update(manga);
             }
-            Observers?.ForEach(o => o.MangaEvent(manga, DatabaseEvent.UPDATE));
+            MangaEvent?.Invoke(manga, MangaEnum.Update);
+        }
+        public static void UpdateTrans(List<Manga> manga) {
+            using (var conn = new LiteDatabase(DatabasePath)) {
+                var query = conn.GetCollection<Manga>("Manga");
+                using (var trans1 = conn.BeginTrans()) {
+                    query.Update(manga);
+                    trans1.Commit();
+                }
+            }
+            MangaEvent?.Invoke(manga, MangaEnum.Update);
         }
 
         public static void Delete(Manga manga) {
@@ -71,7 +112,14 @@ namespace MangaChecker.Database {
                 var query = conn.GetCollection<Manga>("Manga");
                 query.Delete(manga.MangaId);
             }
-            Observers?.ForEach(o => o.MangaEvent(manga, DatabaseEvent.DELETE));
+            MangaEvent?.Invoke(manga, MangaEnum.Delete);
+        }
+        public static void DeleteHistory(Manga manga) {
+            using (var conn = new LiteDatabase(DatabasePath)) {
+                var query = conn.GetCollection<Manga>("History");
+                query.Delete(manga.MangaId);
+            }
+            MangaEvent?.Invoke(manga, MangaEnum.DeleteHistory);
         }
 
         public static List<Settings> GetAllSettings() {
@@ -79,7 +127,7 @@ namespace MangaChecker.Database {
             using (var conn = new LiteDatabase(DatabasePath)) {
                 query = conn.GetCollection<Settings>("Settings").FindAll().ToList();
             }
-            Observers?.ForEach(o => o.GetSettingEvent(query.ToList(), DatabaseEvent.GET));
+            SettingEvent?.Invoke(query, SettingEnum.Get);
             return query;
         }
 
@@ -88,7 +136,7 @@ namespace MangaChecker.Database {
             using (var conn = new LiteDatabase(DatabasePath)) {
                 query = conn.GetCollection<Settings>("Settings").FindOne(s => s.Setting == setting);
             }
-            Observers?.ForEach(o => o.SettingEvent(query, DatabaseEvent.GET));
+            SettingEvent?.Invoke(query, SettingEnum.Get);
             return query;
         }
 
@@ -96,11 +144,11 @@ namespace MangaChecker.Database {
             using (var conn = new LiteDatabase(DatabasePath)) {
                 var query = conn.GetCollection<Settings>("Settings");
                 using (var trans1 = conn.BeginTrans()) {
-                    settings.ForEach(s => query.Update(s));
+                    query.Update(settings);
                     trans1.Commit();
                 }
             }
-            Observers?.ForEach(o => o.SaveSettingEvent(settings, DatabaseEvent.UPDATE));
+            SettingEvent?.Invoke(settings, SettingEnum.Update);
         }
 
         public static int GetRefreshTime() {
@@ -108,13 +156,14 @@ namespace MangaChecker.Database {
             using (var conn = new LiteDatabase(DatabasePath)) {
                 query = conn.GetCollection<Settings>("Settings").FindOne(s => s.Setting == "Refresh Time");
             }
-            Observers?.ForEach(o => o.SettingEvent(query, DatabaseEvent.GET));
+            SettingEvent?.Invoke(query, SettingEnum.Refresh);
             return query.Active;
         }
 
         private static void UpdateDatabase(Versions dbv) {
             using (var conn = new LiteDatabase(DatabasePath)) {
                 var set = conn.GetCollection<Settings>("Settings");
+                conn.GetCollection<Manga>("History");
                 conn.GetCollection<Manga>("Manga");
                 var ver = conn.GetCollection<Versions>("Versions");
 
@@ -159,13 +208,14 @@ namespace MangaChecker.Database {
                         });
                 ver.Update(dbv);
             }
-            Observers?.ForEach(o => o.DatabaseEvent(DatabaseEvent.DBUPDATE));
+            DbEvent?.Invoke(dbv, DatabaseEnum.Update);
         }
 
         public static void CreateDatabase() {
             using (var conn = new LiteDatabase(DatabasePath)) {
                 var set = conn.GetCollection<Settings>("Settings");
                 conn.GetCollection<Manga>("Manga");
+                conn.GetCollection<Manga>("History");
                 var ver = conn.GetCollection<Versions>("Versions");
 
                 ver.Insert(new Versions {
@@ -202,7 +252,7 @@ namespace MangaChecker.Database {
                         Created = DateTime.Now
                     });
             }
-            Observers?.ForEach(o => o.DatabaseEvent(DatabaseEvent.DBCREATE));
+            DbEvent?.Invoke(null, DatabaseEnum.Create);
         }
 
         public static string CheckDbVersion() {
@@ -213,18 +263,6 @@ namespace MangaChecker.Database {
                 UpdateDatabase(dbv);
                 return $"Updated Database to {DatabaseVersion}";
             }
-        }
-
-        public static bool Subscribe(IDatabaseObserver observer) {
-            if (Observers.Contains(observer)) return false;
-            Observers.Add(observer);
-            return true;
-        }
-
-        public static bool Unsubscribe(IDatabaseObserver observer) {
-            if (!Observers.Contains(observer)) return false;
-            Observers.Remove(observer);
-            return true;
         }
     }
 }

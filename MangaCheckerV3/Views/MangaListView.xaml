@@ -15,17 +15,34 @@
 
 	<Grid>
 		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
 			<RowDefinition />
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="Auto" MinWidth="100" />
 			<ColumnDefinition />
-			<ColumnDefinition />
-			<ColumnDefinition />
 		</Grid.ColumnDefinitions>
-
-		<materialDesign:ColorZone Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Mode="PrimaryMid"
+		<materialDesign:ColorZone Grid.Column="1">
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition/>
+					<ColumnDefinition/>
+				</Grid.ColumnDefinitions>
+				<TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0">
+					<Run Text="{Binding Mangas.Count, Mode=OneWay}"/>
+					<Run Text=" Mangas ("/>
+					<Run Text="{Binding SelectedSite, Mode=OneWay}"/>
+					<Run Text=")"/>
+				</TextBlock>
+				<Button Grid.Column="1" Style="{DynamicResource MaterialDesignToolButton}" 
+						Margin="10,0" ToolTip="Refresh list" HorizontalAlignment="Right"
+						Command="{Binding RefreshListCommand}">
+					<materialDesign:PackIcon Kind="Refresh" />
+				</Button>
+			</Grid>
+		</materialDesign:ColorZone>
+		<materialDesign:ColorZone Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Mode="PrimaryMid"
 		                          materialDesign:ShadowAssist.ShadowDepth="Depth2" Padding="4"
 		                          Visibility="{Binding SelectedManga, Converter={StaticResource NullableToVisibilityConverter}}">
 			<Grid>
@@ -60,10 +77,10 @@
 		</materialDesign:ColorZone>
 		<ListBox ItemsSource="{Binding Sites}" Background="{DynamicResource PrimaryHueMidBrush}"
 		         SelectedItem="{Binding SelectedSite, Mode=TwoWay}"
-		         SelectedIndex="{Binding SelectedSiteIndex}" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
+		         SelectedIndex="{Binding SelectedSiteIndex}" Grid.Row="0" Grid.RowSpan="3" Grid.Column="0"
 		         Foreground="{Binding TitleForeground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" />
-		
-		<ListBox ItemsSource="{Binding Mangas}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"
+
+		<ListBox ItemsSource="{Binding Mangas}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3"
 		         HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"
 		         SelectedItem="{Binding SelectedManga}">
 			<!--<ListBox.Template>

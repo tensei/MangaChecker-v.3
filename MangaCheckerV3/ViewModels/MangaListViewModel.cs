@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows.Input;
 using MangaChecker.Database;
 using MangaChecker.Database.Tables;
@@ -12,38 +13,33 @@ namespace MangaCheckerV3.ViewModels {
     public class MangaListViewModel {
         public static MangaListViewModel Instance;
 
-        private readonly Dictionary<string, string> _listboxItemNames = new Dictionary<string, string> {
-            {"All", null},
-            {"Mangareader", null},
-            {"Mangafox", null},
-            {"Mangahere", null},
-            {"Mangastream", null},
-            {"Batoto", null},
-            {"Kissmanga", null},
-            {"Webtoons", null},
-            {"YoManga", null},
-            {"GameOfScanlation", null},
-            {"KireiCake", null},
-            {"Jaiminisbox", null},
-            {"HeyManga", null},
-            {"Backlog", null}
-            //{"DEBUG", null}
+        public List<string> Sites => new List<string> {
+            "All",
+            "Mangareader",
+            "Mangafox",
+            "Mangahere",
+            "Mangastream",
+            "Batoto",
+            "Kissmanga",
+            "Webtoons",
+            "YoManga",
+            "GameOfScanlation",
+            "KireiCake",
+            "Jaiminisbox",
+            "HeyManga",
+            "Backlog"
         };
 
         /// <summary>
         ///     Initializes a new instance of the MangaListViewModel class.
         /// </summary>
         private readonly ObservableCollection<Manga> _mangas = new ObservableCollection<Manga>();
-
-        private readonly ObservableCollection<string> _sites = new ObservableCollection<string>();
-
+        
         private string _selectedSite;
 
         public MangaListViewModel() {
             Instance = this;
             Mangas = new ReadOnlyObservableCollection<Manga>(_mangas);
-            foreach (var key in _listboxItemNames.Keys) _sites.Add(key);
-            Sites = new ReadOnlyObservableCollection<string>(_sites);
             Mangas = new ReadOnlyObservableCollection<Manga>(_mangas);
             IncreaseCommand = new ActionCommand(IncreaseChapter);
             DecreaseCommand = new ActionCommand(DecreaseChapter);
@@ -52,10 +48,10 @@ namespace MangaCheckerV3.ViewModels {
             RefreshCommand = new ActionCommand(RefreshManga);
             ViewerCommand = new ActionCommand(ViewManga);
             DeselectCommand = new ActionCommand(() => { SelectedManga = null; });
+            RefreshListCommand = new ActionCommand(() => FillMangaList(SelectedSite));
         }
 
         public ReadOnlyObservableCollection<Manga> Mangas { get; }
-        public ReadOnlyObservableCollection<string> Sites { get; }
 
 
         public ICommand IncreaseCommand { get; }
@@ -65,6 +61,7 @@ namespace MangaCheckerV3.ViewModels {
         public ICommand RefreshCommand { get; }
         public ICommand ViewerCommand { get; }
         public ICommand DeselectCommand { get; }
+        public ICommand RefreshListCommand { get; }
 
 
         public Manga SelectedManga { get; set; }
@@ -80,6 +77,7 @@ namespace MangaCheckerV3.ViewModels {
         public int SelectedSiteIndex { get; set; }
 
 
+
         private void Fill() {
             var x = Database.GetAllMangas();
             foreach (var manga in x) _mangas.Add(manga);
@@ -87,12 +85,14 @@ namespace MangaCheckerV3.ViewModels {
 
         private void IncreaseChapter() {
             SelectedManga.Chapter++;
+            SelectedManga.Newest = SelectedManga.Chapter;
             SelectedManga.Updated = DateTime.Now;
             Database.Update(SelectedManga);
         }
 
         private void DecreaseChapter() {
             SelectedManga.Chapter--;
+            SelectedManga.Newest = SelectedManga.Chapter;
             SelectedManga.Updated -= TimeSpan.FromDays(1);
             Database.Update(SelectedManga);
         }
@@ -128,11 +128,8 @@ namespace MangaCheckerV3.ViewModels {
                 case "All":
                     Fill();
                     break;
-                //case "GoScanlation":
-                //	foreach (var manga in Database.GetMangasFrom("GameOfScanlation")) _mangas.Add(manga);
-                //	break;
                 default:
-                    foreach (var manga in Database.GetMangasFrom(site)) _mangas.Add(manga);
+                    Database.GetMangasFrom(site)?.ToList().ForEach(_mangas.Add);
                     break;
             }
         }

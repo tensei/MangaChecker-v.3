@@ -1,16 +1,15 @@
-﻿<UserControl x:Class="MangaCheckerV3.Views.HistoryView"
+﻿<UserControl x:Class="MangaCheckerV3.Views.NewView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:MangaCheckerV3.Views"
-             xmlns:viewModel="clr-namespace:MangaCheckerV3.ViewModels"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:tables="clr-namespace:MangaChecker.Database.Tables;assembly=MangaChecker.Database"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:viewModels="clr-namespace:MangaCheckerV3.ViewModels"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
-             d:DataContext="{d:DesignInstance {x:Type viewModel:HistoryViewModel}, IsDesignTimeCreatable=False}">
-
+             d:DataContext="{d:DesignInstance {x:Type viewModels:NewMangaViewModel}, IsDesignTimeCreatable=False}">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
@@ -20,12 +19,16 @@
 			<Grid>
 				<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
 					<TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0">
-						<Run Text="{Binding History.Count, Mode=OneWay}"/>
-						<Run Text=" History items."/>
+						<Run Text="{Binding NewManga.Count, Mode=OneWay}"/>
+						<Run Text=" New Mangas."/>
 					</TextBlock>
 					<TextBlock Text="{Binding LastRefresh}" HorizontalAlignment="Left" VerticalAlignment="Center" />
 				</StackPanel>
 				<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+					<Button Style="{DynamicResource MaterialDesignToolButton}" ToolTip="Remove all"
+					        Command="{Binding RemoveAllCommand}">
+						<materialDesign:PackIcon Kind="Delete" />
+					</Button>
 					<Button Style="{DynamicResource MaterialDesignToolButton}" Margin="10,0" ToolTip="Refresh list"
 					        Command="{Binding RefreshListCommand}">
 						<materialDesign:PackIcon Kind="Refresh" />
@@ -33,7 +36,7 @@
 				</StackPanel>
 			</Grid>
 		</materialDesign:ColorZone>
-		<ListBox Grid.Row="1" HorizontalContentAlignment="Stretch" ItemsSource="{Binding History}">
+		<ListBox Grid.Row="1" HorizontalContentAlignment="Stretch" ItemsSource="{Binding NewManga}">
 			<ListBox.ItemTemplate>
 				<DataTemplate DataType="{x:Type tables:Manga}">
 					<Grid Margin="4,0">
@@ -47,15 +50,15 @@
 						<TextBlock Text="{Binding Newest}" VerticalAlignment="Center" />
 						<TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" Margin="10,0" />
 						<TextBlock Grid.Column="2" Text="{Binding Site}" VerticalAlignment="Center" />
-						<TextBlock Grid.Column="3" Text="{Binding DaysAgo}" VerticalAlignment="Center" Margin="10,0" />
+						<TextBlock Grid.Column="3" Text="{Binding Updated}" VerticalAlignment="Center" Margin="10,0" />
 						<StackPanel Grid.Column="4" Orientation="Horizontal" Margin="0,0,10,0">
 							<Button Padding="8,3" Background="Transparent" BorderThickness="0" Margin="0,0,10,0"
-							        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:HistoryView}}, Path=DataContext.ViewCommand, Mode=OneTime}"
+							        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:NewView}}, Path=DataContext.ViewCommand, Mode=OneTime}"
 							        CommandParameter="{Binding}">
 								<materialDesign:PackIcon Kind="Eye" Height="16" />
 							</Button>
 							<Button Padding="8,3" Background="Transparent" BorderThickness="0"
-							        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:HistoryView}}, Path=DataContext.RemoveCommand, Mode=OneTime}"
+							        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:NewView}}, Path=DataContext.RemoveCommand, Mode=OneTime}"
 							        CommandParameter="{Binding}">
 								<materialDesign:PackIcon Kind="Close" Height="16" />
 							</Button>

@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using MangaChecker.Database;
 using MangaChecker.DataTypes.Interface;
 using MangaChecker.Providers;
-using MangaCheckerV3.ViewModels;
 using PropertyChanged;
 
 namespace MangaCheckerV3.Common {
@@ -32,7 +30,7 @@ namespace MangaCheckerV3.Common {
 
         public async Task Run() {
             Timer = 5;
-            while (!Stop) {
+            while (!Stop)
                 if (Timer > 0) {
                     Status = $"Checking in {Timer} seconds.";
                     if (!Pause) Timer--;
@@ -47,7 +45,6 @@ namespace MangaCheckerV3.Common {
                     Timer = Database.GetRefreshTime();
                     await Task.Delay(1000);
                 }
-            }
         }
     }
 }

@@ -62,6 +62,7 @@
 				<materialDesign:PackIcon Kind="Settings" Height="20" Width="20" ToolTip="Settings" />
 				<materialDesign:PackIcon Kind="ViewModule" Height="20" Width="20" ToolTip="Plugins" />
 				<materialDesign:PackIcon Kind="Brush" Height="20" Width="20" ToolTip="Theme" />
+				<materialDesign:PackIcon Kind="NewBox" Height="20" Width="20" ToolTip="New Manga for Today" />
 			</ListBox>
 			<materialDesign:Transitioner SelectedIndex="{Binding DrawerIndex}" Grid.Row="0" Grid.Column="1">
 				<Views:MangaListView />
@@ -71,15 +72,16 @@
 				<Views:SettingsView />
 				<Views:PluginsView />
 				<Views:ThemeView />
+				<Views:NewView />
 			</materialDesign:Transitioner>
 			<materialDesign:ColorZone Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Padding="4"
 			                          materialDesign:ShadowAssist.ShadowDepth="Depth2">
 				<Grid>
-					<TextBlock Text="{Binding ProviderService.Timer}" HorizontalAlignment="Right"/>
-					<TextBlock  HorizontalAlignment="Left" VerticalAlignment="Center">
-						<Run Text="Status: "/>
-						<Run Text=" "/>
-						<Run Text="{Binding ProviderService.Status}"/>
+					<TextBlock Text="{Binding ProviderService.Timer}" HorizontalAlignment="Right" />
+					<TextBlock HorizontalAlignment="Left" VerticalAlignment="Center">
+						<Run Text="Status: " />
+						<Run Text=" " />
+						<Run Text="{Binding ProviderService.Status}" />
 					</TextBlock>
 				</Grid>
 			</materialDesign:ColorZone>

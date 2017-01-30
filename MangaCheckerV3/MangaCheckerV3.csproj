@@ -91,6 +91,7 @@
     <Compile Include="ViewModels\HistoryViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\MangaListViewModel.cs" />
+    <Compile Include="ViewModels\NewMangaViewModel.cs" />
     <Compile Include="ViewModels\PluginsViewModel.cs" />
     <Compile Include="ViewModels\Settings ViewModels\ThemeViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
@@ -102,6 +103,9 @@
     </Compile>
     <Compile Include="Views\MangaListView.xaml.cs">
       <DependentUpon>MangaListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewView.xaml.cs">
+      <DependentUpon>NewView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PluginsView.xaml.cs">
       <DependentUpon>PluginsView.xaml</DependentUpon>
@@ -133,6 +137,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MangaListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

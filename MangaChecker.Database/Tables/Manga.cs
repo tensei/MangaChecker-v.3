@@ -13,6 +13,10 @@ namespace MangaChecker.Database.Tables {
 
         public float Chapter { get; set; }
 
+        public object Newest { get; set; }
+
+        public bool New { get; set; } = false;
+
         public string[] OtherChapters { get; set; } = {};
 
         public string Site { get; set; }

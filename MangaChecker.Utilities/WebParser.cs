@@ -88,10 +88,13 @@ namespace MangaChecker.Utilities {
                     Title = element.Children.FirstOrDefault(x => x.TagName.ToLower() == "title")?.TextContent,
                     Link = element.Children.FirstOrDefault(x => x.TagName.ToLower() == "link")?.TextContent,
                     Category = element.Children.FirstOrDefault(x => x.TagName.ToLower() == "category")?.TextContent,
-                    Description = element.Children.FirstOrDefault(x => x.TagName.ToLower() == "description")?.TextContent,
+                    Description =
+                        element.Children.FirstOrDefault(x => x.TagName.ToLower() == "description")?.TextContent,
                     Guid = element.Children.FirstOrDefault(x => x.TagName.ToLower() == "guid")?.TextContent,
                     Author = element.Children.FirstOrDefault(x => x.TagName.ToLower() == "author")?.TextContent,
-                    PubDate = DateTime.Parse(element.Children.FirstOrDefault(x => x.TagName.ToLower() == "pubdate")?.TextContent)
+                    PubDate =
+                        DateTime.Parse(
+                            element.Children.FirstOrDefault(x => x.TagName.ToLower() == "pubdate")?.TextContent)
                 }).ToList();
 
                 return list;

@@ -1,5 +1,4 @@
 ﻿using System.Windows.Input;
-using MangaChecker.Utilities;
 using MangaCheckerV3.Common;
 using MaterialDesignThemes.Wpf;
 using PropertyChanged;
@@ -7,9 +6,6 @@ using PropertyChanged;
 namespace MangaCheckerV3.ViewModels {
     [ImplementPropertyChanged]
     public class MainWindowViewModel {
-        public ProviderService ProviderService { get; }
-        public static MainWindowViewModel Instance { get; private set; }
-
         /// <summary>
         ///     Initializes a new instance of the MainWindowViewModel class.
         /// </summary>
@@ -30,8 +26,10 @@ namespace MangaCheckerV3.ViewModels {
             //WebParser.GetRssFeedAsync("http://bato.to/myfollows_rss?secret=dd5831f7430c7ed7ea7055db4fe7b7ad&l=English").ConfigureAwait(false);
             //WebParser.GetRssFeedAsync("http://read.tomochan.today/rss").ConfigureAwait(false);
             //WebParser.GetRssFeedAsync("http://www.webtoons.com/en/fantasy/tower-of-god/rss?title_no=95").ConfigureAwait(false);
-
         }
+
+        public ProviderService ProviderService { get; }
+        public static MainWindowViewModel Instance { get; private set; }
 
         public SnackbarMessageQueue SnackbarQueue { get; }
 
