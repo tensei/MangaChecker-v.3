@@ -10,17 +10,19 @@ namespace MangaCheckerV3.Common {
     public class ProviderService {
         public static List<ISite> Providers = new List<ISite> {
             new Webtoons(),
+            new Mangastream(),
+            new Tomochan(),
             new YoManga(),
             new Batoto(),
             new GameOfScanlation(),
-            new HeyManga(),
             new Jaiminisbox(),
             new KireiCake(),
+            new Crunchyroll(),
+            new HeyManga(),
             new Kissmanga(),
             new Mangafox(),
             new Mangahere(),
             new Mangareader(),
-            new Mangastream()
         };
 
         public static bool Pause = false;

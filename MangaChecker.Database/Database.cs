@@ -7,7 +7,7 @@ using MangaChecker.Database.Enums;
 using MangaChecker.Database.Tables;
 
 namespace MangaChecker.Database {
-    class Database {
+    public class Database {
         private const string DatabaseVersion = "1.0.0.2";
         private static readonly string DatabasePath = Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db");
 
