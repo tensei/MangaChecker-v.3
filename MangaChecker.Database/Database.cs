@@ -8,7 +8,7 @@ using MangaChecker.Database.Tables;
 
 namespace MangaChecker.Database {
     public class Database {
-        private const string DatabaseVersion = "1.0.0.2";
+        private const string DatabaseVersion = "1.0.0.3";
         private static readonly string DatabasePath = Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db");
 
 
@@ -24,7 +24,9 @@ namespace MangaChecker.Database {
             {"GameOfScanlation", "https://gameofscanlation.moe/"},
             {"KireiCake", "http://kireicake.com/"},
             {"Jaiminisbox", "https://jaiminisbox.com/"},
-            {"HeyManga", "https://www.heymanga.me/"}
+            {"HeyManga", "https://www.heymanga.me/"},
+            {"Tomochan", "http://read.tomochan.today/"},
+            {"Crunchyroll", "http://www.crunchyroll.com/comics/manga"},
         };
 
         private static readonly Dictionary<string, string> DefaultVersions = new Dictionary<string, string> {
@@ -44,14 +46,13 @@ namespace MangaChecker.Database {
             MangaEvent?.Invoke(ordered, MangaEnum.GetHistory);
             return ordered;
         }
-        public static IOrderedEnumerable<Manga> GetAllMangas() {
+        public static IEnumerable<Manga> GetAllMangas() {
             IEnumerable<Manga> query;
             using (var conn = new LiteDatabase(DatabasePath)) {
                 query = conn.GetCollection<Manga>("Manga").FindAll();
             }
-            var ordered = query.OrderByDescending(m => m.Updated);
-            MangaEvent?.Invoke(ordered, MangaEnum.Get);
-            return ordered;
+            MangaEvent?.Invoke(query, MangaEnum.Get);
+            return query;
         }
 
         public static IOrderedEnumerable<Manga> GetAllNewMangas() {
@@ -64,14 +65,13 @@ namespace MangaChecker.Database {
             return ordered;
         }
 
-        public static IOrderedEnumerable<Manga> GetMangasFrom(string site) {
+        public static IEnumerable<Manga> GetMangasFrom(string site) {
             IEnumerable<Manga> query;
             using (var conn = new LiteDatabase(DatabasePath)) {
                 query = conn.GetCollection<Manga>("Manga").Find(s => s.Site == site);
             }
-            var ordered = query.OrderByDescending(m => m.Updated);
-            MangaEvent?.Invoke(ordered, MangaEnum.Get);
-            return ordered;
+            MangaEvent?.Invoke(query, MangaEnum.Get);
+            return query;
         }
 
         public static void InsertManga(Manga manga) {
@@ -89,11 +89,12 @@ namespace MangaChecker.Database {
             MangaEvent?.Invoke(manga, MangaEnum.InsertHistory);
         }
 
-        public static void Update(Manga manga) {
+        public static void Update(Manga manga, bool history = false) {
             using (var conn = new LiteDatabase(DatabasePath)) {
                 var query = conn.GetCollection<Manga>("Manga");
                 query.Update(manga);
             }
+            if (history) return;
             MangaEvent?.Invoke(manga, MangaEnum.Update);
         }
         public static void UpdateTrans(List<Manga> manga) {

@@ -49,6 +49,7 @@
 			<Grid.RowDefinitions>
 				<RowDefinition />
 				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
 			</Grid.RowDefinitions>
 			<ListBox Grid.Column="0" SelectedIndex="{Binding DrawerIndex}"
 			         Background="{DynamicResource HighlightBrush}"
@@ -57,24 +58,26 @@
 
 				<materialDesign:PackIcon Kind="Home" Height="20" Width="20" ToolTip="Home" />
 				<materialDesign:PackIcon Kind="PlusBox" Height="20" Width="20" ToolTip="Add Manga" />
-				<materialDesign:PackIcon Kind="History" Height="20" Width="20" ToolTip="History" />
 				<Separator Style="{DynamicResource MaterialDesignLightSeparator}" />
-				<materialDesign:PackIcon Kind="Settings" Height="20" Width="20" ToolTip="Settings" />
 				<materialDesign:PackIcon Kind="ViewModule" Height="20" Width="20" ToolTip="Plugins" />
 				<materialDesign:PackIcon Kind="Brush" Height="20" Width="20" ToolTip="Theme" />
 				<materialDesign:PackIcon Kind="NewBox" Height="20" Width="20" ToolTip="New Manga for Today" />
+				<materialDesign:PackIcon Kind="History" Height="20" Width="20" ToolTip="History" />
+				<Separator Style="{DynamicResource MaterialDesignLightSeparator}" />
+				<materialDesign:PackIcon Kind="Settings" Height="20" Width="20" ToolTip="Settings" />
 			</ListBox>
 			<materialDesign:Transitioner SelectedIndex="{Binding DrawerIndex}" Grid.Row="0" Grid.Column="1">
 				<Views:MangaListView />
 				<Views:AddMangaView />
-				<Views:HistoryView />
 				<Separator /> <!--workaround to use same index-->
-				<Views:SettingsView />
 				<Views:PluginsView />
 				<Views:ThemeView />
 				<Views:NewView />
+				<Views:HistoryView />
+				<Separator/>
+				<Views:SettingsView />
 			</materialDesign:Transitioner>
-			<materialDesign:ColorZone Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Padding="4"
+			<materialDesign:ColorZone Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Padding="4"
 			                          materialDesign:ShadowAssist.ShadowDepth="Depth2">
 				<Grid>
 					<TextBlock Text="{Binding ProviderService.Timer}" HorizontalAlignment="Right" />
@@ -85,10 +88,10 @@
 					</TextBlock>
 				</Grid>
 			</materialDesign:ColorZone>
-			<materialDesign:Snackbar x:Name="Snacky" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"
+			<materialDesign:Snackbar x:Name="Snacky" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"
 			                         HorizontalAlignment="Stretch"
 			                         MessageQueue="{Binding SnackbarQueue}"
-			                         materialDesign:ShadowAssist.ShadowDepth="Depth3" />
+			                         materialDesign:ShadowAssist.ShadowDepth="Depth2"/>
 		</Grid>
 	</materialDesign:DialogHost>
 </Controls:MetroWindow>

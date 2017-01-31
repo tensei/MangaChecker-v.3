@@ -53,6 +53,7 @@
 
 			<converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 			<converters:NullableToVisibilityConverter x:Key="NullableToVisibilityConverter" />
+			<converters:NotZeroToVisibilityConverter x:Key="NotZeroToVisibilityConverter" />
 		</ResourceDictionary>
 	</Application.Resources>
 </Application>

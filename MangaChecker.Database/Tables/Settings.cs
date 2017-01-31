@@ -1,8 +1,10 @@
 ﻿using System;
+using PropertyChanged;
 
 //using SQLite;
 
 namespace MangaChecker.Database.Tables {
+    [ImplementPropertyChanged]
     public class Settings {
         //[PrimaryKey, AutoIncrement]
         public int Id { get; set; }

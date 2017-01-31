@@ -25,6 +25,18 @@ namespace MangaCheckerV3.Common {
             new Mangareader(),
         };
 
+        public static bool Add(ISite site) {
+            if (Providers.Contains(site)) return false;
+            Providers.Add(site);
+            return true;
+        }
+
+        public static bool Remove(ISite site) {
+            if (!Providers.Contains(site)) return false;
+            Providers.Remove(site);
+            return true;
+        }
+
         public static bool Pause = false;
         public static bool Stop = false;
         public int Timer { get; set; }

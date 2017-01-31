@@ -9,8 +9,6 @@ using PropertyChanged;
 namespace MangaCheckerV3.ViewModels.Settings_ViewModels {
     [ImplementPropertyChanged]
     public class ThemeViewModel {
-        private Swatch _accentColor;
-        private Swatch _primaryColor;
         private string _theme;
 
         public ThemeViewModel() {
@@ -55,10 +53,10 @@ namespace MangaCheckerV3.ViewModels.Settings_ViewModels {
         public void SetupTheme() {
             var primary = Settings.Default.Primary;
             var accents = Settings.Default.Accents;
-            var _theme = Settings.Default.Theme;
+            var theme = Settings.Default.Theme;
             ApplyPrimary(PrimaryColors.FirstOrDefault(s => s.Name == primary));
             ApplyAccent(AccentColors.FirstOrDefault(s => s.Name == accents));
-            Theme = _theme;
+            Theme = theme;
         }
     }
 }

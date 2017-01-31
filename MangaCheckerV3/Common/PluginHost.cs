@@ -8,10 +8,8 @@ using MangaChecker.DataTypes.Interfaces;
 
 namespace MangaCheckerV3.Common {
     public class PluginHost : IDisposable {
-        public const string PluginsDirectory = "Plugins";
-
-
-        private readonly CompositionContainer container;
+        private const string PluginsDirectory = "Plugins";
+        private readonly CompositionContainer _container;
 
         static PluginHost() {
         }
@@ -19,17 +17,15 @@ namespace MangaCheckerV3.Common {
 
         private PluginHost() {
             var catalog = new AggregateCatalog(new AssemblyCatalog(Assembly.GetExecutingAssembly()));
-
             var current = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location);
-            if (current != null) {
-                var pluginsPath = Path.Combine(current, PluginsDirectory);
-                if (Directory.Exists(pluginsPath)) {
-                    var dcat = new DirectoryCatalog(pluginsPath);
-                    catalog.Catalogs.Add(dcat);
-                }
+            if (current == null) return;
+            var pluginsPath = Path.Combine(current, PluginsDirectory);
+            if (!Directory.Exists(pluginsPath)) return;
+            var folders = Directory.GetDirectories(pluginsPath);
+            foreach (var folder in folders) {
+                catalog.Catalogs.Add(new DirectoryCatalog(folder));
             }
-
-            container = new CompositionContainer(catalog);
+            _container = new CompositionContainer(catalog);
         }
 
         public static PluginHost Instance { get; } = new PluginHost();
@@ -38,11 +34,11 @@ namespace MangaCheckerV3.Common {
         public IEnumerable<Lazy<IPlugin, IPluginMetadata>> Settings { get; set; }
 
         public void Dispose() {
-            container.Dispose();
+            _container.Dispose();
         }
 
         public void Initialize() {
-            container.ComposeParts(this);
+            _container.ComposeParts(this);
         }
     }
 }

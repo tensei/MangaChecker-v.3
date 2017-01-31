@@ -4,11 +4,11 @@ using PropertyChanged;
 
 namespace MangaCheckerV3.Models {
     [ImplementPropertyChanged]
-    public class SettingsModel {
+    public class PluginsModel {
         private readonly IPluginMetadata _metadata;
         private readonly IPlugin _settings;
 
-        public SettingsModel(Lazy<IPlugin, IPluginMetadata> settings) {
+        public PluginsModel(Lazy<IPlugin, IPluginMetadata> settings) {
             _settings = settings.Value;
             _metadata = settings.Metadata;
         }

@@ -22,8 +22,23 @@ namespace MangaCheckerV3.ViewModels {
 
         private void DatabaseOnMangaEvent(object sender, MangaEnum mangaEnum) {
             if (mangaEnum != MangaEnum.Update) return;
+            var m = (Manga) sender;
+            var nm = new Manga {
+                Name = m.Name,
+                Chapter = m.Chapter,
+                Added = m.Added,
+                Updated = m.Updated,
+                Link = m.Link,
+                Rss = m.Rss,
+                Site = m.Site,
+                SpecialLink = m.SpecialLink,
+                Genres = m.Genres,
+                New = m.New,
+                OtherChapters = m.OtherChapters,
+                Newest = m.Newest
+            };
             _history.Add((Manga) sender);
-            Database.InsertHistory((Manga)sender);
+            Database.InsertHistory(nm);
         }
 
         public ReadOnlyObservableCollection<Manga> History { get; }

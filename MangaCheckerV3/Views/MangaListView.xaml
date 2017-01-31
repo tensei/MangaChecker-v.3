@@ -8,6 +8,7 @@
 	xmlns:converters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
 	xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
 	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+	xmlns:system="clr-namespace:System;assembly=mscorlib"
 	x:Class="MangaCheckerV3.Views.MangaListView"
 	mc:Ignorable="d"
 	d:DesignHeight="500" d:DesignWidth="700"
@@ -32,14 +33,24 @@
 				<TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0">
 					<Run Text="{Binding Mangas.Count, Mode=OneWay}"/>
 					<Run Text=" Mangas ("/>
-					<Run Text="{Binding SelectedSite, Mode=OneWay}"/>
+					<Run Text="{Binding SelectedSite.Name, Mode=OneWay}"/>
 					<Run Text=")"/>
 				</TextBlock>
-				<Button Grid.Column="1" Style="{DynamicResource MaterialDesignToolButton}" 
-						Margin="10,0" ToolTip="Refresh list" HorizontalAlignment="Right"
-						Command="{Binding RefreshListCommand}">
-					<materialDesign:PackIcon Kind="Refresh" />
-				</Button>
+				<StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+					<TextBlock Text="Sort by:" VerticalAlignment="Center"/>
+					<ComboBox VerticalAlignment="Center" Width="75" Margin="8,0" SelectedItem="{Binding SortMode}">
+						<system:String >Updated</system:String>
+						<system:String >Name</system:String>
+						<system:String >Added</system:String>
+						<system:String >Site</system:String>
+						<system:String >Chapter</system:String>
+					</ComboBox>
+					<Button Style="{DynamicResource MaterialDesignToolButton}" 
+							Margin="10,0" ToolTip="Refresh list" HorizontalAlignment="Right"
+							Command="{Binding RefreshListCommand}">
+						<materialDesign:PackIcon Kind="Refresh" />
+					</Button>
+				</StackPanel>
 			</Grid>
 		</materialDesign:ColorZone>
 		<materialDesign:ColorZone Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Mode="PrimaryMid"
@@ -48,37 +59,61 @@
 			<Grid>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="Auto" />
-					<ColumnDefinition Width="Auto" />
-					<ColumnDefinition Width="Auto" />
-					<ColumnDefinition Width="Auto" />
-					<ColumnDefinition Width="Auto" />
-					<ColumnDefinition Width="Auto" />
 					<ColumnDefinition Width="*" />
 					<ColumnDefinition Width="Auto" />
 				</Grid.ColumnDefinitions>
-				<Button Grid.Column="0" Height="28" Margin="3,0" ToolTip="Open site" Command="{Binding OpenMangaCommand}">
-					<materialDesign:PackIcon Kind="ArrowTopRight" />
-				</Button>
-				<Button Grid.Column="1" Height="28" Margin="3,0" Command="{Binding ViewerCommand}" Content="Viewer" />
-				<Button Grid.Column="2" Height="28" Margin="3,0" Command="{Binding RefreshCommand}" Content="Refresh" />
-				<Button Grid.Column="3" Height="28" Margin="3,0" Command="{Binding IncreaseCommand}">
-					<materialDesign:PackIcon Kind="Plus" />
-				</Button>
-				<Button Grid.Column="4" Height="28" Margin="3,0" Command="{Binding DecreaseCommand}">
-					<materialDesign:PackIcon Kind="Minus" />
-				</Button>
-				<Button Grid.Column="5" Height="28" Margin="3,0" Command="{Binding DeleteCommand}" Content="Delete" />
-				<TextBlock Grid.Column="6" Text="{Binding SelectedManga.Name}" Margin="3,0" VerticalAlignment="Center" />
-				<Button Grid.Column="7" Height="28" Margin="3,0" Command="{Binding DeselectCommand}"
+				<WrapPanel Orientation="Horizontal">
+					<Button Height="28" Margin="3,0" ToolTip="Open site" Command="{Binding OpenMangaCommand}">
+						<materialDesign:PackIcon Kind="ArrowTopRight" />
+					</Button>
+					<Button Height="28" Margin="3,0" Command="{Binding ViewerCommand}" ToolTip="Viewer" >
+						<materialDesign:PackIcon Kind="Eye"/>
+					</Button>
+					<Button Height="28" Margin="3,0" Command="{Binding RefreshCommand}" ToolTip="Refresh" >
+						<materialDesign:PackIcon Kind="Refresh"/>
+					</Button>
+					<Button  Height="28" Margin="3,0" Command="{Binding IncreaseCommand}">
+						<materialDesign:PackIcon Kind="Plus" />
+					</Button>
+					<ComboBox SelectedItem="{Binding AmountItem}" Width="40" IsReadOnly="True"
+							  HorizontalContentAlignment="Center">
+						<system:Int32>1</system:Int32>
+						<system:Int32>10</system:Int32>
+						<system:Int32>100</system:Int32>
+					</ComboBox>
+					<Button Height="28" Margin="3,0" Command="{Binding DecreaseCommand}">
+						<materialDesign:PackIcon Kind="Minus" />
+					</Button>
+					<Button Height="28" Margin="3,0" Command="{Binding DeleteCommand}" ToolTip="Delete" >
+						<materialDesign:PackIcon Kind="Delete"/>
+					</Button>
+				</WrapPanel>
+				
+				<TextBlock Grid.Column="1" Text="{Binding SelectedManga.Name}" Margin="3,0" VerticalAlignment="Center" />
+				<Button Grid.Column="2" Height="28" Margin="3,0" Command="{Binding DeselectCommand}"
 				        Background="Transparent" BorderThickness="0" Width="30" Padding="2" HorizontalAlignment="Right">
 					<materialDesign:PackIcon Kind="Close" />
 				</Button>
 			</Grid>
 		</materialDesign:ColorZone>
 		<ListBox ItemsSource="{Binding Sites}" Background="{DynamicResource PrimaryHueMidBrush}"
-		         SelectedItem="{Binding SelectedSite, Mode=TwoWay}"
+		         SelectedItem="{Binding SelectedSite, Mode=TwoWay}" HorizontalContentAlignment="Stretch"
 		         SelectedIndex="{Binding SelectedSiteIndex}" Grid.Row="0" Grid.RowSpan="3" Grid.Column="0"
-		         Foreground="{Binding TitleForeground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" />
+		         Foreground="{Binding TitleForeground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:MetroWindow}}}">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<DataTemplate.Triggers>
+						<DataTrigger Binding="{Binding IsEnabled}" Value="0">
+							<Setter Property="Visibility" Value="Collapsed"></Setter>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding IsEnabled}" Value="1">
+							<Setter Property="Visibility" Value="Visible"></Setter>
+						</DataTrigger>
+					</DataTemplate.Triggers>
+					<TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
 
 		<ListBox ItemsSource="{Binding Mangas}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3"
 		         HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"
