@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.Composition;
 using MangaChecker.DataTypes.Interfaces;
-using TestSettingsPlugin.ViewModels;
-using TestSettingsPlugin.Views;
+using DBMigration.ViewModels;
+using DBMigration.Views;
 
-namespace TestSettingsPlugin {
+namespace DBMigration {
     [Export(typeof(IPlugin))]
     [ExportMetadata("Title", "Migration")]
     [ExportMetadata("Description", "Migration tool for old => new db")]

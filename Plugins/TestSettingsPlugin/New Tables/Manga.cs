@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using LiteDB;
 
-namespace TestSettingsPlugin.New_Tables {
+namespace DBMigration.New_Tables {
     public class Manga {
         [BsonId]
         public int MangaId { get; set; }

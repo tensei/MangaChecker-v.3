@@ -3,12 +3,12 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using DBMigration.New_Tables;
+using DBMigration.Old_Tables;
 using LiteDB;
 using SQLite;
-using TestSettingsPlugin.New_Tables;
-using TestSettingsPlugin.Old_Tables;
 
-namespace TestSettingsPlugin.ViewModels {
+namespace DBMigration.ViewModels {
     public class MainViewModel : ViewModelBase {
         private string _output;
 

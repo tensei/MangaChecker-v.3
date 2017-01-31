@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace TestSettingsPlugin.Views {
+namespace DBMigration.Views {
     /// <summary>
     ///     Interaction logic for MainView.xaml
     /// </summary>

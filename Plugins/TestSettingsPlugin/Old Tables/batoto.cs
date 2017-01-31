@@ -1,6 +1,6 @@
 ﻿using SQLite;
 
-namespace TestSettingsPlugin.Old_Tables {
+namespace DBMigration.Old_Tables {
     public class batoto {
         [PrimaryKey]
         [AutoIncrement]
