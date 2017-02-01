@@ -16,7 +16,7 @@ namespace MangaCheckerV3.ViewModels {
             RemoveCommand = new ActionCommand(m => Remove((Manga) m));
             ViewCommand = new ActionCommand(m => View((Manga) m));
             History = new ReadOnlyObservableCollection<Manga>(_history);
-            Database.MangaEvent += DatabaseOnMangaEvent;
+            LiteDB.MangaEvent += DatabaseOnMangaEvent;
             Refresh();
         }
 
@@ -38,7 +38,7 @@ namespace MangaCheckerV3.ViewModels {
                 Newest = m.Newest
             };
             _history.Add((Manga) sender);
-            Database.InsertHistory(nm);
+            LiteDB.InsertHistory(nm);
         }
 
         public ReadOnlyObservableCollection<Manga> History { get; }
@@ -52,12 +52,12 @@ namespace MangaCheckerV3.ViewModels {
 
         private void Refresh() {
             if(_history.Count > 0) _history.Clear();
-            Database.GetHistory()?.ToList().ForEach(_history.Add);
+            LiteDB.GetHistory()?.ToList().ForEach(_history.Add);
             LastRefresh = DateTime.Now.ToLongTimeString();
         }
 
         private void Remove(Manga manga) {
-            Database.DeleteHistory(manga);
+            LiteDB.DeleteHistory(manga);
             _history.Remove(manga);
         }
 

@@ -13,7 +13,6 @@ namespace MangaCheckerV3.ViewModels {
             Instance = this;
             SnackbarQueue = new SnackbarMessageQueue();
             SnackbarQueue.Enqueue("Starting...", true);
-
             StartStopCommand = new ActionCommand(StartStop);
             RefreshCommand = new ActionCommand(() => ProviderService.Timer = 5);
 

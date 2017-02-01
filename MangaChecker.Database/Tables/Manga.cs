@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using LiteDB;
 using MangaChecker.Database.Enums;
 using PropertyChanged;
@@ -17,7 +18,7 @@ namespace MangaChecker.Database.Tables {
 
         public bool New { get; set; } = false;
 
-        public string[] OtherChapters { get; set; } = {};
+        public List<string> OtherChapters { get; set; } = new List<string>();
 
         public string Site { get; set; }
 
@@ -27,9 +28,11 @@ namespace MangaChecker.Database.Tables {
 
         public string SpecialLink { get; set; }
 
+        public string Thumbnail { get; set; }
+
         public DateTime Added { get; set; } = DateTime.Now;
 
-        public Genre[] Genres { get; set; } = {};
+        public List<Genre> Genres { get; set; } = new List<Genre>();
 
         public DateTime Updated { get; set; } = DateTime.Now;
 

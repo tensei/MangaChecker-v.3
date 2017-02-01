@@ -33,11 +33,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -59,12 +54,16 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MangaChecker.Database\MangaChecker.Database.csproj">
-      <Project>{BC2C4EAE-6D63-4594-A062-80330ED4B591}</Project>
+      <Project>{bc2c4eae-6d63-4594-a062-80330ed4b591}</Project>
       <Name>MangaChecker.Database</Name>
     </ProjectReference>
     <ProjectReference Include="..\MangaChecker.DataTypes\MangaChecker.DataTypes.csproj">
       <Project>{f5132764-7a38-42f8-b54f-f7d4dccbb4ba}</Project>
       <Name>MangaChecker.DataTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MangaChecker.Utilities\MangaChecker.Utilities.csproj">
+      <Project>{11e83b6e-a665-423f-8089-42f7d5a2e98c}</Project>
+      <Name>MangaChecker.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

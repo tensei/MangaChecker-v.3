@@ -86,7 +86,7 @@
 										<ColumnDefinition />
 									</Grid.ColumnDefinitions>
 									<TextBlock Text="Open New Chapters in Browser" Margin="8,0" VerticalAlignment="Center" />
-									<ToggleButton Grid.Column="1" IsChecked="{Binding OpenLinks.Active}" HorizontalAlignment="Right"/>
+									<ToggleButton Grid.Column="1" IsChecked="{Binding OpenLinks.OpenLinks}" HorizontalAlignment="Right"/>
 								</Grid>
 								<Grid Margin="10,5" MinWidth="170" HorizontalAlignment="Stretch">
 									<Grid.ColumnDefinitions>

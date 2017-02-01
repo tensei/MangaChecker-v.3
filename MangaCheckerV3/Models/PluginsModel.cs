@@ -1,4 +1,5 @@
 ﻿using System;
+using MangaChecker.DataTypes.Interface;
 using MangaChecker.DataTypes.Interfaces;
 using PropertyChanged;
 

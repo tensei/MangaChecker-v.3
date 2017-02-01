@@ -6,31 +6,25 @@
              xmlns:local="clr-namespace:MangaCheckerV3.Views"
              xmlns:viewModel="clr-namespace:MangaCheckerV3.ViewModels"
              xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:addingViews="clr-namespace:MangaCheckerV3.Views.Adding_Views"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance {x:Type viewModel:AddMangaViewModel}, IsDesignTimeCreatable=False}">
 	<Grid>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition />
 			<ColumnDefinition />
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition />
 		</Grid.RowDefinitions>
-		<ListBox SelectedItem="{Binding SelectedSite}" ItemsSource="{Binding SiteAdds}"
-		         Background="{DynamicResource AccentColorBrush2}"
-		         Foreground="{Binding TitleForeground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Custom:MetroWindow}}}"
-		         Grid.RowSpan="2">
-			<ListBox.ItemTemplate>
-				<DataTemplate>
-					<TextBlock Text="{Binding Name}" />
-				</DataTemplate>
-			</ListBox.ItemTemplate>
-		</ListBox>
-		<TextBlock Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" FontWeight="Bold" FontSize="16" Margin="0,5">Add Stuff here</TextBlock>
-		<ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto">
-			<ContentControl Content="{Binding SelectedSite.AddView}" />
-		</ScrollViewer>
+		<Button Command="{Binding NormalCommand}" Margin="2,4" >Normal</Button>
+		<Button Grid.Row="0" Grid.Column="1" Command="{Binding AdvancedCommand}" Margin="2,4">Advanced</Button>
+		<materialDesign:Transitioner Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" SelectedIndex="{Binding TranIndex}">
+			<addingViews:NormalView DataContext="{Binding NormalDataContext}"/>
+			<addingViews:AdvancedView DataContext="{Binding AdvancedDataContext}"/>
+		</materialDesign:Transitioner>
 	</Grid>
 </UserControl>

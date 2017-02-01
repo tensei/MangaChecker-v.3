@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Reflection;
+using MangaChecker.DataTypes.Interface;
 using MangaChecker.DataTypes.Interfaces;
 
 namespace MangaCheckerV3.Common {
@@ -11,8 +12,7 @@ namespace MangaCheckerV3.Common {
         private const string PluginsDirectory = "Plugins";
         private readonly CompositionContainer _container;
 
-        static PluginHost() {
-        }
+        static PluginHost() { }
 
 
         private PluginHost() {
@@ -31,7 +31,7 @@ namespace MangaCheckerV3.Common {
         public static PluginHost Instance { get; } = new PluginHost();
 
         [ImportMany]
-        public IEnumerable<Lazy<IPlugin, IPluginMetadata>> Settings { get; set; }
+        public IEnumerable<Lazy<IPlugin, IPluginMetadata>> Plugins { get; set; }
 
         public void Dispose() {
             _container.Dispose();
@@ -39,6 +39,9 @@ namespace MangaCheckerV3.Common {
 
         public void Initialize() {
             _container.ComposeParts(this);
+            foreach (var plugin in Plugins) {
+                plugin.Value.Initialize();
+            }
         }
     }
 }

@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using MangaChecker.Database;
 using MangaChecker.Database.Enums;
 using MangaChecker.Database.Tables;
 using MangaCheckerV3.Models;
+using MangaCheckerV3.ViewModels.Window_ViewModels;
+using MangaCheckerV3.Views.Windows;
 using PropertyChanged;
 
 namespace MangaCheckerV3.ViewModels {
     [ImplementPropertyChanged]
     public class MangaListViewModel {
-        public static MangaListViewModel Instance;
         
         public List<SiteListItem> Sites { get; set; } = new List<SiteListItem> {
             new SiteListItem {Name = "All", Overrideable = false, IsEnabled = 1},
@@ -43,7 +45,6 @@ namespace MangaCheckerV3.ViewModels {
         private string _sortMode = "Updated";
 
         public MangaListViewModel() {
-            Instance = this;
             Mangas = new ReadOnlyObservableCollection<Manga>(_mangas);
             Mangas = new ReadOnlyObservableCollection<Manga>(_mangas);
             IncreaseCommand = new ActionCommand(IncreaseChapter);
@@ -54,7 +55,8 @@ namespace MangaCheckerV3.ViewModels {
             ViewerCommand = new ActionCommand(ViewManga);
             DeselectCommand = new ActionCommand(() => { SelectedManga = null; });
             RefreshListCommand = new ActionCommand(() => FillMangaList(SelectedSite.Name));
-            Database.SettingEvent += DatabaseOnSettingEvent;
+            EditCommand = new ActionCommand(EditManga);
+            LiteDB.SettingEvent += DatabaseOnSettingEvent;
         }
 
         private void DatabaseOnSettingEvent(object sender, SettingEnum settingEnum) {
@@ -80,6 +82,7 @@ namespace MangaCheckerV3.ViewModels {
         public ICommand ViewerCommand { get; }
         public ICommand DeselectCommand { get; }
         public ICommand RefreshListCommand { get; }
+        public ICommand EditCommand { get; }
 
 
         public Manga SelectedManga { get; set; }
@@ -105,6 +108,7 @@ namespace MangaCheckerV3.ViewModels {
 
         public int AmountItem { get; set; } = 1;
 
+
         private List<Manga> Sortby(string sort, List<Manga> mangas ) {
             var m = mangas;
             if (_mangas.Count > 0) _mangas.Clear();
@@ -125,7 +129,7 @@ namespace MangaCheckerV3.ViewModels {
         }
 
         private void Fill() {
-            var x = Sortby(_sortMode, Database.GetAllMangas().ToList());
+            var x = Sortby(_sortMode, LiteDB.GetAllMangas().ToList());
             foreach (var manga in x) _mangas.Add(manga);
         }
 
@@ -133,14 +137,14 @@ namespace MangaCheckerV3.ViewModels {
             SelectedManga.Chapter+= AmountItem;
             SelectedManga.Newest = SelectedManga.Chapter;
             SelectedManga.Updated = DateTime.Now;
-            Database.Update(SelectedManga, true);
+            LiteDB.Update(SelectedManga, true);
         }
 
         private void DecreaseChapter() {
             SelectedManga.Chapter-= AmountItem;
             SelectedManga.Newest = SelectedManga.Chapter;
             SelectedManga.Updated -= TimeSpan.FromDays(1);
-            Database.Update(SelectedManga, true);
+            LiteDB.Update(SelectedManga, true);
         }
 
         private void OpenMangaSite() {
@@ -149,14 +153,14 @@ namespace MangaCheckerV3.ViewModels {
         }
 
         private void DeleteManga() {
-            Database.Delete(SelectedManga);
+            LiteDB.Delete(SelectedManga);
             MainWindowViewModel.Instance.SnackbarQueue.Enqueue($"Deleted {SelectedManga.Name}", "UNDO", HandleUndoMethod,
                 SelectedManga);
             _mangas.Remove(SelectedManga);
         }
 
         private void HandleUndoMethod(Manga manga) {
-            Database.InsertManga(manga);
+            LiteDB.InsertManga(manga);
             _mangas.Add(manga);
         }
 
@@ -168,13 +172,21 @@ namespace MangaCheckerV3.ViewModels {
             throw new NotImplementedException();
         }
 
+        private void EditManga() {
+            var e = new EditWindow {
+                DataContext = new EditWindowViewModel(SelectedManga),
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            };
+            e.Show();
+        }
+
         private void FillMangaList(string site) {
             switch (site) {
                 case "All":
                     Fill();
                     break;
                 default:
-                    Sortby(_sortMode, Database.GetMangasFrom(site).ToList()).ForEach(_mangas.Add);
+                    Sortby(_sortMode, LiteDB.GetMangasFrom(site).ToList()).ForEach(_mangas.Add);
                     break;
             }
         }

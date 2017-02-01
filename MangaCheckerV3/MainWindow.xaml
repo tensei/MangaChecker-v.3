@@ -88,10 +88,9 @@
 					</TextBlock>
 				</Grid>
 			</materialDesign:ColorZone>
-			<materialDesign:Snackbar x:Name="Snacky" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"
+			<materialDesign:Snackbar Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"
 			                         HorizontalAlignment="Stretch"
-			                         MessageQueue="{Binding SnackbarQueue}"
-			                         materialDesign:ShadowAssist.ShadowDepth="Depth2"/>
+			                         MessageQueue="{Binding SnackbarQueue}"/>
 		</Grid>
 	</materialDesign:DialogHost>
 </Controls:MetroWindow>

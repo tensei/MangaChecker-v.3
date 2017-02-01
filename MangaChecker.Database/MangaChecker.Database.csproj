@@ -52,7 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database.cs" />
+    <Compile Include="LiteDB.cs" />
     <Compile Include="Enums\Genre.cs" />
     <Compile Include="Enums\DatabaseEnum.cs" />
     <Compile Include="Enums\MangaEnum.cs" />

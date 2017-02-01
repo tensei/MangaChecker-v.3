@@ -84,6 +84,9 @@
 					<Button Height="28" Margin="3,0" Command="{Binding DecreaseCommand}">
 						<materialDesign:PackIcon Kind="Minus" />
 					</Button>
+					<Button Height="28" Margin="3,0" Command="{Binding EditCommand}" ToolTip="Edit" >
+						<materialDesign:PackIcon Kind="TableEdit"/>
+					</Button>
 					<Button Height="28" Margin="3,0" Command="{Binding DeleteCommand}" ToolTip="Delete" >
 						<materialDesign:PackIcon Kind="Delete"/>
 					</Button>
