@@ -17,31 +17,11 @@ using PropertyChanged;
 namespace MangaCheckerV3.ViewModels {
     [ImplementPropertyChanged]
     public class MangaListViewModel {
-        
-        public List<SiteListItem> Sites { get; set; } = new List<SiteListItem> {
-            new SiteListItem {Name = "All", Overrideable = false, IsEnabled = 1},
-            new SiteListItem {Name = "Mangareader"},
-            new SiteListItem {Name = "Mangafox"},
-            new SiteListItem {Name = "Mangahere"},
-            new SiteListItem {Name = "Mangastream"},
-            new SiteListItem {Name = "Batoto"},
-            new SiteListItem {Name = "Kissmanga"},
-            new SiteListItem {Name = "Webtoons"},
-            new SiteListItem {Name = "YoManga"},
-            new SiteListItem {Name = "GameOfScanlation"},
-            new SiteListItem {Name = "KireiCake"},
-            new SiteListItem {Name = "Jaiminisbox"},
-            new SiteListItem {Name = "HeyManga"},
-            new SiteListItem {Name = "Tomochan"},
-            new SiteListItem {Name = "Crunchyroll"},
-            new SiteListItem {Name = "Backlog", Overrideable = false, IsEnabled = 1},
-        }.OrderBy(s=>s.Name).ToList();
-
         /// <summary>
         ///     Initializes a new instance of the MangaListViewModel class.
         /// </summary>
         private readonly ObservableCollection<Manga> _mangas = new ObservableCollection<Manga>();
-        
+
         private SiteListItem _selectedSite;
         private string _sortMode = "Updated";
 
@@ -60,17 +40,24 @@ namespace MangaCheckerV3.ViewModels {
             LiteDB.SettingEvent += DatabaseOnSettingEvent;
         }
 
-        private void DatabaseOnSettingEvent(object sender, SettingEnum settingEnum) {
-            if (settingEnum != SettingEnum.Get && settingEnum != SettingEnum.Update) return;
-            var settings = sender as List<Settings>;
-            if (settings == null) return;
-            foreach (var setting in settings) {
-                var v = Sites.FirstOrDefault(s => s.Name == setting.Setting);
-                if (v != null) {
-                    v.IsEnabled = setting.Active;
-                }
-            }
-        }
+        public List<SiteListItem> Sites { get; set; } = new List<SiteListItem> {
+            new SiteListItem {Name = "All", Overrideable = false, IsEnabled = 1},
+            new SiteListItem {Name = "Mangareader"},
+            new SiteListItem {Name = "Mangafox"},
+            new SiteListItem {Name = "Mangahere"},
+            new SiteListItem {Name = "Mangastream"},
+            new SiteListItem {Name = "Batoto"},
+            new SiteListItem {Name = "Kissmanga"},
+            new SiteListItem {Name = "Webtoons"},
+            new SiteListItem {Name = "YoManga"},
+            new SiteListItem {Name = "GameOfScanlation"},
+            new SiteListItem {Name = "KireiCake"},
+            new SiteListItem {Name = "Jaiminisbox"},
+            new SiteListItem {Name = "HeyManga"},
+            new SiteListItem {Name = "Tomochan"},
+            new SiteListItem {Name = "Crunchyroll"},
+            new SiteListItem {Name = "Backlog", Overrideable = false, IsEnabled = 1}
+        }.OrderBy(s => s.Name).ToList();
 
         public ReadOnlyObservableCollection<Manga> Mangas { get; }
 
@@ -101,7 +88,7 @@ namespace MangaCheckerV3.ViewModels {
         public string SortMode {
             get { return _sortMode; }
             set {
-                if(_sortMode == value) return;
+                if (_sortMode == value) return;
                 _sortMode = value;
                 Sortby(value, _mangas.ToList()).ForEach(_mangas.Add);
             }
@@ -109,8 +96,18 @@ namespace MangaCheckerV3.ViewModels {
 
         public int AmountItem { get; set; } = 1;
 
+        private void DatabaseOnSettingEvent(object sender, SettingEnum settingEnum) {
+            if (settingEnum != SettingEnum.Get && settingEnum != SettingEnum.Update) return;
+            var settings = sender as List<Settings>;
+            if (settings == null) return;
+            foreach (var setting in settings) {
+                var v = Sites.FirstOrDefault(s => s.Name == setting.Setting);
+                if (v != null) v.IsEnabled = setting.Active;
+            }
+        }
 
-        private List<Manga> Sortby(string sort, List<Manga> mangas ) {
+
+        private List<Manga> Sortby(string sort, List<Manga> mangas) {
             var m = mangas;
             if (_mangas.Count > 0) _mangas.Clear();
             switch (sort.ToLower()) {
@@ -135,14 +132,14 @@ namespace MangaCheckerV3.ViewModels {
         }
 
         private void IncreaseChapter() {
-            SelectedManga.Chapter+= AmountItem;
+            SelectedManga.Chapter += AmountItem;
             SelectedManga.Newest = SelectedManga.Chapter.ToString(CultureInfo.InvariantCulture);
             SelectedManga.Updated = DateTime.Now;
             LiteDB.Update(SelectedManga, true);
         }
 
         private void DecreaseChapter() {
-            SelectedManga.Chapter-= AmountItem;
+            SelectedManga.Chapter -= AmountItem;
             SelectedManga.Newest = SelectedManga.Chapter.ToString(CultureInfo.InvariantCulture);
             SelectedManga.Updated -= TimeSpan.FromDays(1);
             LiteDB.Update(SelectedManga, true);

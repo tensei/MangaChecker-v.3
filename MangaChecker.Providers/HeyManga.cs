@@ -14,42 +14,22 @@ namespace MangaChecker.Providers {
             var all = LiteDB.GetMangasFrom(DbSettingName());
             var openlink = LiteDB.GetOpenLinks();
             var m = await _load2Pages("https://www.heymanga.me/latest-manga/");
+            if (m == null) return;
             var m2 = await _load2Pages("https://www.heymanga.me/latest-manga/2");
-            foreach (var d in m2) {
-                if (m.Keys.Contains(d.Key)) continue;
-                m.Add(d.Key, d.Value);
-            }
-            foreach (var manga in all) {
-                foreach (var rssItemObject in m) {
-                    if (!rssItemObject.Value.ToLower().Contains(manga.Name.ToLower())) {
-                        continue;
-                    }
-                    var nc = rssItemObject.Value.ToLower().Replace(manga.Name.ToLower(), string.Empty).Trim();
-                    if (nc.Contains(" ")) {
-                        nc = nc.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[0];
-                    }
-                    var isNew = NewChapterHelper.IsNew(manga, nc, DateTime.Now, 
-                        rssItemObject.Key, openlink);
+            if (m2 != null) {
+                foreach (var d in m2) {
+                    if (m.Keys.Contains(d.Key)) continue;
+                    m.Add(d.Key, d.Value);
                 }
             }
-        }
-
-        private async Task<Dictionary<string, string>> _load2Pages(string link) {
-            var m = new Dictionary<string, string>();
-            var html = await WebParser.GetHtmlSourceDucumentAsync(link);
-            var a =
-                html.All.Where(x => x.LocalName == "a" && x.HasAttribute("href") && x.GetAttribute("href").Contains("http://www.heymanga.me/manga/"));
-            foreach (var element in a.Reverse()) {
-                try {
-                    if (m.Keys.Contains(element.GetAttribute("href"))) continue;
-                    m.Add(element.GetAttribute("href"), element.Children[0].InnerHtml);
-                }
-                catch (Exception e) {
-                    Console.WriteLine(e);
-                    throw;
-                }
+            foreach (var manga in all)
+            foreach (var rssItemObject in m) {
+                if (!rssItemObject.Value.ToLower().Contains(manga.Name.ToLower())) continue;
+                var nc = rssItemObject.Value.ToLower().Replace(manga.Name.ToLower(), string.Empty).Trim();
+                if (nc.Contains(" ")) nc = nc.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries)[0];
+                var isNew = NewChapterHelper.IsNew(manga, nc, DateTime.Now,
+                    rssItemObject.Key, openlink);
             }
-            return m;
         }
 
         public async Task<IEnumerable<object>> GetImagesTaskAsync(string url) {
@@ -70,6 +50,26 @@ namespace MangaChecker.Providers {
 
         public Regex LinkRegex() {
             return new Regex("");
+        }
+
+        private async Task<Dictionary<string, string>> _load2Pages(string link) {
+            var m = new Dictionary<string, string>();
+            var html = await WebParser.GetHtmlSourceDucumentAsync(link);
+            var a =
+                html.All.Where(
+                    x =>
+                        x.LocalName == "a" && x.HasAttribute("href") &&
+                        x.GetAttribute("href").Contains("http://www.heymanga.me/manga/"));
+            foreach (var element in a.Reverse())
+                try {
+                    if (m.Keys.Contains(element.GetAttribute("href"))) continue;
+                    m.Add(element.GetAttribute("href"), element.Children[0].InnerHtml);
+                }
+                catch (Exception e) {
+                    Console.WriteLine(e);
+                    throw;
+                }
+            return m;
         }
     }
 }

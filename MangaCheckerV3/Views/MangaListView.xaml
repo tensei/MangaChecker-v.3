@@ -27,27 +27,27 @@
 		<materialDesign:ColorZone Grid.Column="1">
 			<Grid>
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition/>
-					<ColumnDefinition/>
+					<ColumnDefinition />
+					<ColumnDefinition />
 				</Grid.ColumnDefinitions>
 				<TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0">
-					<Run Text="{Binding Mangas.Count, Mode=OneWay}"/>
-					<Run Text=" Mangas ("/>
-					<Run Text="{Binding SelectedSite.Name, Mode=OneWay}"/>
-					<Run Text=")"/>
+					<Run Text="{Binding Mangas.Count, Mode=OneWay}" />
+					<Run Text=" Mangas (" />
+					<Run Text="{Binding SelectedSite.Name, Mode=OneWay}" />
+					<Run Text=")" />
 				</TextBlock>
 				<StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-					<TextBlock Text="Sort by:" VerticalAlignment="Center"/>
+					<TextBlock Text="Sort by:" VerticalAlignment="Center" />
 					<ComboBox VerticalAlignment="Center" Width="75" Margin="8,0" SelectedItem="{Binding SortMode}">
-						<system:String >Updated</system:String>
-						<system:String >Name</system:String>
-						<system:String >Added</system:String>
-						<system:String >Site</system:String>
-						<system:String >Chapter</system:String>
+						<system:String>Updated</system:String>
+						<system:String>Name</system:String>
+						<system:String>Added</system:String>
+						<system:String>Site</system:String>
+						<system:String>Chapter</system:String>
 					</ComboBox>
-					<Button Style="{DynamicResource MaterialDesignToolButton}" 
-							Margin="10,0" ToolTip="Refresh list" HorizontalAlignment="Right"
-							Command="{Binding RefreshListCommand}">
+					<Button Style="{DynamicResource MaterialDesignToolButton}"
+					        Margin="10,0" ToolTip="Refresh list" HorizontalAlignment="Right"
+					        Command="{Binding RefreshListCommand}">
 						<materialDesign:PackIcon Kind="Refresh" />
 					</Button>
 				</StackPanel>
@@ -66,17 +66,17 @@
 					<Button Height="28" Margin="3,0" ToolTip="Open site" Command="{Binding OpenMangaCommand}">
 						<materialDesign:PackIcon Kind="ArrowTopRight" />
 					</Button>
-					<Button Height="28" Margin="3,0" Command="{Binding ViewerCommand}" ToolTip="Viewer" >
-						<materialDesign:PackIcon Kind="Eye"/>
+					<Button Height="28" Margin="3,0" Command="{Binding ViewerCommand}" ToolTip="Viewer">
+						<materialDesign:PackIcon Kind="Eye" />
 					</Button>
-					<Button Height="28" Margin="3,0" Command="{Binding RefreshCommand}" ToolTip="Refresh" >
-						<materialDesign:PackIcon Kind="Refresh"/>
+					<Button Height="28" Margin="3,0" Command="{Binding RefreshCommand}" ToolTip="Refresh">
+						<materialDesign:PackIcon Kind="Refresh" />
 					</Button>
-					<Button  Height="28" Margin="3,0" Command="{Binding IncreaseCommand}">
+					<Button Height="28" Margin="3,0" Command="{Binding IncreaseCommand}">
 						<materialDesign:PackIcon Kind="Plus" />
 					</Button>
 					<ComboBox SelectedItem="{Binding AmountItem}" Width="40" IsReadOnly="True"
-							  HorizontalContentAlignment="Center">
+					          HorizontalContentAlignment="Center">
 						<system:Int32>1</system:Int32>
 						<system:Int32>10</system:Int32>
 						<system:Int32>100</system:Int32>
@@ -84,14 +84,14 @@
 					<Button Height="28" Margin="3,0" Command="{Binding DecreaseCommand}">
 						<materialDesign:PackIcon Kind="Minus" />
 					</Button>
-					<Button Height="28" Margin="3,0" Command="{Binding EditCommand}" ToolTip="Edit" >
-						<materialDesign:PackIcon Kind="TableEdit"/>
+					<Button Height="28" Margin="3,0" Command="{Binding EditCommand}" ToolTip="Edit">
+						<materialDesign:PackIcon Kind="TableEdit" />
 					</Button>
-					<Button Height="28" Margin="3,0" Command="{Binding DeleteCommand}" ToolTip="Delete" >
-						<materialDesign:PackIcon Kind="Delete"/>
+					<Button Height="28" Margin="3,0" Command="{Binding DeleteCommand}" ToolTip="Delete">
+						<materialDesign:PackIcon Kind="Delete" />
 					</Button>
 				</WrapPanel>
-				
+
 				<TextBlock Grid.Column="1" Text="{Binding SelectedManga.Name}" Margin="3,0" VerticalAlignment="Center" />
 				<Button Grid.Column="2" Height="28" Margin="3,0" Command="{Binding DeselectCommand}"
 				        Background="Transparent" BorderThickness="0" Width="30" Padding="2" HorizontalAlignment="Right">
@@ -107,13 +107,13 @@
 				<DataTemplate>
 					<DataTemplate.Triggers>
 						<DataTrigger Binding="{Binding IsEnabled}" Value="0">
-							<Setter Property="Visibility" Value="Collapsed"></Setter>
+							<Setter Property="Visibility" Value="Collapsed" />
 						</DataTrigger>
 						<DataTrigger Binding="{Binding IsEnabled}" Value="1">
-							<Setter Property="Visibility" Value="Visible"></Setter>
+							<Setter Property="Visibility" Value="Visible" />
 						</DataTrigger>
 					</DataTemplate.Triggers>
-					<TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+					<TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
 				</DataTemplate>
 			</ListBox.ItemTemplate>
 		</ListBox>
@@ -135,12 +135,14 @@
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="45" />
 							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="Auto" />
 							<ColumnDefinition Width="95" />
 							<!--<ColumnDefinition Width="85" />-->
 						</Grid.ColumnDefinitions>
 						<TextBlock Grid.Column="0" Text="{Binding Chapter}" Margin="5,0" HorizontalAlignment="Left" />
 						<TextBlock Text="{Binding Name}" Grid.Column="1" HorizontalAlignment="Left" Margin="5,0" />
-						<TextBlock Text="{Binding DaysAgo}" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" />
+						<TextBlock Text="{Binding Site}" Grid.Column="2" HorizontalAlignment="Right" Margin="5,0" />
+						<TextBlock Text="{Binding DaysAgo}" Grid.Column="3" HorizontalAlignment="Left" Margin="5,0" />
 						<!--<TextBlock Grid.Column="3" Text="{Binding Site}" Margin="5,0" HorizontalAlignment="Left" />-->
 					</Grid>
 				</DataTemplate>

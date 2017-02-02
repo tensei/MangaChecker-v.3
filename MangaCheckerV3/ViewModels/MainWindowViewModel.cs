@@ -38,7 +38,7 @@ namespace MangaCheckerV3.ViewModels {
         public ICommand StartStopCommand { get; }
         public ICommand RefreshCommand { get; }
         public PackIconKind PausePlayButtonIcon { get; set; } = PackIconKind.Pause;
-        
+
         private void StartStop() {
             if (!ProviderService.Pause) {
                 PausePlayButtonIcon = PackIconKind.Play;

@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.Composition;
-using MangaChecker.DataTypes.Interfaces;
 using DBMigration.ViewModels;
 using DBMigration.Views;
 using MangaChecker.DataTypes.Interface;

@@ -14,6 +14,7 @@ namespace MangaChecker.Providers {
             var openlink = LiteDB.GetOpenLinks();
             foreach (var manga in all) {
                 var rss = await WebParser.GetRssFeedAsync(manga.Rss);
+                if (rss == null) continue;
                 rss.Reverse();
                 foreach (var rssItemObject in rss) {
                     var nc = rssItemObject.Title.Replace("Ep. ", string.Empty);

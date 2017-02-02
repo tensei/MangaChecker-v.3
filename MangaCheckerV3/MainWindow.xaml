@@ -74,7 +74,7 @@
 				<Views:ThemeView />
 				<Views:NewView />
 				<Views:HistoryView />
-				<Separator/>
+				<Separator />
 				<Views:SettingsView />
 			</materialDesign:Transitioner>
 			<materialDesign:ColorZone Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Padding="4"
@@ -90,7 +90,7 @@
 			</materialDesign:ColorZone>
 			<materialDesign:Snackbar Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"
 			                         HorizontalAlignment="Stretch"
-			                         MessageQueue="{Binding SnackbarQueue}"/>
+			                         MessageQueue="{Binding SnackbarQueue}" />
 		</Grid>
 	</materialDesign:DialogHost>
 </Controls:MetroWindow>

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using MangaChecker.Database;
 using MangaChecker.Database.Enums;
@@ -46,15 +44,13 @@ namespace MangaCheckerV3.ViewModels {
         private void RemoveAll() {
             if (_newManga.Count == 0) return;
             var nm = _newManga.ToList();
-            foreach (var manga in nm) {
-                manga.New = false;
-            }
+            foreach (var manga in nm) manga.New = false;
             _newManga.Clear();
             LiteDB.UpdateTrans(nm, true);
         }
 
         private void Refresh() {
-            if(_newManga.Count > 0)_newManga.Clear();
+            if (_newManga.Count > 0) _newManga.Clear();
             var nm = LiteDB.GetAllNewMangas();
             nm?.ToList().ForEach(_newManga.Add);
             LastRefresh = DateTime.Now.ToLongTimeString();

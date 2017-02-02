@@ -12,17 +12,15 @@ namespace MangaChecker.Providers {
         public async Task CheckAll() {
             var all = LiteDB.GetMangasFrom(DbSettingName());
             var rss = await WebParser.GetRssFeedAsync("http://mangastream.com/rss");
+            if (rss == null) return;
             rss.Reverse();
             var openlink = LiteDB.GetOpenLinks();
-            foreach (var manga in all) {
-                foreach (var rssItemObject in rss) {
-                    if (!rssItemObject.Title.ToLower().Contains(manga.Name.ToLower())) {
-                        continue;
-                    }
-                    var nc = rssItemObject.Title.ToLower().Replace(manga.Name, string.Empty).Trim();
-                    var isNew = NewChapterHelper.IsNew(manga, nc, rssItemObject.PubDate,
-                        rssItemObject.Link, openlink);
-                }
+            foreach (var manga in all)
+            foreach (var rssItemObject in rss) {
+                if (!rssItemObject.Title.ToLower().Contains(manga.Name.ToLower())) continue;
+                var nc = rssItemObject.Title.ToLower().Replace(manga.Name, string.Empty).Trim();
+                var isNew = NewChapterHelper.IsNew(manga, nc, rssItemObject.PubDate,
+                    rssItemObject.Link, openlink);
             }
         }
 

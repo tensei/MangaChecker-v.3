@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using MangaChecker.Database.Tables;
 using PropertyChanged;
@@ -11,7 +7,7 @@ namespace MangaCheckerV3.ViewModels.Adding_ViewModels {
     [ImplementPropertyChanged]
     public class NormalViewModel {
         public NormalViewModel() {
-            GetInfoCommand = new ActionCommand(async ()=> await GetInfo());
+            GetInfoCommand = new ActionCommand(async () => await GetInfo());
             AddMangaCommand = new ActionCommand(Add);
         }
 
@@ -45,7 +41,8 @@ namespace MangaCheckerV3.ViewModels.Adding_ViewModels {
                 Chapter = 22,
                 Site = "Jaiminisbox",
                 Link = "https://jaiminisbox.com/reader/read/uratarou/en/0/22/",
-                Thumbnail = "https://jaiminisbox.com/reader/content/comics/uratarou_57eaf67c12054/uratarou-thumbnail.jpg",
+                Thumbnail =
+                    "https://jaiminisbox.com/reader/content/comics/uratarou_57eaf67c12054/uratarou-thumbnail.jpg",
                 Rss = "https://jaiminisbox.com/reader/feeds/rss"
             };
 #endif

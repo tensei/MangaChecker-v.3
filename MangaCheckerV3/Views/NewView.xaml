@@ -19,8 +19,8 @@
 			<Grid>
 				<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
 					<TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0">
-						<Run Text="{Binding NewManga.Count, Mode=OneWay}"/>
-						<Run Text=" New Mangas."/>
+						<Run Text="{Binding NewManga.Count, Mode=OneWay}" />
+						<Run Text=" New Mangas." />
 					</TextBlock>
 					<TextBlock Text="{Binding LastRefresh}" HorizontalAlignment="Left" VerticalAlignment="Center" />
 				</StackPanel>

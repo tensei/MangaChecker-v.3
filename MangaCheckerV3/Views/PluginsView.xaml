@@ -20,10 +20,10 @@
 					<Expander Margin="0,0,0,5" Header="{Binding Name, Mode=OneWay}">
 						<Grid Margin="4">
 							<Grid.RowDefinitions>
-								<RowDefinition Height="Auto"/>
-								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
 							</Grid.RowDefinitions>
-							<Separator/>
+							<Separator />
 							<ContentControl Grid.Row="1" Content="{Binding SettingsView}" />
 						</Grid>
 					</Expander>

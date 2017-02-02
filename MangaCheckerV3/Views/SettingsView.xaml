@@ -47,23 +47,25 @@
 											</Grid>
 										</materialDesign:Chip>-->
 										<materialDesign:Chip Content="{Binding Setting}" x:Name="CardIcon"
-															IconBackground="{DynamicResource PrimaryHueDarkBrush}"
-															IconForeground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-															Margin="10,5" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:SettingsView}}, Path=DataContext.ToggleActive, Mode=OneTime}" CommandParameter="{Binding}">
-											<materialDesign:Chip.Icon >
+										                     IconBackground="{DynamicResource PrimaryHueDarkBrush}"
+										                     IconForeground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+										                     Margin="10,5"
+										                     Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:SettingsView}}, Path=DataContext.ToggleActive, Mode=OneTime}"
+										                     CommandParameter="{Binding}">
+											<materialDesign:Chip.Icon>
 												<ToggleButton Style="{DynamicResource MaterialDesignActionToggleButton}"
-															IsChecked="{Binding Active}">
+												              IsChecked="{Binding Active}">
 													<materialDesign:ToggleButtonAssist.OnContent>
-														<materialDesign:PackIcon Kind="Check"/>
+														<materialDesign:PackIcon Kind="Check" />
 													</materialDesign:ToggleButtonAssist.OnContent>
-													<materialDesign:PackIcon Kind="Close"/>
+													<materialDesign:PackIcon Kind="Close" />
 												</ToggleButton>
 											</materialDesign:Chip.Icon>
 										</materialDesign:Chip>
 										<DataTemplate.Triggers>
 											<DataTrigger Binding="{Binding Active}" Value="1">
-												<Setter TargetName="CardIcon" Property="Background" Value="#66BB6A"/>
-												<Setter TargetName="CardIcon" Property="Foreground" Value="Black"/>
+												<Setter TargetName="CardIcon" Property="Background" Value="#66BB6A" />
+												<Setter TargetName="CardIcon" Property="Foreground" Value="Black" />
 											</DataTrigger>
 										</DataTemplate.Triggers>
 									</DataTemplate>
@@ -86,7 +88,7 @@
 										<ColumnDefinition />
 									</Grid.ColumnDefinitions>
 									<TextBlock Text="Open New Chapters in Browser" Margin="8,0" VerticalAlignment="Center" />
-									<ToggleButton Grid.Column="1" IsChecked="{Binding OpenLinks.OpenLinks}" HorizontalAlignment="Right"/>
+									<ToggleButton Grid.Column="1" IsChecked="{Binding OpenLinks.OpenLinks}" HorizontalAlignment="Right" />
 								</Grid>
 								<Grid Margin="10,5" MinWidth="170" HorizontalAlignment="Stretch">
 									<Grid.ColumnDefinitions>
@@ -96,7 +98,7 @@
 									<TextBlock Text="{Binding RefreshTime.Setting}" Margin="8,0" VerticalAlignment="Center" />
 									<StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
 										<TextBox Text="{Binding RefreshTime.Active}" MinWidth="80"
-												 PreviewTextInput="NumberValidationTextBox" HorizontalContentAlignment="Right" />
+										         PreviewTextInput="NumberValidationTextBox" HorizontalContentAlignment="Right" />
 										<TextBlock Margin="8,0,0,0" VerticalAlignment="Center">seconds.</TextBlock>
 									</StackPanel>
 

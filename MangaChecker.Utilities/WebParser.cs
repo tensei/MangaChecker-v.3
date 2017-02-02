@@ -10,7 +10,7 @@ using AngleSharp.Parser.Xml;
 using CloudFlareUtilities;
 
 namespace MangaChecker.Utilities {
-    public class WebParser {
+    public static class WebParser {
         private static async Task<string> GetHtmlSourceStringAsync(string url) {
             try {
                 // Create the clearance handler.
@@ -19,7 +19,9 @@ namespace MangaChecker.Utilities {
                 };
 
                 // Create a HttpClient that uses the handler to bypass CloudFlare's JavaScript challange.
-                var client = new HttpClient(handler);
+                var client = new HttpClient(handler) {
+                    Timeout = TimeSpan.FromSeconds(15)
+                };
 
                 // Use the HttpClient as usual. Any JS challenge will be solved automatically for you.
                 var content = await client.GetStringAsync(url);
@@ -45,10 +47,26 @@ namespace MangaChecker.Utilities {
                 };
 
                 // Create a HttpClient that uses the handler to bypass CloudFlare's JavaScript challange.
-                var client = new HttpClient(handler);
+                var client = new HttpClient(handler) {
+                    Timeout = TimeSpan.FromSeconds(15)
+                };
 
                 // Use the HttpClient as usual. Any JS challenge will be solved automatically for you.
-                var content = await client.GetStringAsync(url);
+                string content;
+                try {
+                    content  = await client.GetStringAsync(url);
+                }
+                catch (AggregateException ex) when (ex.InnerException is CloudFlareClearanceException)
+                {
+                    // After all retries, clearance still failed.
+                    return null;
+                }
+                catch (AggregateException ex) when (ex.InnerException is TaskCanceledException)
+                {
+                    // Looks like we ran into a timeout. Too many clearance attempts?
+                    // Maybe you should increase client.Timeout as each attempt will take about five seconds.
+                    return null;
+                }
                 IHtmlDocument document;
                 HtmlParser parser;
                 if (js) {
@@ -77,7 +95,7 @@ namespace MangaChecker.Utilities {
         public static async Task<List<RssItemObject>> GetRssFeedAsync(string url) {
             try {
                 var allXml = await GetHtmlSourceStringAsync(url);
-
+                if (allXml == null) return null;
                 var parser = new XmlParser(new XmlParserOptions {
                     IsSuppressingErrors = true
                 });

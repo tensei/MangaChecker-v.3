@@ -4,6 +4,6 @@
         Update,
         Delete,
         Refresh,
-        Get,
+        Get
     }
 }

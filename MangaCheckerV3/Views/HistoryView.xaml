@@ -20,8 +20,8 @@
 			<Grid>
 				<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
 					<TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0">
-						<Run Text="{Binding History.Count, Mode=OneWay}"/>
-						<Run Text=" History items."/>
+						<Run Text="{Binding History.Count, Mode=OneWay}" />
+						<Run Text=" History items." />
 					</TextBlock>
 					<TextBlock Text="{Binding LastRefresh}" HorizontalAlignment="Left" VerticalAlignment="Center" />
 				</StackPanel>
@@ -38,15 +38,15 @@
 				<DataTemplate DataType="{x:Type tables:Manga}">
 					<Grid Margin="4,0">
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="45" />
 							<ColumnDefinition Width="*" />
 							<ColumnDefinition Width="Auto" />
-							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="100" />
 							<ColumnDefinition Width="Auto" />
 						</Grid.ColumnDefinitions>
-						<TextBlock Text="{Binding Newest}" VerticalAlignment="Center" />
+						<TextBlock Text="{Binding Chapter}" VerticalAlignment="Center" />
 						<TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" Margin="10,0" />
-						<TextBlock Grid.Column="2" Text="{Binding Site}" VerticalAlignment="Center" />
+						<TextBlock Grid.Column="2" Text="{Binding Site}" VerticalAlignment="Center" HorizontalAlignment="Right" />
 						<TextBlock Grid.Column="3" Text="{Binding DaysAgo}" VerticalAlignment="Center" Margin="10,0" />
 						<StackPanel Grid.Column="4" Orientation="Horizontal" Margin="0,0,10,0">
 							<Button Padding="8,3" Background="Transparent" BorderThickness="0" Margin="0,0,10,0"

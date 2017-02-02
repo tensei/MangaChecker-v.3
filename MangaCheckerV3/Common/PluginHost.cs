@@ -12,7 +12,8 @@ namespace MangaCheckerV3.Common {
         private const string PluginsDirectory = "Plugins";
         private readonly CompositionContainer _container;
 
-        static PluginHost() { }
+        static PluginHost() {
+        }
 
 
         private PluginHost() {
@@ -22,9 +23,7 @@ namespace MangaCheckerV3.Common {
             var pluginsPath = Path.Combine(current, PluginsDirectory);
             if (!Directory.Exists(pluginsPath)) return;
             var folders = Directory.GetDirectories(pluginsPath);
-            foreach (var folder in folders) {
-                catalog.Catalogs.Add(new DirectoryCatalog(folder));
-            }
+            foreach (var folder in folders) catalog.Catalogs.Add(new DirectoryCatalog(folder));
             _container = new CompositionContainer(catalog);
         }
 
@@ -39,9 +38,7 @@ namespace MangaCheckerV3.Common {
 
         public void Initialize() {
             _container.ComposeParts(this);
-            foreach (var plugin in Plugins) {
-                plugin.Value.Initialize();
-            }
+            foreach (var plugin in Plugins) plugin.Value.Initialize();
         }
     }
 }

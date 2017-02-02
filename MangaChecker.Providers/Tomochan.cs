@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MangaChecker.Database;
@@ -15,16 +13,15 @@ namespace MangaChecker.Providers {
         public async Task CheckAll() {
             var all = LiteDB.GetMangasFrom(DbSettingName());
             var rss = await WebParser.GetRssFeedAsync("http://read.tomochan.today/rss");
+            if (rss == null) return;
             rss.Reverse();
             var openlink = LiteDB.GetOpenLinks();
-            foreach (var manga in all) {
-                foreach (var rssItemObject in rss) {
-                    var isNew = NewChapterHelper.IsNew(manga, rssItemObject.Category, rssItemObject.PubDate,
-                        rssItemObject.Link, openlink);
-                    await Task.Delay(100);
-                }
+            foreach (var manga in all)
+            foreach (var rssItemObject in rss) {
+                var isNew = NewChapterHelper.IsNew(manga, rssItemObject.Category, rssItemObject.PubDate,
+                    rssItemObject.Link, openlink);
+                await Task.Delay(100);
             }
-
         }
 
         public async Task<Manga> CheckOne(Manga manga) {

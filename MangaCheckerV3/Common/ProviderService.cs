@@ -22,8 +22,13 @@ namespace MangaCheckerV3.Common {
             new Kissmanga(),
             new Mangafox(),
             new Mangahere(),
-            new Mangareader(),
+            new Mangareader()
         };
+
+        public static bool Pause = false;
+        public static bool Stop = false;
+        public int Timer { get; set; }
+        public string Status { get; set; }
 
         public static bool Add(ISite site) {
             if (Providers.Contains(site)) return false;
@@ -37,11 +42,6 @@ namespace MangaCheckerV3.Common {
             return true;
         }
 
-        public static bool Pause = false;
-        public static bool Stop = false;
-        public int Timer { get; set; }
-        public string Status { get; set; }
-
         public async Task Run() {
             Timer = 5;
             while (!Stop)
@@ -53,7 +53,7 @@ namespace MangaCheckerV3.Common {
                 else {
                     foreach (var provider in Providers) {
                         var setting = LiteDB.GetSettingsFor(provider.DbSettingName());
-                        if(setting.Active == 0) continue;
+                        if (setting.Active == 0) continue;
                         Status = $"Checking {provider.DbSettingName()}...";
                         await provider.CheckAll();
                         await Task.Delay(1000);

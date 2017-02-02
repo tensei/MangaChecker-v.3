@@ -24,6 +24,8 @@ namespace MangaChecker.Database.Tables {
 
         public string Link { get; set; }
 
+        public string BaseMangaLink { get; set; }
+
         public string Rss { get; set; }
 
         public string SpecialLink { get; set; }

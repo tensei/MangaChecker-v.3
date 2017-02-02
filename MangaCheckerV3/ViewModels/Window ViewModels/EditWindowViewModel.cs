@@ -12,7 +12,8 @@ using PropertyChanged;
 namespace MangaCheckerV3.ViewModels.Window_ViewModels {
     [ImplementPropertyChanged]
     public class EditWindowViewModel {
-        public Manga Manga { get; set; }
+        private readonly ObservableCollection<Genre> _genres = new ObservableCollection<Genre>();
+
         public EditWindowViewModel(Manga manga) {
             Manga = manga;
             DeleteGenreCommand = new ActionCommand(DeleteGenre);
@@ -23,9 +24,10 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
             SelectedGenre = Genres[0];
             manga.Genres.ForEach(_genres.Add);
         }
+
+        public Manga Manga { get; set; }
         public List<Genre> Genres => Enum.GetValues(typeof(Genre)).Cast<Genre>().ToList();
         public ReadOnlyObservableCollection<Genre> GenresAdded { get; }
-        private readonly ObservableCollection<Genre> _genres = new ObservableCollection<Genre>();
 
         public List<string> Sites => ProviderService.Providers.Select(p => p.DbSettingName()).ToList();
         public string SiteSelected { get; set; }
@@ -43,8 +45,9 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
             Manga.Genres.Add(SelectedGenre);
             _genres.Add(SelectedGenre);
         }
+
         private void DeleteGenre(object genre) {
-            var enumVal = (Genre)Enum.Parse(typeof(Genre), genre.ToString());
+            var enumVal = (Genre) Enum.Parse(typeof(Genre), genre.ToString());
             if (!Manga.Genres.Contains(enumVal)) return;
             Manga.Genres.Remove(enumVal);
             _genres.Remove(enumVal);
@@ -59,6 +62,5 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
                 throw;
             }
         }
-
     }
 }

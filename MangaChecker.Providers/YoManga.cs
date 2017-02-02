@@ -13,19 +13,15 @@ namespace MangaChecker.Providers {
             var all = LiteDB.GetMangasFrom(DbSettingName());
             var openlink = LiteDB.GetOpenLinks();
             var rss = await WebParser.GetRssFeedAsync("https://yomanga.co/reader/feeds/rss");
+            if (rss == null) return;
             rss.Reverse();
-            foreach (var manga in all) {
-                foreach (var rssItemObject in rss) {
-                    if (!rssItemObject.Title.ToLower().Contains(manga.Name.ToLower())) {
-                        continue;
-                    }
-                    var nc = rssItemObject.Title.ToLower().Replace($"{manga.Name.ToLower()} chapter", string.Empty).Trim();
-                    if (nc.Contains(" ")) {
-                        nc = nc.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[0];
-                    }
-                    var isNew = NewChapterHelper.IsNew(manga, nc, rssItemObject.PubDate,
-                        rssItemObject.Link, openlink);
-                }
+            foreach (var manga in all)
+            foreach (var rssItemObject in rss) {
+                if (!rssItemObject.Title.ToLower().Contains(manga.Name.ToLower())) continue;
+                var nc = rssItemObject.Title.ToLower().Replace($"{manga.Name.ToLower()} chapter", string.Empty).Trim();
+                if (nc.Contains(" ")) nc = nc.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries)[0];
+                var isNew = NewChapterHelper.IsNew(manga, nc, rssItemObject.PubDate,
+                    rssItemObject.Link, openlink);
             }
         }
 

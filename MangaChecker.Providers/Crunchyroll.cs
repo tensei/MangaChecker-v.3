@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MangaChecker.Database.Tables;
 using MangaChecker.DataTypes.Interface;
 
 namespace MangaChecker.Providers {
-    public class Crunchyroll : ISite{
+    public class Crunchyroll : ISite {
         //http://utils.senpai.moe/
 
         public async Task CheckAll() {
