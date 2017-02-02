@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -135,14 +136,14 @@ namespace MangaCheckerV3.ViewModels {
 
         private void IncreaseChapter() {
             SelectedManga.Chapter+= AmountItem;
-            SelectedManga.Newest = SelectedManga.Chapter;
+            SelectedManga.Newest = SelectedManga.Chapter.ToString(CultureInfo.InvariantCulture);
             SelectedManga.Updated = DateTime.Now;
             LiteDB.Update(SelectedManga, true);
         }
 
         private void DecreaseChapter() {
             SelectedManga.Chapter-= AmountItem;
-            SelectedManga.Newest = SelectedManga.Chapter;
+            SelectedManga.Newest = SelectedManga.Chapter.ToString(CultureInfo.InvariantCulture);
             SelectedManga.Updated -= TimeSpan.FromDays(1);
             LiteDB.Update(SelectedManga, true);
         }

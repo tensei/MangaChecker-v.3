@@ -38,7 +38,7 @@
 				<DataTemplate DataType="{x:Type tables:Manga}">
 					<Grid Margin="4,0">
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="35" />
+							<ColumnDefinition Width="Auto" />
 							<ColumnDefinition Width="*" />
 							<ColumnDefinition Width="Auto" />
 							<ColumnDefinition Width="Auto" />

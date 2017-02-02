@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MangaChecker.Database;
@@ -18,27 +19,9 @@ namespace MangaChecker.Providers {
             var openlink = LiteDB.GetOpenLinks();
             foreach (var manga in all) {
                 foreach (var rssItemObject in rss) {
-                    float nc;
-                    var error = float.TryParse(rssItemObject.Category, out nc);
-                    if (!error) {
-                        if (!manga.OtherChapters.Contains(rssItemObject.Category))
-                            manga.OtherChapters.Add(rssItemObject.Category);
-                        else {
-                            continue;
-                        }
-                    }
-                    else {
-                        if (manga.Chapter <= nc) 
-                            manga.Chapter = nc;
-                        else {
-                            continue;
-                        }
-                    }
-                    manga.Updated = rssItemObject.PubDate;
-                    manga.Newest = nc;
-                    Process.Start(rssItemObject.Link);
-                    if (!openlink) continue;
-                    LiteDB.Update(manga);
+                    var isNew = NewChapterHelper.IsNew(manga, rssItemObject.Category, rssItemObject.PubDate,
+                        rssItemObject.Link, openlink);
+                    await Task.Delay(100);
                 }
             }
 

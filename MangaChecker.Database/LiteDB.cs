@@ -8,7 +8,7 @@ using MangaChecker.Database.Tables;
 
 namespace MangaChecker.Database {
     public static class LiteDB {
-        private const string DatabaseVersion = "1.0.0.3";
+        private const string DatabaseVersion = "1.0.0.2";
         private static readonly string DatabasePath = Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db");
 
         private static readonly LiteDatabase _db = new LiteDatabase(DatabasePath);
@@ -86,7 +86,7 @@ namespace MangaChecker.Database {
             MangaEvent?.Invoke(manga, MangaEnum.Update);
         }
 
-        public static void UpdateTrans(List<Manga> manga) {
+        public static void UpdateTrans(List<Manga> manga, bool history = false) {
             using (var _db = new LiteDatabase(DatabasePath)) {
                 var query = _db.GetCollection<Manga>("Manga");
                 using (var trans1 = _db.BeginTrans()) {
@@ -94,6 +94,7 @@ namespace MangaChecker.Database {
                     trans1.Commit();
                 }
             }
+            if (history) return;
             MangaEvent?.Invoke(manga, MangaEnum.Update);
         }
 

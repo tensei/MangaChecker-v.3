@@ -50,7 +50,7 @@ namespace MangaCheckerV3.ViewModels {
                 manga.New = false;
             }
             _newManga.Clear();
-            LiteDB.UpdateTrans(nm);
+            LiteDB.UpdateTrans(nm, true);
         }
 
         private void Refresh() {

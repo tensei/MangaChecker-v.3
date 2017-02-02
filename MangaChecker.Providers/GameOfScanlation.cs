@@ -2,13 +2,28 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using MangaChecker.Database;
 using MangaChecker.Database.Tables;
 using MangaChecker.DataTypes.Interface;
+using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
     public class GameOfScanlation : ISite {
         public async Task CheckAll() {
-            throw new NotImplementedException();
+            var all = LiteDB.GetMangasFrom(DbSettingName());
+            var openlink = LiteDB.GetOpenLinks();
+            foreach (var manga in all) {
+                var rss = await WebParser.GetRssFeedAsync(manga.Rss);
+                rss.Reverse();
+                foreach (var rssItemObject in rss) {
+                    var nc = rssItemObject.Title.ToLower().Replace($"{manga.Name.ToLower()} chapter", string.Empty).Trim();
+                    if (nc.Contains(" ")) {
+                        nc = nc.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries)[0];
+                    }
+                    var isNew = NewChapterHelper.IsNew(manga, nc, rssItemObject.PubDate,
+                        rssItemObject.Link, openlink);
+                }
+            }
         }
 
         public async Task<IEnumerable<object>> GetImagesTaskAsync(string url) {
