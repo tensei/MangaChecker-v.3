@@ -14,6 +14,7 @@
 	TitleCharacterCasing="Normal" BorderThickness="1" GlowBrush="Black"
 	NonActiveBorderBrush="Black"
 	NonActiveGlowBrush="Black"
+	Closing="MainWindow_OnClosing"
 	NonActiveWindowTitleBrush="{DynamicResource HighlightBrush}"
 	d:DataContext="{d:DesignInstance {x:Type viewModel:MainWindowViewModel}, IsDesignTimeCreatable=False}">
 	<Controls:MetroWindow.RightWindowCommands>

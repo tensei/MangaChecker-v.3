@@ -11,7 +11,11 @@ namespace MangaChecker.Database {
         private const string DatabaseVersion = "1.0.0.2";
         private static readonly string DatabasePath = Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db");
 
-        private static readonly LiteDatabase _db = new LiteDatabase(DatabasePath);
+        private static readonly LiteDatabase Db = new LiteDatabase(DatabasePath);
+
+        public static void Dispose() {
+            Db.Dispose();
+        }
 
         private static readonly Dictionary<string, string> DefaultDatabaseSettings = new Dictionary<string, string> {
             {"Mangafox", "http://mangafox.me/"},
@@ -42,45 +46,45 @@ namespace MangaChecker.Database {
         public static event EventHandler<SettingEnum> SettingEvent; //switch to this maybe?
 
         public static IOrderedEnumerable<Manga> GetHistory() {
-            var query = _db.GetCollection<Manga>("History").FindAll();
+            var query = Db.GetCollection<Manga>("History").FindAll();
             var ordered = query.OrderBy(m => m.Updated);
             MangaEvent?.Invoke(ordered, MangaEnum.GetHistory);
             return ordered;
         }
 
         public static IEnumerable<Manga> GetAllMangas() {
-            var query = _db.GetCollection<Manga>("Manga").FindAll();
+            var query = Db.GetCollection<Manga>("Manga").FindAll();
             MangaEvent?.Invoke(query, MangaEnum.Get);
             return query;
         }
 
         public static IOrderedEnumerable<Manga> GetAllNewMangas() {
-            var query = _db.GetCollection<Manga>("Manga").Find(n => n.New);
+            var query = Db.GetCollection<Manga>("Manga").Find(n => n.New);
             var ordered = query.OrderByDescending(m => m.Updated);
             MangaEvent?.Invoke(ordered, MangaEnum.New);
             return ordered;
         }
 
         public static IEnumerable<Manga> GetMangasFrom(string site) {
-            var query = _db.GetCollection<Manga>("Manga").Find(s => s.Site == site);
+            var query = Db.GetCollection<Manga>("Manga").Find(s => s.Site == site);
             MangaEvent?.Invoke(query, MangaEnum.Get);
             return query;
         }
 
         public static void InsertManga(Manga manga) {
-            var query = _db.GetCollection<Manga>("Manga");
+            var query = Db.GetCollection<Manga>("Manga");
             query.Insert(manga);
             MangaEvent?.Invoke(manga, MangaEnum.Insert);
         }
 
         public static void InsertHistory(Manga manga) {
-            var query = _db.GetCollection<Manga>("History");
+            var query = Db.GetCollection<Manga>("History");
             query.Insert(manga);
             MangaEvent?.Invoke(manga, MangaEnum.InsertHistory);
         }
 
         public static void Update(Manga manga, bool history = false) {
-            var query = _db.GetCollection<Manga>("Manga");
+            var query = Db.GetCollection<Manga>("Manga");
             query.Update(manga);
             if (history) return;
             MangaEvent?.Invoke(manga, MangaEnum.Update);
@@ -99,32 +103,32 @@ namespace MangaChecker.Database {
         }
 
         public static void Delete(Manga manga) {
-            var query = _db.GetCollection<Manga>("Manga");
+            var query = Db.GetCollection<Manga>("Manga");
             query.Delete(manga.MangaId);
             MangaEvent?.Invoke(manga, MangaEnum.Delete);
         }
 
         public static void DeleteHistory(Manga manga) {
-            var query = _db.GetCollection<Manga>("History");
+            var query = Db.GetCollection<Manga>("History");
             query.Delete(manga.MangaId);
             MangaEvent?.Invoke(manga, MangaEnum.DeleteHistory);
         }
 
         public static List<Settings> GetAllSettings() {
-            var query = _db.GetCollection<Settings>("Settings").FindAll().ToList();
+            var query = Db.GetCollection<Settings>("Settings").FindAll().ToList();
             SettingEvent?.Invoke(query, SettingEnum.Get);
             return query;
         }
 
         public static Settings GetSettingsFor(string setting) {
-            var query = _db.GetCollection<Settings>("Settings").FindOne(s => s.Setting == setting);
+            var query = Db.GetCollection<Settings>("Settings").FindOne(s => s.Setting == setting);
             SettingEvent?.Invoke(query, SettingEnum.Get);
             return query;
         }
 
         public static void SaveSettings(List<Settings> settings) {
-            var query = _db.GetCollection<Settings>("Settings");
-            using (var trans1 = _db.BeginTrans()) {
+            var query = Db.GetCollection<Settings>("Settings");
+            using (var trans1 = Db.BeginTrans()) {
                 query.Update(settings);
                 trans1.Commit();
             }
@@ -132,22 +136,22 @@ namespace MangaChecker.Database {
         }
 
         public static int GetRefreshTime() {
-            var query = _db.GetCollection<Settings>("Settings").FindOne(s => s.Setting == "Refresh Time");
+            var query = Db.GetCollection<Settings>("Settings").FindOne(s => s.Setting == "Refresh Time");
             SettingEvent?.Invoke(query, SettingEnum.Refresh);
             return query.Active;
         }
 
         public static bool GetOpenLinks() {
-            var query = _db.GetCollection<Settings>("Settings").FindOne(s => s.Setting == "Open Links");
+            var query = Db.GetCollection<Settings>("Settings").FindOne(s => s.Setting == "Open Links");
             SettingEvent?.Invoke(query, SettingEnum.Refresh);
             return query.OpenLinks;
         }
 
         private static void UpdateDatabase(Versions dbv) {
-            var set = _db.GetCollection<Settings>("Settings");
-            _db.GetCollection<Manga>("History");
-            _db.GetCollection<Manga>("Manga");
-            var ver = _db.GetCollection<Versions>("Versions");
+            var set = Db.GetCollection<Settings>("Settings");
+            Db.GetCollection<Manga>("History");
+            Db.GetCollection<Manga>("Manga");
+            var ver = Db.GetCollection<Versions>("Versions");
 
             var setting = set.FindAll().Select(s => s.Setting).ToArray();
             var versions = ver.FindAll().Select(v => v.Name).ToArray();
@@ -193,10 +197,10 @@ namespace MangaChecker.Database {
         }
 
         public static void CreateDatabase() {
-            var set = _db.GetCollection<Settings>("Settings");
-            _db.GetCollection<Manga>("Manga");
-            _db.GetCollection<Manga>("History");
-            var ver = _db.GetCollection<Versions>("Versions");
+            var set = Db.GetCollection<Settings>("Settings");
+            Db.GetCollection<Manga>("Manga");
+            Db.GetCollection<Manga>("History");
+            var ver = Db.GetCollection<Versions>("Versions");
 
             ver.Insert(new Versions {
                 Name = "db",
@@ -235,7 +239,7 @@ namespace MangaChecker.Database {
         }
 
         public static string CheckDbVersion() {
-            var dbv = _db.GetCollection<Versions>("Versions").FindOne(v => v.Name == "db");
+            var dbv = Db.GetCollection<Versions>("Versions").FindOne(v => v.Name == "db");
             if (dbv.Version == DatabaseVersion) return null;
             dbv.Version = DatabaseVersion;
             UpdateDatabase(dbv);
