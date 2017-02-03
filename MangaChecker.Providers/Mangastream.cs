@@ -18,7 +18,7 @@ namespace MangaChecker.Providers {
             foreach (var manga in all)
             foreach (var rssItemObject in rss) {
                 if (!rssItemObject.Title.ToLower().Contains(manga.Name.ToLower())) continue;
-                var nc = rssItemObject.Title.ToLower().Replace(manga.Name, string.Empty).Trim();
+                var nc = rssItemObject.Title.ToLower().Replace(manga.Name.ToLower(), string.Empty).Trim();
                 var isNew = NewChapterHelper.IsNew(manga, nc, rssItemObject.PubDate,
                     rssItemObject.Link, openlink);
             }

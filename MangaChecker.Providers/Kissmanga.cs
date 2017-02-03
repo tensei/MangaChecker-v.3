@@ -30,6 +30,7 @@ namespace MangaChecker.Providers {
                     var isNew = NewChapterHelper.IsNew(manga, nc, newDate,
                         link, openlink);
                 }
+                await Task.Delay(500);
             }
         }
 

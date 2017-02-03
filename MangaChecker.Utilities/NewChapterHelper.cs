@@ -3,19 +3,27 @@ using System.Diagnostics;
 using System.Globalization;
 using MangaChecker.Database;
 using MangaChecker.Database.Tables;
+using static MangaChecker.Utilities.Log;
 
 namespace MangaChecker.Utilities {
-    public static class NewChapterHelper {
+    public static class NewChapterHelper
+    {
         public static bool IsNew(Manga manga, string newChapter, DateTime newDate, string newLink, bool openLink) {
             var isFloat = float.TryParse(newChapter, NumberStyles.Float, CultureInfo.InvariantCulture,
                 out float floatChapter);
             var isDateNew = newDate > manga.Updated;
+
+            if (isFloat && Math.Abs(floatChapter - manga.Chapter) <= 0 || newChapter == manga.Newest || floatChapter < manga.Chapter)
+                return true;
+
             if (isFloat && floatChapter > manga.Chapter)
                 return Update(manga, floatChapter, true, newLink, newDate, openLink, newChapter);
+
             if (isDateNew && !manga.OtherChapters.Contains(newChapter)) {
                 manga.OtherChapters.Add(newChapter);
                 return Update(manga, floatChapter, isFloat, newLink, newDate, openLink, newChapter);
             }
+            Loggger.Warn($"Current manga.Name={manga.Name} => manga.Chapter={manga.Chapter} != newChapter={newChapter} && floatChapter={floatChapter}");
             return false;
         }
 
