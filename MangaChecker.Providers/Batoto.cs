@@ -11,7 +11,7 @@ using MangaChecker.Utilities;
 namespace MangaChecker.Providers {
     public class Batoto : ISite {
         public async Task CheckAll() {
-            var all = LiteDB.GetMangasFrom(DbSettingName());
+            var all = LiteDB.GetMangasFrom(DbName);
             var brss = LiteDB.GetSettingsFor("Batoto Rss");
             var rss = await WebParser.GetRssFeedAsync(brss.Link);
             if (rss == null) return;
@@ -34,7 +34,7 @@ namespace MangaChecker.Providers {
                 }
         }
 
-        public async Task<IEnumerable<object>> GetImagesTaskAsync(string url) {
+        public async Task<Tuple<List<object>, int>> GetImagesTaskAsync(string url) {
             throw new NotImplementedException();
         }
 
@@ -46,12 +46,12 @@ namespace MangaChecker.Providers {
             throw new NotImplementedException();
         }
 
-        public string DbSettingName() {
-            return "Batoto";
-        }
+        public string DbName => "Batoto";
 
         public Regex LinkRegex() {
             return new Regex("");
         }
+
+        public bool ViewEnabled { get; set; }
     }
 }

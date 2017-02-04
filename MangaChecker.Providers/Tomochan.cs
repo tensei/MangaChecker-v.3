@@ -11,7 +11,7 @@ namespace MangaChecker.Providers {
     public class Tomochan : ISite {
         //http://read.tomochan.today/rss
         public async Task CheckAll() {
-            var all = LiteDB.GetMangasFrom(DbSettingName());
+            var all = LiteDB.GetMangasFrom(DbName);
             var rss = await WebParser.GetRssFeedAsync("http://read.tomochan.today/rss");
             if (rss == null) return;
             rss.Reverse();
@@ -28,7 +28,7 @@ namespace MangaChecker.Providers {
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<object>> GetImagesTaskAsync(string url) {
+        public async Task<Tuple<List<object>, int>> GetImagesTaskAsync(string url) {
             throw new NotImplementedException();
         }
 
@@ -36,12 +36,12 @@ namespace MangaChecker.Providers {
             throw new NotImplementedException();
         }
 
-        public string DbSettingName() {
-            return "Tomochan";
-        }
+        public string DbName => "Tomochan";
 
         public Regex LinkRegex() {
             return new Regex("");
         }
+
+        public bool ViewEnabled => false;
     }
 }

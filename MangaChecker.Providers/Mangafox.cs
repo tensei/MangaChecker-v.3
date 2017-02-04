@@ -10,7 +10,7 @@ using MangaChecker.Utilities;
 namespace MangaChecker.Providers {
     public class Mangafox : ISite {
         public async Task CheckAll() {
-            var all = LiteDB.GetMangasFrom(DbSettingName());
+            var all = LiteDB.GetMangasFrom(DbName);
             var openlink = LiteDB.GetOpenLinks();
             foreach (var manga in all) {
                 if (string.IsNullOrEmpty(manga.Rss)) {
@@ -34,7 +34,7 @@ namespace MangaChecker.Providers {
             }
         }
 
-        public async Task<IEnumerable<object>> GetImagesTaskAsync(string url) {
+        public async Task<Tuple<List<object>, int>> GetImagesTaskAsync(string url) {
             throw new NotImplementedException();
         }
 
@@ -46,12 +46,12 @@ namespace MangaChecker.Providers {
             throw new NotImplementedException();
         }
 
-        public string DbSettingName() {
-            return "Mangafox";
-        }
+        public string DbName => "Mangafox";
 
         public Regex LinkRegex() {
             return new Regex("");
         }
+
+        public bool ViewEnabled => false;
     }
 }

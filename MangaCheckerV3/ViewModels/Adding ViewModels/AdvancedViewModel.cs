@@ -28,7 +28,7 @@ namespace MangaCheckerV3.ViewModels.Adding_ViewModels {
         public List<Genre> Genres => Enum.GetValues(typeof(Genre)).Cast<Genre>().ToList();
         public ReadOnlyObservableCollection<Genre> GenresAdded { get; }
 
-        public List<string> Sites => ProviderService.Providers.Select(p => p.DbSettingName()).ToList();
+        public List<string> Sites => ProviderService.Providers.Select(p => p.DbName).ToList();
         public string SiteSelected { get; set; }
 
         public Genre SelectedGenre { get; set; }

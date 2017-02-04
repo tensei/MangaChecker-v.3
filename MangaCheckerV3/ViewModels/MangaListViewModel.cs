@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using MangaChecker.Database;
 using MangaChecker.Database.Enums;
 using MangaChecker.Database.Tables;
+using MangaCheckerV3.Common;
 using MangaCheckerV3.Models;
 using MangaCheckerV3.ViewModels.Window_ViewModels;
 using MangaCheckerV3.Views.Windows;
@@ -27,13 +30,12 @@ namespace MangaCheckerV3.ViewModels {
 
         public MangaListViewModel() {
             Mangas = new ReadOnlyObservableCollection<Manga>(_mangas);
-            Mangas = new ReadOnlyObservableCollection<Manga>(_mangas);
             IncreaseCommand = new ActionCommand(IncreaseChapter);
             DecreaseCommand = new ActionCommand(DecreaseChapter);
             DeleteCommand = new ActionCommand(DeleteManga);
             OpenMangaCommand = new ActionCommand(OpenMangaSite);
-            RefreshCommand = new ActionCommand(RefreshManga);
-            ViewerCommand = new ActionCommand(ViewManga);
+            RefreshCommand = new ActionCommand(async () => await RefreshManga());
+            ViewerCommand = new ActionCommand(async () => await ViewManga());
             DeselectCommand = new ActionCommand(() => { SelectedManga = null; });
             RefreshListCommand = new ActionCommand(() => FillMangaList(SelectedSite.Name));
             EditCommand = new ActionCommand(EditManga);
@@ -125,10 +127,10 @@ namespace MangaCheckerV3.ViewModels {
                     return m;
             }
         }
-
+        
         private void Fill() {
             var x = Sortby(_sortMode, LiteDB.GetAllMangas().ToList());
-            foreach (var manga in x) _mangas.Add(manga);
+            x.ForEach(_mangas.Add);
         }
 
         private void IncreaseChapter() {
@@ -152,7 +154,7 @@ namespace MangaCheckerV3.ViewModels {
 
         private void DeleteManga() {
             LiteDB.Delete(SelectedManga);
-            MainWindowViewModel.Instance.SnackbarQueue.Enqueue($"Deleted {SelectedManga.Name}", "UNDO", HandleUndoMethod,
+            GlobalVariables.SnackbarQueue.Enqueue($"Deleted {SelectedManga.Name}", "UNDO", HandleUndoMethod,
                 SelectedManga);
             _mangas.Remove(SelectedManga);
         }
@@ -162,12 +164,27 @@ namespace MangaCheckerV3.ViewModels {
             _mangas.Add(manga);
         }
 
-        private void RefreshManga() {
-            throw new NotImplementedException();
+        private async Task RefreshManga() {
+            var provider = ProviderService.Providers.Find(p => p.DbName == SelectedManga.Site);
+            await provider.CheckOne(SelectedManga);
         }
 
-        private void ViewManga() {
-            throw new NotImplementedException();
+        private async Task ViewManga() {
+//#if DEBUG
+//            var imgs = new List<object>(Directory.GetFiles(@"D:\Pictures", "*.png"));
+//#else
+            var provider = ProviderService.Providers.Find(p => p.DbName == SelectedManga.Site);
+            if (!provider.ViewEnabled) {
+                return;
+            }
+            var imgs = await provider.GetImagesTaskAsync(SelectedManga.Link);
+//#endif
+            var viewer = new ViewerWindow {
+                DataContext = new ViewerWindowViewModel(imgs.Item1, SelectedManga, imgs.Item2),
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                Owner = Application.Current.MainWindow
+            };
+            viewer.Show();
         }
 
         private void EditManga() {

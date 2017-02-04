@@ -52,9 +52,9 @@ namespace MangaCheckerV3.Common {
                 }
                 else {
                     foreach (var provider in Providers) {
-                        var setting = LiteDB.GetSettingsFor(provider.DbSettingName());
+                        var setting = LiteDB.GetSettingsFor(provider.DbName);
                         if (setting.Active == 0) continue;
-                        Status = $"Checking {provider.DbSettingName()}...";
+                        Status = $"Checking {provider.DbName}...";
                         await provider.CheckAll();
                         await Task.Delay(1000);
                     }

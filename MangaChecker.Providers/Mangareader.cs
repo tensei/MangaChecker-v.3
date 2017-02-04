@@ -13,7 +13,7 @@ namespace MangaChecker.Providers {
     public class Mangareader : ISite {
         public async Task CheckAll()
         {
-            var all = LiteDB.GetMangasFrom(DbSettingName());
+            var all = LiteDB.GetMangasFrom(DbName);
             var openlink = LiteDB.GetOpenLinks();
             foreach (var manga in all) {
                 if(string.IsNullOrEmpty(manga.BaseMangaLink)) continue;
@@ -40,7 +40,7 @@ namespace MangaChecker.Providers {
             }
         }
 
-        public async Task<IEnumerable<object>> GetImagesTaskAsync(string url) {
+        public async Task<Tuple<List<object>, int>> GetImagesTaskAsync(string url) {
             throw new NotImplementedException();
         }
 
@@ -52,12 +52,12 @@ namespace MangaChecker.Providers {
             throw new NotImplementedException();
         }
 
-        public string DbSettingName() {
-            return "Mangareader";
-        }
+        public string DbName => "Mangareader";
 
         public Regex LinkRegex() {
             return new Regex("");
         }
+
+        public bool ViewEnabled => false;
     }
 }

@@ -11,7 +11,7 @@ using MangaChecker.Utilities;
 namespace MangaChecker.Providers {
     public class HeyManga : ISite {
         public async Task CheckAll() {
-            var all = LiteDB.GetMangasFrom(DbSettingName());
+            var all = LiteDB.GetMangasFrom(DbName);
             var openlink = LiteDB.GetOpenLinks();
             var m = await _load2Pages("https://www.heymanga.me/latest-manga/");
             if (m == null) return;
@@ -32,7 +32,7 @@ namespace MangaChecker.Providers {
             }
         }
 
-        public async Task<IEnumerable<object>> GetImagesTaskAsync(string url) {
+        public async Task<Tuple<List<object>, int>> GetImagesTaskAsync(string url) {
             throw new NotImplementedException();
         }
 
@@ -44,13 +44,13 @@ namespace MangaChecker.Providers {
             throw new NotImplementedException();
         }
 
-        public string DbSettingName() {
-            return "HeyManga";
-        }
+        public string DbName => "HeyManga";
 
         public Regex LinkRegex() {
             return new Regex("");
         }
+
+        public bool ViewEnabled => false;
 
         private async Task<Dictionary<string, string>> _load2Pages(string link) {
             var m = new Dictionary<string, string>();

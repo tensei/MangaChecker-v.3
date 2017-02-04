@@ -13,7 +13,7 @@ namespace MangaChecker.Providers {
         public async Task CheckAll() {
             // /en/0/87/5/ == 87.5
             // /en/0/24/ == 24
-            var all = LiteDB.GetMangasFrom(DbSettingName());
+            var all = LiteDB.GetMangasFrom(DbName);
             var openlink = LiteDB.GetOpenLinks();
             var rss = await WebParser.GetRssFeedAsync("https://jaiminisbox.com/reader/feeds/rss");
             if (rss == null) return;
@@ -31,7 +31,7 @@ namespace MangaChecker.Providers {
             }
         }
 
-        public async Task<IEnumerable<object>> GetImagesTaskAsync(string url) {
+        public async Task<Tuple<List<object>, int>> GetImagesTaskAsync(string url) {
             throw new NotImplementedException();
         }
 
@@ -43,12 +43,12 @@ namespace MangaChecker.Providers {
             throw new NotImplementedException();
         }
 
-        public string DbSettingName() {
-            return "Jaiminisbox";
-        }
+        public string DbName => "Jaiminisbox";
 
         public Regex LinkRegex() {
             return new Regex("");
         }
+
+        public bool ViewEnabled => false;
     }
 }

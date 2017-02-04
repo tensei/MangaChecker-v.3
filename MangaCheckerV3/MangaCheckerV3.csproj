@@ -110,6 +110,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\GlobalVariables.cs" />
     <Compile Include="Common\PluginHost.cs" />
     <Compile Include="Common\ProviderService.cs" />
     <Compile Include="Helpers\ThemeHelper.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="ViewModels\Settings ViewModels\ThemeViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\Window ViewModels\EditWindowViewModel.cs" />
+    <Compile Include="ViewModels\Window ViewModels\ViewerWindowViewModel.cs" />
     <Compile Include="Views\Adding Views\AdvancedView.xaml.cs">
       <DependentUpon>AdvancedView.xaml</DependentUpon>
     </Compile>
@@ -157,8 +159,17 @@
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Viewer Views\LongstripView.xaml.cs">
+      <DependentUpon>LongstripView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Viewer Views\SinglePageView.xaml.cs">
+      <DependentUpon>SinglePageView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Windows\EditWindow.xaml.cs">
       <DependentUpon>EditWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\ViewerWindow.xaml.cs">
+      <DependentUpon>ViewerWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -212,7 +223,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Viewer Views\LongstripView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Viewer Views\SinglePageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Windows\EditWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Windows\ViewerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

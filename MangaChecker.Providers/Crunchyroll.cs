@@ -17,7 +17,7 @@ namespace MangaChecker.Providers {
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<object>> GetImagesTaskAsync(string url) {
+        public async Task<Tuple<List<object>, int>> GetImagesTaskAsync(string url) {
             throw new NotImplementedException();
         }
 
@@ -25,12 +25,12 @@ namespace MangaChecker.Providers {
             throw new NotImplementedException();
         }
 
-        public string DbSettingName() {
-            return "Crunchyroll";
-        }
+        public string DbName => "Crunchyroll";
 
         public Regex LinkRegex() {
             return new Regex("");
         }
+
+        public bool ViewEnabled { get; }
     }
 }
