@@ -6,8 +6,8 @@ using MangaChecker.Database.Tables;
 using static MangaChecker.Utilities.Log;
 
 namespace MangaChecker.Utilities {
-    public static class NewChapterHelper
-    {
+    public static class NewChapterHelper {
+
         public static bool IsNew(Manga manga, string newChapter, DateTime newDate, string newLink, bool openLink) {
             var isFloat = float.TryParse(newChapter, NumberStyles.Float, CultureInfo.InvariantCulture,
                 out float floatChapter);
@@ -23,7 +23,9 @@ namespace MangaChecker.Utilities {
                 manga.OtherChapters.Add(newChapter);
                 return Update(manga, floatChapter, isFloat, newLink, newDate, openLink, newChapter);
             }
-            Loggger.Warn($"Current manga.Name={manga.Name} => manga.Chapter={manga.Chapter} != newChapter={newChapter} && floatChapter={floatChapter}");
+            //this should never be reached!!
+            Loggger.Error($"Current manga.Name={manga.Name}, manga.Chapter={manga.Chapter}, manga.Newest={manga.Newest}, " +
+                          $"newChapter={newChapter}, floatChapter={floatChapter}");
             return false;
         }
 

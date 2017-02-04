@@ -60,7 +60,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tables\Manga.cs" />
     <Compile Include="Tables\Settings.cs" />
-    <Compile Include="Tables\sqlite_sequence.cs" />
     <Compile Include="Tables\Versions.cs" />
   </ItemGroup>
   <ItemGroup>
