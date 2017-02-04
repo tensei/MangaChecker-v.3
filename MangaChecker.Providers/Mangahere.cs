@@ -15,11 +15,11 @@ namespace MangaChecker.Providers {
             throw new NotImplementedException();
         }
 
-        public async Task<Manga> CheckOne(Manga manga) {
+        public async Task<object> CheckOne(object manga) {
             throw new NotImplementedException();
         }
 
-        public async Task<Manga> FindMangaInfoOnSite(string url) {
+        public async Task<object> FindMangaInfoOnSite(string url) {
             throw new NotImplementedException();
         }
 
@@ -30,5 +30,6 @@ namespace MangaChecker.Providers {
         }
 
         public bool ViewEnabled => false;
+        public string LinktoSite => "http://mangahere.co/";
     }
 }

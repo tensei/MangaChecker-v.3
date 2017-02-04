@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using log4net;
 using MangaChecker.Database;
 using MangaChecker.Database.Enums;
 using MangaChecker.Database.Tables;
@@ -30,6 +31,7 @@ namespace MangaCheckerV3.ViewModels {
 
         public MangaListViewModel() {
             Mangas = new ReadOnlyObservableCollection<Manga>(_mangas);
+            Sites = new ReadOnlyObservableCollection<SiteListItem>(GlobalVariables._sites);
             IncreaseCommand = new ActionCommand(IncreaseChapter);
             DecreaseCommand = new ActionCommand(DecreaseChapter);
             DeleteCommand = new ActionCommand(DeleteManga);
@@ -39,29 +41,21 @@ namespace MangaCheckerV3.ViewModels {
             DeselectCommand = new ActionCommand(() => { SelectedManga = null; });
             RefreshListCommand = new ActionCommand(() => FillMangaList(SelectedSite.Name));
             EditCommand = new ActionCommand(EditManga);
-            LiteDB.SettingEvent += DatabaseOnSettingEvent;
+            SetupSites();
+            LiteDb.SettingEvent += DatabaseOnSettingEvent;
+        }
+        
+        private void SetupSites() {
+            var s = new List<SiteListItem> {
+                new SiteListItem {Name = "Backlog", Overrideable = false, IsEnabled = 1},
+                new SiteListItem {Name = "All", Overrideable = false, IsEnabled = 1},
+            };
+            ProviderService.Providers.ForEach(p=> s.Add(new SiteListItem{Name = p.DbName}));
+            s.OrderBy(x=>x.Name).ToList().ForEach(GlobalVariables._sites.Add);
         }
 
-        public List<SiteListItem> Sites { get; set; } = new List<SiteListItem> {
-            new SiteListItem {Name = "All", Overrideable = false, IsEnabled = 1},
-            new SiteListItem {Name = "Mangareader"},
-            new SiteListItem {Name = "Mangafox"},
-            new SiteListItem {Name = "Mangahere"},
-            new SiteListItem {Name = "Mangastream"},
-            new SiteListItem {Name = "Batoto"},
-            new SiteListItem {Name = "Kissmanga"},
-            new SiteListItem {Name = "Webtoons"},
-            new SiteListItem {Name = "YoManga"},
-            new SiteListItem {Name = "GameOfScanlation"},
-            new SiteListItem {Name = "KireiCake"},
-            new SiteListItem {Name = "Jaiminisbox"},
-            new SiteListItem {Name = "HeyManga"},
-            new SiteListItem {Name = "Tomochan"},
-            new SiteListItem {Name = "Crunchyroll"},
-            new SiteListItem {Name = "Backlog", Overrideable = false, IsEnabled = 1}
-        }.OrderBy(s => s.Name).ToList();
-
         public ReadOnlyObservableCollection<Manga> Mangas { get; }
+        public ReadOnlyObservableCollection<SiteListItem> Sites { get; }
 
 
         public ICommand IncreaseCommand { get; }
@@ -103,7 +97,7 @@ namespace MangaCheckerV3.ViewModels {
             var settings = sender as List<Settings>;
             if (settings == null) return;
             foreach (var setting in settings) {
-                var v = Sites.FirstOrDefault(s => s.Name == setting.Setting);
+                var v = GlobalVariables._sites.FirstOrDefault(s => s.Name == setting.Setting);
                 if (v != null) v.IsEnabled = setting.Active;
             }
         }
@@ -129,7 +123,7 @@ namespace MangaCheckerV3.ViewModels {
         }
         
         private void Fill() {
-            var x = Sortby(_sortMode, LiteDB.GetAllMangas().ToList());
+            var x = Sortby(_sortMode, LiteDb.GetAllMangas().ToList());
             x.ForEach(_mangas.Add);
         }
 
@@ -137,14 +131,14 @@ namespace MangaCheckerV3.ViewModels {
             SelectedManga.Chapter += AmountItem;
             SelectedManga.Newest = SelectedManga.Chapter.ToString(CultureInfo.InvariantCulture);
             SelectedManga.Updated = DateTime.Now;
-            LiteDB.Update(SelectedManga, true);
+            LiteDb.Update(SelectedManga, true);
         }
 
         private void DecreaseChapter() {
             SelectedManga.Chapter -= AmountItem;
             SelectedManga.Newest = SelectedManga.Chapter.ToString(CultureInfo.InvariantCulture);
             SelectedManga.Updated -= TimeSpan.FromDays(1);
-            LiteDB.Update(SelectedManga, true);
+            LiteDb.Update(SelectedManga, true);
         }
 
         private void OpenMangaSite() {
@@ -153,14 +147,14 @@ namespace MangaCheckerV3.ViewModels {
         }
 
         private void DeleteManga() {
-            LiteDB.Delete(SelectedManga);
+            LiteDb.Delete(SelectedManga);
             GlobalVariables.SnackbarQueue.Enqueue($"Deleted {SelectedManga.Name}", "UNDO", HandleUndoMethod,
                 SelectedManga);
             _mangas.Remove(SelectedManga);
         }
 
         private void HandleUndoMethod(Manga manga) {
-            LiteDB.InsertManga(manga);
+            LiteDb.InsertManga(manga);
             _mangas.Add(manga);
         }
 
@@ -201,7 +195,7 @@ namespace MangaCheckerV3.ViewModels {
                     Fill();
                     break;
                 default:
-                    Sortby(_sortMode, LiteDB.GetMangasFrom(site).ToList()).ForEach(_mangas.Add);
+                    Sortby(_sortMode, LiteDb.GetMangasFrom(site).ToList()).ForEach(_mangas.Add);
                     break;
             }
         }

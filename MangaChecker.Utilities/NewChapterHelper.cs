@@ -42,7 +42,7 @@ namespace MangaChecker.Utilities {
             manga.Link = newLink;
             manga.New = true;
             if (!openLink) return true;
-            LiteDB.Update(manga);
+            LiteDb.Update(manga);
             Process.Start(newLink);
             return true;
         }

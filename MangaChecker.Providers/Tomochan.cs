@@ -11,11 +11,11 @@ namespace MangaChecker.Providers {
     public class Tomochan : ISite {
         //http://read.tomochan.today/rss
         public async Task CheckAll() {
-            var all = LiteDB.GetMangasFrom(DbName);
+            var all = LiteDb.GetMangasFrom(DbName);
             var rss = await WebParser.GetRssFeedAsync("http://read.tomochan.today/rss");
             if (rss == null) return;
             rss.Reverse();
-            var openlink = LiteDB.GetOpenLinks();
+            var openlink = LiteDb.GetOpenLinks();
             foreach (var manga in all)
             foreach (var rssItemObject in rss) {
                 var isNew = NewChapterHelper.IsNew(manga, rssItemObject.Category, rssItemObject.PubDate,
@@ -24,7 +24,7 @@ namespace MangaChecker.Providers {
             }
         }
 
-        public async Task<Manga> CheckOne(Manga manga) {
+        public async Task<object> CheckOne(object manga) {
             throw new NotImplementedException();
         }
 
@@ -32,7 +32,7 @@ namespace MangaChecker.Providers {
             throw new NotImplementedException();
         }
 
-        public async Task<Manga> FindMangaInfoOnSite(string url) {
+        public async Task<object> FindMangaInfoOnSite(string url) {
             throw new NotImplementedException();
         }
 
@@ -43,5 +43,6 @@ namespace MangaChecker.Providers {
         }
 
         public bool ViewEnabled => false;
+        public string LinktoSite => "http://read.tomochan.today/";
     }
 }

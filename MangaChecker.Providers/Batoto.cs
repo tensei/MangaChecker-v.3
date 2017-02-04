@@ -11,12 +11,12 @@ using MangaChecker.Utilities;
 namespace MangaChecker.Providers {
     public class Batoto : ISite {
         public async Task CheckAll() {
-            var all = LiteDB.GetMangasFrom(DbName);
-            var brss = LiteDB.GetSettingsFor("Batoto Rss");
+            var all = LiteDb.GetMangasFrom(DbName);
+            var brss = LiteDb.GetSettingsFor("Batoto Rss");
             var rss = await WebParser.GetRssFeedAsync(brss.Link);
             if (rss == null) return;
             rss.Reverse();
-            var openlink = LiteDB.GetOpenLinks();
+            var openlink = LiteDb.GetOpenLinks();
             foreach (var manga in all)
                 foreach (var rssItemObject in rss) {
                     // example title Jitsu wa Watashi wa - English - Vol.18 Ch.156: Aizawa Nagisa and Aizawa Nagisa②
@@ -38,11 +38,11 @@ namespace MangaChecker.Providers {
             throw new NotImplementedException();
         }
 
-        public async Task<Manga> CheckOne(Manga manga) {
+        public async Task<object> CheckOne(object manga) {
             throw new NotImplementedException();
         }
 
-        public async Task<Manga> FindMangaInfoOnSite(string url) {
+        public async Task<object> FindMangaInfoOnSite(string url) {
             throw new NotImplementedException();
         }
 
@@ -52,6 +52,7 @@ namespace MangaChecker.Providers {
             return new Regex("");
         }
 
-        public bool ViewEnabled { get; set; }
+        public bool ViewEnabled => false;
+        public string LinktoSite => "http://bato.to/";
     }
 }

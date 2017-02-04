@@ -72,6 +72,12 @@
   <ItemGroup>
     <Folder Include="Interfaces\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MangaChecker.DataTypes\MangaChecker.DataTypes.csproj">
+      <Project>{f5132764-7a38-42f8-b54f-f7d4dccbb4ba}</Project>
+      <Name>MangaChecker.DataTypes</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -50,6 +50,7 @@
     <Compile Include="Mangareader.cs" />
     <Compile Include="Mangastream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sensescans.cs" />
     <Compile Include="Tomochan.cs" />
     <Compile Include="Webtoons.cs" />
     <Compile Include="YoManga.cs" />

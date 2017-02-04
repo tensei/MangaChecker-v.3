@@ -22,7 +22,8 @@ namespace MangaCheckerV3.Common {
             new Kissmanga(),
             new Mangafox(),
             new Mangahere(),
-            new Mangareader()
+            new Mangareader(),
+            new Sensescans()
         };
 
         public static bool Pause = false;
@@ -52,13 +53,13 @@ namespace MangaCheckerV3.Common {
                 }
                 else {
                     foreach (var provider in Providers) {
-                        var setting = LiteDB.GetSettingsFor(provider.DbName);
+                        var setting = LiteDb.GetSettingsFor(provider.DbName);
                         if (setting.Active == 0) continue;
                         Status = $"Checking {provider.DbName}...";
                         await provider.CheckAll();
                         await Task.Delay(1000);
                     }
-                    Timer = LiteDB.GetRefreshTime();
+                    Timer = LiteDb.GetRefreshTime();
                     await Task.Delay(1000);
                 }
         }

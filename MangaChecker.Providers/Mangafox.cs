@@ -10,8 +10,8 @@ using MangaChecker.Utilities;
 namespace MangaChecker.Providers {
     public class Mangafox : ISite {
         public async Task CheckAll() {
-            var all = LiteDB.GetMangasFrom(DbName);
-            var openlink = LiteDB.GetOpenLinks();
+            var all = LiteDb.GetMangasFrom(DbName);
+            var openlink = LiteDb.GetOpenLinks();
             foreach (var manga in all) {
                 if (string.IsNullOrEmpty(manga.Rss)) {
                     Log.Loggger.Warn($"MANGAFOX {manga.Name} missing rss feed link");
@@ -38,11 +38,11 @@ namespace MangaChecker.Providers {
             throw new NotImplementedException();
         }
 
-        public async Task<Manga> CheckOne(Manga manga) {
+        public async Task<object> CheckOne(object manga) {
             throw new NotImplementedException();
         }
 
-        public async Task<Manga> FindMangaInfoOnSite(string url) {
+        public async Task<object> FindMangaInfoOnSite(string url) {
             throw new NotImplementedException();
         }
 
@@ -53,5 +53,6 @@ namespace MangaChecker.Providers {
         }
 
         public bool ViewEnabled => false;
+        public string LinktoSite => "http://mangafox.me/";
     }
 }

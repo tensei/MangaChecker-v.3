@@ -11,7 +11,7 @@ namespace MangaCheckerV3 {
         }
 
         private void MainWindow_OnClosing(object sender, CancelEventArgs e) {
-            LiteDB.Dispose();
+            LiteDb.Dispose();
         }
     }
 }

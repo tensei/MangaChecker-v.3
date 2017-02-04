@@ -18,12 +18,12 @@ namespace MangaCheckerV3.ViewModels {
                     set.Add(RefreshTime);
                     set.Add(OpenLinks);
                     set.Add(BatotoRss);
-                    LiteDB.SaveSettings(set);
+                    LiteDb.SaveSettings(set);
                 }).ConfigureAwait(false);
             });
             ToggleActive = new ActionCommand(s => Toggle((Settings) s));
             Settings = new ReadOnlyObservableCollection<Settings>(_settings);
-            var settings = LiteDB.GetAllSettings();
+            var settings = LiteDb.GetAllSettings();
             foreach (var s in settings) {
                 if (s.Setting.ToLower().StartsWith("refres")) RefreshTime = s;
                 if (s.Setting.ToLower().StartsWith("open")) OpenLinks = s;

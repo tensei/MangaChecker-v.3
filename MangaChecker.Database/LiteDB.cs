@@ -5,10 +5,11 @@ using System.Linq;
 using LiteDB;
 using MangaChecker.Database.Enums;
 using MangaChecker.Database.Tables;
+using MangaChecker.DataTypes.Interface;
 
 namespace MangaChecker.Database {
-    public static class LiteDB {
-        private const string DatabaseVersion = "1.0.0.2";
+    public static class LiteDb {
+        private const string DatabaseVersion = "1.0.0.4";
         private static readonly string DatabasePath = Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db");
 
         private static readonly LiteDatabase Db = new LiteDatabase(DatabasePath);
@@ -16,34 +17,17 @@ namespace MangaChecker.Database {
         public static void Dispose() {
             Db.Dispose();
         }
-
-        private static readonly Dictionary<string, string> DefaultDatabaseSettings = new Dictionary<string, string> {
-            {"Mangafox", "http://mangafox.me/"},
-            {"Mangahere", "http://mangahere.co/"},
-            {"Mangareader", "http://www.mangareader.net/"},
-            {"Mangastream", "http://mangastream.com/"},
-            {"Batoto", "http://bato.to/"},
-            {"Webtoons", "http://www.webtoons.com/"},
-            {"YoManga", "http://yomanga.co/"},
-            {"Kissmanga", "http://kissmanga.com/"},
-            {"GameOfScanlation", "https://gameofscanlation.moe/"},
-            {"KireiCake", "http://kireicake.com/"},
-            {"Jaiminisbox", "https://jaiminisbox.com/"},
-            {"HeyManga", "https://www.heymanga.me/"},
-            {"Tomochan", "http://read.tomochan.today/"},
-            {"Crunchyroll", "http://www.crunchyroll.com/comics/manga"}
-        };
-
+        
         private static readonly Dictionary<string, string> DefaultVersions = new Dictionary<string, string> {
             {"db", "1.0.0.0"}
         };
 
-        static LiteDB() {
+        static LiteDb() {
         }
 
-        public static event EventHandler<MangaEnum> MangaEvent; //switch to this maybe?
-        public static event EventHandler<DatabaseEnum> DbEvent; //switch to this maybe?
-        public static event EventHandler<SettingEnum> SettingEvent; //switch to this maybe?
+        public static event EventHandler<MangaEnum> MangaEvent;
+        public static event EventHandler<DatabaseEnum> DbEvent; 
+        public static event EventHandler<SettingEnum> SettingEvent; 
 
         public static IOrderedEnumerable<Manga> GetHistory() {
             var query = Db.GetCollection<Manga>("History").FindAll();
@@ -147,7 +131,7 @@ namespace MangaChecker.Database {
             return query.OpenLinks;
         }
 
-        private static void UpdateDatabase(Versions dbv) {
+        private static void UpdateDatabase(Versions dbv, List<ISite> providers) {
             var set = Db.GetCollection<Settings>("Settings");
             Db.GetCollection<Manga>("History");
             Db.GetCollection<Manga>("Manga");
@@ -156,11 +140,11 @@ namespace MangaChecker.Database {
             var setting = set.FindAll().Select(s => s.Setting).ToArray();
             var versions = ver.FindAll().Select(v => v.Name).ToArray();
 
-            foreach (var defaultSetting in DefaultDatabaseSettings)
-                if (!setting.Contains(defaultSetting.Key))
+            foreach (var defaultSetting in providers)
+                if (!setting.Contains(defaultSetting.DbName))
                     set.Insert(new Settings {
-                        Setting = defaultSetting.Key,
-                        Link = defaultSetting.Value,
+                        Setting = defaultSetting.DbName,
+                        Link = defaultSetting.LinktoSite,
                         Active = 0,
                         Created = DateTime.Now
                         //OpenLinks = true
@@ -196,7 +180,7 @@ namespace MangaChecker.Database {
             DbEvent?.Invoke(dbv, DatabaseEnum.Update);
         }
 
-        public static void CreateDatabase() {
+        public static void CreateDatabase(List<ISite> providers) {
             var set = Db.GetCollection<Settings>("Settings");
             Db.GetCollection<Manga>("Manga");
             Db.GetCollection<Manga>("History");
@@ -207,10 +191,10 @@ namespace MangaChecker.Database {
                 Version = DatabaseVersion
             });
 
-            foreach (var sites in DefaultDatabaseSettings)
+            foreach (var sites in providers)
                 set.Insert(new Settings {
-                    Setting = sites.Key,
-                    Link = sites.Value,
+                    Setting = sites.DbName,
+                    Link = sites.LinktoSite,
                     Active = 0,
                     Created = DateTime.Now
                 });
@@ -238,11 +222,11 @@ namespace MangaChecker.Database {
             DbEvent?.Invoke(null, DatabaseEnum.Create);
         }
 
-        public static string CheckDbVersion() {
+        public static string CheckDbVersion(List<ISite> providers) {
             var dbv = Db.GetCollection<Versions>("Versions").FindOne(v => v.Name == "db");
             if (dbv.Version == DatabaseVersion) return null;
             dbv.Version = DatabaseVersion;
-            UpdateDatabase(dbv);
+            UpdateDatabase(dbv, providers);
             return $"Updated Database to {DatabaseVersion}";
         }
     }

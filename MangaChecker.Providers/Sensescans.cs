@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MangaChecker.Database.Tables;
 using MangaChecker.DataTypes.Interface;
 
 namespace MangaChecker.Providers {
-    public class Crunchyroll : ISite {
-        //http://utils.senpai.moe/
+    public class Sensescans : ISite {
 
         public async Task CheckAll() {
             throw new NotImplementedException();
@@ -25,13 +26,13 @@ namespace MangaChecker.Providers {
             throw new NotImplementedException();
         }
 
-        public string DbName => "Crunchyroll";
-
         public Regex LinkRegex() {
             return new Regex("");
         }
 
+        public string DbName => "Sensescans";
+
         public bool ViewEnabled => false;
-        public string LinktoSite => "http://www.crunchyroll.com/comics/manga";
+        public string LinktoSite => "http://sensescans.com/reader/";
     }
 }

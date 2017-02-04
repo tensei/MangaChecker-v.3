@@ -55,7 +55,7 @@ namespace MangaCheckerV3.ViewModels.Adding_ViewModels {
         private void AddManga() {
             try {
                 Manga.Site = SiteSelected;
-                LiteDB.InsertManga(Manga);
+                LiteDb.InsertManga(Manga);
             }
             catch (Exception e) {
                 Console.WriteLine(e);

@@ -11,8 +11,8 @@ using MangaChecker.Utilities;
 namespace MangaChecker.Providers {
     public class YoManga : ISite {
         public async Task CheckAll() {
-            var all = LiteDB.GetMangasFrom(DbName);
-            var openlink = LiteDB.GetOpenLinks();
+            var all = LiteDb.GetMangasFrom(DbName);
+            var openlink = LiteDb.GetOpenLinks();
             var rss = await WebParser.GetRssFeedAsync("https://yomanga.co/reader/feeds/rss");
             if (rss == null) return;
             rss.Reverse();
@@ -49,11 +49,11 @@ namespace MangaChecker.Providers {
             return new Tuple<List<object>, int>(imges, intpages);
         }
 
-        public async Task<Manga> CheckOne(Manga manga) {
+        public async Task<object> CheckOne(object manga) {
             throw new NotImplementedException();
         }
 
-        public async Task<Manga> FindMangaInfoOnSite(string url) {
+        public async Task<object> FindMangaInfoOnSite(string url) {
             throw new NotImplementedException();
         }
 
@@ -64,5 +64,6 @@ namespace MangaChecker.Providers {
         }
 
         public bool ViewEnabled => true;
+        public string LinktoSite => "http://yomanga.co/";
     }
 }

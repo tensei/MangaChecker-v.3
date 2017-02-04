@@ -55,7 +55,7 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
 
         private void SaveManga() {
             try {
-                LiteDB.Update(Manga);
+                LiteDb.Update(Manga);
             }
             catch (Exception e) {
                 Console.WriteLine(e);

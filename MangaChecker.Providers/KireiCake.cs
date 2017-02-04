@@ -13,8 +13,8 @@ namespace MangaChecker.Providers {
         public async Task CheckAll() {
             // /en/0/87/5/ == 87.5
             // /en/0/24/ == 24
-            var all = LiteDB.GetMangasFrom(DbName);
-            var openlink = LiteDB.GetOpenLinks();
+            var all = LiteDb.GetMangasFrom(DbName);
+            var openlink = LiteDb.GetOpenLinks();
             var rss = await WebParser.GetRssFeedAsync("https://reader.kireicake.com/rss.xml");
             if (rss == null) return;
             rss.Reverse();
@@ -35,11 +35,11 @@ namespace MangaChecker.Providers {
             throw new NotImplementedException();
         }
 
-        public async Task<Manga> CheckOne(Manga manga) {
+        public async Task<object> CheckOne(object manga) {
             throw new NotImplementedException();
         }
 
-        public async Task<Manga> FindMangaInfoOnSite(string url) {
+        public async Task<object> FindMangaInfoOnSite(string url) {
             throw new NotImplementedException();
         }
 
@@ -50,5 +50,6 @@ namespace MangaChecker.Providers {
         }
 
         public bool ViewEnabled => false;
+        public string LinktoSite => "http://kireicake.com/";
     }
 }

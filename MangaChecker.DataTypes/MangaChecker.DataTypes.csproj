@@ -51,12 +51,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MangaChecker.Database\MangaChecker.Database.csproj">
-      <Project>{bc2c4eae-6d63-4594-a062-80330ed4b591}</Project>
-      <Name>MangaChecker.Database</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Model\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
