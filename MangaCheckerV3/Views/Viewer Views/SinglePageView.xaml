@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:MangaCheckerV3.Views.Viewer_Views"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:windowViewModels="clr-namespace:MangaCheckerV3.ViewModels.Window_ViewModels"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
 			 d:DataContext="{d:DesignInstance {x:Type windowViewModels:ViewerWindowViewModel}, IsDesignTimeCreatable=False}">
@@ -33,23 +34,23 @@
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="Auto"/>
 			</Grid.ColumnDefinitions>
-			<Button VerticalAlignment="Stretch" Command="{Binding PrevPageCommand}"
+			<!--<Button VerticalAlignment="Stretch" Command="{Binding PrevPageCommand}"
 					Style="{DynamicResource MaterialDesignFlatButton}"
 					Height="300" Padding="6">
 				<materialDesign:PackIcon Kind="ArrowLeft"/>
-			</Button>
-			<ItemsControl Grid.Column="1" ItemsSource="{Binding SingleImages}">
-				<ItemsControl.ItemTemplate>
+			</Button>-->
+            <controls:FlipView SelectedIndex="{Binding SelectedPage}" Grid.Column="1" ItemsSource="{Binding Images}" IsBannerEnabled="False" MouseHoverBorderEnabled="False">
+                <controls:FlipView.ItemTemplate>
 					<DataTemplate>
-						<Image Source="{Binding}" Height="{Binding ActualHeight, ElementName=grid, Mode=OneWay}"/>
+						<Image Source="{Binding}" />
 					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl>
-			<Button Grid.Column="2" VerticalAlignment="Stretch" Command="{Binding NextPageCommand}"
+				</controls:FlipView.ItemTemplate>
+			</controls:FlipView>
+			<!--<Button Grid.Column="2" VerticalAlignment="Stretch" Command="{Binding NextPageCommand}"
 					Style="{DynamicResource MaterialDesignFlatButton}"
 					Height="300" Padding="6">
 				<materialDesign:PackIcon Kind="ArrowRight"/>
-			</Button>
+			</Button>-->
 		</Grid>
 	</Grid>
 </UserControl>

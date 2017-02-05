@@ -20,38 +20,28 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
     public class ViewerWindowViewModel : IDisposable{
         private readonly ObservableCollection<object> _images = new ObservableCollection<object>();
         public ReadOnlyObservableCollection<object> Images { get; }
-
-        private readonly ObservableCollection<object> _singleimage = new ObservableCollection<object>();
-        public ReadOnlyObservableCollection<object> SingleImages { get; }
-        private int _currentImg;
-        private int _selectedPage;
-
+        
         public string Title { get; set; }
 
-        public int TargetImages { get; set; }
+        public int TargetImages { get; private set; }
 
-        private List<object> imgs;
-        private Manga Manga;
+        private readonly List<object> _imgs;
+        private readonly Manga _manga;
         public ViewerWindowViewModel(List<object> images, Manga manga, int pages) {
             Title = $"{manga.Name} {manga.Chapter}";
-            Manga = manga;
-            imgs = images;
+            _manga = manga;
+            _imgs = images;
             TargetImages = pages;
-            NextPageCommand = new ActionCommand(NextPage);
-            PrevPageCommand = new ActionCommand(PrevPage);
             ChangeModeCommand = new ActionCommand(ChangeMode);
             SaveImagesCommand = new ActionCommand(async () => {
                 if (SaveProgress == Visibility.Collapsed)
                     await SaveImagesAsync();
             });
             Images = new ReadOnlyObservableCollection<object>(_images);
-            SingleImages = new ReadOnlyObservableCollection<object>(_singleimage);
-            _singleimage.Add(imgs[0]);
-            SelectedPage = 1;
+            SelectedPage = 0;
+            Fill().ConfigureAwait(false);
         }
-
-        public ICommand NextPageCommand { get; }
-        public ICommand PrevPageCommand { get; }
+        
         
         public ICommand ChangeModeCommand { get; }
         public ICommand SaveImagesCommand { get; }
@@ -59,69 +49,37 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
         public List<int> Pages => PageIntList();
 
         private async Task Fill() {
-            if(_images.Count > 0) _images.Clear();
-            foreach (var image in imgs) {
-                if(TransIndex == 0) break;
+            foreach (var image in _imgs) {
                 _images.Add(image);
                 await Task.Delay(100);
             }
         }
 
-        public int SelectedPage {
-            get { return _selectedPage; }
-            set {
-                _selectedPage = value;
-                Jumpto(value);
-            }
-        }
+        public int SelectedPage { get; set; }
 
-        public int TransIndex { get; set; }
+        public int TransIndex { get; set; } = 1;
 
         public string Mode { get; set; } = "Singe Page";
 
         private void ChangeMode() {
-            if (TransIndex == 0) {
-                TransIndex = 1;
-                Mode = "Long Strip";
-                Fill().ConfigureAwait(false);
+            if (TransIndex == 1) {
+                TransIndex = 0;
+                Mode = "Singe Page";
                 return;
             }
-            if (_images.Count > 0) _images.Clear();
-            TransIndex = 0;
-            Mode = "Singe Page";
+            TransIndex = 1;
+            Mode = "Long Strip";
         }
 
         private List<int> PageIntList() {
             var p = new List<int>();
-            for (var i = 0; i < imgs.Count; i++) {
-                p.Add(i+1);
+            for (var i = 0; i < _imgs.Count; i++) {
+                p.Add(i);
             }
             return p;
         }
-
-        private void NextPage() {
-            if (_currentImg == imgs.Count-1) {
-                return;
-            }
-            _currentImg++;
-            SelectedPage = _currentImg + 1;
-            _singleimage.Add(imgs[_currentImg]);
-        }
-        private void PrevPage() {
-            if (_currentImg == 0) {
-                return;
-            }
-            _currentImg--;
-            SelectedPage = _currentImg+1;
-            _singleimage.Add(imgs[_currentImg]);
-        }
-
-        private void Jumpto(int page) {
-            _currentImg = page-1;
-            _singleimage.Clear();
-            _singleimage.Add(imgs[_currentImg]);
-        }
-
+        
+        
         public Visibility SaveProgress { get; set; } = Visibility.Collapsed;
 
         public int ProgressValue { get; set; }
@@ -134,9 +92,9 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
         private async Task SaveImagesAsync() {
             if (!SaveEnabled) return;
             SaveEnabled = false;
-            var name = Regex.Replace(Manga.Name, "[^0-9a-zA-Z]+", " ").Trim();
-            var folder = Path.Combine(Directory.GetCurrentDirectory(), "Saves", Manga.Site,
-                name, Manga.Chapter.ToString(CultureInfo.InvariantCulture));
+            var name = Regex.Replace(_manga.Name, "[^0-9a-zA-Z]+", " ").Trim();
+            var folder = Path.Combine(Directory.GetCurrentDirectory(), "Saves", _manga.Site,
+                name, _manga.Chapter.ToString(CultureInfo.InvariantCulture));
 
             if (!Directory.Exists(folder))
                 Directory.CreateDirectory(folder);
@@ -179,9 +137,8 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
 
         public void Dispose() {
             _isClosing = true;
-            imgs.Clear();
+            _imgs.Clear();
             _images.Clear();
-            _singleimage.Clear();
             GC.Collect();
         }
     }

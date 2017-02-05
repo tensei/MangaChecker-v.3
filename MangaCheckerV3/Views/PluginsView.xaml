@@ -13,8 +13,7 @@
 
 	<Grid Margin="4">
 		<!--<ScrollViewer VerticalScrollBarVisibility="Auto">-->
-		<ItemsControl ItemsSource="{Binding Plugins}" HorizontalContentAlignment="Stretch"
-		              Foreground="{Binding TitleForeground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Controls:MetroWindow}}}">
+		<ItemsControl ItemsSource="{Binding Plugins}" HorizontalContentAlignment="Stretch">
 			<ItemsControl.ItemTemplate>
 				<DataTemplate DataType="{x:Type models:PluginsModel}">
 					<Expander Margin="0,0,0,5" Header="{Binding Name, Mode=OneWay}">
