@@ -13,7 +13,7 @@
                       NonActiveBorderBrush="Black"
                       NonActiveGlowBrush="Black"
                       NonActiveWindowTitleBrush="{DynamicResource HighlightBrush}"
-                      Title="{Binding Title}" Height="800" Width="700" PreviewKeyDown="UIElement_OnPreviewKeyDown"
+                      Title="{Binding Title}" Height="800" Width="700" 
 					  Closing="ViewerWindow_OnClosing"
                       d:DataContext="{d:DesignInstance {x:Type windowViewModels:ViewerWindowViewModel}, IsDesignTimeCreatable=False}">
 	<controls:MetroWindow.RightWindowCommands>

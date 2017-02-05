@@ -27,22 +27,6 @@ namespace MangaCheckerV3.Views.Windows {
             if (e.ChangedButton == MouseButton.Left)
                 DragMove();
         }
-        private void UIElement_OnPreviewKeyDown(object sender, KeyEventArgs e) {
-            if(Trans.SelectedIndex != 0) return;
-            var data = (ViewerWindowViewModel) DataContext;
-            switch (e.Key) {
-                case Key.D:
-                case Key.Right:
-                case Key.Space:
-                    data.NextPageCommand.Execute(null);
-                    break;
-                case Key.A:
-                case Key.Left:
-                case Key.Back:
-                    data.PrevPageCommand.Execute(null);
-                    break;
-            }
-        }
 
         private void ViewerWindow_OnClosing(object sender, CancelEventArgs e) {
 
