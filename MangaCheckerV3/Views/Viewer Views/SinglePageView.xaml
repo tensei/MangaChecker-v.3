@@ -39,7 +39,8 @@
 					Height="300" Padding="6">
 				<materialDesign:PackIcon Kind="ArrowLeft"/>
 			</Button>-->
-            <controls:FlipView SelectedIndex="{Binding SelectedPage}" Grid.Column="1" ItemsSource="{Binding Images}" IsBannerEnabled="False" MouseHoverBorderEnabled="False">
+            <controls:FlipView x:Name="Flip" SelectedIndex="{Binding SelectedPage}" PreviewKeyDown="Flip_OnPreviewKeyDown"
+                               Grid.Column="1" ItemsSource="{Binding Images}" IsBannerEnabled="False" MouseHoverBorderEnabled="False">
                 <controls:FlipView.ItemTemplate>
 					<DataTemplate>
 						<Image Source="{Binding}" />

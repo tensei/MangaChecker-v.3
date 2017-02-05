@@ -24,8 +24,12 @@ namespace MangaChecker.Utilities {
                 return Update(manga, floatChapter, isFloat, newLink, newDate, openLink, newChapter);
             }
             //this should never be reached!!
-            Loggger.Error($"Current manga.Name={manga.Name}, manga.Chapter={manga.Chapter}, manga.Newest={manga.Newest}, " +
-                          $"newChapter={newChapter}, floatChapter={floatChapter}");
+            Loggger.Error($"Current manga.Name={manga.Name}," +
+                          $" manga.Chapter={manga.Chapter}," +
+                          $" manga.Newest={manga.Newest}, " +
+                          $" manga.Link={manga.Link}, " +
+                          $" manga.Rss={manga.Rss},\n" +
+                          $"newChapter={newChapter}, floatChapter={floatChapter}, newLink={newLink}, newDate={newDate}");
             return false;
         }
 
