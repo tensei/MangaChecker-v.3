@@ -9,9 +9,10 @@ using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
     public class Mangastream : ISite {
+        private readonly WebParser _webParser = new WebParser();
         public async Task CheckAll() {
             var all = LiteDb.GetMangasFrom(DbName);
-            var rss = await WebParser.GetRssFeedAsync("http://mangastream.com/rss");
+            var rss = await _webParser.GetRssFeedAsync("http://mangastream.com/rss");
             if (rss == null) return;
             rss.Reverse();
             var openlink = LiteDb.GetOpenLinks();

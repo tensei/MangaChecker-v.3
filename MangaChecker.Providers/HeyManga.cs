@@ -46,9 +46,10 @@ namespace MangaChecker.Providers {
 
         public bool ViewEnabled => false;
 
+        private readonly WebParser _webParser = new WebParser();
         private async Task<Dictionary<string, string>> _load2Pages(string link) {
             var m = new Dictionary<string, string>();
-            var html = await WebParser.GetHtmlSourceDucumentAsync(link);
+            var html = await _webParser.GetHtmlSourceDucumentAsync(link);
             var a =
                 html.All.Where(
                     x =>

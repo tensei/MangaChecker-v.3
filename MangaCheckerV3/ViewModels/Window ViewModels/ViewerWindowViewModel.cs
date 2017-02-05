@@ -130,6 +130,7 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
 
         private bool _isClosing;
 
+        private readonly WebParser _webParser = new WebParser();
         private async Task SaveImagesAsync() {
             if (!SaveEnabled) return;
             SaveEnabled = false;
@@ -146,7 +147,7 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
                 var img = _images[i];
                 ProgressValue = i + 1;
                 if (img is string) {
-                    var client = await WebParser.GetHtmlDataAsync((string)img);
+                    var client = await _webParser.GetHtmlDataAsync((string)img);
                     img = BytesToBitmapImage(client);
                 }
                 var encoder = new PngBitmapEncoder();

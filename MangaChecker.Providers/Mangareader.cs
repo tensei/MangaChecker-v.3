@@ -11,13 +11,14 @@ using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
     public class Mangareader : ISite {
+        private readonly WebParser _webParser = new WebParser();
         public async Task CheckAll()
         {
             var all = LiteDb.GetMangasFrom(DbName);
             var openlink = LiteDb.GetOpenLinks();
             foreach (var manga in all) {
                 if(string.IsNullOrEmpty(manga.BaseMangaLink)) continue;
-                var html = await WebParser.GetHtmlSourceDucumentAsync(manga.BaseMangaLink.TrimEnd('/'));
+                var html = await _webParser.GetHtmlSourceDucumentAsync(manga.BaseMangaLink.TrimEnd('/'));
                 if (html == null)
                     continue;
                 var tr = html.All.Where(t => t.LocalName == "tr" && t.Children.Length == 2 && t.Children[0].InnerHtml.Contains("chico"));

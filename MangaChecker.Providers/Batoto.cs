@@ -10,10 +10,11 @@ using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
     public class Batoto : ISite {
+        private readonly WebParser _webParser = new WebParser();
         public async Task CheckAll() {
             var all = LiteDb.GetMangasFrom(DbName);
             var brss = LiteDb.GetSettingsFor("Batoto Rss");
-            var rss = await WebParser.GetRssFeedAsync(brss.Link);
+            var rss = await _webParser.GetRssFeedAsync(brss.Link);
             if (rss == null) return;
             rss.Reverse();
             var openlink = LiteDb.GetOpenLinks();

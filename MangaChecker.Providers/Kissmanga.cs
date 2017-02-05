@@ -11,11 +11,12 @@ using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
     public class Kissmanga : ISite {
+        private readonly WebParser _webParser = new WebParser();
         public async Task CheckAll() {
             var all = LiteDb.GetMangasFrom(DbName);
             var openlink = LiteDb.GetOpenLinks();
             foreach (var manga in all) {
-                var html = await WebParser.GetHtmlSourceDucumentAsync(manga.BaseMangaLink);
+                var html = await _webParser.GetHtmlSourceDucumentAsync(manga.BaseMangaLink);
                 if(html == null) continue;
                 var tr = html.All.Where(t => t.LocalName == "tr" && t.Children.Length == 2);
                 foreach (var element in tr) {

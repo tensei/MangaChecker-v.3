@@ -9,10 +9,11 @@ using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
     public class Tomochan : ISite {
+        private readonly WebParser _webParser = new WebParser();
         //http://read.tomochan.today/rss
         public async Task CheckAll() {
             var all = LiteDb.GetMangasFrom(DbName);
-            var rss = await WebParser.GetRssFeedAsync("http://read.tomochan.today/rss");
+            var rss = await _webParser.GetRssFeedAsync("http://read.tomochan.today/rss");
             if (rss == null) return;
             rss.Reverse();
             var openlink = LiteDb.GetOpenLinks();

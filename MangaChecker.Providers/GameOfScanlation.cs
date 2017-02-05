@@ -9,11 +9,12 @@ using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
     public class GameOfScanlation : ISite {
+        private readonly WebParser _webParser = new WebParser();
         public async Task CheckAll() {
             var all = LiteDb.GetMangasFrom(DbName);
             var openlink = LiteDb.GetOpenLinks();
             foreach (var manga in all) {
-                var rss = await WebParser.GetRssFeedAsync(manga.Rss);
+                var rss = await _webParser.GetRssFeedAsync(manga.Rss);
                 if(rss == null) continue;
                 rss.Reverse();
                 foreach (var rssItemObject in rss) {

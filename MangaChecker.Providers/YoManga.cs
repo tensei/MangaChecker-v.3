@@ -10,10 +10,11 @@ using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
     public class YoManga : ISite {
+        private readonly WebParser _webParser = new WebParser();
         public async Task CheckAll() {
             var all = LiteDb.GetMangasFrom(DbName);
             var openlink = LiteDb.GetOpenLinks();
-            var rss = await WebParser.GetRssFeedAsync("https://yomanga.co/reader/feeds/rss");
+            var rss = await _webParser.GetRssFeedAsync("https://yomanga.co/reader/feeds/rss");
             if (rss == null) return;
             rss.Reverse();
             foreach (var manga in all)
@@ -31,7 +32,7 @@ namespace MangaChecker.Providers {
             var baserl = url;
             var imges = new List<object>();
             if (!url.EndsWith("page/1")) url = url + "page/1";
-            var html = await WebParser.GetHtmlSourceDucumentAsync(url);
+            var html = await _webParser.GetHtmlSourceDucumentAsync(url);
             imges.Add(html.All.First(i=> i.LocalName == "img" && i.ClassList.Contains("open") 
 
             && i.HasAttribute("src") && i.GetAttribute("src").Contains("https://yomanga.co/reader/content/comics/")).GetAttribute("src"));
@@ -40,12 +41,11 @@ namespace MangaChecker.Providers {
             var intpages = int.Parse(pages);
             for (int i = 2; i <= intpages; i++) {
                 url = baserl + $"page/{i}";
-                html = await WebParser.GetHtmlSourceDucumentAsync(url);
+                html = await _webParser.GetHtmlSourceDucumentAsync(url);
                 imges.Add(html.All.First(x => x.LocalName == "img" && x.ClassList.Contains("open")
 
                 && x.HasAttribute("src") && x.GetAttribute("src").Contains("https://yomanga.co/reader/content/comics/")).GetAttribute("src"));
             }
-
             return new Tuple<List<object>, int>(imges, intpages);
         }
 

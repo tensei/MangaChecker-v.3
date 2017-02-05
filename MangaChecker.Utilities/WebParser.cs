@@ -10,21 +10,26 @@ using AngleSharp.Parser.Xml;
 using CloudFlareUtilities;
 
 namespace MangaChecker.Utilities {
-    public static class WebParser {
-        private static async Task<string> GetHtmlSourceStringAsync(string url) {
+    public class WebParser {
+        private ClearanceHandler _handler;
+        private HttpClient _client;
+        private async Task<string> GetHtmlSourceStringAsync(string url) {
             try {
                 // Create the clearance handler.
-                var handler = new ClearanceHandler {
-                    MaxRetries = 2 // Optionally specify the number of retries, if clearance fails (default is 3).
-                };
-
-                // Create a HttpClient that uses the handler to bypass CloudFlare's JavaScript challange.
-                var client = new HttpClient(handler) {
-                    Timeout = TimeSpan.FromSeconds(15)
-                };
+                if (_handler == null) {
+                    _handler = new ClearanceHandler {
+                        MaxRetries = 2 // Optionally specify the number of retries, if clearance fails (default is 3).
+                    };
+                }
+                if (_client == null) {
+                    // Create a HttpClient that uses the handler to bypass CloudFlare's JavaScript challange.
+                    _client = new HttpClient(_handler) {
+                        Timeout = TimeSpan.FromSeconds(15)
+                    };
+                }
 
                 // Use the HttpClient as usual. Any JS challenge will be solved automatically for you.
-                var content = await client.GetStringAsync(url);
+                var content = await _client.GetStringAsync(url);
 
                 return content;
             }
@@ -38,20 +43,22 @@ namespace MangaChecker.Utilities {
                 return null;
             }
         }
-        public static async Task<byte[]> GetHtmlDataAsync(string url) {
+        public async Task<byte[]> GetHtmlDataAsync(string url) {
             try {
                 // Create the clearance handler.
-                var handler = new ClearanceHandler {
-                    MaxRetries = 2 // Optionally specify the number of retries, if clearance fails (default is 3).
-                };
-
-                // Create a HttpClient that uses the handler to bypass CloudFlare's JavaScript challange.
-                var client = new HttpClient(handler) {
-                    Timeout = TimeSpan.FromSeconds(15)
-                };
-
+                if (_handler == null) {
+                    _handler = new ClearanceHandler {
+                        MaxRetries = 2 // Optionally specify the number of retries, if clearance fails (default is 3).
+                    };
+                }
+                if (_client == null) {
+                    // Create a HttpClient that uses the handler to bypass CloudFlare's JavaScript challange.
+                    _client = new HttpClient(_handler) {
+                        Timeout = TimeSpan.FromSeconds(15)
+                    };
+                }
                 // Use the HttpClient as usual. Any JS challenge will be solved automatically for you.
-                var content = await client.GetByteArrayAsync(url);
+                var content = await _client.GetByteArrayAsync(url);
 
                 return content;
             }
@@ -66,22 +73,25 @@ namespace MangaChecker.Utilities {
             }
         }
 
-        public static async Task<IHtmlDocument> GetHtmlSourceDucumentAsync(string url, bool js = false) {
+        public async Task<IHtmlDocument> GetHtmlSourceDucumentAsync(string url, bool js = false) {
             try {
                 // Create the clearance handler.
-                var handler = new ClearanceHandler {
-                    MaxRetries = 2 // Optionally specify the number of retries, if clearance fails (default is 3).
-                };
-
-                // Create a HttpClient that uses the handler to bypass CloudFlare's JavaScript challange.
-                var client = new HttpClient(handler) {
-                    Timeout = TimeSpan.FromSeconds(15)
-                };
+                if (_handler == null) {
+                    _handler = new ClearanceHandler {
+                        MaxRetries = 2 // Optionally specify the number of retries, if clearance fails (default is 3).
+                    };
+                }
+                if (_client == null) {
+                    // Create a HttpClient that uses the handler to bypass CloudFlare's JavaScript challange.
+                    _client = new HttpClient(_handler) {
+                        Timeout = TimeSpan.FromSeconds(15)
+                    };
+                }
 
                 // Use the HttpClient as usual. Any JS challenge will be solved automatically for you.
                 string content;
                 try {
-                    content  = await client.GetStringAsync(url);
+                    content  = await _client.GetStringAsync(url);
                 }
                 catch (AggregateException ex) when (ex.InnerException is CloudFlareClearanceException)
                 {
@@ -119,7 +129,7 @@ namespace MangaChecker.Utilities {
             }
         }
 
-        public static async Task<List<RssItemObject>> GetRssFeedAsync(string url) {
+        public async Task<List<RssItemObject>> GetRssFeedAsync(string url) {
             try {
                 var allXml = await GetHtmlSourceStringAsync(url);
                 if (allXml == null) return null;
