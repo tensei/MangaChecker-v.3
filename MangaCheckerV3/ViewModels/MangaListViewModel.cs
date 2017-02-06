@@ -31,7 +31,7 @@ namespace MangaCheckerV3.ViewModels {
 
         public MangaListViewModel() {
             Mangas = new ReadOnlyObservableCollection<Manga>(_mangas);
-            Sites = new ReadOnlyObservableCollection<SiteListItem>(GlobalVariables._sites);
+            Sites = new ReadOnlyObservableCollection<SiteListItem>(GlobalVariables.Sites);
             IncreaseCommand = new ActionCommand(IncreaseChapter);
             DecreaseCommand = new ActionCommand(DecreaseChapter);
             DeleteCommand = new ActionCommand(DeleteManga);
@@ -51,7 +51,7 @@ namespace MangaCheckerV3.ViewModels {
                 new SiteListItem {Name = "All", Overrideable = false, IsEnabled = 1},
             };
             ProviderService.Providers.ForEach(p=> s.Add(new SiteListItem{Name = p.DbName}));
-            s.OrderBy(x=>x.Name).ToList().ForEach(GlobalVariables._sites.Add);
+            s.OrderBy(x=>x.Name).ToList().ForEach(GlobalVariables.Sites.Add);
         }
 
         public ReadOnlyObservableCollection<Manga> Mangas { get; }
@@ -97,7 +97,7 @@ namespace MangaCheckerV3.ViewModels {
             var settings = sender as List<Settings>;
             if (settings == null) return;
             foreach (var setting in settings) {
-                var v = GlobalVariables._sites.FirstOrDefault(s => s.Name == setting.Setting);
+                var v = GlobalVariables.Sites.FirstOrDefault(s => s.Name == setting.Setting);
                 if (v != null) v.IsEnabled = setting.Active;
             }
         }

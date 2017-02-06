@@ -48,7 +48,7 @@ namespace MangaCheckerV3.ViewModels {
                 OtherChapters = m.OtherChapters,
                 Newest = m.Newest
             };
-            _history.Add((Manga) sender);
+            _history.Insert(0, (Manga) sender);
             LiteDb.InsertHistory(nm);
         }
 

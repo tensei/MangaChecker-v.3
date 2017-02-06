@@ -33,7 +33,7 @@ namespace MangaCheckerV3.Common {
         public IEnumerable<Lazy<IPlugin, IPluginMetadata>> Plugins { get; set; }
 
         public void Dispose() {
-            _container.Dispose();
+            _container?.Dispose();
         }
 
         public void Initialize() {

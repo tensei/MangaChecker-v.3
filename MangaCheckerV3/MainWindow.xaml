@@ -39,7 +39,7 @@
 			</ToggleButton>
 		</Controls:WindowCommands>
 	</Controls:MetroWindow.LeftWindowCommands>
-	<materialDesign:DialogHost SnackbarMessageQueue="{Binding Path=MessageQueue, ElementName=Snacky}">
+	<materialDesign:DialogHost>
 		<!--<materialDesign:DrawerHost.LeftDrawerContent>
 				</materialDesign:DrawerHost.LeftDrawerContent>-->
 		<Grid>

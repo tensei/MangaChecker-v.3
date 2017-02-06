@@ -31,7 +31,7 @@ namespace MangaChecker.Database {
 
         public static IOrderedEnumerable<Manga> GetHistory() {
             var query = Db.GetCollection<Manga>("History").FindAll();
-            var ordered = query.OrderBy(m => m.Updated);
+            var ordered = query.OrderByDescending(m => m.Updated);
             MangaEvent?.Invoke(ordered, MangaEnum.GetHistory);
             return ordered;
         }
@@ -44,7 +44,7 @@ namespace MangaChecker.Database {
 
         public static IOrderedEnumerable<Manga> GetAllNewMangas() {
             var query = Db.GetCollection<Manga>("NewManga").FindAll();
-            var ordered = query.OrderByDescending(m => m.Updated);
+            var ordered = query.OrderBy(m => m.Updated);
             MangaEvent?.Invoke(ordered, MangaEnum.New);
             return ordered;
         }

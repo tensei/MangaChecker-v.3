@@ -20,7 +20,7 @@ namespace MangaCheckerV3.ViewModels.Adding_ViewModels {
             AddGenreCommand = new ActionCommand(AddGenre);
             AddMangaCommand = new ActionCommand(AddManga);
             GenresAdded = new ReadOnlyObservableCollection<Genre>(_genres);
-            SiteSelected = Sites[0];
+            SiteSelected = Sites?[0];
             SelectedGenre = Genres[0];
         }
 

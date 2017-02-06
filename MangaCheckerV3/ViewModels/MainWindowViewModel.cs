@@ -13,9 +13,7 @@ namespace MangaCheckerV3.ViewModels {
         ///     Initializes a new instance of the MainWindowViewModel class.
         /// </summary>
         public MainWindowViewModel() {
-            Instance = this;
             SnackbarQueue = GlobalVariables.SnackbarQueue;
-            SnackbarQueue.Enqueue("Starting...", true);
             StartStopCommand = new ActionCommand(StartStop);
             RefreshCommand = new ActionCommand(() => ProviderService.Timer = 5);
 
@@ -29,10 +27,10 @@ namespace MangaCheckerV3.ViewModels {
             //WebParser.GetRssFeedAsync("http://read.tomochan.today/rss").ConfigureAwait(false);
             //WebParser.GetRssFeedAsync("http://www.webtoons.com/en/fantasy/tower-of-god/rss?title_no=95").ConfigureAwait(false);
             Log.Loggger.Info("starting");
+            SnackbarQueue.Enqueue("Starting...", true);
         }
 
         public ProviderService ProviderService { get; }
-        public static MainWindowViewModel Instance { get; private set; }
 
         public SnackbarMessageQueue SnackbarQueue { get; }
 

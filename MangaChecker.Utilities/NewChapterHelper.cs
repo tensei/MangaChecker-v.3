@@ -13,7 +13,7 @@ namespace MangaChecker.Utilities {
                 out float floatChapter);
             var isDateNew = newDate > manga.Updated;
 
-            if (isFloat && Math.Abs(floatChapter - manga.Chapter) <= 0 || newChapter == manga.Newest || floatChapter < manga.Chapter)
+            if (isFloat && Math.Abs(floatChapter - manga.Chapter) <= 0 || (object)newChapter == manga.Newest || floatChapter < manga.Chapter)
                 return true;
 
             if (isFloat && floatChapter > manga.Chapter)

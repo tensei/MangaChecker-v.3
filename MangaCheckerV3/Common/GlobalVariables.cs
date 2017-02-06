@@ -10,8 +10,8 @@ using PropertyChanged;
 
 namespace MangaCheckerV3.Common {
     [ImplementPropertyChanged]
-    public class GlobalVariables {
-        public static SnackbarMessageQueue SnackbarQueue = new SnackbarMessageQueue();
-        public static ObservableCollection<SiteListItem> _sites = new ObservableCollection<SiteListItem>();
+    public static class GlobalVariables {
+        public static readonly SnackbarMessageQueue SnackbarQueue = new SnackbarMessageQueue();
+        public static readonly ObservableCollection<SiteListItem> Sites = new ObservableCollection<SiteListItem>();
     }
 }

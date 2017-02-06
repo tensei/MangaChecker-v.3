@@ -60,8 +60,7 @@ namespace MangaCheckerV3.ViewModels {
         private void DatabaseOnMangaEvent(object sender, MangaEnum mangaEnum) {
             if (mangaEnum != MangaEnum.Update) return;
             var m = (Manga)sender;
-            var nm = new Manga
-            {
+            var nm = new Manga {
                 Name = m.Name,
                 Chapter = m.Chapter,
                 Added = m.Added,
