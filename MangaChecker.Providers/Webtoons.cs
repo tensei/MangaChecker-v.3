@@ -18,8 +18,8 @@ namespace MangaChecker.Providers {
                 if (rss == null) continue;
                 rss.Reverse();
                 foreach (var rssItemObject in rss) {
-                    var nc = rssItemObject.Title.Replace("Ep. ", string.Empty);
-                    var isNew = NewChapterHelper.IsNew(manga, nc, rssItemObject.PubDate,
+                    var nc = Regex.Match(rssItemObject.Title, @"ep\. ([0-9\.]+)", RegexOptions.IgnoreCase).Groups[1].Value;
+                    var isNew = NewChapterHelper.IsNew(manga, nc.Trim('.').Trim(), rssItemObject.PubDate,
                         rssItemObject.Link, openlink);
                 }
             }
