@@ -11,20 +11,21 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance {x:Type viewModel:AddMangaViewModel}, IsDesignTimeCreatable=False}">
-	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition />
-			<ColumnDefinition />
-		</Grid.ColumnDefinitions>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition />
-		</Grid.RowDefinitions>
-		<Button Command="{Binding NormalCommand}" Margin="2,4">Normal</Button>
-		<Button Grid.Row="0" Grid.Column="1" Command="{Binding AdvancedCommand}" Margin="2,4">Advanced</Button>
-		<materialDesign:Transitioner Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" SelectedIndex="{Binding TranIndex}">
-			<addingViews:NormalView DataContext="{Binding NormalDataContext}" />
-			<addingViews:AdvancedView DataContext="{Binding AdvancedDataContext}" />
-		</materialDesign:Transitioner>
-	</Grid>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Button Command="{Binding NormalCommand}" Margin="2,4">Normal</Button>
+        <Button Grid.Row="0" Grid.Column="1" Command="{Binding AdvancedCommand}" Margin="2,4">Advanced</Button>
+        <materialDesign:Transitioner Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0"
+                                     SelectedIndex="{Binding TranIndex}">
+            <addingViews:NormalView DataContext="{Binding NormalDataContext}" />
+            <addingViews:AdvancedView DataContext="{Binding AdvancedDataContext}" />
+        </materialDesign:Transitioner>
+    </Grid>
 </UserControl>

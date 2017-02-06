@@ -14,183 +14,202 @@
                       NonActiveGlowBrush="Black"
                       NonActiveWindowTitleBrush="{DynamicResource HighlightBrush}"
                       d:DataContext="{d:DesignInstance {x:Type windowViewModels:EditWindowViewModel}, IsDesignTimeCreatable=False}">
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="*" />
-			<RowDefinition Height="Auto" />
-		</Grid.RowDefinitions>
-		<materialDesign:ColorZone Grid.ColumnSpan="4" materialDesign:ShadowAssist.ShadowDepth="Depth2">
-			<Grid>
-				<TextBlock VerticalAlignment="Center" Margin="8,4" FontSize="16">
-					Edit
-				</TextBlock>
-			</Grid>
-		</materialDesign:ColorZone>
-		<ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-			<Grid>
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="*" />
-					<RowDefinition Height="Auto" />
-				</Grid.RowDefinitions>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="Auto" />
-					<ColumnDefinition Width="Auto" />
-					<ColumnDefinition />
-					<ColumnDefinition Width="Auto" />
-					<ColumnDefinition />
-				</Grid.ColumnDefinitions>
-				<Image Grid.RowSpan="8" MaxWidth="200" Source="{Binding Manga.Thumbnail}" Margin="4" />
-				<TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,4">
-					Name
-				</TextBlock>
-				<TextBox Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-				         Text="{Binding Manga.Name}" Margin="10,4" />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <materialDesign:ColorZone Grid.ColumnSpan="4" materialDesign:ShadowAssist.ShadowDepth="Depth2">
+            <Grid>
+                <TextBlock VerticalAlignment="Center" Margin="8,4" FontSize="16">
+                    Edit
+                </TextBlock>
+            </Grid>
+        </materialDesign:ColorZone>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Image Grid.RowSpan="8" MaxWidth="200" Source="{Binding Manga.Thumbnail}" Margin="4" />
+                <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"
+                           Margin="10,4">
+                    Name
+                </TextBlock>
+                <TextBox Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                         Text="{Binding Manga.Name}" Margin="10,4" />
 
-				<TextBlock Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,4">
-					Chapter
-				</TextBlock>
-				<TextBox Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-				         Text="{Binding Manga.Chapter}" Margin="10,4" />
+                <TextBlock Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Left"
+                           Margin="10,4">
+                    Chapter
+                </TextBlock>
+                <TextBox Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                         Text="{Binding Manga.Chapter}" Margin="10,4" />
 
-				<TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,4">
-					Site
-				</TextBlock>
-				<ComboBox Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-				          SelectedItem="{Binding Manga.Site}" ItemsSource="{Binding Sites, Mode=OneWay}" Margin="10,4" />
+                <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"
+                           Margin="10,4">
+                    Site
+                </TextBlock>
+                <ComboBox Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                          SelectedItem="{Binding Manga.Site}" ItemsSource="{Binding Sites, Mode=OneWay}" Margin="10,4" />
 
-				<TextBlock Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,4">
-					Newest
-				</TextBlock>
-				<TextBox Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-				         Text="{Binding Manga.Newest}" Margin="10,4" />
+                <TextBlock Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"
+                           Margin="10,4">
+                    Newest
+                </TextBlock>
+                <TextBox Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                         Text="{Binding Manga.Newest}" Margin="10,4" />
 
-				<TextBlock Grid.Row="3" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,4">
-					New
-				</TextBlock>
-				<ToggleButton Grid.Row="3" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Left"
-				              IsChecked="{Binding Manga.New}" Margin="10,4" />
+                <TextBlock Grid.Row="3" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Left"
+                           Margin="10,4">
+                    New
+                </TextBlock>
+                <ToggleButton Grid.Row="3" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Left"
+                              IsChecked="{Binding Manga.New}" Margin="10,4" />
 
-				<TextBlock Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,4">
-					Link
-				</TextBlock>
-				<TextBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-				         Text="{Binding Manga.Link}" Margin="10,4" />
-
-
-				<TextBlock Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,4">
-					Base Manga link
-				</TextBlock>
-				<TextBox Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-				         Text="{Binding Manga.BaseMangaLink}" Margin="10,4" />
+                <TextBlock Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"
+                           Margin="10,4">
+                    Link
+                </TextBlock>
+                <TextBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="3" VerticalAlignment="Center"
+                         HorizontalAlignment="Stretch"
+                         Text="{Binding Manga.Link}" Margin="10,4" />
 
 
-				<TextBlock Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,4">
-					Thunmbnail
-				</TextBlock>
-				<TextBox Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-				         Text="{Binding Manga.Thumbnail}" Margin="10,4" />
+                <TextBlock Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"
+                           Margin="10,4">
+                    Base Manga link
+                </TextBlock>
+                <TextBox Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="3" VerticalAlignment="Center"
+                         HorizontalAlignment="Stretch"
+                         Text="{Binding Manga.BaseMangaLink}" Margin="10,4" />
 
-				<TextBlock Grid.Row="7" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,4">
-					RSS
-				</TextBlock>
-				<TextBox Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-				         Text="{Binding Manga.Rss}" Margin="10,4" />
 
-				<TextBlock Grid.Row="8" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,4">
-					Special link
-				</TextBlock>
-				<TextBox Grid.Row="8" Grid.Column="2" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-				         Text="{Binding Manga.SpecialLink}" Margin="10,4" />
-				<Grid Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="5">
-					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto" />
-						<RowDefinition />
-					</Grid.RowDefinitions>
-					<materialDesign:ColorZone materialDesign:ShadowAssist.ShadowDepth="Depth2">
-						<Grid>
-							<TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Margin="8,0" FontSize="16">
-								Genres
-							</TextBlock>
-							<StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
-								<ComboBox ItemsSource="{Binding Genres}" Margin="8,0" Width="80" SelectedItem="{Binding SelectedGenre}" 
-                                           Height="28" VerticalAlignment="Center"/>
-								<Button Style="{DynamicResource MaterialDesignToolButton}" Command="{Binding AddGenreCommand}" Margin="5,0">
-									<materialDesign:PackIcon Kind="Plus" />
-								</Button>
-							</StackPanel>
-						</Grid>
-					</materialDesign:ColorZone>
-					<ItemsControl Grid.Row="1" ItemsSource="{Binding GenresAdded}" Margin="4">
-						<ItemsControl.ItemsPanel>
-							<ItemsPanelTemplate>
-								<WrapPanel />
-							</ItemsPanelTemplate>
-						</ItemsControl.ItemsPanel>
-						<ItemsControl.ItemTemplate>
-							<DataTemplate>
-								<materialDesign:Chip Content="{Binding}"
-								                     IsDeletable="True"
-								                     Margin="0 0 4 4"
-								                     x:Name="ButtonsDemoChip"
-								                     Background="{DynamicResource MaterialDesignCardBackground}"
-								                     Foreground="{DynamicResource IdealForegroundColorBrush}"
-								                     DeleteCommand="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:EditWindow}}, Path=DataContext.DeleteGenreCommand, Mode=OneTime}"
-								                     DeleteCommandParameter="{Binding}" />
-							</DataTemplate>
-						</ItemsControl.ItemTemplate>
-					</ItemsControl>
-				</Grid>
-				<Grid Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="5">
-					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto" />
-						<RowDefinition />
-					</Grid.RowDefinitions>
-					<materialDesign:ColorZone materialDesign:ShadowAssist.ShadowDepth="Depth2">
-						<Grid>
-							<TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Margin="8,0" FontSize="16">
-								Other Chapters
-							</TextBlock>
-							<StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Height="28" VerticalAlignment="Center">
+                <TextBlock Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"
+                           Margin="10,4">
+                    Thunmbnail
+                </TextBlock>
+                <TextBox Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="3" VerticalAlignment="Center"
+                         HorizontalAlignment="Stretch"
+                         Text="{Binding Manga.Thumbnail}" Margin="10,4" />
+
+                <TextBlock Grid.Row="7" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"
+                           Margin="10,4">
+                    RSS
+                </TextBlock>
+                <TextBox Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="3" VerticalAlignment="Center"
+                         HorizontalAlignment="Stretch"
+                         Text="{Binding Manga.Rss}" Margin="10,4" />
+
+                <TextBlock Grid.Row="8" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"
+                           Margin="10,4">
+                    Special link
+                </TextBlock>
+                <TextBox Grid.Row="8" Grid.Column="2" Grid.ColumnSpan="3" VerticalAlignment="Center"
+                         HorizontalAlignment="Stretch"
+                         Text="{Binding Manga.SpecialLink}" Margin="10,4" />
+                <Grid Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <materialDesign:ColorZone materialDesign:ShadowAssist.ShadowDepth="Depth2">
+                        <Grid>
+                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Margin="8,0" FontSize="16">
+                                Genres
+                            </TextBlock>
+                            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                                <ComboBox ItemsSource="{Binding Genres}" Margin="8,0" Width="80"
+                                          SelectedItem="{Binding SelectedGenre}"
+                                          Height="28" VerticalAlignment="Center" />
+                                <Button Style="{DynamicResource MaterialDesignToolButton}"
+                                        Command="{Binding AddGenreCommand}" Margin="5,0">
+                                    <materialDesign:PackIcon Kind="Plus" />
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </materialDesign:ColorZone>
+                    <ItemsControl Grid.Row="1" ItemsSource="{Binding GenresAdded}" Margin="4">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <materialDesign:Chip Content="{Binding}"
+                                                     IsDeletable="True"
+                                                     Margin="0 0 4 4"
+                                                     x:Name="ButtonsDemoChip"
+                                                     Background="{DynamicResource MaterialDesignCardBackground}"
+                                                     Foreground="{DynamicResource IdealForegroundColorBrush}"
+                                                     DeleteCommand="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:EditWindow}}, Path=DataContext.DeleteGenreCommand, Mode=OneTime}"
+                                                     DeleteCommandParameter="{Binding}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+                <Grid Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <materialDesign:ColorZone materialDesign:ShadowAssist.ShadowDepth="Depth2">
+                        <Grid>
+                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Margin="8,0" FontSize="16">
+                                Other Chapters
+                            </TextBlock>
+                            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Height="28"
+                                        VerticalAlignment="Center">
                                 <TextBox Text="{Binding OtherChapter}" Margin="8,0" Width="200" />
-                                <Button Style="{DynamicResource MaterialDesignToolButton}" Command="{Binding AddOtherChapterCommand}" Margin="5,0">
-									<materialDesign:PackIcon Kind="Plus" />
-								</Button>
-							</StackPanel>
-						</Grid>
-					</materialDesign:ColorZone>
-					<ItemsControl Grid.Row="1" ItemsSource="{Binding OtherChapters}" Margin="4">
-						<ItemsControl.ItemsPanel>
-							<ItemsPanelTemplate>
-								<WrapPanel />
-							</ItemsPanelTemplate>
-						</ItemsControl.ItemsPanel>
-						<ItemsControl.ItemTemplate>
-							<DataTemplate>
-								<materialDesign:Chip Content="{Binding}"
-								                     IsDeletable="True"
-								                     Margin="0 0 4 4"
-								                     x:Name="ButtonsDemoChip"
-								                     Background="{DynamicResource MaterialDesignCardBackground}"
-								                     Foreground="{DynamicResource IdealForegroundColorBrush}"
-								                     DeleteCommand="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:EditWindow}}, Path=DataContext.DeleteOtherChapterCommand, Mode=OneTime}"
-								                     DeleteCommandParameter="{Binding}" />
-							</DataTemplate>
-						</ItemsControl.ItemTemplate>
-					</ItemsControl>
-				</Grid>
-			</Grid>
-		</ScrollViewer>
-		<Button Grid.Row="2" Margin="2,4" Command="{Binding SaveMangaCommand}">Save</Button>
-	</Grid>
+                                <Button Style="{DynamicResource MaterialDesignToolButton}"
+                                        Command="{Binding AddOtherChapterCommand}" Margin="5,0">
+                                    <materialDesign:PackIcon Kind="Plus" />
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </materialDesign:ColorZone>
+                    <ItemsControl Grid.Row="1" ItemsSource="{Binding OtherChapters}" Margin="4">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <materialDesign:Chip Content="{Binding}"
+                                                     IsDeletable="True"
+                                                     Margin="0 0 4 4"
+                                                     x:Name="ButtonsDemoChip"
+                                                     Background="{DynamicResource MaterialDesignCardBackground}"
+                                                     Foreground="{DynamicResource IdealForegroundColorBrush}"
+                                                     DeleteCommand="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:EditWindow}}, Path=DataContext.DeleteOtherChapterCommand, Mode=OneTime}"
+                                                     DeleteCommandParameter="{Binding}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </Grid>
+        </ScrollViewer>
+        <Button Grid.Row="2" Margin="2,4" Command="{Binding SaveMangaCommand}">Save</Button>
+    </Grid>
 </controls:MetroWindow>

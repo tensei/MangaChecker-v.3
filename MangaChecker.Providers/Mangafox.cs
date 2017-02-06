@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MangaChecker.Database;
-using MangaChecker.Database.Tables;
 using MangaChecker.DataTypes.Interface;
 using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
     public class Mangafox : ISite {
         private readonly WebParser _webParser = new WebParser();
+
         public async Task CheckAll() {
             var all = LiteDb.GetMangasFrom(DbName);
             var openlink = LiteDb.GetOpenLinks();
@@ -24,10 +24,11 @@ namespace MangaChecker.Providers {
                 rss.Reverse();
                 foreach (var rssItemObject in rss) {
                     // sample title => Boku no Hero Academia Vol TBD Ch 125
-                    var re = Regex.Match(rssItemObject.Title, @"(?<name>.+)(?<vol>[vol tbd0-9]+)?[ch ]+?(?<chapter>[0-9\.]+)", RegexOptions.IgnoreCase);
-                    var nc = string.IsNullOrEmpty(re.Groups["chapter"].Value) ?
-                        rssItemObject.Title.Replace(manga.Name.ToLower(), string.Empty) :
-                        re.Groups["chapter"].Value.Trim('.').Trim();
+                    var re = Regex.Match(rssItemObject.Title,
+                        @"(?<name>.+)(?<vol>[vol tbd0-9]+)?[ch ]+?(?<chapter>[0-9\.]+)", RegexOptions.IgnoreCase);
+                    var nc = string.IsNullOrEmpty(re.Groups["chapter"].Value)
+                        ? rssItemObject.Title.Replace(manga.Name.ToLower(), string.Empty)
+                        : re.Groups["chapter"].Value.Trim('.').Trim();
                     var isNew = NewChapterHelper.IsNew(manga, nc, rssItemObject.PubDate,
                         rssItemObject.Link, openlink);
                     await Task.Delay(100);

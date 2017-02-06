@@ -14,10 +14,6 @@ namespace MangaChecker.Database {
 
         private static readonly LiteDatabase Db = new LiteDatabase(DatabasePath);
 
-        public static void Dispose() {
-            Db.Dispose();
-        }
-        
         private static readonly Dictionary<string, string> DefaultVersions = new Dictionary<string, string> {
             {"db", "1.0.0.0"}
         };
@@ -25,13 +21,17 @@ namespace MangaChecker.Database {
         static LiteDb() {
         }
 
+        public static void Dispose() {
+            Db.Dispose();
+        }
+
         public static event EventHandler<MangaEnum> MangaEvent;
-        public static event EventHandler<DatabaseEnum> DbEvent; 
-        public static event EventHandler<SettingEnum> SettingEvent; 
+        public static event EventHandler<DatabaseEnum> DbEvent;
+        public static event EventHandler<SettingEnum> SettingEvent;
 
         public static IOrderedEnumerable<Manga> GetHistory() {
             var query = Db.GetCollection<Manga>("History").FindAll();
-            var ordered = query.OrderByDescending(m => m.Updated);
+            var ordered = query.OrderByDescending(m => m.Added);
             MangaEvent?.Invoke(ordered, MangaEnum.GetHistory);
             return ordered;
         }
@@ -44,7 +44,7 @@ namespace MangaChecker.Database {
 
         public static IOrderedEnumerable<Manga> GetAllNewMangas() {
             var query = Db.GetCollection<Manga>("NewManga").FindAll();
-            var ordered = query.OrderBy(m => m.Updated);
+            var ordered = query.OrderBy(m => m.Added);
             MangaEvent?.Invoke(ordered, MangaEnum.New);
             return ordered;
         }
@@ -66,11 +66,13 @@ namespace MangaChecker.Database {
             query.Insert(manga);
             MangaEvent?.Invoke(manga, MangaEnum.InsertHistory);
         }
+
         public static void InsertNewManga(Manga manga) {
             var query = Db.GetCollection<Manga>("NewManga");
             query.Insert(manga);
             MangaEvent?.Invoke(manga, MangaEnum.InsertNewManga);
         }
+
         public static void DeleteNewManga(Manga manga) {
             var query = Db.GetCollection<Manga>("NewManga");
             query.Delete(manga.MangaId);

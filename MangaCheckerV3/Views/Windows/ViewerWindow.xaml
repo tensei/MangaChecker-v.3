@@ -16,28 +16,29 @@
                       NonActiveWindowTitleBrush="{DynamicResource HighlightBrush}"
                       Title="{Binding Title}"
                       Height="{Binding Source={x:Static properties:Settings.Default}, Path=ViewerHeight}"
-                      Width="{Binding Source={x:Static properties:Settings.Default}, Path=ViewerWidth}" 
-					  Closing="ViewerWindow_OnClosing"
+                      Width="{Binding Source={x:Static properties:Settings.Default}, Path=ViewerWidth}"
+                      Closing="ViewerWindow_OnClosing"
                       d:DataContext="{d:DesignInstance {x:Type windowViewModels:ViewerWindowViewModel}, IsDesignTimeCreatable=False}">
-	<controls:MetroWindow.RightWindowCommands>
-		<controls:WindowCommands>
-			<Button Command="{Binding SaveImagesCommand}"
-			        Visibility="{Binding SaveEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
-				Save
-			</Button>
-			<ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" ToolTip="{Binding ProgressValue}"
-			             Visibility="{Binding SaveProgress}" Maximum="{Binding Images.Count}" Value="{Binding ProgressValue}" />
-		</controls:WindowCommands>
-	</controls:MetroWindow.RightWindowCommands>
-	<controls:MetroWindow.LeftWindowCommands>
-		<controls:WindowCommands>
-			<Button ToolTip="Change Mode!" Command="{Binding ChangeModeCommand}" Content="{Binding Mode}"/>
-		</controls:WindowCommands>
-	</controls:MetroWindow.LeftWindowCommands>
-	<Grid MouseDown="Grid_MouseDown">
-		<materialDesign:Transitioner x:Name="Trans" SelectedIndex="{Binding TransIndex}">
-			<viewerViews:SinglePageView/>
-			<viewerViews:LongstripView/>
-		</materialDesign:Transitioner>
-	</Grid>
+    <controls:MetroWindow.RightWindowCommands>
+        <controls:WindowCommands>
+            <Button Command="{Binding SaveImagesCommand}"
+                    Visibility="{Binding SaveEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
+                Save
+            </Button>
+            <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" ToolTip="{Binding ProgressValue}"
+                         Visibility="{Binding SaveProgress}" Maximum="{Binding Images.Count}"
+                         Value="{Binding ProgressValue}" />
+        </controls:WindowCommands>
+    </controls:MetroWindow.RightWindowCommands>
+    <controls:MetroWindow.LeftWindowCommands>
+        <controls:WindowCommands>
+            <Button ToolTip="Change Mode!" Command="{Binding ChangeModeCommand}" Content="{Binding Mode}" />
+        </controls:WindowCommands>
+    </controls:MetroWindow.LeftWindowCommands>
+    <Grid MouseDown="Grid_MouseDown">
+        <materialDesign:Transitioner x:Name="Trans" SelectedIndex="{Binding TransIndex}">
+            <viewerViews:SinglePageView />
+            <viewerViews:LongstripView />
+        </materialDesign:Transitioner>
+    </Grid>
 </controls:MetroWindow>

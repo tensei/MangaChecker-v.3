@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using log4net;
 using MangaChecker.Database;
 using MangaChecker.Database.Enums;
 using MangaChecker.Database.Tables;
@@ -43,15 +41,6 @@ namespace MangaCheckerV3.ViewModels {
             EditCommand = new ActionCommand(EditManga);
             SetupSites();
             LiteDb.SettingEvent += DatabaseOnSettingEvent;
-        }
-        
-        private void SetupSites() {
-            var s = new List<SiteListItem> {
-                new SiteListItem {Name = "Backlog", Overrideable = false, IsEnabled = 1},
-                new SiteListItem {Name = "All", Overrideable = false, IsEnabled = 1},
-            };
-            ProviderService.Providers.ForEach(p=> s.Add(new SiteListItem{Name = p.DbName}));
-            s.OrderBy(x=>x.Name).ToList().ForEach(GlobalVariables.Sites.Add);
         }
 
         public ReadOnlyObservableCollection<Manga> Mangas { get; }
@@ -92,6 +81,15 @@ namespace MangaCheckerV3.ViewModels {
 
         public int AmountItem { get; set; } = 1;
 
+        private void SetupSites() {
+            var s = new List<SiteListItem> {
+                new SiteListItem {Name = "Backlog", Overrideable = false, IsEnabled = 1},
+                new SiteListItem {Name = "All", Overrideable = false, IsEnabled = 1}
+            };
+            ProviderService.Providers.ForEach(p => s.Add(new SiteListItem {Name = p.DbName}));
+            s.OrderBy(x => x.Name).ToList().ForEach(GlobalVariables.Sites.Add);
+        }
+
         private void DatabaseOnSettingEvent(object sender, SettingEnum settingEnum) {
             if (settingEnum != SettingEnum.Get && settingEnum != SettingEnum.Update) return;
             var settings = sender as List<Settings>;
@@ -121,7 +119,7 @@ namespace MangaCheckerV3.ViewModels {
                     return m;
             }
         }
-        
+
         private void Fill() {
             var x = Sortby(_sortMode, LiteDb.GetAllMangas().ToList());
             x.ForEach(_mangas.Add);

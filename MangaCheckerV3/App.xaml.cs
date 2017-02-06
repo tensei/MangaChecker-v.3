@@ -15,7 +15,8 @@ namespace MangaCheckerV3 {
             //if (!Debugger.IsAttached)
             //	ExceptionHandler.AddGlobalHandlers();
             //ThemeHelper.ChangeAccentColorTo("red", "red", false);
-            if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db"))) LiteDb.CheckDbVersion(ProviderService.Providers);
+            if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db")))
+                LiteDb.CheckDbVersion(ProviderService.Providers);
             else LiteDb.CreateDatabase(ProviderService.Providers);
             PluginHost.Instance.Initialize();
             var mainWindow = new MainWindow {

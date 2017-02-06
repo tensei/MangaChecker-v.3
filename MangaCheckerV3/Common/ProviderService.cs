@@ -10,24 +10,23 @@ using PropertyChanged;
 namespace MangaCheckerV3.Common {
     [ImplementPropertyChanged]
     public class ProviderService {
-
-        public static readonly List<ISite> Providers= new List<ISite> {
-                new Webtoons(),
-                new Mangastream(),
-                new Tomochan(),
-                new YoManga(),
-                new Batoto(),
-                new GameOfScanlation(),
-                new Jaiminisbox(),
-                new KireiCake(),
-                new Crunchyroll(),
-                new HeyManga(),
-                new Kissmanga(),
-                new Mangafox(),
-                new Mangahere(),
-                new Mangareader(),
-                new Sensescans()
-            };
+        public static readonly List<ISite> Providers = new List<ISite> {
+            new Webtoons(),
+            new Mangastream(),
+            new Tomochan(),
+            new YoManga(),
+            new Batoto(),
+            new GameOfScanlation(),
+            new Jaiminisbox(),
+            new KireiCake(),
+            new Crunchyroll(),
+            new HeyManga(),
+            new Kissmanga(),
+            new Mangafox(),
+            new Mangahere(),
+            new Mangareader(),
+            new Sensescans()
+        };
 
         public static bool Pause = false;
         public static bool Stop = false;

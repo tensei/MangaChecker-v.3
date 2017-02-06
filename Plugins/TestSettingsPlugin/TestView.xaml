@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:DBMigration"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-	<Grid>
-		<Label HorizontalAlignment="Center" VerticalAlignment="Center">test</Label>
-	</Grid>
+    <Grid>
+        <Label HorizontalAlignment="Center" VerticalAlignment="Center">test</Label>
+    </Grid>
 </UserControl>

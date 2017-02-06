@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 using MangaChecker.Database;
 using MangaChecker.Database.Enums;
 using MangaChecker.Database.Tables;
-using MangaChecker.Utilities;
 using MangaCheckerV3.Common;
 using PropertyChanged;
 
@@ -56,14 +54,14 @@ namespace MangaCheckerV3.ViewModels {
             nm?.ToList().ForEach(_newManga.Add);
             LastRefresh = DateTime.Now.ToLongTimeString();
         }
-        
+
         private void DatabaseOnMangaEvent(object sender, MangaEnum mangaEnum) {
             if (mangaEnum != MangaEnum.Update) return;
-            var m = (Manga)sender;
+            var m = (Manga) sender;
             var nm = new Manga {
                 Name = m.Name,
                 Chapter = m.Chapter,
-                Added = m.Added,
+                Added = DateTime.Now,
                 Updated = m.Updated,
                 Link = m.Link,
                 Rss = m.Rss,
@@ -74,7 +72,7 @@ namespace MangaCheckerV3.ViewModels {
                 OtherChapters = m.OtherChapters,
                 Newest = m.Newest
             };
-            _newManga.Add((Manga)sender);
+            _newManga.Add((Manga) sender);
             LiteDb.InsertNewManga(nm);
             GetNewMangas();
         }

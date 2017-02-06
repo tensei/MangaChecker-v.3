@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MangaChecker.Database;
-using MangaChecker.Database.Tables;
 using MangaChecker.DataTypes.Interface;
 using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
     public class YoManga : ISite {
         private readonly WebParser _webParser = new WebParser();
+
         public async Task CheckAll() {
             var all = LiteDb.GetMangasFrom(DbName);
             var openlink = LiteDb.GetOpenLinks();
@@ -33,18 +33,22 @@ namespace MangaChecker.Providers {
             var imges = new List<object>();
             if (!url.EndsWith("page/1")) url = url + "page/1";
             var html = await _webParser.GetHtmlSourceDucumentAsync(url);
-            imges.Add(html.All.First(i=> i.LocalName == "img" && i.ClassList.Contains("open") 
-
-            && i.HasAttribute("src") && i.GetAttribute("src").Contains("https://yomanga.co/reader/content/comics/")).GetAttribute("src"));
+            imges.Add(html.All.First(i => i.LocalName == "img" && i.ClassList.Contains("open")
+                                          && i.HasAttribute("src") &&
+                                          i.GetAttribute("src").Contains("https://yomanga.co/reader/content/comics/"))
+                .GetAttribute("src"));
             var pages =
-                Regex.Match(html.DocumentElement.InnerHtml, @">([0-9]+) ⤵</div>", RegexOptions.IgnoreCase).Groups[1].Value.Trim().Trim('.');
+                Regex.Match(html.DocumentElement.InnerHtml, @">([0-9]+) ⤵</div>", RegexOptions.IgnoreCase).Groups[1]
+                    .Value.Trim().Trim('.');
             var intpages = int.Parse(pages);
-            for (int i = 2; i <= intpages; i++) {
+            for (var i = 2; i <= intpages; i++) {
                 url = baserl + $"page/{i}";
                 html = await _webParser.GetHtmlSourceDucumentAsync(url);
                 imges.Add(html.All.First(x => x.LocalName == "img" && x.ClassList.Contains("open")
-
-                && x.HasAttribute("src") && x.GetAttribute("src").Contains("https://yomanga.co/reader/content/comics/")).GetAttribute("src"));
+                                              && x.HasAttribute("src") &&
+                                              x.GetAttribute("src")
+                                                  .Contains("https://yomanga.co/reader/content/comics/"))
+                    .GetAttribute("src"));
             }
             return new Tuple<List<object>, int>(imges, intpages);
         }

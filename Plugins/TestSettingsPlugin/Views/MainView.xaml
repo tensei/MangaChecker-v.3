@@ -8,16 +8,16 @@
              mc:Ignorable="d"
              Height="300" d:DesignWidth="500"
              d:DataContext="{d:DesignInstance {x:Type viewModel:MainViewModel}, IsDesignTimeCreatable=False}">
-	<Grid Margin="10">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="30" />
-			<RowDefinition />
-		</Grid.RowDefinitions>
-		<StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-			<Button Command="{Binding Start}">Start</Button>
-			<Button Margin="10,0">Stop</Button>
-			<Button>Pause</Button>
-		</StackPanel>
-		<TextBox Grid.Row="1" Text="{Binding Output}" />
-	</Grid>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <Button Command="{Binding Start}">Start</Button>
+            <Button Margin="10,0">Stop</Button>
+            <Button>Pause</Button>
+        </StackPanel>
+        <TextBox Grid.Row="1" Text="{Binding Output}" />
+    </Grid>
 </UserControl>

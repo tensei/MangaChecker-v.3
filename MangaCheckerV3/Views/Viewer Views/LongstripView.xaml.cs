@@ -6,10 +6,9 @@ using System.Windows.Input;
 
 namespace MangaCheckerV3.Views.Viewer_Views {
     /// <summary>
-    /// Interaction logic for LongstripView.xaml
+    ///     Interaction logic for LongstripView.xaml
     /// </summary>
     public partial class LongstripView : UserControl {
-
         private static Timer _loopTimer;
 
         private int _direction;
@@ -36,13 +35,14 @@ namespace MangaCheckerV3.Views.Viewer_Views {
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e) {
             if (e.ChangedButton == MouseButton.Left) {
                 _loopTimer.Enabled = true;
-                _direction = (int)SliderScrollSpeed.Value;
+                _direction = (int) SliderScrollSpeed.Value;
             }
             if (e.ChangedButton != MouseButton.Right)
                 return;
             _loopTimer.Enabled = true;
-            _direction = -(int)SliderScrollSpeed.Value;
+            _direction = -(int) SliderScrollSpeed.Value;
         }
+
         private void Canvas_MouseUp(object sender, MouseButtonEventArgs e) {
             _loopTimer.Enabled = false;
         }

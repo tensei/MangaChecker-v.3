@@ -11,22 +11,20 @@ using CloudFlareUtilities;
 
 namespace MangaChecker.Utilities {
     public class WebParser {
-        private ClearanceHandler _handler;
         private HttpClient _client;
+        private ClearanceHandler _handler;
+
         private async Task<string> GetHtmlSourceStringAsync(string url) {
             try {
                 // Create the clearance handler.
-                if (_handler == null) {
+                if (_handler == null)
                     _handler = new ClearanceHandler {
                         MaxRetries = 2 // Optionally specify the number of retries, if clearance fails (default is 3).
                     };
-                }
-                if (_client == null) {
-                    // Create a HttpClient that uses the handler to bypass CloudFlare's JavaScript challange.
+                if (_client == null)
                     _client = new HttpClient(_handler) {
                         Timeout = TimeSpan.FromSeconds(15)
                     };
-                }
 
                 // Use the HttpClient as usual. Any JS challenge will be solved automatically for you.
                 var content = await _client.GetStringAsync(url);
@@ -43,20 +41,18 @@ namespace MangaChecker.Utilities {
                 return null;
             }
         }
+
         public async Task<byte[]> GetHtmlDataAsync(string url) {
             try {
                 // Create the clearance handler.
-                if (_handler == null) {
+                if (_handler == null)
                     _handler = new ClearanceHandler {
                         MaxRetries = 2 // Optionally specify the number of retries, if clearance fails (default is 3).
                     };
-                }
-                if (_client == null) {
-                    // Create a HttpClient that uses the handler to bypass CloudFlare's JavaScript challange.
+                if (_client == null)
                     _client = new HttpClient(_handler) {
                         Timeout = TimeSpan.FromSeconds(15)
                     };
-                }
                 // Use the HttpClient as usual. Any JS challenge will be solved automatically for you.
                 var content = await _client.GetByteArrayAsync(url);
 
@@ -76,30 +72,25 @@ namespace MangaChecker.Utilities {
         public async Task<IHtmlDocument> GetHtmlSourceDucumentAsync(string url, bool js = false) {
             try {
                 // Create the clearance handler.
-                if (_handler == null) {
+                if (_handler == null)
                     _handler = new ClearanceHandler {
                         MaxRetries = 2 // Optionally specify the number of retries, if clearance fails (default is 3).
                     };
-                }
-                if (_client == null) {
-                    // Create a HttpClient that uses the handler to bypass CloudFlare's JavaScript challange.
+                if (_client == null)
                     _client = new HttpClient(_handler) {
                         Timeout = TimeSpan.FromSeconds(15)
                     };
-                }
 
                 // Use the HttpClient as usual. Any JS challenge will be solved automatically for you.
                 string content;
                 try {
-                    content  = await _client.GetStringAsync(url);
+                    content = await _client.GetStringAsync(url);
                 }
-                catch (AggregateException ex) when (ex.InnerException is CloudFlareClearanceException)
-                {
+                catch (AggregateException ex) when (ex.InnerException is CloudFlareClearanceException) {
                     // After all retries, clearance still failed.
                     return null;
                 }
-                catch (AggregateException ex) when (ex.InnerException is TaskCanceledException)
-                {
+                catch (AggregateException ex) when (ex.InnerException is TaskCanceledException) {
                     // Looks like we ran into a timeout. Too many clearance attempts?
                     // Maybe you should increase client.Timeout as each attempt will take about five seconds.
                     return null;

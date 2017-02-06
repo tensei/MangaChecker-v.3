@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MangaChecker.Database;
-using MangaChecker.Database.Tables;
 using MangaChecker.DataTypes.Interface;
 using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
     public class Mangastream : ISite {
         private readonly WebParser _webParser = new WebParser();
+
         public async Task CheckAll() {
             var all = LiteDb.GetMangasFrom(DbName);
             var rss = await _webParser.GetRssFeedAsync("http://mangastream.com/rss");

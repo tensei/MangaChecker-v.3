@@ -37,7 +37,7 @@ namespace MangaCheckerV3.ViewModels {
             var nm = new Manga {
                 Name = m.Name,
                 Chapter = m.Chapter,
-                Added = m.Added,
+                Added = DateTime.Now,
                 Updated = m.Updated,
                 Link = m.Link,
                 Rss = m.Rss,
@@ -53,7 +53,7 @@ namespace MangaCheckerV3.ViewModels {
         }
 
         private void Refresh() {
-            if (_history.Count > 0) _history.Clear();
+            if (_history.Count > 0) _history?.Clear();
             LiteDb.GetHistory()?.ToList().ForEach(_history.Add);
             LastRefresh = DateTime.Now.ToLongTimeString();
         }

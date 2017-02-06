@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-using System.Windows.Input;
-using log4net.Config;
+﻿using System.Windows.Input;
 using MangaChecker.Utilities;
 using MangaCheckerV3.Common;
 using MaterialDesignThemes.Wpf;

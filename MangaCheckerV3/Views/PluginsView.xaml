@@ -11,24 +11,24 @@
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance {x:Type viewModel:PluginsViewModel}, IsDesignTimeCreatable=False}">
 
-	<Grid Margin="4">
-		<!--<ScrollViewer VerticalScrollBarVisibility="Auto">-->
-		<ItemsControl ItemsSource="{Binding Plugins}" HorizontalContentAlignment="Stretch">
-			<ItemsControl.ItemTemplate>
-				<DataTemplate DataType="{x:Type models:PluginsModel}">
-					<Expander Margin="0,0,0,5" Header="{Binding Name, Mode=OneWay}">
-						<Grid Margin="4">
-							<Grid.RowDefinitions>
-								<RowDefinition Height="Auto" />
-								<RowDefinition Height="Auto" />
-							</Grid.RowDefinitions>
-							<Separator />
-							<ContentControl Grid.Row="1" Content="{Binding SettingsView}" />
-						</Grid>
-					</Expander>
-				</DataTemplate>
-			</ItemsControl.ItemTemplate>
-		</ItemsControl>
-		<!--</ScrollViewer>-->
-	</Grid>
+    <Grid Margin="4">
+        <!--<ScrollViewer VerticalScrollBarVisibility="Auto">-->
+        <ItemsControl ItemsSource="{Binding Plugins}" HorizontalContentAlignment="Stretch">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type models:PluginsModel}">
+                    <Expander Margin="0,0,0,5" Header="{Binding Name, Mode=OneWay}">
+                        <Grid Margin="4">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Separator />
+                            <ContentControl Grid.Row="1" Content="{Binding SettingsView}" />
+                        </Grid>
+                    </Expander>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <!--</ScrollViewer>-->
+    </Grid>
 </UserControl>

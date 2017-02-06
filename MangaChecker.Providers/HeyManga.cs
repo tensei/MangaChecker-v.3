@@ -4,24 +4,24 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MangaChecker.Database;
-using MangaChecker.Database.Tables;
 using MangaChecker.DataTypes.Interface;
 using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
     public class HeyManga : ISite {
+        private readonly WebParser _webParser = new WebParser();
+
         public async Task CheckAll() {
             var all = LiteDb.GetMangasFrom(DbName);
             var openlink = LiteDb.GetOpenLinks();
             var m = await _load2Pages("https://www.heymanga.me/latest-manga/");
             if (m == null) return;
             var m2 = await _load2Pages("https://www.heymanga.me/latest-manga/2");
-            if (m2 != null) {
+            if (m2 != null)
                 foreach (var d in m2) {
                     if (m.Keys.Contains(d.Key)) continue;
                     m.Add(d.Key, d.Value);
                 }
-            }
             foreach (var manga in all)
             foreach (var rssItemObject in m) {
                 if (!rssItemObject.Value.ToLower().Contains(manga.Name.ToLower())) continue;
@@ -46,7 +46,14 @@ namespace MangaChecker.Providers {
 
         public bool ViewEnabled => false;
 
-        private readonly WebParser _webParser = new WebParser();
+        public string DbName => "HeyManga";
+
+        public Regex LinkRegex() {
+            return new Regex("");
+        }
+
+        public string LinktoSite => "https://www.heymanga.me/";
+
         private async Task<Dictionary<string, string>> _load2Pages(string link) {
             var m = new Dictionary<string, string>();
             var html = await _webParser.GetHtmlSourceDucumentAsync(link);
@@ -66,13 +73,5 @@ namespace MangaChecker.Providers {
                 }
             return m;
         }
-
-        public string DbName => "HeyManga";
-
-        public Regex LinkRegex() {
-            return new Regex("");
-        }
-
-        public string LinktoSite => "https://www.heymanga.me/";
     }
 }

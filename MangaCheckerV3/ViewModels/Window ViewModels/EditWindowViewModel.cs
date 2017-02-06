@@ -20,7 +20,7 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
             DeleteGenreCommand = new ActionCommand(DeleteGenre);
             AddGenreCommand = new ActionCommand(AddGenre);
             AddOtherChapterCommand = new ActionCommand(AddOtherChapter);
-            DeleteOtherChapterCommand = new ActionCommand(o => DeleteOtherChapter((string)o));
+            DeleteOtherChapterCommand = new ActionCommand(o => DeleteOtherChapter((string) o));
             SaveMangaCommand = new ActionCommand(SaveManga);
             GenresAdded = new ReadOnlyObservableCollection<Genre>(_genres);
             OtherChapters = new ReadOnlyObservableCollection<string>(_otherChapters);
@@ -64,6 +64,7 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
             Manga.Genres.Remove(enumVal);
             _genres.Remove(enumVal);
         }
+
         private void AddOtherChapter() {
             if (Manga.OtherChapters.Contains(OtherChapter)) return;
             Manga.OtherChapters.Add(OtherChapter);

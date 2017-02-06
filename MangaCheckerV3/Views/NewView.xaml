@@ -10,67 +10,67 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance {x:Type viewModels:NewMangaViewModel}, IsDesignTimeCreatable=False}">
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition />
-		</Grid.RowDefinitions>
-		<materialDesign:ColorZone>
-			<Grid>
-				<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-					<TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0">
-						<Run Text="{Binding NewManga.Count, Mode=OneWay}" />
-						<Run Text=" New Mangas." />
-					</TextBlock>
-					<TextBlock Text="{Binding LastRefresh}" HorizontalAlignment="Left" VerticalAlignment="Center" />
-				</StackPanel>
-				<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-					<Button Style="{DynamicResource MaterialDesignToolButton}" ToolTip="Remove all"
-					        Command="{Binding RemoveAllCommand}">
-						<materialDesign:PackIcon Kind="Delete" />
-					</Button>
-					<Button Style="{DynamicResource MaterialDesignToolButton}" Margin="10,0" ToolTip="Refresh list"
-					        Command="{Binding RefreshListCommand}">
-						<materialDesign:PackIcon Kind="Refresh" />
-					</Button>
-				</StackPanel>
-			</Grid>
-		</materialDesign:ColorZone>
-		<ListBox Grid.Row="1" HorizontalContentAlignment="Stretch" ItemsSource="{Binding NewManga}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <materialDesign:ColorZone>
+            <Grid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0">
+                        <Run Text="{Binding NewManga.Count, Mode=OneWay}" />
+                        <Run Text=" New Mangas." />
+                    </TextBlock>
+                    <TextBlock Text="{Binding LastRefresh}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button Style="{DynamicResource MaterialDesignToolButton}" ToolTip="Remove all"
+                            Command="{Binding RemoveAllCommand}">
+                        <materialDesign:PackIcon Kind="Delete" />
+                    </Button>
+                    <Button Style="{DynamicResource MaterialDesignToolButton}" Margin="10,0" ToolTip="Refresh list"
+                            Command="{Binding RefreshListCommand}">
+                        <materialDesign:PackIcon Kind="Refresh" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </materialDesign:ColorZone>
+        <ListBox Grid.Row="1" HorizontalContentAlignment="Stretch" ItemsSource="{Binding NewManga}">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <VirtualizingStackPanel IsItemsHost="True" VirtualizingStackPanel.VirtualizationMode="Recycling"/>
+                    <VirtualizingStackPanel IsItemsHost="True" VirtualizingStackPanel.VirtualizationMode="Recycling" />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
-			<ListBox.ItemTemplate>
-				<DataTemplate DataType="{x:Type tables:Manga}">
-					<Grid Margin="4,0">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto" />
-							<ColumnDefinition Width="*" />
-							<ColumnDefinition Width="Auto" />
-							<ColumnDefinition Width="Auto" />
-							<ColumnDefinition Width="Auto" />
-						</Grid.ColumnDefinitions>
-						<TextBlock Text="{Binding Newest}" VerticalAlignment="Center" />
-						<TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" Margin="10,0" />
-						<TextBlock Grid.Column="2" Text="{Binding Site}" VerticalAlignment="Center" />
-						<TextBlock Grid.Column="3" Text="{Binding Updated}" VerticalAlignment="Center" Margin="10,0" />
-						<StackPanel Grid.Column="4" Orientation="Horizontal" Margin="0,0,10,0">
-							<Button Padding="8,3" Background="Transparent" BorderThickness="0" Margin="0,0,10,0"
-							        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:NewView}}, Path=DataContext.ViewCommand, Mode=OneTime}"
-							        CommandParameter="{Binding}">
-								<materialDesign:PackIcon Kind="Eye" Height="16" />
-							</Button>
-							<Button Padding="8,3" Background="Transparent" BorderThickness="0"
-							        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:NewView}}, Path=DataContext.RemoveCommand, Mode=OneTime}"
-							        CommandParameter="{Binding}">
-								<materialDesign:PackIcon Kind="Close" Height="16" />
-							</Button>
-						</StackPanel>
-					</Grid>
-				</DataTemplate>
-			</ListBox.ItemTemplate>
-		</ListBox>
-	</Grid>
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type tables:Manga}">
+                    <Grid Margin="4,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Newest}" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" Margin="10,0" />
+                        <TextBlock Grid.Column="2" Text="{Binding Site}" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="3" Text="{Binding Updated}" VerticalAlignment="Center" Margin="10,0" />
+                        <StackPanel Grid.Column="4" Orientation="Horizontal" Margin="0,0,10,0">
+                            <Button Padding="8,3" Background="Transparent" BorderThickness="0" Margin="0,0,10,0"
+                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:NewView}}, Path=DataContext.ViewCommand, Mode=OneTime}"
+                                    CommandParameter="{Binding}">
+                                <materialDesign:PackIcon Kind="Eye" Height="16" />
+                            </Button>
+                            <Button Padding="8,3" Background="Transparent" BorderThickness="0"
+                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:NewView}}, Path=DataContext.RemoveCommand, Mode=OneTime}"
+                                    CommandParameter="{Binding}">
+                                <materialDesign:PackIcon Kind="Close" Height="16" />
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
 </UserControl>

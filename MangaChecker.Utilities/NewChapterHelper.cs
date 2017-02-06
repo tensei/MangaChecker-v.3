@@ -7,13 +7,13 @@ using static MangaChecker.Utilities.Log;
 
 namespace MangaChecker.Utilities {
     public static class NewChapterHelper {
-
         public static bool IsNew(Manga manga, string newChapter, DateTime newDate, string newLink, bool openLink) {
             var isFloat = float.TryParse(newChapter, NumberStyles.Float, CultureInfo.InvariantCulture,
                 out float floatChapter);
             var isDateNew = newDate > manga.Updated;
 
-            if (isFloat && Math.Abs(floatChapter - manga.Chapter) <= 0 || (object)newChapter == manga.Newest || floatChapter < manga.Chapter)
+            if (isFloat && Math.Abs(floatChapter - manga.Chapter) <= 0 || newChapter == manga.Newest ||
+                floatChapter < manga.Chapter)
                 return true;
 
             if (isFloat && floatChapter > manga.Chapter)

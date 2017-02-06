@@ -10,87 +10,88 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance {x:Type viewModel:ThemeViewModel}, IsDesignTimeCreatable=False}">
-	<Grid Margin="10">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="*" />
-		</Grid.RowDefinitions>
-		<StackPanel Orientation="Horizontal">
-			<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0">
-				<Run Text="Theme" />
-			</TextBlock>
-			<ComboBox HorizontalAlignment="Center" VerticalAlignment="Center" IsEditable="False"
-			          IsReadOnly="True"
-			          Text="{Binding Theme}" MinWidth="100">
-				<ComboBoxItem>Dark</ComboBoxItem>
-				<ComboBoxItem>Light</ComboBoxItem>
-			</ComboBox>
-		</StackPanel>
-		<!--<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0">Settings</TextBlock>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0">
+                <Run Text="Theme" />
+            </TextBlock>
+            <ComboBox HorizontalAlignment="Center" VerticalAlignment="Center" IsEditable="False"
+                      IsReadOnly="True"
+                      Text="{Binding Theme}" MinWidth="100">
+                <ComboBoxItem>Dark</ComboBoxItem>
+                <ComboBoxItem>Light</ComboBoxItem>
+            </ComboBox>
+        </StackPanel>
+        <!--<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0">Settings</TextBlock>
 			<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4" Grid.Column="0">Settings</TextBlock>
 			<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="5" Grid.Column="0">Settings</TextBlock>-->
-		<ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-			<ItemsControl ItemsSource="{Binding PrimaryColors}">
-				<ItemsControl.ItemsPanel>
-					<ItemsPanelTemplate>
-						<WrapPanel />
-					</ItemsPanelTemplate>
-				</ItemsControl.ItemsPanel>
-				<ItemsControl.ItemTemplate>
-					<DataTemplate DataType="materialDesignColors:Swatch">
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding PrimaryColors}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="materialDesignColors:Swatch">
 
-						<DataTemplate.Resources>
-							<Style BasedOn="{StaticResource MaterialDesignFlatButton}" TargetType="{x:Type Button}">
-								<Setter Property="Foreground">
-									<Setter.Value>
-										<SolidColorBrush Color="{Binding ExemplarHue.Foreground}" />
-									</Setter.Value>
-								</Setter>
-								<Setter Property="HorizontalAlignment" Value="Stretch" />
-								<Setter Property="Margin" Value="0" />
-								<Setter Property="VerticalAlignment" Value="Stretch" />
-							</Style>
-						</DataTemplate.Resources>
-						<materialDesign:Card Margin="6,5,0,0">
-							<Grid>
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="Auto" />
-									<ColumnDefinition Width="Auto" />
-								</Grid.ColumnDefinitions>
-								<Grid.RowDefinitions>
-									<RowDefinition Height="30" />
-									<RowDefinition Height="Auto" />
-								</Grid.RowDefinitions>
-								<TextBlock Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center"
-								           Text="{Binding Name}" />
+                        <DataTemplate.Resources>
+                            <Style BasedOn="{StaticResource MaterialDesignFlatButton}" TargetType="{x:Type Button}">
+                                <Setter Property="Foreground">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="{Binding ExemplarHue.Foreground}" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                <Setter Property="Margin" Value="0" />
+                                <Setter Property="VerticalAlignment" Value="Stretch" />
+                            </Style>
+                        </DataTemplate.Resources>
+                        <materialDesign:Card Margin="6,5,0,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Text="{Binding Name}" />
 
-								<Border Grid.Row="1" Grid.Column="0" Width="100" Height="30">
-									<Border.Background>
-										<SolidColorBrush Color="{Binding ExemplarHue.Color}" />
-									</Border.Background>
+                                <Border Grid.Row="1" Grid.Column="0" Width="100" Height="30">
+                                    <Border.Background>
+                                        <SolidColorBrush Color="{Binding ExemplarHue.Color}" />
+                                    </Border.Background>
 
-									<Button
-										Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ThemeView}}, Path=DataContext.ApplyPrimaryCommand, Mode=OneTime}"
-										CommandParameter="{Binding}" Content="Primary" />
-								</Border>
+                                    <Button
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ThemeView}}, Path=DataContext.ApplyPrimaryCommand, Mode=OneTime}"
+                                        CommandParameter="{Binding}" Content="Primary" />
+                                </Border>
 
-								<Border Grid.Row="1" Grid.Column="1" Width="100" Height="30"
-								        Visibility="{Binding IsAccented, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneTime}">
-									<Border.Background>
-										<SolidColorBrush Color="{Binding AccentExemplarHue.Color}" />
-									</Border.Background>
+                                <Border Grid.Row="1" Grid.Column="1" Width="100" Height="30"
+                                        Visibility="{Binding IsAccented, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneTime}">
+                                    <Border.Background>
+                                        <SolidColorBrush Color="{Binding AccentExemplarHue.Color}" />
+                                    </Border.Background>
 
-									<Button
-										Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ThemeView}}, 
+                                    <Button
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ThemeView}}, 
 										Path=DataContext.ApplyAccentCommand, Mode=OneTime}"
-										CommandParameter="{Binding}" Content="Accent" />
-								</Border>
+                                        CommandParameter="{Binding}" Content="Accent" />
+                                </Border>
 
-							</Grid>
-						</materialDesign:Card>
-					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl>
-		</ScrollViewer>
-	</Grid>
+                            </Grid>
+                        </materialDesign:Card>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
 </UserControl>

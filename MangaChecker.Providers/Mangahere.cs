@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using MangaChecker.Database.Tables;
 using MangaChecker.DataTypes.Interface;
 
 namespace MangaChecker.Providers {
