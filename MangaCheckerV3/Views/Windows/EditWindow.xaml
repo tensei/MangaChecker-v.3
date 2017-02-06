@@ -123,7 +123,8 @@
 								Genres
 							</TextBlock>
 							<StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
-								<ComboBox ItemsSource="{Binding Genres}" Margin="8,0" Width="80" SelectedItem="{Binding SelectedGenre}" />
+								<ComboBox ItemsSource="{Binding Genres}" Margin="8,0" Width="80" SelectedItem="{Binding SelectedGenre}" 
+                                           Height="28" VerticalAlignment="Center"/>
 								<Button Style="{DynamicResource MaterialDesignToolButton}" Command="{Binding AddGenreCommand}" Margin="5,0">
 									<materialDesign:PackIcon Kind="Plus" />
 								</Button>
@@ -145,6 +146,44 @@
 								                     Background="{DynamicResource MaterialDesignCardBackground}"
 								                     Foreground="{DynamicResource IdealForegroundColorBrush}"
 								                     DeleteCommand="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:EditWindow}}, Path=DataContext.DeleteGenreCommand, Mode=OneTime}"
+								                     DeleteCommandParameter="{Binding}" />
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+				</Grid>
+				<Grid Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="5">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition />
+					</Grid.RowDefinitions>
+					<materialDesign:ColorZone materialDesign:ShadowAssist.ShadowDepth="Depth2">
+						<Grid>
+							<TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Margin="8,0" FontSize="16">
+								Other Chapters
+							</TextBlock>
+							<StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Height="28" VerticalAlignment="Center">
+                                <TextBox Text="{Binding OtherChapter}" Margin="8,0" Width="200" />
+                                <Button Style="{DynamicResource MaterialDesignToolButton}" Command="{Binding AddOtherChapterCommand}" Margin="5,0">
+									<materialDesign:PackIcon Kind="Plus" />
+								</Button>
+							</StackPanel>
+						</Grid>
+					</materialDesign:ColorZone>
+					<ItemsControl Grid.Row="1" ItemsSource="{Binding OtherChapters}" Margin="4">
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<WrapPanel />
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<materialDesign:Chip Content="{Binding}"
+								                     IsDeletable="True"
+								                     Margin="0 0 4 4"
+								                     x:Name="ButtonsDemoChip"
+								                     Background="{DynamicResource MaterialDesignCardBackground}"
+								                     Foreground="{DynamicResource IdealForegroundColorBrush}"
+								                     DeleteCommand="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:EditWindow}}, Path=DataContext.DeleteOtherChapterCommand, Mode=OneTime}"
 								                     DeleteCommandParameter="{Binding}" />
 							</DataTemplate>
 						</ItemsControl.ItemTemplate>

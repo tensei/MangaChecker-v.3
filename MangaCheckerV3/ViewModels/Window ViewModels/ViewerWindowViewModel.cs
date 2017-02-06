@@ -144,8 +144,8 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
 
         public void Dispose() {
             _isClosing = true;
-            _imgs.Clear();
-            _images.Clear();
+            _imgs?.Clear();
+            _images?.Clear();
             GC.Collect();
         }
     }

@@ -58,5 +58,29 @@ namespace MangaCheckerV3.Properties {
                 this["Theme"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("900")]
+        public double ViewerHeight {
+            get {
+                return ((double)(this["ViewerHeight"]));
+            }
+            set {
+                this["ViewerHeight"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("800")]
+        public double ViewerWidth {
+            get {
+                return ((double)(this["ViewerWidth"]));
+            }
+            set {
+                this["ViewerWidth"] = value;
+            }
+        }
     }
 }

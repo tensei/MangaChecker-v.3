@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using MangaCheckerV3.Properties;
 using MangaCheckerV3.ViewModels.Window_ViewModels;
 
 namespace MangaCheckerV3.Views.Windows {
@@ -34,6 +35,9 @@ namespace MangaCheckerV3.Views.Windows {
             data.Dispose();
             GC.Collect();
             DataContext = null;
+            Settings.Default.ViewerHeight = Height;
+            Settings.Default.ViewerWidth = Width;
+            Settings.Default.Save();
         }
     }
 }

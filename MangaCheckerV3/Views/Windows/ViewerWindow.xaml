@@ -8,13 +8,17 @@
                       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                       xmlns:windowViewModels="clr-namespace:MangaCheckerV3.ViewModels.Window_ViewModels"
                       xmlns:viewerViews="clr-namespace:MangaCheckerV3.Views.Viewer_Views"
+                      xmlns:properties="clr-namespace:MangaCheckerV3.Properties"
                       mc:Ignorable="d"
                       TitleCharacterCasing="Normal" BorderThickness="1" GlowBrush="Black"
                       NonActiveBorderBrush="Black"
                       NonActiveGlowBrush="Black"
                       NonActiveWindowTitleBrush="{DynamicResource HighlightBrush}"
-                      Title="{Binding Title}" Height="800" Width="700" 
+                      Title="{Binding Title}"
+                      Height="{Binding Source={x:Static properties:Settings.Default}, Path=ViewerHeight}"
+                      Width="{Binding Source={x:Static properties:Settings.Default}, Path=ViewerWidth}" 
 					  Closing="ViewerWindow_OnClosing"
+                      Loaded="MetroWindow_Loaded"
                       d:DataContext="{d:DesignInstance {x:Type windowViewModels:ViewerWindowViewModel}, IsDesignTimeCreatable=False}">
 	<controls:MetroWindow.RightWindowCommands>
 		<controls:WindowCommands>
