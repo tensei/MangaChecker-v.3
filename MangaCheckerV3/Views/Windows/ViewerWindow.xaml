@@ -18,7 +18,6 @@
                       Height="{Binding Source={x:Static properties:Settings.Default}, Path=ViewerHeight}"
                       Width="{Binding Source={x:Static properties:Settings.Default}, Path=ViewerWidth}" 
 					  Closing="ViewerWindow_OnClosing"
-                      Loaded="MetroWindow_Loaded"
                       d:DataContext="{d:DesignInstance {x:Type windowViewModels:ViewerWindowViewModel}, IsDesignTimeCreatable=False}">
 	<controls:MetroWindow.RightWindowCommands>
 		<controls:WindowCommands>
