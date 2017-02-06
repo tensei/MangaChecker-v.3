@@ -68,7 +68,7 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
 
         public int TransIndex { get; set; } = 1;
 
-        public string Mode { get; set; } = "Singe Page";
+        public string Mode { get; set; } = "Long Strip";
 
         private void ChangeMode() {
             if (TransIndex == 1) {
