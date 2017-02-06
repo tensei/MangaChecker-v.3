@@ -72,8 +72,8 @@
 					<Button Height="28" Margin="3,0" Command="{Binding RefreshCommand}" ToolTip="Refresh">
 						<materialDesign:PackIcon Kind="Refresh" />
 					</Button>
-					<Button Height="28" Margin="3,0" Command="{Binding IncreaseCommand}">
-						<materialDesign:PackIcon Kind="Plus" />
+					<Button Height="28" Margin="3,0" Command="{Binding DecreaseCommand}">
+						<materialDesign:PackIcon Kind="Minus" />
 					</Button>
 					<ComboBox SelectedItem="{Binding AmountItem}" Width="40" IsReadOnly="True"
 					          HorizontalContentAlignment="Center">
@@ -81,8 +81,8 @@
 						<system:Int32>10</system:Int32>
 						<system:Int32>100</system:Int32>
 					</ComboBox>
-					<Button Height="28" Margin="3,0" Command="{Binding DecreaseCommand}">
-						<materialDesign:PackIcon Kind="Minus" />
+					<Button Height="28" Margin="3,0" Command="{Binding IncreaseCommand}">
+						<materialDesign:PackIcon Kind="Plus" />
 					</Button>
 					<Button Height="28" Margin="3,0" Command="{Binding EditCommand}" ToolTip="Edit">
 						<materialDesign:PackIcon Kind="TableEdit" />
