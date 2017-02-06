@@ -7,6 +7,8 @@
         GetHistory,
         New,
         InsertHistory,
-        DeleteHistory
+        DeleteHistory,
+        DeleteNewManga,
+        InsertNewManga
     }
 }

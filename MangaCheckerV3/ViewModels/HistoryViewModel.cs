@@ -5,6 +5,7 @@ using System.Windows.Input;
 using MangaChecker.Database;
 using MangaChecker.Database.Enums;
 using MangaChecker.Database.Tables;
+using MangaCheckerV3.Common;
 using PropertyChanged;
 
 namespace MangaCheckerV3.ViewModels {
@@ -63,7 +64,7 @@ namespace MangaCheckerV3.ViewModels {
         }
 
         private void View(Manga manga) {
-            throw new NotImplementedException(manga.Name);
+            Utilities.OpenViewer(manga);
         }
     }
 }

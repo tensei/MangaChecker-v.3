@@ -12,7 +12,9 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Xml;
 using MangaChecker.Database.Tables;
+using MangaChecker.DataTypes.Interface;
 using MangaChecker.Utilities;
+using MangaCheckerV3.Common;
 using PropertyChanged;
 
 namespace MangaCheckerV3.ViewModels.Window_ViewModels {
@@ -25,28 +27,35 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
 
         public int TargetImages { get; private set; }
 
-        private readonly List<object> _imgs;
+        private List<object> _imgs;
         private readonly Manga _manga;
-        public ViewerWindowViewModel(List<object> images, Manga manga, int pages) {
+        public ViewerWindowViewModel(Manga manga, ISite provider) {
+            Pages = new ReadOnlyObservableCollection<int>(_pages);
+            LoadImages(manga, provider).ConfigureAwait(false);
             Title = $"{manga.Name} {manga.Chapter}";
             _manga = manga;
-            _imgs = images;
-            TargetImages = pages;
             ChangeModeCommand = new ActionCommand(ChangeMode);
             SaveImagesCommand = new ActionCommand(async () => {
                 if (SaveProgress == Visibility.Collapsed)
                     await SaveImagesAsync();
             });
             Images = new ReadOnlyObservableCollection<object>(_images);
-            SelectedPage = 0;
-            Fill().ConfigureAwait(false);
         }
-        
+
+        private async Task LoadImages(Manga manga, ISite provider) {
+            var imgs = await provider.GetImagesTaskAsync(manga.Link);
+            _imgs = imgs.Item1;
+            PageIntList();
+            TargetImages = imgs.Item2;
+            SelectedPage = 0;
+            await Fill().ConfigureAwait(false);
+        }
         
         public ICommand ChangeModeCommand { get; }
         public ICommand SaveImagesCommand { get; }
 
-        public List<int> Pages => PageIntList();
+        private readonly ObservableCollection<int> _pages = new ObservableCollection<int>();
+        public ReadOnlyObservableCollection<int> Pages { get; }
 
         private async Task Fill() {
             foreach (var image in _imgs) {
@@ -71,12 +80,10 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
             Mode = "Long Strip";
         }
 
-        private List<int> PageIntList() {
-            var p = new List<int>();
+        private void PageIntList() {
             for (var i = 0; i < _imgs.Count; i++) {
-                p.Add(i);
+                _pages.Add(i);
             }
-            return p;
         }
         
         

@@ -115,6 +115,7 @@
     <Compile Include="Common\GlobalVariables.cs" />
     <Compile Include="Common\PluginHost.cs" />
     <Compile Include="Common\ProviderService.cs" />
+    <Compile Include="Common\Utilities.cs" />
     <Compile Include="Helpers\ThemeHelper.cs" />
     <Compile Include="Models\PluginsModel.cs" />
     <Compile Include="Models\SiteListItem.cs" />

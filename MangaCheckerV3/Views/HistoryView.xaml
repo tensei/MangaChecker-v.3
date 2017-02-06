@@ -34,6 +34,11 @@
 			</Grid>
 		</materialDesign:ColorZone>
 		<ListBox Grid.Row="1" HorizontalContentAlignment="Stretch" ItemsSource="{Binding History}">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel IsItemsHost="True" VirtualizingStackPanel.VirtualizationMode="Recycling"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
 			<ListBox.ItemTemplate>
 				<DataTemplate DataType="{x:Type tables:Manga}">
 					<Grid Margin="4,0">

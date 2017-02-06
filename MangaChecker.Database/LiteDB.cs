@@ -9,7 +9,7 @@ using MangaChecker.DataTypes.Interface;
 
 namespace MangaChecker.Database {
     public static class LiteDb {
-        private const string DatabaseVersion = "1.0.0.4";
+        private const string DatabaseVersion = "1.0.0.5";
         private static readonly string DatabasePath = Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db");
 
         private static readonly LiteDatabase Db = new LiteDatabase(DatabasePath);
@@ -43,7 +43,7 @@ namespace MangaChecker.Database {
         }
 
         public static IOrderedEnumerable<Manga> GetAllNewMangas() {
-            var query = Db.GetCollection<Manga>("Manga").Find(n => n.New);
+            var query = Db.GetCollection<Manga>("NewManga").FindAll();
             var ordered = query.OrderByDescending(m => m.Updated);
             MangaEvent?.Invoke(ordered, MangaEnum.New);
             return ordered;
@@ -66,6 +66,16 @@ namespace MangaChecker.Database {
             query.Insert(manga);
             MangaEvent?.Invoke(manga, MangaEnum.InsertHistory);
         }
+        public static void InsertNewManga(Manga manga) {
+            var query = Db.GetCollection<Manga>("NewManga");
+            query.Insert(manga);
+            MangaEvent?.Invoke(manga, MangaEnum.InsertNewManga);
+        }
+        public static void DeleteNewManga(Manga manga) {
+            var query = Db.GetCollection<Manga>("NewManga");
+            query.Delete(manga.MangaId);
+            MangaEvent?.Invoke(manga, MangaEnum.DeleteNewManga);
+        }
 
         public static void Update(Manga manga, bool history = false) {
             var query = Db.GetCollection<Manga>("Manga");
@@ -74,7 +84,7 @@ namespace MangaChecker.Database {
             MangaEvent?.Invoke(manga, MangaEnum.Update);
         }
 
-        public static void UpdateTrans(List<Manga> manga, bool history = false) {
+        public static void UpdateMangaTrans(List<Manga> manga, bool history = false) {
             using (var _db = new LiteDatabase(DatabasePath)) {
                 var query = _db.GetCollection<Manga>("Manga");
                 using (var trans1 = _db.BeginTrans()) {
@@ -134,6 +144,7 @@ namespace MangaChecker.Database {
         private static void UpdateDatabase(Versions dbv, List<ISite> providers) {
             var set = Db.GetCollection<Settings>("Settings");
             Db.GetCollection<Manga>("History");
+            Db.GetCollection<Manga>("NewManga");
             Db.GetCollection<Manga>("Manga");
             var ver = Db.GetCollection<Versions>("Versions");
 
@@ -184,6 +195,7 @@ namespace MangaChecker.Database {
             var set = Db.GetCollection<Settings>("Settings");
             Db.GetCollection<Manga>("Manga");
             Db.GetCollection<Manga>("History");
+            Db.GetCollection<Manga>("NewManga");
             var ver = Db.GetCollection<Versions>("Versions");
 
             ver.Insert(new Versions {

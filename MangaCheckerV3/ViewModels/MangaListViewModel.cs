@@ -37,7 +37,7 @@ namespace MangaCheckerV3.ViewModels {
             DeleteCommand = new ActionCommand(DeleteManga);
             OpenMangaCommand = new ActionCommand(OpenMangaSite);
             RefreshCommand = new ActionCommand(async () => await RefreshManga());
-            ViewerCommand = new ActionCommand(async () => await ViewManga());
+            ViewerCommand = new ActionCommand(async () => ViewManga());
             DeselectCommand = new ActionCommand(() => { SelectedManga = null; });
             RefreshListCommand = new ActionCommand(() => FillMangaList(SelectedSite.Name));
             EditCommand = new ActionCommand(EditManga);
@@ -163,22 +163,8 @@ namespace MangaCheckerV3.ViewModels {
             await provider.CheckOne(SelectedManga);
         }
 
-        private async Task ViewManga() {
-//#if DEBUG
-//            var imgs = new List<object>(Directory.GetFiles(@"D:\Pictures", "*.png"));
-//#else
-            var provider = ProviderService.Providers.Find(p => p.DbName == SelectedManga.Site);
-            if (!provider.ViewEnabled) {
-                return;
-            }
-            var imgs = await provider.GetImagesTaskAsync(SelectedManga.Link);
-//#endif
-            var viewer = new ViewerWindow {
-                DataContext = new ViewerWindowViewModel(imgs.Item1, SelectedManga, imgs.Item2),
-                WindowStartupLocation = WindowStartupLocation.CenterOwner,
-                Owner = Application.Current.MainWindow
-            };
-            viewer.Show();
+        private void ViewManga() {
+            Utilities.OpenViewer(SelectedManga);
         }
 
         private void EditManga() {
