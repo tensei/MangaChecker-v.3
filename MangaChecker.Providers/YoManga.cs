@@ -16,7 +16,7 @@ namespace MangaChecker.Providers {
             var openlink = LiteDb.GetOpenLinks();
             var rss = await _webParser.GetRssFeedAsync("https://yomanga.co/reader/feeds/rss");
             if (rss == null) return;
-            rss.Reverse();
+            //rss.Reverse();
             foreach (var manga in all)
             foreach (var rssItemObject in rss) {
                 if (!rssItemObject.Title.ToLower().Contains(manga.Name.ToLower())) continue;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using AngleSharp;
 using AngleSharp.Dom.Html;
@@ -27,9 +28,11 @@ namespace MangaChecker.Utilities {
                     };
 
                 // Use the HttpClient as usual. Any JS challenge will be solved automatically for you.
-                var content = await _client.GetStringAsync(url);
+                var content = await _client.GetByteArrayAsync(url);
 
-                return content;
+                var responseString = Encoding.UTF8.GetString(content, 0, content.Length);
+
+                return responseString.Replace("&#45;", "-");
             }
             catch (AggregateException ex) when (ex.InnerException is CloudFlareClearanceException) {
                 // After all retries, clearance still failed.
