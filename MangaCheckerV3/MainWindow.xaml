@@ -10,7 +10,7 @@
     xmlns:Views="clr-namespace:MangaCheckerV3.Views"
     x:Class="MangaCheckerV3.MainWindow"
     mc:Ignorable="d"
-    Title="MangaChecker" Height="550" Width="725"
+    Title="MangaChecker" Height="550" Width="725" SaveWindowPosition="True"
     TitleCharacterCasing="Normal" BorderThickness="1" GlowBrush="Black"
     NonActiveBorderBrush="Black"
     NonActiveGlowBrush="Black"

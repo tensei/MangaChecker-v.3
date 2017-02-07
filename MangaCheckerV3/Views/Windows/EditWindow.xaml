@@ -8,7 +8,7 @@
                       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                       xmlns:windowViewModels="clr-namespace:MangaCheckerV3.ViewModels.Window_ViewModels"
                       mc:Ignorable="d"
-                      Title="Edit Window" Height="600" Width="800"
+                      Title="Edit Window" Height="600" Width="800" SaveWindowPosition="True"
                       TitleCharacterCasing="Normal" BorderThickness="1" GlowBrush="Black"
                       NonActiveBorderBrush="Black"
                       NonActiveGlowBrush="Black"
