@@ -7,7 +7,7 @@ using MangaChecker.DataTypes.Interface;
 using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
-    public class Tomochan : ISite {
+    public class Tomochan : IProvider {
         private readonly WebParser _webParser = new WebParser();
         //http://read.tomochan.today/rss
         public async Task CheckAll() {

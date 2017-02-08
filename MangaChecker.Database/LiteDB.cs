@@ -143,7 +143,7 @@ namespace MangaChecker.Database {
             return query.OpenLinks;
         }
 
-        private static void UpdateDatabase(Versions dbv, List<ISite> providers) {
+        private static void UpdateDatabase(Versions dbv, List<IProvider> providers) {
             var set = Db.GetCollection<Settings>("Settings");
             Db.GetCollection<Manga>("History");
             Db.GetCollection<Manga>("NewManga");
@@ -193,7 +193,7 @@ namespace MangaChecker.Database {
             DbEvent?.Invoke(dbv, DatabaseEnum.Update);
         }
 
-        public static void CreateDatabase(List<ISite> providers) {
+        public static void CreateDatabase(List<IProvider> providers) {
             var set = Db.GetCollection<Settings>("Settings");
             Db.GetCollection<Manga>("Manga");
             Db.GetCollection<Manga>("History");
@@ -236,7 +236,7 @@ namespace MangaChecker.Database {
             DbEvent?.Invoke(null, DatabaseEnum.Create);
         }
 
-        public static string CheckDbVersion(List<ISite> providers) {
+        public static string CheckDbVersion(List<IProvider> providers) {
             var dbv = Db.GetCollection<Versions>("Versions").FindOne(v => v.Name == "db");
             if (dbv.Version == DatabaseVersion) return null;
             dbv.Version = DatabaseVersion;

@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace MangaChecker.DataTypes.Interface {
-    public interface ISite {
+    public interface IProvider {
         string DbName { get; }
         bool ViewEnabled { get; }
         string LinktoSite { get; }

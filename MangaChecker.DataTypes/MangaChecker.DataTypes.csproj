@@ -47,7 +47,7 @@
   <ItemGroup>
     <Compile Include="Interface\IPluginMetadata.cs" />
     <Compile Include="Interface\IPlugin.cs" />
-    <Compile Include="Interface\ISite.cs" />
+    <Compile Include="Interface\IProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

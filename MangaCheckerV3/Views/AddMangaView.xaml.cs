@@ -8,7 +8,6 @@ namespace MangaCheckerV3.Views {
     public partial class AddMangaView : UserControl {
         public AddMangaView() {
             InitializeComponent();
-            DataContext = new AddMangaViewModel();
         }
     }
 }

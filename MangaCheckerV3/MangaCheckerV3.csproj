@@ -113,6 +113,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Common\GlobalVariables.cs" />
+    <Compile Include="Common\IProviderService.cs" />
     <Compile Include="Common\PluginHost.cs" />
     <Compile Include="Common\ProviderService.cs" />
     <Compile Include="Common\Utilities.cs" />

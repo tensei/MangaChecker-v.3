@@ -10,12 +10,16 @@ namespace MangaCheckerV3.ViewModels {
         /// <summary>
         ///     Initializes a new instance of the MainWindowViewModel class.
         /// </summary>
-        public MainWindowViewModel() {
+        public MainWindowViewModel(IProviderService providerService) {
+            ProviderService = providerService;
+            GlobalVariables.ProviderService = providerService;
+            MangaListContext = new MangaListViewModel(providerService);
+            AddContext = new AddMangaViewModel(providerService);
+            SettingsContext = new SettingsViewModel();
             SnackbarQueue = GlobalVariables.SnackbarQueue;
             StartStopCommand = new ActionCommand(StartStop);
             RefreshCommand = new ActionCommand(() => ProviderService.Timer = 5);
 
-            ProviderService = new ProviderService();
             ProviderService.Run().ConfigureAwait(false);
 
             //test PEPE
@@ -28,7 +32,7 @@ namespace MangaCheckerV3.ViewModels {
             SnackbarQueue.Enqueue("Starting...", true);
         }
 
-        public ProviderService ProviderService { get; }
+        public IProviderService ProviderService { get; }
 
         public SnackbarMessageQueue SnackbarQueue { get; }
 
@@ -38,6 +42,12 @@ namespace MangaCheckerV3.ViewModels {
         public ICommand StartStopCommand { get; }
         public ICommand RefreshCommand { get; }
         public PackIconKind PausePlayButtonIcon { get; set; } = PackIconKind.Pause;
+
+        public MangaListViewModel MangaListContext { get; }
+
+        public AddMangaViewModel AddContext { get; }
+
+        public SettingsViewModel SettingsContext { get; }
 
         private void StartStop() {
             if (!ProviderService.Pause) {

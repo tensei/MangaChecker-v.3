@@ -14,7 +14,8 @@ namespace MangaCheckerV3.ViewModels.Adding_ViewModels {
     public class AdvancedViewModel {
         private readonly ObservableCollection<Genre> _genres = new ObservableCollection<Genre>();
 
-        public AdvancedViewModel() {
+        public AdvancedViewModel(IProviderService providerService) {
+            ProviderService = providerService;
             Manga = new Manga();
             DeleteGenreCommand = new ActionCommand(DeleteGenre);
             AddGenreCommand = new ActionCommand(AddGenre);
@@ -24,6 +25,7 @@ namespace MangaCheckerV3.ViewModels.Adding_ViewModels {
             SelectedGenre = Genres[0];
         }
 
+        private IProviderService ProviderService;
         public Manga Manga { get; set; }
         public List<Genre> Genres => Enum.GetValues(typeof(Genre)).Cast<Genre>().ToList();
         public ReadOnlyObservableCollection<Genre> GenresAdded { get; }

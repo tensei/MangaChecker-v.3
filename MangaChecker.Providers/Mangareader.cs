@@ -9,7 +9,7 @@ using MangaChecker.DataTypes.Interface;
 using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
-    public class Mangareader : ISite {
+    public class Mangareader : IProvider {
         private readonly WebParser _webParser = new WebParser();
 
         public async Task CheckAll() {

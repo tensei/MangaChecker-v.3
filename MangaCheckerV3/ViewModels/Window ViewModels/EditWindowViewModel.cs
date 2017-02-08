@@ -15,7 +15,8 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
         private readonly ObservableCollection<Genre> _genres = new ObservableCollection<Genre>();
         private readonly ObservableCollection<string> _otherChapters = new ObservableCollection<string>();
 
-        public EditWindowViewModel(Manga manga) {
+        public EditWindowViewModel(Manga manga, IProviderService providerService) {
+            ProviderService = providerService;
             Manga = manga;
             DeleteGenreCommand = new ActionCommand(DeleteGenre);
             AddGenreCommand = new ActionCommand(AddGenre);
@@ -29,7 +30,7 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
             manga.Genres.ForEach(_genres.Add);
             manga.OtherChapters.ForEach(_otherChapters.Add);
         }
-
+        private readonly IProviderService ProviderService;
         public Manga Manga { get; set; }
         public List<Genre> Genres => Enum.GetValues(typeof(Genre)).Cast<Genre>().ToList();
         public ReadOnlyObservableCollection<Genre> GenresAdded { get; }

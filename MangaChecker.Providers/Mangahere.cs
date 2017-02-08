@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using MangaChecker.DataTypes.Interface;
 
 namespace MangaChecker.Providers {
-    public class Mangahere : ISite {
+    public class Mangahere : IProvider {
         public async Task CheckAll() {
             throw new NotImplementedException();
         }

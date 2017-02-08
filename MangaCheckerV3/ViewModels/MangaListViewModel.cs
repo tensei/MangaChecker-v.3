@@ -24,25 +24,28 @@ namespace MangaCheckerV3.ViewModels {
         /// </summary>
         private readonly ObservableCollection<Manga> _mangas = new ObservableCollection<Manga>();
 
+        private readonly ObservableCollection<SiteListItem> _sites = new ObservableCollection<SiteListItem>();
+
         private SiteListItem _selectedSite;
         private string _sortMode = "Updated";
 
-        public MangaListViewModel() {
+        public MangaListViewModel(IProviderService providerService) {
+            _providerService = providerService;
+            SetupSites();
+            LiteDb.SettingEvent += DatabaseOnSettingEvent;
             Mangas = new ReadOnlyObservableCollection<Manga>(_mangas);
-            Sites = new ReadOnlyObservableCollection<SiteListItem>(GlobalVariables.Sites);
+            Sites = new ReadOnlyObservableCollection<SiteListItem>(_sites);
             IncreaseCommand = new ActionCommand(IncreaseChapter);
             DecreaseCommand = new ActionCommand(DecreaseChapter);
             DeleteCommand = new ActionCommand(DeleteManga);
             OpenMangaCommand = new ActionCommand(OpenMangaSite);
             RefreshCommand = new ActionCommand(async () => await RefreshManga());
-            ViewerCommand = new ActionCommand(async () => ViewManga());
+            ViewerCommand = new ActionCommand(ViewManga);
             DeselectCommand = new ActionCommand(() => { SelectedManga = null; });
             RefreshListCommand = new ActionCommand(() => FillMangaList(SelectedSite.Name));
             EditCommand = new ActionCommand(EditManga);
-            SetupSites();
-            LiteDb.SettingEvent += DatabaseOnSettingEvent;
         }
-
+        private readonly IProviderService _providerService;
         public ReadOnlyObservableCollection<Manga> Mangas { get; }
         public ReadOnlyObservableCollection<SiteListItem> Sites { get; }
 
@@ -86,8 +89,8 @@ namespace MangaCheckerV3.ViewModels {
                 new SiteListItem {Name = "Backlog", Overrideable = false, IsEnabled = 1},
                 new SiteListItem {Name = "All", Overrideable = false, IsEnabled = 1}
             };
-            ProviderService.Providers.ForEach(p => s.Add(new SiteListItem {Name = p.DbName}));
-            s.OrderBy(x => x.Name).ToList().ForEach(GlobalVariables.Sites.Add);
+            _providerService.Providers.ForEach(p => s.Add(new SiteListItem {Name = p.DbName}));
+            s.OrderBy(x => x.Name).ToList().ForEach(_sites.Add);
         }
 
         private void DatabaseOnSettingEvent(object sender, SettingEnum settingEnum) {
@@ -95,7 +98,7 @@ namespace MangaCheckerV3.ViewModels {
             var settings = sender as List<Settings>;
             if (settings == null) return;
             foreach (var setting in settings) {
-                var v = GlobalVariables.Sites.FirstOrDefault(s => s.Name == setting.Setting);
+                var v = _sites.FirstOrDefault(s => s.Name == setting.Setting);
                 if (v != null) v.IsEnabled = setting.Active;
             }
         }
@@ -157,7 +160,7 @@ namespace MangaCheckerV3.ViewModels {
         }
 
         private async Task RefreshManga() {
-            var provider = ProviderService.Providers.Find(p => p.DbName == SelectedManga.Site);
+            var provider = _providerService.Providers.Find(p => p.DbName == SelectedManga.Site);
             await provider.CheckOne(SelectedManga);
         }
 
@@ -167,7 +170,7 @@ namespace MangaCheckerV3.ViewModels {
 
         private void EditManga() {
             var e = new EditWindow {
-                DataContext = new EditWindowViewModel(SelectedManga),
+                DataContext = new EditWindowViewModel(SelectedManga, _providerService),
                 WindowStartupLocation = WindowStartupLocation.CenterOwner
             };
             e.Show();

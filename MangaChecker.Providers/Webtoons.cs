@@ -7,7 +7,7 @@ using MangaChecker.DataTypes.Interface;
 using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
-    public class Webtoons : ISite {
+    public class Webtoons : IProvider {
         private readonly WebParser _webParser = new WebParser();
 
         public async Task CheckAll() {

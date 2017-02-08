@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.ComponentModel;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using MangaChecker.Database;
@@ -15,16 +16,18 @@ namespace MangaCheckerV3 {
             //if (!Debugger.IsAttached)
             //	ExceptionHandler.AddGlobalHandlers();
             //ThemeHelper.ChangeAccentColorTo("red", "red", false);
-            if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db")))
-                LiteDb.CheckDbVersion(ProviderService.Providers);
-            else LiteDb.CreateDatabase(ProviderService.Providers);
             PluginHost.Instance.Initialize();
+            var p = new ProviderService();
+            if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db")))
+                LiteDb.CheckDbVersion(p.Providers);
+            else LiteDb.CreateDatabase(p.Providers);
+
             var mainWindow = new MainWindow {
-                DataContext = new MainWindowViewModel()
+                DataContext = new MainWindowViewModel(p)
             };
             ThemeViewModel.Instance.SetupTheme();
             await Task.Delay(400);
-            mainWindow.Show();
+            mainWindow.ShowDialog();
         }
     }
 }

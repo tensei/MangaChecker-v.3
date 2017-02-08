@@ -27,7 +27,7 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
 
         private bool _isClosing;
 
-        public ViewerWindowViewModel(Manga manga, ISite provider) {
+        public ViewerWindowViewModel(Manga manga, IProvider provider) {
             Pages = new ReadOnlyObservableCollection<int>(_pages);
             LoadImages(manga, provider).ConfigureAwait(false);
             Title = $"{manga.Name} {manga.Chapter}";
@@ -70,7 +70,7 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
             GC.Collect();
         }
 
-        private async Task LoadImages(Manga manga, ISite provider) {
+        private async Task LoadImages(Manga manga, IProvider provider) {
             var imgs = await provider.GetImagesTaskAsync(manga.Link);
             _imgs = imgs.Item1;
             PageIntList();

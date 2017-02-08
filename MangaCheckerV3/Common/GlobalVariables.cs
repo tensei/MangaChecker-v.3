@@ -7,6 +7,6 @@ namespace MangaCheckerV3.Common {
     [ImplementPropertyChanged]
     public static class GlobalVariables {
         public static readonly SnackbarMessageQueue SnackbarQueue = new SnackbarMessageQueue();
-        public static readonly ObservableCollection<SiteListItem> Sites = new ObservableCollection<SiteListItem>();
+        public static IProviderService ProviderService;
     }
 }

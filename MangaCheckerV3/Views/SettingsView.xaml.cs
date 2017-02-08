@@ -10,7 +10,6 @@ namespace MangaCheckerV3.Views {
     public partial class SettingsView : UserControl {
         public SettingsView() {
             InitializeComponent();
-            DataContext = new SettingsViewModel();
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e) {

@@ -8,7 +8,7 @@ using MangaChecker.DataTypes.Interface;
 using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
-    public class Jaiminisbox : ISite {
+    public class Jaiminisbox : IProvider {
         private readonly WebParser _webParser = new WebParser();
 
         public async Task CheckAll() {

@@ -9,37 +9,40 @@ using PropertyChanged;
 
 namespace MangaCheckerV3.Common {
     [ImplementPropertyChanged]
-    public class ProviderService {
-        public static readonly List<ISite> Providers = new List<ISite> {
-            new Webtoons(),
-            new Mangastream(),
-            new Tomochan(),
-            new YoManga(),
-            new Batoto(),
-            new GameOfScanlation(),
-            new Jaiminisbox(),
-            new KireiCake(),
-            new Crunchyroll(),
-            new HeyManga(),
-            new Kissmanga(),
-            new Mangafox(),
-            new Mangahere(),
-            new Mangareader(),
-            new Sensescans()
-        };
+    public class ProviderService : IProviderService , IDisposable{
+        public List<IProvider> Providers { get; set; }
 
-        public static bool Pause = false;
-        public static bool Stop = false;
+        public ProviderService() {
+            Providers = new List<IProvider> {
+                new Webtoons(),
+                new Mangastream(),
+                new Tomochan(),
+                new YoManga(),
+                new Batoto(),
+                new GameOfScanlation(),
+                new Jaiminisbox(),
+                new KireiCake(),
+                new Crunchyroll(),
+                new HeyManga(),
+                new Kissmanga(),
+                new Mangafox(),
+                new Mangahere(),
+                new Mangareader(),
+                new Sensescans()
+            };
+        }
+        public bool Pause { get; set; } = false;
+        public bool Stop { get; set; }
         public int Timer { get; set; }
         public string Status { get; set; }
 
-        public static bool Add(ISite site) {
+        public bool Add(IProvider site) {
             if (Providers.Contains(site)) return false;
             Providers.Add(site);
             return true;
         }
 
-        public static bool Remove(ISite site) {
+        public bool Remove(IProvider site) {
             if (!Providers.Contains(site)) return false;
             Providers.Remove(site);
             return true;
@@ -69,6 +72,10 @@ namespace MangaCheckerV3.Common {
                     Timer = LiteDb.GetRefreshTime();
                     await Task.Delay(1000);
                 }
+        }
+
+        public void Dispose() {
+            Stop = true;
         }
     }
 }

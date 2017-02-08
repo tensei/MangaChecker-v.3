@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using MangaChecker.DataTypes.Interface;
 
 namespace MangaChecker.Providers {
-    public class Crunchyroll : ISite {
+    public class Crunchyroll : IProvider {
         //http://utils.senpai.moe/
 
         public async Task CheckAll() {
