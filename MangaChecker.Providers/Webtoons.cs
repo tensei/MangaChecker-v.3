@@ -27,9 +27,14 @@ namespace MangaChecker.Providers {
                 }
                 rss.Reverse();
                 foreach (var rssItemObject in rss) {
+                    var title = rssItemObject.Title;
                     var nc =
-                        Regex.Match(rssItemObject.Title, @"ep\. ([0-9\.]+)", RegexOptions.IgnoreCase).Groups[1].Value;
-                    var isNew = _newChapterHelper.IsNew(manga, nc.Trim('.').Trim(), rssItemObject.PubDate,
+                        Regex.Match(title, @"(?<other>ep\. |episode )(?<chapter>\d+.?\d+)", RegexOptions.IgnoreCase);
+                    var ch = nc.Groups["chapter"].Value;
+                    if (string.IsNullOrWhiteSpace(ch)) {
+                        ch = rssItemObject.Title;
+                    }
+                    var isNew = _newChapterHelper.IsNew(manga, ch.Trim('.').Trim(), rssItemObject.PubDate,
                         rssItemObject.Link, openlink);
                 }
             }
