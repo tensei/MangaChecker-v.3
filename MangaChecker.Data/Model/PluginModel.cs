@@ -1,21 +1,20 @@
 ﻿using System;
-using MangaChecker.DataTypes.Interface;
-using MangaChecker.DataTypes.Interfaces;
+using MangaChecker.Data.Interface;
 using PropertyChanged;
 
-namespace MangaCheckerV3.Models {
+namespace MangaChecker.Data.Model {
     [ImplementPropertyChanged]
-    public class PluginsModel {
+    public class PluginModel : IPluginMetadata {
         private readonly IPluginMetadata _metadata;
         private readonly IPlugin _settings;
 
-        public PluginsModel(Lazy<IPlugin, IPluginMetadata> settings) {
+        public PluginModel(Lazy<IPlugin, IPluginMetadata> settings) {
             _settings = settings.Value;
             _metadata = settings.Metadata;
         }
 
         public object SettingsView => _settings.SettingsView();
-        public string Name => _metadata.Title;
+        public string Title => _metadata.Title;
         public string Author => _metadata.Author;
         public string Version => _metadata.Version;
         public string Description => _metadata.Description;

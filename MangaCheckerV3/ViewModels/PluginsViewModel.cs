@@ -1,19 +1,20 @@
 ﻿using System.Collections.ObjectModel;
-using MangaCheckerV3.Common;
-using MangaCheckerV3.Models;
+using MangaChecker.Data.Model;
+using MangaChecker.Utilities;
 using PropertyChanged;
 
 namespace MangaCheckerV3.ViewModels {
     [ImplementPropertyChanged]
     public class PluginsViewModel {
-        private readonly ObservableCollection<PluginsModel> _plugins = new ObservableCollection<PluginsModel>();
+        private readonly ObservableCollection<PluginModel> _plugins = new ObservableCollection<PluginModel>();
 
         public PluginsViewModel() {
-            Plugins = new ReadOnlyObservableCollection<PluginsModel>(_plugins);
-            foreach (var instanceSetting in PluginHost.Instance.Plugins)
-                _plugins.Add(new PluginsModel(instanceSetting));
+            Plugins = new ReadOnlyObservableCollection<PluginModel>(_plugins);
+            foreach (var instanceSetting in PluginHost.Instance.Plugins) {
+                _plugins.Add(new PluginModel(instanceSetting));
+            }
         }
 
-        public ReadOnlyObservableCollection<PluginsModel> Plugins { get; }
+        public ReadOnlyObservableCollection<PluginModel> Plugins { get; }
     }
 }

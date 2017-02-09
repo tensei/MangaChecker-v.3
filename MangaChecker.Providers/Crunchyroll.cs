@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using MangaChecker.DataTypes.Interface;
+using MangaChecker.Data.Interface;
 
 namespace MangaChecker.Providers {
     public class Crunchyroll : IProvider {

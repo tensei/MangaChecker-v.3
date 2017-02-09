@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Windows.Documents;
-using MangaChecker.DataTypes.Interface;
 
-namespace MangaCheckerV3.Common {
+namespace MangaChecker.Data.Interface {
     public interface IProviderService {
         List<IProvider> Providers { get; set; }
         bool Pause { get; set; }

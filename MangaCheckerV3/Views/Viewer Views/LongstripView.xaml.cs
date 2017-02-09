@@ -37,8 +37,9 @@ namespace MangaCheckerV3.Views.Viewer_Views {
                 _loopTimer.Enabled = true;
                 _direction = (int) SliderScrollSpeed.Value;
             }
-            if (e.ChangedButton != MouseButton.Right)
+            if (e.ChangedButton != MouseButton.Right) {
                 return;
+            }
             _loopTimer.Enabled = true;
             _direction = -(int) SliderScrollSpeed.Value;
         }

@@ -166,9 +166,9 @@
       <Project>{bc2c4eae-6d63-4594-a062-80330ed4b591}</Project>
       <Name>MangaChecker.Database</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\MangaChecker.DataTypes\MangaChecker.DataTypes.csproj">
+    <ProjectReference Include="..\..\MangaChecker.Data\MangaChecker.Data.csproj">
       <Project>{f5132764-7a38-42f8-b54f-f7d4dccbb4ba}</Project>
-      <Name>MangaChecker.DataTypes</Name>
+      <Name>MangaChecker.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

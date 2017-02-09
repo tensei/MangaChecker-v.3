@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using MangaChecker.Data.Interface;
 using MangaChecker.Database;
-using MangaChecker.DataTypes.Interface;
 using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
@@ -15,12 +15,13 @@ namespace MangaChecker.Providers {
             var openlink = LiteDb.GetOpenLinks();
             foreach (var manga in all) {
                 if (string.IsNullOrEmpty(manga.Rss)) {
-                    Log.Loggger.Warn($"MANGAFOX {manga.Name} missing rss feed link");
+                    Logger.Log.Warn($"MANGAFOX {manga.Name} missing rss feed link");
                     continue;
                 }
                 var rss = await _webParser.GetRssFeedAsync(manga.Rss);
-                if (rss == null)
+                if (rss == null) {
                     continue;
+                }
                 rss.Reverse();
                 foreach (var rssItemObject in rss) {
                     // sample title => Boku no Hero Academia Vol TBD Ch 125

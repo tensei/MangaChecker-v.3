@@ -18,14 +18,16 @@ namespace MangaChecker.Utilities {
         private async Task<string> GetHtmlSourceStringAsync(string url) {
             try {
                 // Create the clearance handler.
-                if (_handler == null)
+                if (_handler == null) {
                     _handler = new ClearanceHandler {
                         MaxRetries = 2 // Optionally specify the number of retries, if clearance fails (default is 3).
                     };
-                if (_client == null)
+                }
+                if (_client == null) {
                     _client = new HttpClient(_handler) {
                         Timeout = TimeSpan.FromSeconds(15)
                     };
+                }
 
                 // Use the HttpClient as usual. Any JS challenge will be solved automatically for you.
                 var content = await _client.GetByteArrayAsync(url);
@@ -48,14 +50,16 @@ namespace MangaChecker.Utilities {
         public async Task<byte[]> GetHtmlDataAsync(string url) {
             try {
                 // Create the clearance handler.
-                if (_handler == null)
+                if (_handler == null) {
                     _handler = new ClearanceHandler {
                         MaxRetries = 2 // Optionally specify the number of retries, if clearance fails (default is 3).
                     };
-                if (_client == null)
+                }
+                if (_client == null) {
                     _client = new HttpClient(_handler) {
                         Timeout = TimeSpan.FromSeconds(15)
                     };
+                }
                 // Use the HttpClient as usual. Any JS challenge will be solved automatically for you.
                 var content = await _client.GetByteArrayAsync(url);
 
@@ -75,14 +79,16 @@ namespace MangaChecker.Utilities {
         public async Task<IHtmlDocument> GetHtmlSourceDucumentAsync(string url, bool js = false) {
             try {
                 // Create the clearance handler.
-                if (_handler == null)
+                if (_handler == null) {
                     _handler = new ClearanceHandler {
                         MaxRetries = 2 // Optionally specify the number of retries, if clearance fails (default is 3).
                     };
-                if (_client == null)
+                }
+                if (_client == null) {
                     _client = new HttpClient(_handler) {
                         Timeout = TimeSpan.FromSeconds(15)
                     };
+                }
 
                 // Use the HttpClient as usual. Any JS challenge will be solved automatically for you.
                 string content;
@@ -126,7 +132,9 @@ namespace MangaChecker.Utilities {
         public async Task<List<RssItemObject>> GetRssFeedAsync(string url) {
             try {
                 var allXml = await GetHtmlSourceStringAsync(url);
-                if (allXml == null) return null;
+                if (allXml == null) {
+                    return null;
+                }
                 var parser = new XmlParser(new XmlParserOptions {
                     IsSuppressingErrors = true
                 });

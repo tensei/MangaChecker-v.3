@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using MangaChecker.Data.Interface;
 using MangaChecker.Database;
-using MangaChecker.DataTypes.Interface;
 using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
@@ -17,16 +17,26 @@ namespace MangaChecker.Providers {
             var all = LiteDb.GetMangasFrom(DbName);
             var openlink = LiteDb.GetOpenLinks();
             var rss = await _webParser.GetRssFeedAsync("https://reader.kireicake.com/rss.xml");
-            if (rss == null) return;
+            if (rss == null) {
+                return;
+            }
             rss.Reverse();
             foreach (var manga in all)
             foreach (var rssItemObject in rss) {
-                if (!rssItemObject.Title.ToLower().Contains(manga.Name.ToLower())) continue;
+                if (!rssItemObject.Title.ToLower().Contains(manga.Name.ToLower())) {
+                    continue;
+                }
                 var ncs = rssItemObject.Link.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
                 string nc;
-                if (ncs[ncs.Length - 4] == "en") nc = $"{ncs[ncs.Length - 2]}.{ncs[ncs.Length - 1]}";
-                else if (ncs[ncs.Length - 3] == "en") nc = $"{ncs.Last()}";
-                else continue;
+                if (ncs[ncs.Length - 4] == "en") {
+                    nc = $"{ncs[ncs.Length - 2]}.{ncs[ncs.Length - 1]}";
+                }
+                else if (ncs[ncs.Length - 3] == "en") {
+                    nc = $"{ncs.Last()}";
+                }
+                else {
+                    continue;
+                }
                 var isNew = NewChapterHelper.IsNew(manga, nc, rssItemObject.PubDate,
                     rssItemObject.Link, openlink);
             }
@@ -36,8 +46,9 @@ namespace MangaChecker.Providers {
             //<div class="text">18 ⤵</div>
             var baserl = url;
             var imges = new List<object>();
-            if (!url.EndsWith("page/1"))
+            if (!url.EndsWith("page/1")) {
                 url = url + "page/1";
+            }
             var html = await _webParser.GetHtmlSourceDucumentAsync(url);
             imges.Add(html.All.First(i => i.LocalName == "img" && i.ClassList.Contains("open")
                                           && i.HasAttribute("src") &&

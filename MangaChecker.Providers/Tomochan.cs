@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using MangaChecker.Data.Interface;
 using MangaChecker.Database;
-using MangaChecker.DataTypes.Interface;
 using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
@@ -13,7 +13,9 @@ namespace MangaChecker.Providers {
         public async Task CheckAll() {
             var all = LiteDb.GetMangasFrom(DbName);
             var rss = await _webParser.GetRssFeedAsync("http://read.tomochan.today/rss");
-            if (rss == null) return;
+            if (rss == null) {
+                return;
+            }
             rss.Reverse();
             var openlink = LiteDb.GetOpenLinks();
             foreach (var manga in all)

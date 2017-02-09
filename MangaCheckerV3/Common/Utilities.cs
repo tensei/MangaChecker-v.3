@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows;
-using MangaChecker.Database.Tables;
+using MangaChecker.Data.Model;
 using MangaChecker.Utilities;
 using MangaCheckerV3.ViewModels.Window_ViewModels;
 using MangaCheckerV3.Views.Windows;
@@ -13,8 +13,9 @@ namespace MangaCheckerV3.Common {
             if (!provider.ViewEnabled) {
                 try {
                     Process.Start(manga.Link);
-                } catch (Exception e) {
-                    Log.Loggger.Error($"{manga.Link}\n{e}");
+                }
+                catch (Exception e) {
+                    Logger.Log.Error($"{manga.Link}\n{e}");
                 }
                 return;
             }

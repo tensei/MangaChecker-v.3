@@ -2,8 +2,7 @@
 
 namespace DBMigration.Old_Tables {
     public class webtoons {
-        [PrimaryKey]
-        [AutoIncrement]
+        [PrimaryKey, AutoIncrement]
         public int id { get; set; }
 
         [NotNull]

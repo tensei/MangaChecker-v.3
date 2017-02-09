@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using MangaChecker.Data.Interface;
 using MangaChecker.Database;
-using MangaChecker.DataTypes.Interface;
 using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
@@ -13,12 +13,16 @@ namespace MangaChecker.Providers {
         public async Task CheckAll() {
             var all = LiteDb.GetMangasFrom(DbName);
             var rss = await _webParser.GetRssFeedAsync("http://mangastream.com/rss");
-            if (rss == null) return;
+            if (rss == null) {
+                return;
+            }
             rss.Reverse();
             var openlink = LiteDb.GetOpenLinks();
             foreach (var manga in all)
             foreach (var rssItemObject in rss) {
-                if (!rssItemObject.Title.ToLower().Contains(manga.Name.ToLower())) continue;
+                if (!rssItemObject.Title.ToLower().Contains(manga.Name.ToLower())) {
+                    continue;
+                }
                 var nc = rssItemObject.Title.ToLower().Replace(manga.Name.ToLower(), string.Empty).Trim();
                 var isNew = NewChapterHelper.IsNew(manga, nc, rssItemObject.PubDate,
                     rssItemObject.Link, openlink);

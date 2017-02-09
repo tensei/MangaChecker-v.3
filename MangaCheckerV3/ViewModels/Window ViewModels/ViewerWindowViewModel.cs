@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using MangaChecker.Database.Tables;
-using MangaChecker.DataTypes.Interface;
+using MangaChecker.Data.Interface;
+using MangaChecker.Data.Model;
 using MangaChecker.Utilities;
 using PropertyChanged;
 
@@ -34,8 +34,9 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
             _manga = manga;
             ChangeModeCommand = new ActionCommand(ChangeMode);
             SaveImagesCommand = new ActionCommand(async () => {
-                if (SaveProgress == Visibility.Collapsed)
+                if (SaveProgress == Visibility.Collapsed) {
                     await SaveImagesAsync();
+                }
             });
             Images = new ReadOnlyObservableCollection<object>(_images);
         }
@@ -97,22 +98,28 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
         }
 
         private void PageIntList() {
-            for (var i = 0; i < _imgs.Count; i++) _pages.Add(i);
+            for (var i = 0; i < _imgs.Count; i++) {
+                _pages.Add(i);
+            }
         }
 
         private async Task SaveImagesAsync() {
-            if (!SaveEnabled) return;
+            if (!SaveEnabled) {
+                return;
+            }
             SaveEnabled = false;
             var name = Regex.Replace(_manga.Name, "[^0-9a-zA-Z]+", " ").Trim();
             var folder = Path.Combine(Directory.GetCurrentDirectory(), "Saves", _manga.Site,
                 name, _manga.Chapter.ToString(CultureInfo.InvariantCulture));
 
-            if (!Directory.Exists(folder))
+            if (!Directory.Exists(folder)) {
                 Directory.CreateDirectory(folder);
+            }
             SaveProgress = Visibility.Visible;
             for (var i = 0; i < _images.Count; i++) {
-                if (_isClosing)
+                if (_isClosing) {
                     break;
+                }
                 var img = _images[i];
                 ProgressValue = i + 1;
                 if (img is string) {
@@ -130,8 +137,9 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
         }
 
         private static BitmapImage BytesToBitmapImage(byte[] bytes) {
-            if (bytes == null)
+            if (bytes == null) {
                 return null;
+            }
             using (var mem = new MemoryStream(bytes, 0, bytes.Length)) {
                 mem.Position = 0;
                 var image = new BitmapImage();

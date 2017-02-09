@@ -14,8 +14,9 @@ namespace MangaCheckerV3.Views.Windows {
         }
 
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e) {
-            if (e.ChangedButton == MouseButton.Left)
+            if (e.ChangedButton == MouseButton.Left) {
                 DragMove();
+            }
         }
 
         private void ViewerWindow_OnClosing(object sender, CancelEventArgs e) {

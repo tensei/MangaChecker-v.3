@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using LiteDB;
-using MangaChecker.Database.Enums;
-using MangaChecker.Database.Tables;
-using MangaChecker.DataTypes.Interface;
+using MangaChecker.Data.Enum;
+using MangaChecker.Data.Interface;
+using MangaChecker.Data.Model;
 
 namespace MangaChecker.Database {
     public static class LiteDb {
@@ -82,7 +82,9 @@ namespace MangaChecker.Database {
         public static void Update(Manga manga, bool history = false) {
             var query = Db.GetCollection<Manga>("Manga");
             query.Update(manga);
-            if (history) return;
+            if (history) {
+                return;
+            }
             MangaEvent?.Invoke(manga, MangaEnum.Update);
         }
 
@@ -94,7 +96,9 @@ namespace MangaChecker.Database {
                     trans1.Commit();
                 }
             }
-            if (history) return;
+            if (history) {
+                return;
+            }
             MangaEvent?.Invoke(manga, MangaEnum.Update);
         }
 
@@ -153,8 +157,8 @@ namespace MangaChecker.Database {
             var setting = set.FindAll().Select(s => s.Setting).ToArray();
             var versions = ver.FindAll().Select(v => v.Name).ToArray();
 
-            foreach (var defaultSetting in providers)
-                if (!setting.Contains(defaultSetting.DbName))
+            foreach (var defaultSetting in providers) {
+                if (!setting.Contains(defaultSetting.DbName)) {
                     set.Insert(new Settings {
                         Setting = defaultSetting.DbName,
                         Link = defaultSetting.LinktoSite,
@@ -162,33 +166,40 @@ namespace MangaChecker.Database {
                         Created = DateTime.Now
                         //OpenLinks = true
                     });
-            if (!setting.Contains("Refresh Time"))
+                }
+            }
+            if (!setting.Contains("Refresh Time")) {
                 set.Insert(new Settings {
                     Setting = "Refresh Time",
                     Link = "/",
                     Active = 300,
                     Created = DateTime.Now
                 });
-            if (!setting.Contains("Open Links"))
+            }
+            if (!setting.Contains("Open Links")) {
                 set.Insert(new Settings {
                     Setting = "Open Links",
                     Link = "/",
                     Active = 0,
                     Created = DateTime.Now
                 });
-            if (!setting.Contains("Batoto Rss"))
+            }
+            if (!setting.Contains("Batoto Rss")) {
                 set.Insert(new Settings {
                     Setting = "Batoto Rss",
                     Link = "/",
                     Active = 0,
                     Created = DateTime.Now
                 });
-            foreach (var defaultver in DefaultVersions)
-                if (!versions.Contains(defaultver.Key))
+            }
+            foreach (var defaultver in DefaultVersions) {
+                if (!versions.Contains(defaultver.Key)) {
                     ver.Insert(new Versions {
                         Name = defaultver.Key,
                         Version = defaultver.Key
                     });
+                }
+            }
             ver.Update(dbv);
             DbEvent?.Invoke(dbv, DatabaseEnum.Update);
         }
@@ -205,40 +216,46 @@ namespace MangaChecker.Database {
                 Version = DatabaseVersion
             });
 
-            foreach (var sites in providers)
+            foreach (var sites in providers) {
                 set.Insert(new Settings {
                     Setting = sites.DbName,
                     Link = sites.LinktoSite,
                     Active = 0,
                     Created = DateTime.Now
                 });
-            if (set.FindOne(s => s.Setting == "Refresh Time") == null)
+            }
+            if (set.FindOne(s => s.Setting == "Refresh Time") == null) {
                 set.Insert(new Settings {
                     Setting = "Refresh Time",
                     Link = "/",
                     Active = 300,
                     Created = DateTime.Now
                 });
-            if (set.FindOne(s => s.Setting == "Open Links") == null)
+            }
+            if (set.FindOne(s => s.Setting == "Open Links") == null) {
                 set.Insert(new Settings {
                     Setting = "Open Links",
                     Link = "/",
                     Active = 300,
                     Created = DateTime.Now
                 });
-            if (set.FindOne(s => s.Setting == "Batoto Rss") == null)
+            }
+            if (set.FindOne(s => s.Setting == "Batoto Rss") == null) {
                 set.Insert(new Settings {
                     Setting = "Batoto Rss",
                     Link = "/",
                     Active = 0,
                     Created = DateTime.Now
                 });
+            }
             DbEvent?.Invoke(null, DatabaseEnum.Create);
         }
 
         public static string CheckDbVersion(List<IProvider> providers) {
             var dbv = Db.GetCollection<Versions>("Versions").FindOne(v => v.Name == "db");
-            if (dbv.Version == DatabaseVersion) return null;
+            if (dbv.Version == DatabaseVersion) {
+                return null;
+            }
             dbv.Version = DatabaseVersion;
             UpdateDatabase(dbv, providers);
             return $"Updated Database to {DatabaseVersion}";

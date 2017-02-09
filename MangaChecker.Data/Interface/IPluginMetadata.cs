@@ -1,4 +1,4 @@
-﻿namespace MangaChecker.DataTypes.Interfaces {
+﻿namespace MangaChecker.Data.Interface {
     public interface IPluginMetadata {
         string Title { get; }
 

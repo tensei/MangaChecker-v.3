@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using MangaChecker.Data.Interface;
 using MangaChecker.Database;
-using MangaChecker.DataTypes.Interface;
 using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
@@ -15,7 +15,9 @@ namespace MangaChecker.Providers {
             var openlink = LiteDb.GetOpenLinks();
             foreach (var manga in all) {
                 var rss = await _webParser.GetRssFeedAsync(manga.Rss);
-                if (rss == null) continue;
+                if (rss == null) {
+                    continue;
+                }
                 rss.Reverse();
                 foreach (var rssItemObject in rss) {
                     var nc =

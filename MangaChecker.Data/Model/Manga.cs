@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using LiteDB;
-using MangaChecker.Database.Enums;
+using MangaChecker.Data.Enum;
+using MangaChecker.Data.Interface;
 using PropertyChanged;
 
-namespace MangaChecker.Database.Tables {
+namespace MangaChecker.Data.Model {
     [ImplementPropertyChanged]
-    public class Manga {
-        [BsonId]
+    public class Manga : IManga {
         public int MangaId { get; set; }
 
         public string Name { get; set; }
@@ -38,13 +37,14 @@ namespace MangaChecker.Database.Tables {
 
         public DateTime Updated { get; set; } = DateTime.Now;
 
-        [BsonIgnore]
         public string DaysAgo => DaysSinceUpdate();
 
         private string DaysSinceUpdate() {
             var dateNow = DateTime.Now;
             var diff = dateNow - Updated;
-            if (diff.Days < 0) return "Unknown";
+            if (diff.Days < 0) {
+                return "Unknown";
+            }
             return diff.Days == 0 ? "Today" : $"{diff.Days} day(s) ago";
         }
     }

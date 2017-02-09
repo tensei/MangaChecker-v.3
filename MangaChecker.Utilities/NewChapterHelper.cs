@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using MangaChecker.Data.Model;
 using MangaChecker.Database;
-using MangaChecker.Database.Tables;
-using static MangaChecker.Utilities.Log;
+using static MangaChecker.Utilities.Logger;
 
 namespace MangaChecker.Utilities {
     public static class NewChapterHelper {
@@ -13,23 +13,25 @@ namespace MangaChecker.Utilities {
             var isDateNew = newDate > manga.Updated;
 
             if (isFloat && Math.Abs(floatChapter - manga.Chapter) <= 0 || newChapter == manga.Newest ||
-                floatChapter < manga.Chapter)
+                floatChapter < manga.Chapter) {
                 return true;
+            }
 
-            if (isFloat && floatChapter > manga.Chapter)
+            if (isFloat && floatChapter > manga.Chapter) {
                 return Update(manga, floatChapter, true, newLink, newDate, openLink, newChapter);
+            }
 
             if (isDateNew && !manga.OtherChapters.Contains(newChapter)) {
                 manga.OtherChapters.Add(newChapter);
                 return Update(manga, floatChapter, isFloat, newLink, newDate, openLink, newChapter);
             }
             //this should never be reached!!
-            Loggger.Error($"Current manga.Name={manga.Name}," +
-                          $" manga.Chapter={manga.Chapter}," +
-                          $" manga.Newest={manga.Newest}, " +
-                          $" manga.Link={manga.Link}, " +
-                          $" manga.Rss={manga.Rss},\n" +
-                          $"newChapter={newChapter}, floatChapter={floatChapter}, newLink={newLink}, newDate={newDate}");
+            Log.Error($"Current manga.Name={manga.Name}," +
+                      $" manga.Chapter={manga.Chapter}," +
+                      $" manga.Newest={manga.Newest}, " +
+                      $" manga.Link={manga.Link}, " +
+                      $" manga.Rss={manga.Rss},\n" +
+                      $"newChapter={newChapter}, floatChapter={floatChapter}, newLink={newLink}, newDate={newDate}");
             return false;
         }
 
@@ -45,7 +47,9 @@ namespace MangaChecker.Utilities {
             manga.Updated = newDate;
             manga.Link = newLink;
             manga.New = true;
-            if (!openLink) return true;
+            if (!openLink) {
+                return true;
+            }
             LiteDb.Update(manga);
             Process.Start(newLink);
             return true;

@@ -1,5 +1,5 @@
 ﻿using System.Windows.Input;
-using MangaCheckerV3.Common;
+using MangaChecker.Data.Interface;
 using MangaCheckerV3.ViewModels.Adding_ViewModels;
 using PropertyChanged;
 
@@ -9,12 +9,16 @@ namespace MangaCheckerV3.ViewModels {
         public AddMangaViewModel(IProviderService providerService) {
             NormalDataContext = new NormalViewModel();
             NormalCommand = new ActionCommand(() => {
-                if (TranIndex == 0) return;
+                if (TranIndex == 0) {
+                    return;
+                }
                 TranIndex = 0;
                 NormalDataContext = new NormalViewModel();
             });
             AdvancedCommand = new ActionCommand(() => {
-                if (TranIndex == 1) return;
+                if (TranIndex == 1) {
+                    return;
+                }
                 TranIndex = 1;
                 AdvancedDataContext = new AdvancedViewModel(providerService);
             });

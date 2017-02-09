@@ -2,9 +2,9 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using MangaChecker.Data.Enum;
+using MangaChecker.Data.Model;
 using MangaChecker.Database;
-using MangaChecker.Database.Enums;
-using MangaChecker.Database.Tables;
 using MangaCheckerV3.Common;
 using PropertyChanged;
 
@@ -42,21 +42,29 @@ namespace MangaCheckerV3.ViewModels {
         }
 
         private void RemoveAll() {
-            if (_newManga.Count == 0) return;
+            if (_newManga.Count == 0) {
+                return;
+            }
             var nm = _newManga.ToList();
-            foreach (var manga in nm) LiteDb.DeleteNewManga(manga);
+            foreach (var manga in nm) {
+                LiteDb.DeleteNewManga(manga);
+            }
             _newManga.Clear();
         }
 
         private void GetNewMangas() {
-            if (_newManga.Count > 0) _newManga.Clear();
+            if (_newManga.Count > 0) {
+                _newManga.Clear();
+            }
             var nm = LiteDb.GetAllNewMangas();
             nm?.ToList().ForEach(_newManga.Add);
             LastRefresh = DateTime.Now.ToLongTimeString();
         }
 
         private void DatabaseOnMangaEvent(object sender, MangaEnum mangaEnum) {
-            if (mangaEnum != MangaEnum.Update) return;
+            if (mangaEnum != MangaEnum.Update) {
+                return;
+            }
             var m = (Manga) sender;
             var nm = new Manga {
                 Name = m.Name,

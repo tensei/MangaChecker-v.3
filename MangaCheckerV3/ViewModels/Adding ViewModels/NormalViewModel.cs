@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
-using MangaChecker.Database.Tables;
+using MangaChecker.Data.Model;
 using PropertyChanged;
 
 namespace MangaCheckerV3.ViewModels.Adding_ViewModels {

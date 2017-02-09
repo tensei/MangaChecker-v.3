@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using MangaChecker.Data.Interface;
 using MangaChecker.Database;
-using MangaChecker.DataTypes.Interface;
 using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
@@ -15,18 +15,27 @@ namespace MangaChecker.Providers {
             var all = LiteDb.GetMangasFrom(DbName);
             var openlink = LiteDb.GetOpenLinks();
             var m = await _load2Pages("https://www.heymanga.me/latest-manga/");
-            if (m == null) return;
+            if (m == null) {
+                return;
+            }
             var m2 = await _load2Pages("https://www.heymanga.me/latest-manga/2");
-            if (m2 != null)
+            if (m2 != null) {
                 foreach (var d in m2) {
-                    if (m.Keys.Contains(d.Key)) continue;
+                    if (m.Keys.Contains(d.Key)) {
+                        continue;
+                    }
                     m.Add(d.Key, d.Value);
                 }
+            }
             foreach (var manga in all)
             foreach (var rssItemObject in m) {
-                if (!rssItemObject.Value.ToLower().Contains(manga.Name.ToLower())) continue;
+                if (!rssItemObject.Value.ToLower().Contains(manga.Name.ToLower())) {
+                    continue;
+                }
                 var nc = rssItemObject.Value.ToLower().Replace(manga.Name.ToLower(), string.Empty).Trim();
-                if (nc.Contains(" ")) nc = nc.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries)[0];
+                if (nc.Contains(" ")) {
+                    nc = nc.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries)[0];
+                }
                 var isNew = NewChapterHelper.IsNew(manga, nc, DateTime.Now,
                     rssItemObject.Key, openlink);
             }
@@ -62,15 +71,18 @@ namespace MangaChecker.Providers {
                     x =>
                         x.LocalName == "a" && x.HasAttribute("href") &&
                         x.GetAttribute("href").Contains("http://www.heymanga.me/manga/"));
-            foreach (var element in a.Reverse())
+            foreach (var element in a.Reverse()) {
                 try {
-                    if (m.Keys.Contains(element.GetAttribute("href"))) continue;
+                    if (m.Keys.Contains(element.GetAttribute("href"))) {
+                        continue;
+                    }
                     m.Add(element.GetAttribute("href"), element.Children[0].InnerHtml);
                 }
                 catch (Exception e) {
                     Console.WriteLine(e);
                     throw;
                 }
+            }
             return m;
         }
     }

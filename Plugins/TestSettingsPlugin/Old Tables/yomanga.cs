@@ -2,8 +2,7 @@
 
 namespace DBMigration.Old_Tables {
     public class yomanga {
-        [PrimaryKey]
-        [AutoIncrement]
+        [PrimaryKey, AutoIncrement]
         public int id { get; set; }
 
         [NotNull]

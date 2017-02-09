@@ -1,11 +1,12 @@
 ﻿using System;
+using MangaChecker.Data.Interface;
 using PropertyChanged;
 
 //using SQLite;
 
-namespace MangaChecker.Database.Tables {
+namespace MangaChecker.Data.Model {
     [ImplementPropertyChanged]
-    public class Settings {
+    public class Settings : ISettings {
         public int Id { get; set; }
 
         public string Setting { get; set; }

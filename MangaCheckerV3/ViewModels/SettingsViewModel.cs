@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MangaChecker.Data.Model;
 using MangaChecker.Database;
-using MangaChecker.Database.Tables;
 using PropertyChanged;
 
 namespace MangaCheckerV3.ViewModels {
@@ -25,15 +25,23 @@ namespace MangaCheckerV3.ViewModels {
             Settings = new ReadOnlyObservableCollection<Settings>(_settings);
             var settings = LiteDb.GetAllSettings();
             foreach (var s in settings) {
-                if (s.Setting.ToLower().StartsWith("refres")) RefreshTime = s;
-                if (s.Setting.ToLower().StartsWith("open")) OpenLinks = s;
-                if (s.Setting.ToLower().StartsWith("batoto rss")) BatotoRss = s;
+                if (s.Setting.ToLower().StartsWith("refres")) {
+                    RefreshTime = s;
+                }
+                if (s.Setting.ToLower().StartsWith("open")) {
+                    OpenLinks = s;
+                }
+                if (s.Setting.ToLower().StartsWith("batoto rss")) {
+                    BatotoRss = s;
+                }
             }
             settings.RemoveAll(s => s.Setting.ToLower().StartsWith("refres")
                                     || s.Setting.ToLower().StartsWith("backlog")
                                     || s.Setting.ToLower().StartsWith("batoto rss")
                                     || s.Setting.ToLower().StartsWith("open "));
-            foreach (var setting in settings) _settings.Add(setting);
+            foreach (var setting in settings) {
+                _settings.Add(setting);
+            }
         }
 
         public Settings RefreshTime { get; set; }

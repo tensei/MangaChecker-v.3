@@ -6,7 +6,7 @@ using MangaCheckerV3.Properties;
 using MaterialDesignColors;
 using PropertyChanged;
 
-namespace MangaCheckerV3.ViewModels.Settings_ViewModels {
+namespace MangaCheckerV3.ViewModels {
     [ImplementPropertyChanged]
     public class ThemeViewModel {
         private string _theme;

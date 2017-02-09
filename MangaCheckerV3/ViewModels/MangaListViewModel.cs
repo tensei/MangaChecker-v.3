@@ -7,11 +7,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using MangaChecker.Data.Enum;
+using MangaChecker.Data.Interface;
+using MangaChecker.Data.Model;
 using MangaChecker.Database;
-using MangaChecker.Database.Enums;
-using MangaChecker.Database.Tables;
 using MangaCheckerV3.Common;
-using MangaCheckerV3.Models;
 using MangaCheckerV3.ViewModels.Window_ViewModels;
 using MangaCheckerV3.Views.Windows;
 using PropertyChanged;
@@ -23,6 +23,8 @@ namespace MangaCheckerV3.ViewModels {
         ///     Initializes a new instance of the MangaListViewModel class.
         /// </summary>
         private readonly ObservableCollection<Manga> _mangas = new ObservableCollection<Manga>();
+
+        private readonly IProviderService _providerService;
 
         private readonly ObservableCollection<SiteListItem> _sites = new ObservableCollection<SiteListItem>();
 
@@ -45,7 +47,7 @@ namespace MangaCheckerV3.ViewModels {
             RefreshListCommand = new ActionCommand(() => FillMangaList(SelectedSite.Name));
             EditCommand = new ActionCommand(EditManga);
         }
-        private readonly IProviderService _providerService;
+
         public ReadOnlyObservableCollection<Manga> Mangas { get; }
         public ReadOnlyObservableCollection<SiteListItem> Sites { get; }
 
@@ -76,7 +78,9 @@ namespace MangaCheckerV3.ViewModels {
         public string SortMode {
             get { return _sortMode; }
             set {
-                if (_sortMode == value) return;
+                if (_sortMode == value) {
+                    return;
+                }
                 _sortMode = value;
                 Sortby(value, _mangas.ToList()).ForEach(_mangas.Add);
             }
@@ -94,19 +98,27 @@ namespace MangaCheckerV3.ViewModels {
         }
 
         private void DatabaseOnSettingEvent(object sender, SettingEnum settingEnum) {
-            if (settingEnum != SettingEnum.Get && settingEnum != SettingEnum.Update) return;
+            if (settingEnum != SettingEnum.Get && settingEnum != SettingEnum.Update) {
+                return;
+            }
             var settings = sender as List<Settings>;
-            if (settings == null) return;
+            if (settings == null) {
+                return;
+            }
             foreach (var setting in settings) {
                 var v = _sites.FirstOrDefault(s => s.Name == setting.Setting);
-                if (v != null) v.IsEnabled = setting.Active;
+                if (v != null) {
+                    v.IsEnabled = setting.Active;
+                }
             }
         }
 
 
         private List<Manga> Sortby(string sort, List<Manga> mangas) {
             var m = mangas;
-            if (_mangas.Count > 0) _mangas.Clear();
+            if (_mangas.Count > 0) {
+                _mangas.Clear();
+            }
             switch (sort.ToLower()) {
                 case "updated":
                     return m?.OrderByDescending(x => x.Updated).ToList();
@@ -143,13 +155,15 @@ namespace MangaCheckerV3.ViewModels {
         }
 
         private void OpenMangaSite() {
-            if (!SelectedManga.Link.Contains("/")) return;
+            if (!SelectedManga.Link.Contains("/")) {
+                return;
+            }
             Process.Start(SelectedManga.Link);
         }
 
         private void DeleteManga() {
             LiteDb.Delete(SelectedManga);
-            GlobalVariables.SnackbarQueue.Enqueue($"Deleted {SelectedManga.Name}", "UNDO", HandleUndoMethod,
+            MainWindowViewModel.Instance.SnackbarQueue.Enqueue($"Deleted {SelectedManga.Name}", "UNDO", HandleUndoMethod,
                 SelectedManga);
             _mangas.Remove(SelectedManga);
         }

@@ -1,5 +1,5 @@
 ﻿using System.Windows.Controls;
-using MangaCheckerV3.ViewModels.Settings_ViewModels;
+using MangaCheckerV3.ViewModels;
 
 namespace MangaCheckerV3.Views {
     /// <summary>

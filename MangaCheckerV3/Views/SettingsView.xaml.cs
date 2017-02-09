@@ -1,7 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using System.Windows.Input;
-using MangaCheckerV3.ViewModels;
 
 namespace MangaCheckerV3.Views {
     /// <summary>

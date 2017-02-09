@@ -1,14 +1,12 @@
 ﻿using System.ComponentModel.Composition;
 using DBMigration.ViewModels;
 using DBMigration.Views;
-using MangaChecker.DataTypes.Interface;
+using MangaChecker.Data.Interface;
 
 namespace DBMigration {
-    [Export(typeof(IPlugin))]
-    [ExportMetadata("Title", "Migration")]
-    [ExportMetadata("Description", "Migration tool for old => new db")]
-    [ExportMetadata("Version", "0.1")]
-    [ExportMetadata("Author", "Tensei")]
+    [Export(typeof(IPlugin)), ExportMetadata("Title", "Migration"),
+     ExportMetadata("Description", "Migration tool for old => new db"), ExportMetadata("Version", "0.1"),
+     ExportMetadata("Author", "Tensei")]
     public class Migration : IPlugin {
         public object SettingsView() {
             return new MainView {DataContext = new MainViewModel()};

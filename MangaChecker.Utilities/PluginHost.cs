@@ -4,10 +4,9 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Reflection;
-using MangaChecker.DataTypes.Interface;
-using MangaChecker.DataTypes.Interfaces;
+using MangaChecker.Data.Interface;
 
-namespace MangaCheckerV3.Common {
+namespace MangaChecker.Utilities {
     public class PluginHost : IDisposable {
         private const string PluginsDirectory = "Plugins";
         private readonly CompositionContainer _container;
@@ -19,11 +18,17 @@ namespace MangaCheckerV3.Common {
         private PluginHost() {
             var catalog = new AggregateCatalog(new AssemblyCatalog(Assembly.GetExecutingAssembly()));
             var current = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location);
-            if (current == null) return;
+            if (current == null) {
+                return;
+            }
             var pluginsPath = Path.Combine(current, PluginsDirectory);
-            if (!Directory.Exists(pluginsPath)) return;
+            if (!Directory.Exists(pluginsPath)) {
+                return;
+            }
             var folders = Directory.GetDirectories(pluginsPath);
-            foreach (var folder in folders) catalog.Catalogs.Add(new DirectoryCatalog(folder));
+            foreach (var folder in folders) {
+                catalog.Catalogs.Add(new DirectoryCatalog(folder));
+            }
             _container = new CompositionContainer(catalog);
         }
 
@@ -38,7 +43,9 @@ namespace MangaCheckerV3.Common {
 
         public void Initialize() {
             _container.ComposeParts(this);
-            foreach (var plugin in Plugins) plugin.Value.Initialize();
+            foreach (var plugin in Plugins) {
+                plugin.Value.Initialize();
+            }
         }
     }
 }
