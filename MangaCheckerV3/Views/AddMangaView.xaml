@@ -7,10 +7,10 @@
              xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:addingViews="clr-namespace:MangaCheckerV3.Views.Adding_Views"
-             xmlns:viewModel="clr-namespace:MangaCheckerV3.ViewModels"
+             xmlns:viewModels="clr-namespace:MangaCheckerV3.ViewModels"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
-             d:DataContext="{d:DesignInstance {x:Type viewModel:AddMangaViewModel}, IsDesignTimeCreatable=False}">
+             d:DataContext="{d:DesignInstance {x:Type viewModels:AddMangaViewModel}, IsDesignTimeCreatable=False}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />

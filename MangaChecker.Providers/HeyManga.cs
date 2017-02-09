@@ -9,11 +9,18 @@ using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
     public class HeyManga : IProvider {
-        private readonly WebParser _webParser = new WebParser();
+        private readonly IWebParser _webParser;
+        private readonly ILiteDb _liteDb;
+        private readonly INewChapterHelper _newChapterHelper;
 
+        public HeyManga(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
+            _webParser = webParser;
+            _liteDb = liteDb;
+            _newChapterHelper = newChapterHelper;
+        }
         public async Task CheckAll() {
-            var all = LiteDb.GetMangasFrom(DbName);
-            var openlink = LiteDb.GetOpenLinks();
+            var all = _liteDb.GetMangasFrom(DbName);
+            var openlink = _liteDb.GetOpenLinks();
             var m = await _load2Pages("https://www.heymanga.me/latest-manga/");
             if (m == null) {
                 return;
@@ -36,8 +43,8 @@ namespace MangaChecker.Providers {
                 if (nc.Contains(" ")) {
                     nc = nc.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries)[0];
                 }
-                var isNew = NewChapterHelper.IsNew(manga, nc, DateTime.Now,
-                    rssItemObject.Key, openlink);
+                var isNew = _newChapterHelper.IsNew(manga, nc, DateTime.Now,
+                    rssItemObject.Key, openlink, _liteDb);
             }
         }
 

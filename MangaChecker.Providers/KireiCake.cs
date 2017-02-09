@@ -9,13 +9,20 @@ using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
     public class KireiCake : IProvider {
-        private readonly WebParser _webParser = new WebParser();
+        private readonly IWebParser _webParser;
+        private readonly ILiteDb _liteDb;
+        private readonly INewChapterHelper _newChapterHelper;
 
+        public KireiCake(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
+            _webParser = webParser;
+            _liteDb = liteDb;
+            _newChapterHelper = newChapterHelper;
+        }
         public async Task CheckAll() {
             // /en/0/87/5/ == 87.5
             // /en/0/24/ == 24
-            var all = LiteDb.GetMangasFrom(DbName);
-            var openlink = LiteDb.GetOpenLinks();
+            var all = _liteDb.GetMangasFrom(DbName);
+            var openlink = _liteDb.GetOpenLinks();
             var rss = await _webParser.GetRssFeedAsync("https://reader.kireicake.com/rss.xml");
             if (rss == null) {
                 return;
@@ -37,8 +44,8 @@ namespace MangaChecker.Providers {
                 else {
                     continue;
                 }
-                var isNew = NewChapterHelper.IsNew(manga, nc, rssItemObject.PubDate,
-                    rssItemObject.Link, openlink);
+                var isNew = _newChapterHelper.IsNew(manga, nc, rssItemObject.PubDate,
+                    rssItemObject.Link, openlink, _liteDb);
             }
         }
 

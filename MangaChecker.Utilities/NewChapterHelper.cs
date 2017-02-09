@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using MangaChecker.Data.Interface;
 using MangaChecker.Data.Model;
 using MangaChecker.Database;
 using static MangaChecker.Utilities.Logger;
 
 namespace MangaChecker.Utilities {
-    public static class NewChapterHelper {
-        public static bool IsNew(Manga manga, string newChapter, DateTime newDate, string newLink, bool openLink) {
+    public class NewChapterHelper : INewChapterHelper {
+        public bool IsNew(Manga manga, string newChapter, DateTime newDate, string newLink, bool openLink, ILiteDb liteDb) {
             var isFloat = float.TryParse(newChapter, NumberStyles.Float, CultureInfo.InvariantCulture,
                 out float floatChapter);
             var isDateNew = newDate > manga.Updated;
@@ -18,12 +19,12 @@ namespace MangaChecker.Utilities {
             }
 
             if (isFloat && floatChapter > manga.Chapter) {
-                return Update(manga, floatChapter, true, newLink, newDate, openLink, newChapter);
+                return Update(manga, floatChapter, true, newLink, newDate, openLink, newChapter, liteDb);
             }
 
             if (isDateNew && !manga.OtherChapters.Contains(newChapter)) {
                 manga.OtherChapters.Add(newChapter);
-                return Update(manga, floatChapter, isFloat, newLink, newDate, openLink, newChapter);
+                return Update(manga, floatChapter, isFloat, newLink, newDate, openLink, newChapter, liteDb);
             }
             //this should never be reached!!
             Log.Error($"Current manga.Name={manga.Name}," +
@@ -35,8 +36,8 @@ namespace MangaChecker.Utilities {
             return false;
         }
 
-        private static bool Update(Manga manga, float floatChapter, bool isFloat, string newLink, DateTime newDate,
-            bool openLink, object newChapter) {
+        public bool Update(Manga manga, float floatChapter, bool isFloat, string newLink, DateTime newDate,
+            bool openLink, object newChapter, ILiteDb liteDb) {
             manga.Newest = newChapter;
             if (isFloat) {
                 manga.Chapter = floatChapter;
@@ -50,7 +51,7 @@ namespace MangaChecker.Utilities {
             if (!openLink) {
                 return true;
             }
-            LiteDb.Update(manga);
+            liteDb.Update(manga);
             Process.Start(newLink);
             return true;
         }

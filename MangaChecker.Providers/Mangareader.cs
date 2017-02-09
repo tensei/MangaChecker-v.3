@@ -10,11 +10,18 @@ using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
     public class Mangareader : IProvider {
-        private readonly WebParser _webParser = new WebParser();
+        private readonly IWebParser _webParser;
+        private readonly ILiteDb _liteDb;
+        private readonly INewChapterHelper _newChapterHelper;
 
+        public Mangareader(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
+            _webParser = webParser;
+            _liteDb = liteDb;
+            _newChapterHelper = newChapterHelper;
+        }
         public async Task CheckAll() {
-            var all = LiteDb.GetMangasFrom(DbName);
-            var openlink = LiteDb.GetOpenLinks();
+            var all = _liteDb.GetMangasFrom(DbName);
+            var openlink = _liteDb.GetOpenLinks();
             foreach (var manga in all) {
                 if (string.IsNullOrEmpty(manga.BaseMangaLink)) {
                     continue;
@@ -42,8 +49,8 @@ namespace MangaChecker.Providers {
                     if (nc.Contains(" ")) {
                         nc = nc.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries)[0];
                     }
-                    var isNew = NewChapterHelper.IsNew(manga, nc, newDate,
-                        link, openlink);
+                    var isNew = _newChapterHelper.IsNew(manga, nc, newDate,
+                        link, openlink, _liteDb);
                 }
                 await Task.Delay(500);
             }

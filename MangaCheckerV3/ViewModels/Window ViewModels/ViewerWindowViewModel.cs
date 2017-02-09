@@ -29,6 +29,7 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
 
         public ViewerWindowViewModel(Manga manga, IProvider provider) {
             Pages = new ReadOnlyObservableCollection<int>(_pages);
+            Images = new ReadOnlyObservableCollection<object>(_images);
             LoadImages(manga, provider).ConfigureAwait(false);
             Title = $"{manga.Name} {manga.Chapter}";
             _manga = manga;
@@ -38,7 +39,6 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
                     await SaveImagesAsync();
                 }
             });
-            Images = new ReadOnlyObservableCollection<object>(_images);
         }
 
         public ReadOnlyObservableCollection<object> Images { get; }

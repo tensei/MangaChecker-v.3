@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows.Input;
+using MahApps.Metro.Controls;
 using MangaCheckerV3.Properties;
 using MangaCheckerV3.ViewModels.Window_ViewModels;
 
@@ -21,7 +22,7 @@ namespace MangaCheckerV3.Views.Windows {
 
         private void ViewerWindow_OnClosing(object sender, CancelEventArgs e) {
             var data = (ViewerWindowViewModel) DataContext;
-            data.Dispose();
+            data?.Dispose();
             GC.Collect();
             DataContext = null;
             Settings.Default.ViewerHeight = Height;

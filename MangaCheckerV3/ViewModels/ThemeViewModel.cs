@@ -10,9 +10,10 @@ namespace MangaCheckerV3.ViewModels {
     [ImplementPropertyChanged]
     public class ThemeViewModel {
         private string _theme;
-
-        public ThemeViewModel() {
+        private readonly ThemeHelper _themeHelper;
+        public ThemeViewModel(ThemeHelper themeHelper) {
             Instance = this;
+            _themeHelper = themeHelper;
             ApplyPrimaryCommand = new ActionCommand(s => ApplyPrimary((Swatch) s));
             ApplyAccentCommand = new ActionCommand(s => ApplyAccent((Swatch) s));
         }
@@ -22,8 +23,8 @@ namespace MangaCheckerV3.ViewModels {
         /// </summary>
         public static ThemeViewModel Instance { get; private set; }
 
-        public IEnumerable<Swatch> PrimaryColors => ThemeHelper.Swatches;
-        public IEnumerable<Swatch> AccentColors => ThemeHelper.Accents;
+        public IEnumerable<Swatch> PrimaryColors => _themeHelper.Swatches;
+        public IEnumerable<Swatch> AccentColors => _themeHelper.Accents;
 
         public ICommand ApplyPrimaryCommand { get; }
         public ICommand ApplyAccentCommand { get; }
@@ -32,20 +33,20 @@ namespace MangaCheckerV3.ViewModels {
             get { return _theme; }
             set {
                 _theme = value;
-                ThemeHelper.ChangeThemeTo(value == "Dark").ConfigureAwait(false);
+                _themeHelper.ChangeThemeTo(value == "Dark").ConfigureAwait(false);
                 Settings.Default.Theme = value;
                 Settings.Default.Save();
             }
         }
 
         private void ApplyPrimary(Swatch swatch) {
-            ThemeHelper.ChangePrimaryColorTo(swatch).ConfigureAwait(false);
+            _themeHelper.ChangePrimaryColorTo(swatch).ConfigureAwait(false);
             Settings.Default.Primary = swatch.Name;
             Settings.Default.Save();
         }
 
         private void ApplyAccent(Swatch swatch) {
-            ThemeHelper.ChangeAccentColorTo(swatch).ConfigureAwait(false);
+            _themeHelper.ChangeAccentColorTo(swatch).ConfigureAwait(false);
             Settings.Default.Accents = swatch.Name;
             Settings.Default.Save();
         }

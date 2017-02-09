@@ -1,47 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using MangaChecker.Data.Interface;
 using MangaChecker.Database;
-using MangaChecker.Providers;
 using MangaChecker.Utilities;
 using PropertyChanged;
 
-namespace MangaCheckerV3.Common {
+namespace MangaChecker.Providers {
     [ImplementPropertyChanged]
     public class ProviderService : IProviderService, IDisposable {
-        public ProviderService() {
-            Providers = new List<IProvider> {
-                new Webtoons(),
-                new Mangastream(),
-                new Tomochan(),
-                new YoManga(),
-                new Batoto(),
-                new GameOfScanlation(),
-                new Jaiminisbox(),
-                new KireiCake(),
-                new Crunchyroll(),
-                new HeyManga(),
-                new Kissmanga(),
-                new Mangafox(),
-                new Mangahere(),
-                new Mangareader(),
-                new Sensescans()
-            };
+
+        public ProviderService(IEnumerable<IProvider> provider, ILiteDb liteDb) {
+            Providers = provider.ToList();
+            _liteDb = liteDb;
         }
 
         public void Dispose() {
             Stop = true;
         }
 
-        public List<IProvider> Providers { get; set; }
+        public List<IProvider> Providers { get; }
+        private readonly ILiteDb _liteDb;
         public bool Pause { get; set; } = false;
         public bool Stop { get; set; }
         public int Timer { get; set; }
         public string Status { get; set; }
 
         public bool Add(IProvider site) {
-            if (Providers.Contains(site)) {
+            if (Providers.ToList().Contains(site)) {
                 return false;
             }
             Providers.Add(site);
@@ -68,7 +55,7 @@ namespace MangaCheckerV3.Common {
                 }
                 else {
                     foreach (var provider in Providers) {
-                        var setting = LiteDb.GetSettingsFor(provider.DbName);
+                        var setting = _liteDb.GetSettingsFor(provider.DbName);
                         if (setting.Active == 0) {
                             continue;
                         }
@@ -81,7 +68,7 @@ namespace MangaCheckerV3.Common {
                         }
                         await Task.Delay(1000);
                     }
-                    Timer = LiteDb.GetRefreshTime();
+                    Timer = _liteDb.GetRefreshTime();
                     await Task.Delay(1000);
                 }
             }

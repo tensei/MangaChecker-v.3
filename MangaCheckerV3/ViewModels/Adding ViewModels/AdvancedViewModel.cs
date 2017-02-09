@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Input;
 using MangaChecker.Data.Enum;
 using MangaChecker.Data.Interface;
@@ -14,10 +15,12 @@ namespace MangaCheckerV3.ViewModels.Adding_ViewModels {
     public class AdvancedViewModel {
         private readonly ObservableCollection<Genre> _genres = new ObservableCollection<Genre>();
 
-        private readonly IProviderService ProviderService;
+        private readonly IProviderService _providerService;
+        private readonly ILiteDb _liteDb;
 
-        public AdvancedViewModel(IProviderService providerService) {
-            ProviderService = providerService;
+        public AdvancedViewModel(IProviderService providerService, ILiteDb liteDb) {
+            _providerService = providerService;
+            _liteDb = liteDb;
             Manga = new Manga();
             DeleteGenreCommand = new ActionCommand(DeleteGenre);
             AddGenreCommand = new ActionCommand(AddGenre);
@@ -31,7 +34,7 @@ namespace MangaCheckerV3.ViewModels.Adding_ViewModels {
         public List<Genre> Genres => Enum.GetValues(typeof(Genre)).Cast<Genre>().ToList();
         public ReadOnlyObservableCollection<Genre> GenresAdded { get; }
 
-        public List<string> Sites => ProviderService.Providers.Select(p => p.DbName).ToList();
+        public List<string> Sites => Enumerable.ToList<string>(_providerService.Providers.Select(p => p.DbName));
         public string SiteSelected { get; set; }
 
         public Genre SelectedGenre { get; set; }
@@ -62,7 +65,7 @@ namespace MangaCheckerV3.ViewModels.Adding_ViewModels {
         private void AddManga() {
             try {
                 Manga.Site = SiteSelected;
-                LiteDb.InsertManga(Manga);
+                _liteDb.InsertManga(Manga);
             }
             catch (Exception e) {
                 Console.WriteLine(e);

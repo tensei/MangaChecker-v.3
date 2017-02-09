@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using MangaChecker.Data.Enum;
+using MangaChecker.Data.Interface;
 using MangaChecker.Data.Model;
 using MangaChecker.Database;
 using MangaCheckerV3.Common;
@@ -12,14 +13,17 @@ namespace MangaCheckerV3.ViewModels {
     [ImplementPropertyChanged]
     public class NewMangaViewModel {
         private readonly ObservableCollection<Manga> _newManga = new ObservableCollection<Manga>();
-
-        public NewMangaViewModel() {
+        private readonly Utilities _utilities;
+        private readonly ILiteDb _liteDb;
+        public NewMangaViewModel(Utilities utilities, ILiteDb liteDb) {
+            _utilities = utilities;
+            _liteDb = liteDb;
             ViewCommand = new ActionCommand(v => View((Manga) v));
             RemoveCommand = new ActionCommand(r => Remove((Manga) r));
             RemoveAllCommand = new ActionCommand(RemoveAll);
             RefreshListCommand = new ActionCommand(GetNewMangas);
             NewManga = new ReadOnlyObservableCollection<Manga>(_newManga);
-            LiteDb.MangaEvent += DatabaseOnMangaEvent;
+            _liteDb.MangaEvent += DatabaseOnMangaEvent;
             GetNewMangas();
         }
 
@@ -33,11 +37,11 @@ namespace MangaCheckerV3.ViewModels {
         public string LastRefresh { get; set; }
 
         private void View(Manga manga) {
-            Utilities.OpenViewer(manga);
+            _utilities.OpenViewer(manga);
         }
 
         private void Remove(Manga manga) {
-            LiteDb.DeleteNewManga(manga);
+            _liteDb.DeleteNewManga(manga);
             _newManga.Remove(manga);
         }
 
@@ -47,7 +51,7 @@ namespace MangaCheckerV3.ViewModels {
             }
             var nm = _newManga.ToList();
             foreach (var manga in nm) {
-                LiteDb.DeleteNewManga(manga);
+                _liteDb.DeleteNewManga(manga);
             }
             _newManga.Clear();
         }
@@ -56,7 +60,7 @@ namespace MangaCheckerV3.ViewModels {
             if (_newManga.Count > 0) {
                 _newManga.Clear();
             }
-            var nm = LiteDb.GetAllNewMangas();
+            var nm = _liteDb.GetAllNewMangas();
             nm?.ToList().ForEach(_newManga.Add);
             LastRefresh = DateTime.Now.ToLongTimeString();
         }
@@ -81,7 +85,7 @@ namespace MangaCheckerV3.ViewModels {
                 Newest = m.Newest
             };
             _newManga.Add((Manga) sender);
-            LiteDb.InsertNewManga(nm);
+            _liteDb.InsertNewManga(nm);
             GetNewMangas();
         }
     }

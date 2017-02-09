@@ -1,7 +1,8 @@
 ﻿using System;
+using MangaChecker.Data.Interface;
 
-namespace MangaChecker.Utilities {
-    public class RssItemObject {
+namespace MangaChecker.Data.Model {
+    public class RssItem : IRssItem {
         public string Title { get; set; }
         public string Author { get; set; }
         public string Link { get; set; }

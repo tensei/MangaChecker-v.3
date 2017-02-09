@@ -9,25 +9,24 @@ using AngleSharp.Dom.Html;
 using AngleSharp.Parser.Html;
 using AngleSharp.Parser.Xml;
 using CloudFlareUtilities;
+using MangaChecker.Data;
+using MangaChecker.Data.Interface;
+using MangaChecker.Data.Model;
 
 namespace MangaChecker.Utilities {
-    public class WebParser {
-        private HttpClient _client;
-        private ClearanceHandler _handler;
+    public class WebParser : IWebParser {
+        private readonly HttpClient _client;
 
-        private async Task<string> GetHtmlSourceStringAsync(string url) {
+        public WebParser() {
+            var handler = new ClearanceHandler {
+                MaxRetries = 2 // Optionally specify the number of retries, if clearance fails (default is 3).
+            };
+            _client = new HttpClient(handler) {
+                Timeout = TimeSpan.FromSeconds(15)
+            };
+        }
+        public async Task<string> GetHtmlSourceStringAsync(string url) {
             try {
-                // Create the clearance handler.
-                if (_handler == null) {
-                    _handler = new ClearanceHandler {
-                        MaxRetries = 2 // Optionally specify the number of retries, if clearance fails (default is 3).
-                    };
-                }
-                if (_client == null) {
-                    _client = new HttpClient(_handler) {
-                        Timeout = TimeSpan.FromSeconds(15)
-                    };
-                }
 
                 // Use the HttpClient as usual. Any JS challenge will be solved automatically for you.
                 var content = await _client.GetByteArrayAsync(url);
@@ -49,17 +48,6 @@ namespace MangaChecker.Utilities {
 
         public async Task<byte[]> GetHtmlDataAsync(string url) {
             try {
-                // Create the clearance handler.
-                if (_handler == null) {
-                    _handler = new ClearanceHandler {
-                        MaxRetries = 2 // Optionally specify the number of retries, if clearance fails (default is 3).
-                    };
-                }
-                if (_client == null) {
-                    _client = new HttpClient(_handler) {
-                        Timeout = TimeSpan.FromSeconds(15)
-                    };
-                }
                 // Use the HttpClient as usual. Any JS challenge will be solved automatically for you.
                 var content = await _client.GetByteArrayAsync(url);
 
@@ -78,18 +66,6 @@ namespace MangaChecker.Utilities {
 
         public async Task<IHtmlDocument> GetHtmlSourceDucumentAsync(string url, bool js = false) {
             try {
-                // Create the clearance handler.
-                if (_handler == null) {
-                    _handler = new ClearanceHandler {
-                        MaxRetries = 2 // Optionally specify the number of retries, if clearance fails (default is 3).
-                    };
-                }
-                if (_client == null) {
-                    _client = new HttpClient(_handler) {
-                        Timeout = TimeSpan.FromSeconds(15)
-                    };
-                }
-
                 // Use the HttpClient as usual. Any JS challenge will be solved automatically for you.
                 string content;
                 try {
@@ -129,7 +105,7 @@ namespace MangaChecker.Utilities {
             }
         }
 
-        public async Task<List<RssItemObject>> GetRssFeedAsync(string url) {
+        public async Task<List<RssItem>> GetRssFeedAsync(string url) {
             try {
                 var allXml = await GetHtmlSourceStringAsync(url);
                 if (allXml == null) {
@@ -141,7 +117,7 @@ namespace MangaChecker.Utilities {
                 var xml = await parser.ParseAsync(allXml);
 
                 var ot = xml.All.Where(i => i.LocalName == "item");
-                var list = ot.Select(element => new RssItemObject {
+                var list = ot.Select(element => new RssItem {
                     Title = element.Children.FirstOrDefault(x => x.TagName.ToLower() == "title")?.TextContent,
                     Link = element.Children.FirstOrDefault(x => x.TagName.ToLower() == "link")?.TextContent,
                     Category = element.Children.FirstOrDefault(x => x.TagName.ToLower() == "category")?.TextContent,
@@ -153,7 +129,6 @@ namespace MangaChecker.Utilities {
                         DateTime.Parse(
                             element.Children.FirstOrDefault(x => x.TagName.ToLower() == "pubdate")?.TextContent)
                 }).ToList();
-
                 return list;
             }
             catch (Exception) {

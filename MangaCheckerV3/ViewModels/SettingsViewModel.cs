@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MangaChecker.Data.Interface;
 using MangaChecker.Data.Model;
 using MangaChecker.Database;
 using PropertyChanged;
@@ -11,19 +12,19 @@ namespace MangaCheckerV3.ViewModels {
     public class SettingsViewModel {
         private readonly ObservableCollection<Settings> _settings = new ObservableCollection<Settings>();
 
-        public SettingsViewModel() {
+        public SettingsViewModel(ILiteDb liteDb) {
             SaveCommand = new ActionCommand(() => {
                 Task.Run(() => {
                     var set = _settings.ToList();
                     set.Add(RefreshTime);
                     set.Add(OpenLinks);
                     set.Add(BatotoRss);
-                    LiteDb.SaveSettings(set);
+                    liteDb.SaveSettings(set);
                 }).ConfigureAwait(false);
             });
             ToggleActive = new ActionCommand(s => Toggle((Settings) s));
             Settings = new ReadOnlyObservableCollection<Settings>(_settings);
-            var settings = LiteDb.GetAllSettings();
+            var settings = liteDb.GetAllSettings();
             foreach (var s in settings) {
                 if (s.Setting.ToLower().StartsWith("refres")) {
                     RefreshTime = s;

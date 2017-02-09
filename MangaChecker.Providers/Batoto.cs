@@ -8,17 +8,24 @@ using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
     public class Batoto : IProvider {
-        private readonly WebParser _webParser = new WebParser();
+        private readonly IWebParser _webParser;
+        private readonly ILiteDb _liteDb;
+        private readonly INewChapterHelper _newChapterHelper;
 
+        public Batoto(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
+            _webParser = webParser;
+            _liteDb = liteDb;
+            _newChapterHelper = newChapterHelper;
+        }
         public async Task CheckAll() {
-            var all = LiteDb.GetMangasFrom(DbName);
-            var brss = LiteDb.GetSettingsFor("Batoto Rss");
+            var all = _liteDb.GetMangasFrom(DbName);
+            var brss = _liteDb.GetSettingsFor("Batoto Rss");
             var rss = await _webParser.GetRssFeedAsync(brss.Link);
             if (rss == null) {
                 return;
             }
             rss.Reverse();
-            var openlink = LiteDb.GetOpenLinks();
+            var openlink = _liteDb.GetOpenLinks();
             foreach (var manga in all)
             foreach (var rssItemObject in rss) {
                 // example title Jitsu wa Watashi wa - English - Vol.18 Ch.156: Aizawa Nagisa and Aizawa Nagisa②
@@ -33,8 +40,8 @@ namespace MangaChecker.Providers {
                     Logger.Log.Warn($"var ch={ch}, var Rss title={rssItemObject.Title}");
                     continue;
                 }
-                var isNew = NewChapterHelper.IsNew(manga, ch.Trim('.'), rssItemObject.PubDate,
-                    rssItemObject.Link, openlink);
+                var isNew = _newChapterHelper.IsNew(manga, ch.Trim('.'), rssItemObject.PubDate,
+                    rssItemObject.Link, openlink, _liteDb);
             }
         }
 

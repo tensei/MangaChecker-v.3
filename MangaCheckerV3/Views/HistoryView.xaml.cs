@@ -1,5 +1,4 @@
 ﻿using System.Windows.Controls;
-using MangaCheckerV3.ViewModels;
 
 namespace MangaCheckerV3.Views {
     /// <summary>
@@ -8,7 +7,6 @@ namespace MangaCheckerV3.Views {
     public partial class HistoryView : UserControl {
         public HistoryView() {
             InitializeComponent();
-            DataContext = new HistoryViewModel();
         }
     }
 }

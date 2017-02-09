@@ -30,11 +30,14 @@ namespace MangaCheckerV3.ViewModels {
 
         private SiteListItem _selectedSite;
         private string _sortMode = "Updated";
-
-        public MangaListViewModel(IProviderService providerService) {
+        private readonly Utilities _utilities;
+        private readonly ILiteDb _liteDb;
+        public MangaListViewModel(IProviderService providerService, Utilities utilities, ILiteDb liteDb) {
             _providerService = providerService;
+            _liteDb = liteDb;
+            _utilities = utilities;
             SetupSites();
-            LiteDb.SettingEvent += DatabaseOnSettingEvent;
+            _liteDb.SettingEvent += DatabaseOnSettingEvent;
             Mangas = new ReadOnlyObservableCollection<Manga>(_mangas);
             Sites = new ReadOnlyObservableCollection<SiteListItem>(_sites);
             IncreaseCommand = new ActionCommand(IncreaseChapter);
@@ -136,7 +139,7 @@ namespace MangaCheckerV3.ViewModels {
         }
 
         private void Fill() {
-            var x = Sortby(_sortMode, LiteDb.GetAllMangas().ToList());
+            var x = Sortby(_sortMode, _liteDb.GetAllMangas().ToList());
             x.ForEach(_mangas.Add);
         }
 
@@ -144,32 +147,32 @@ namespace MangaCheckerV3.ViewModels {
             SelectedManga.Chapter += AmountItem;
             SelectedManga.Newest = SelectedManga.Chapter.ToString(CultureInfo.InvariantCulture);
             SelectedManga.Updated = DateTime.Now;
-            LiteDb.Update(SelectedManga, true);
+            _liteDb.Update(SelectedManga, true);
         }
 
         private void DecreaseChapter() {
             SelectedManga.Chapter -= AmountItem;
             SelectedManga.Newest = SelectedManga.Chapter.ToString(CultureInfo.InvariantCulture);
             SelectedManga.Updated -= TimeSpan.FromDays(1);
-            LiteDb.Update(SelectedManga, true);
+            _liteDb.Update(SelectedManga, true);
         }
 
         private void OpenMangaSite() {
             if (!SelectedManga.Link.Contains("/")) {
                 return;
             }
-            Process.Start(SelectedManga.Link);
+            Process.Start((string) SelectedManga.Link);
         }
 
         private void DeleteManga() {
-            LiteDb.Delete(SelectedManga);
+            _liteDb.Delete(SelectedManga);
             MainWindowViewModel.Instance.SnackbarQueue.Enqueue($"Deleted {SelectedManga.Name}", "UNDO", HandleUndoMethod,
                 SelectedManga);
             _mangas.Remove(SelectedManga);
         }
 
         private void HandleUndoMethod(Manga manga) {
-            LiteDb.InsertManga(manga);
+            _liteDb.InsertManga(manga);
             _mangas.Add(manga);
         }
 
@@ -179,12 +182,12 @@ namespace MangaCheckerV3.ViewModels {
         }
 
         private void ViewManga() {
-            Utilities.OpenViewer(SelectedManga);
+            _utilities.OpenViewer(SelectedManga);
         }
 
         private void EditManga() {
             var e = new EditWindow {
-                DataContext = new EditWindowViewModel(SelectedManga, _providerService),
+                DataContext = new EditWindowViewModel(SelectedManga, _providerService, _liteDb),
                 WindowStartupLocation = WindowStartupLocation.CenterOwner
             };
             e.Show();
@@ -196,7 +199,7 @@ namespace MangaCheckerV3.ViewModels {
                     Fill();
                     break;
                 default:
-                    Sortby(_sortMode, LiteDb.GetMangasFrom(site).ToList()).ForEach(_mangas.Add);
+                    Sortby(_sortMode, _liteDb.GetMangasFrom(site).ToList()).ForEach(_mangas.Add);
                     break;
             }
         }

@@ -9,11 +9,18 @@ using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
     public class YoManga : IProvider {
-        private readonly WebParser _webParser = new WebParser();
+        private readonly IWebParser _webParser;
+        private readonly ILiteDb _liteDb;
+        private readonly INewChapterHelper _newChapterHelper;
 
+        public YoManga(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
+            _webParser = webParser;
+            _liteDb = liteDb;
+            _newChapterHelper = newChapterHelper;
+        }
         public async Task CheckAll() {
-            var all = LiteDb.GetMangasFrom(DbName);
-            var openlink = LiteDb.GetOpenLinks();
+            var all = _liteDb.GetMangasFrom(DbName);
+            var openlink = _liteDb.GetOpenLinks();
             var rss = await _webParser.GetRssFeedAsync("https://yomanga.co/reader/feeds/rss");
             if (rss == null) {
                 return;
@@ -28,8 +35,8 @@ namespace MangaChecker.Providers {
                 if (nc.Contains(" ")) {
                     nc = nc.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries)[0];
                 }
-                var isNew = NewChapterHelper.IsNew(manga, nc, rssItemObject.PubDate,
-                    rssItemObject.Link, openlink);
+                var isNew = _newChapterHelper.IsNew(manga, nc, rssItemObject.PubDate,
+                    rssItemObject.Link, openlink, _liteDb);
             }
         }
 

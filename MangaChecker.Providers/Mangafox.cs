@@ -8,11 +8,18 @@ using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
     public class Mangafox : IProvider {
-        private readonly WebParser _webParser = new WebParser();
+        private readonly IWebParser _webParser;
+        private readonly ILiteDb _liteDb;
+        private readonly INewChapterHelper _newChapterHelper;
 
+        public Mangafox(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
+            _webParser = webParser;
+            _liteDb = liteDb;
+            _newChapterHelper = newChapterHelper;
+        }
         public async Task CheckAll() {
-            var all = LiteDb.GetMangasFrom(DbName);
-            var openlink = LiteDb.GetOpenLinks();
+            var all = _liteDb.GetMangasFrom(DbName);
+            var openlink = _liteDb.GetOpenLinks();
             foreach (var manga in all) {
                 if (string.IsNullOrEmpty(manga.Rss)) {
                     Logger.Log.Warn($"MANGAFOX {manga.Name} missing rss feed link");
@@ -30,8 +37,8 @@ namespace MangaChecker.Providers {
                     var nc = string.IsNullOrEmpty(re.Groups["chapter"].Value)
                         ? rssItemObject.Title.Replace(manga.Name.ToLower(), string.Empty)
                         : re.Groups["chapter"].Value.Trim('.').Trim();
-                    var isNew = NewChapterHelper.IsNew(manga, nc, rssItemObject.PubDate,
-                        rssItemObject.Link, openlink);
+                    var isNew = _newChapterHelper.IsNew(manga, nc, rssItemObject.PubDate,
+                        rssItemObject.Link, openlink, _liteDb);
                     await Task.Delay(100);
                 }
             }

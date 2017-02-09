@@ -14,10 +14,12 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
     public class EditWindowViewModel {
         private readonly ObservableCollection<Genre> _genres = new ObservableCollection<Genre>();
         private readonly ObservableCollection<string> _otherChapters = new ObservableCollection<string>();
-        private readonly IProviderService ProviderService;
+        private readonly IProviderService _providerService;
+        private readonly ILiteDb _liteDb;
 
-        public EditWindowViewModel(Manga manga, IProviderService providerService) {
-            ProviderService = providerService;
+        public EditWindowViewModel(Manga manga, IProviderService providerService, ILiteDb liteDb) {
+            _providerService = providerService;
+            _liteDb = liteDb;
             Manga = manga;
             DeleteGenreCommand = new ActionCommand(DeleteGenre);
             AddGenreCommand = new ActionCommand(AddGenre);
@@ -36,7 +38,7 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
         public List<Genre> Genres => Enum.GetValues(typeof(Genre)).Cast<Genre>().ToList();
         public ReadOnlyObservableCollection<Genre> GenresAdded { get; }
 
-        public List<string> Sites => ProviderService.Providers.Select(p => p.DbName).ToList();
+        public List<string> Sites => Enumerable.ToList<string>(_providerService.Providers.Select(p => p.DbName));
         public string SiteSelected { get; set; }
         public string OtherChapter { get; set; }
 
@@ -89,7 +91,7 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
 
         private void SaveManga() {
             try {
-                LiteDb.Update(Manga);
+                _liteDb.Update(Manga);
             }
             catch (Exception e) {
                 Console.WriteLine(e);

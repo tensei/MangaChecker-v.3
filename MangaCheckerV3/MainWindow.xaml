@@ -7,7 +7,7 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:views="clr-namespace:MangaCheckerV3.Views"
-    xmlns:viewModel="clr-namespace:MangaCheckerV3.ViewModels"
+    xmlns:viewModels="clr-namespace:MangaCheckerV3.ViewModels"
     x:Class="MangaCheckerV3.MainWindow"
     mc:Ignorable="d"
     Title="MangaChecker" Height="550" Width="725" SaveWindowPosition="True"
@@ -16,7 +16,7 @@
     NonActiveGlowBrush="Black"
     Closing="MainWindow_OnClosing"
     NonActiveWindowTitleBrush="{DynamicResource HighlightBrush}"
-    d:DataContext="{d:DesignInstance {x:Type viewModel:MainWindowViewModel}, IsDesignTimeCreatable=False}">
+    d:DataContext="{d:DesignInstance {x:Type viewModels:MainWindowViewModel}, IsDesignTimeCreatable=False}">
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
             <Button ToolTip="Start/Stop" Command="{Binding StartStopCommand}">
@@ -71,10 +71,10 @@
                 <views:MangaListView DataContext="{Binding MangaListContext}" />
                 <views:AddMangaView DataContext="{Binding AddContext}" />
                 <Separator /> <!--workaround to use same index-->
-                <views:PluginsView />
-                <views:ThemeView />
-                <views:NewView />
-                <views:HistoryView />
+                <views:PluginsView DataContext="{Binding PluginsContext}" />
+                <views:ThemeView DataContext="{Binding ThemeContext}" />
+                <views:NewView DataContext="{Binding NewContext}" />
+                <views:HistoryView DataContext="{Binding HistoryContext}" />
                 <Separator />
                 <views:SettingsView DataContext="{Binding SettingsContext}" />
             </materialDesign:Transitioner>

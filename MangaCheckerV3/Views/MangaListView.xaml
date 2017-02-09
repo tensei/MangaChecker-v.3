@@ -8,11 +8,11 @@
     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
-    xmlns:viewModel="clr-namespace:MangaCheckerV3.ViewModels"
+    xmlns:viewModels="clr-namespace:MangaCheckerV3.ViewModels"
     x:Class="MangaCheckerV3.Views.MangaListView"
     mc:Ignorable="d"
     d:DesignHeight="500" d:DesignWidth="700"
-    d:DataContext="{d:DesignInstance {x:Type viewModel:MangaListViewModel}, IsDesignTimeCreatable=False}">
+    d:DataContext="{d:DesignInstance {x:Type viewModels:MangaListViewModel}, IsDesignTimeCreatable=False}">
 
     <Grid>
         <Grid.RowDefinitions>

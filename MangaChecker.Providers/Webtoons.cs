@@ -8,11 +8,18 @@ using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
     public class Webtoons : IProvider {
-        private readonly WebParser _webParser = new WebParser();
+        private readonly IWebParser _webParser;
+        private readonly ILiteDb _liteDb;
+        private readonly INewChapterHelper _newChapterHelper;
 
+        public Webtoons(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
+            _webParser = webParser;
+            _liteDb = liteDb;
+            _newChapterHelper = newChapterHelper;
+        }
         public async Task CheckAll() {
-            var all = LiteDb.GetMangasFrom(DbName);
-            var openlink = LiteDb.GetOpenLinks();
+            var all = _liteDb.GetMangasFrom(DbName);
+            var openlink = _liteDb.GetOpenLinks();
             foreach (var manga in all) {
                 var rss = await _webParser.GetRssFeedAsync(manga.Rss);
                 if (rss == null) {
@@ -22,8 +29,8 @@ namespace MangaChecker.Providers {
                 foreach (var rssItemObject in rss) {
                     var nc =
                         Regex.Match(rssItemObject.Title, @"ep\. ([0-9\.]+)", RegexOptions.IgnoreCase).Groups[1].Value;
-                    var isNew = NewChapterHelper.IsNew(manga, nc.Trim('.').Trim(), rssItemObject.PubDate,
-                        rssItemObject.Link, openlink);
+                    var isNew = _newChapterHelper.IsNew(manga, nc.Trim('.').Trim(), rssItemObject.PubDate,
+                        rssItemObject.Link, openlink, _liteDb);
                 }
             }
         }

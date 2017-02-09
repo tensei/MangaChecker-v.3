@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel;
+using MangaChecker.Data.Interface;
 using MangaChecker.Database;
+using MangaCheckerV3.ViewModels;
 
 namespace MangaCheckerV3 {
     /// <summary>
@@ -9,9 +11,10 @@ namespace MangaCheckerV3 {
         public MainWindow() {
             InitializeComponent();
         }
-
+        private readonly ILiteDb _liteDb;
         private void MainWindow_OnClosing(object sender, CancelEventArgs e) {
-            LiteDb.Dispose();
+            var ctx = (MainWindowViewModel) DataContext;
+            ctx.Dispose();
         }
     }
 }

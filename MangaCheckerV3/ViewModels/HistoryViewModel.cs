@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using MangaChecker.Data.Enum;
+using MangaChecker.Data.Interface;
 using MangaChecker.Data.Model;
 using MangaChecker.Database;
 using MangaCheckerV3.Common;
@@ -12,16 +13,19 @@ namespace MangaCheckerV3.ViewModels {
     [ImplementPropertyChanged]
     public class HistoryViewModel {
         private readonly ObservableCollection<Manga> _history = new ObservableCollection<Manga>();
-
-        public HistoryViewModel() {
+        private readonly Utilities _utilities;
+        private readonly ILiteDb _liteDb;
+        public HistoryViewModel(Utilities utilities, ILiteDb liteDb) {
+            _utilities = utilities;
+            _liteDb = liteDb;
             RefreshListCommand = new ActionCommand(Refresh);
             RemoveCommand = new ActionCommand(m => Remove((Manga) m));
             ViewCommand = new ActionCommand(m => View((Manga) m));
             History = new ReadOnlyObservableCollection<Manga>(_history);
-            LiteDb.MangaEvent += DatabaseOnMangaEvent;
+            _liteDb.MangaEvent += DatabaseOnMangaEvent;
             Refresh();
         }
-
+        
         public ReadOnlyObservableCollection<Manga> History { get; }
 
         public ICommand RefreshListCommand { get; }
@@ -51,24 +55,24 @@ namespace MangaCheckerV3.ViewModels {
                 Newest = m.Newest
             };
             _history.Insert(0, (Manga) sender);
-            LiteDb.InsertHistory(nm);
+            _liteDb.InsertHistory(nm);
         }
 
         private void Refresh() {
             if (_history.Count > 0) {
                 _history?.Clear();
             }
-            LiteDb.GetHistory()?.ToList().ForEach(_history.Add);
+            _liteDb.GetHistory()?.ToList().ForEach(_history.Add);
             LastRefresh = DateTime.Now.ToLongTimeString();
         }
 
         private void Remove(Manga manga) {
-            LiteDb.DeleteHistory(manga);
+            _liteDb.DeleteHistory(manga);
             _history.Remove(manga);
         }
 
         private void View(Manga manga) {
-            Utilities.OpenViewer(manga);
+            _utilities.OpenViewer(manga);
         }
     }
 }

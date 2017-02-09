@@ -8,20 +8,28 @@ using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
     public class Tomochan : IProvider {
-        private readonly WebParser _webParser = new WebParser();
+        private readonly IWebParser _webParser;
+        private readonly ILiteDb _liteDb;
+        private readonly INewChapterHelper _newChapterHelper;
+
+        public Tomochan(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
+            _webParser = webParser;
+            _liteDb = liteDb;
+            _newChapterHelper = newChapterHelper;
+        }
         //http://read.tomochan.today/rss
         public async Task CheckAll() {
-            var all = LiteDb.GetMangasFrom(DbName);
+            var all = _liteDb.GetMangasFrom(DbName);
             var rss = await _webParser.GetRssFeedAsync("http://read.tomochan.today/rss");
             if (rss == null) {
                 return;
             }
             rss.Reverse();
-            var openlink = LiteDb.GetOpenLinks();
+            var openlink = _liteDb.GetOpenLinks();
             foreach (var manga in all)
             foreach (var rssItemObject in rss) {
-                var isNew = NewChapterHelper.IsNew(manga, rssItemObject.Category, rssItemObject.PubDate,
-                    rssItemObject.Link, openlink);
+                var isNew = _newChapterHelper.IsNew(manga, rssItemObject.Category, rssItemObject.PubDate,
+                    rssItemObject.Link, openlink, _liteDb);
                 await Task.Delay(100);
             }
         }

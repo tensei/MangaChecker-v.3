@@ -8,24 +8,31 @@ using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
     public class Mangastream : IProvider {
-        private readonly WebParser _webParser = new WebParser();
+        private readonly IWebParser _webParser;
+        private readonly ILiteDb _liteDb;
+        private readonly INewChapterHelper _newChapterHelper;
 
+        public Mangastream(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
+            _webParser = webParser;
+            _liteDb = liteDb;
+            _newChapterHelper = newChapterHelper;
+        }
         public async Task CheckAll() {
-            var all = LiteDb.GetMangasFrom(DbName);
+            var all = _liteDb.GetMangasFrom(DbName);
             var rss = await _webParser.GetRssFeedAsync("http://mangastream.com/rss");
             if (rss == null) {
                 return;
             }
             rss.Reverse();
-            var openlink = LiteDb.GetOpenLinks();
+            var openlink = _liteDb.GetOpenLinks();
             foreach (var manga in all)
             foreach (var rssItemObject in rss) {
                 if (!rssItemObject.Title.ToLower().Contains(manga.Name.ToLower())) {
                     continue;
                 }
                 var nc = rssItemObject.Title.ToLower().Replace(manga.Name.ToLower(), string.Empty).Trim();
-                var isNew = NewChapterHelper.IsNew(manga, nc, rssItemObject.PubDate,
-                    rssItemObject.Link, openlink);
+                var isNew = _newChapterHelper.IsNew(manga, nc, rssItemObject.PubDate,
+                    rssItemObject.Link, openlink, _liteDb);
             }
         }
 
