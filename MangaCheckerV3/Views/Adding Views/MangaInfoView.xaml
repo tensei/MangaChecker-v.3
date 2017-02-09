@@ -5,11 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:MangaCheckerV3.Views.Adding_Views"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:dataTypes="clr-namespace:MangaChecker.DataTypes;assembly=MangaChecker.DataTypes"
-             xmlns:model="clr-namespace:MangaChecker.DataTypes.Model;assembly=MangaChecker.DataTypes"
+             xmlns:model1="clr-namespace:MangaChecker.Data.Model;assembly=MangaChecker.Data"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
-             d:DataContext="{d:DesignInstance {x:Type model:Manga}, IsDesignTimeCreatable=False}">
+             d:DataContext="{d:DesignInstance {x:Type model1:Manga}, IsDesignTimeCreatable=False}">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <materialDesign:ColorZone Padding="8" materialDesign:ShadowAssist.ShadowDepth="Depth2">
             <Grid>
