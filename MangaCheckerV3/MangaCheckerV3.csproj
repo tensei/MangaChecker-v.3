@@ -142,7 +142,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Common\GlobalVariables.cs" />
+    <Compile Include="Common\IViewModelFactory.cs" />
     <Compile Include="Common\Utilities.cs" />
+    <Compile Include="Common\ViewModelFactory.cs" />
     <Compile Include="Helpers\ThemeHelper.cs" />
     <Compile Include="ViewModels\ActionCommand.cs" />
     <Compile Include="ViewModels\Adding ViewModels\AdvancedViewModel.cs" />

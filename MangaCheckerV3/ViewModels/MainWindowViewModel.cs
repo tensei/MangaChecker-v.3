@@ -14,25 +14,12 @@ namespace MangaCheckerV3.ViewModels {
         /// <summary>
         ///     Initializes a new instance of the MainWindowViewModel class.
         /// </summary>
-        public MainWindowViewModel(IProviderService providerService,
-            AddMangaViewModel addMangaViewModel,
-            MangaListViewModel mangaListViewModel,
-            SettingsViewModel settingsViewModel,
-            NewMangaViewModel newMangaViewModel,
-            HistoryViewModel historyViewModel, 
-            ThemeViewModel themeViewModel, 
-            PluginsViewModel pluginsViewModel, ILiteDb liteDb) {
+        public MainWindowViewModel(IProviderService providerService, IViewModelFactory viewModelFactory, ILiteDb liteDb) {
             _liteDb = liteDb;
             Instance = this;
             ProviderService = providerService;
+            _viewModelFactory = viewModelFactory;
             GlobalVariables.ProviderService = providerService;
-            MangaListContext = mangaListViewModel;
-            AddContext = addMangaViewModel;
-            SettingsContext = settingsViewModel;
-            NewContext = newMangaViewModel;
-            HistoryContext = historyViewModel;
-            ThemeContext = themeViewModel;
-            PluginsContext = pluginsViewModel;
             SnackbarQueue = new SnackbarMessageQueue();
             StartStopCommand = new ActionCommand(StartStop);
             RefreshCommand = new ActionCommand(() => ProviderService.Timer = 5);
@@ -51,6 +38,7 @@ namespace MangaCheckerV3.ViewModels {
 
         private ILiteDb _liteDb;
         public IProviderService ProviderService { get; }
+        private readonly IViewModelFactory _viewModelFactory;
 
         public ISnackbarMessageQueue SnackbarQueue { get; }
 
@@ -61,19 +49,13 @@ namespace MangaCheckerV3.ViewModels {
         public ICommand RefreshCommand { get; }
         public string PausePlayButtonIcon { get; set; } = "Pause";
 
-        public MangaListViewModel MangaListContext { get; }
-
-        public AddMangaViewModel AddContext { get; }
-
-        public SettingsViewModel SettingsContext { get; }
-
-        public PluginsViewModel PluginsContext { get; }
-
-        public ThemeViewModel ThemeContext { get; }
-
-        public NewMangaViewModel NewContext { get; }
-
-        public HistoryViewModel HistoryContext { get; }
+        public MangaListViewModel MangaListContext => _viewModelFactory.CreateMangaListViewModel;
+        public AddMangaViewModel AddContext => _viewModelFactory.CreateAddMangaViewModel;
+        public SettingsViewModel SettingsContext => _viewModelFactory.CreateSettingsViewModel;
+        public PluginsViewModel PluginsContext => _viewModelFactory.CreatePluginsViewModel;
+        public ThemeViewModel ThemeContext => _viewModelFactory.CreateThemeViewModel;
+        public NewMangaViewModel NewContext => _viewModelFactory.CreateNewMangaViewModel;
+        public HistoryViewModel HistoryContext => _viewModelFactory.CreateHistoryViewModel;
 
         private void StartStop() {
             if (!ProviderService.Pause) {

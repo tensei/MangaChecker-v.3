@@ -28,6 +28,7 @@ namespace MangaCheckerV3 {
             container.RegisterInstance<ILiteDb>(db);
             container.RegisterType<INewChapterHelper, NewChapterHelper>();
             container.RegisterType<IWebParser, WebParser>();
+            container.RegisterType<Utilities>();
             //container.RegisterType<IWebParser, WebParser>();
             container.RegisterType<IProvider, Mangastream>("ms");
             container.RegisterType<IProvider, Batoto>("b");
@@ -45,8 +46,8 @@ namespace MangaCheckerV3 {
             container.RegisterType<IProvider, Webtoons>("w");
             container.RegisterType<IProvider, YoManga>("y");
             container.RegisterType<IEnumerable<IProvider>, IProvider[]>();
-            container.RegisterType<Utilities>();
             container.RegisterType<IProviderService, ProviderService>();
+            container.RegisterType<IViewModelFactory, ViewModelFactory>();
             container.RegisterType<MainWindowViewModel>();
             container.RegisterType<SettingsViewModel>();
             container.RegisterType<AddMangaViewModel>();
@@ -60,15 +61,16 @@ namespace MangaCheckerV3 {
             var p = container.Resolve<IProviderService>();
             PluginHost.Instance.Initialize();
             if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db"))) {
-                new LiteDb().CheckDbVersion(p.Providers);
+                db.CheckDbVersion(p.Providers);
             }
             else {
-                new LiteDb().CreateDatabase(p.Providers);
+                db.CreateDatabase(p.Providers);
             }
             var mainWindow = new MainWindow {
                 DataContext = container.Resolve<MainWindowViewModel>()
             };
-            ThemeViewModel.Instance.SetupTheme();
+            var th = container.Resolve<ThemeViewModel>();
+            th.SetupTheme();
             await Task.Delay(400);
             mainWindow.ShowDialog();
         }
