@@ -24,7 +24,9 @@ namespace MangaCheckerV3.Common {
 
         public void CreateViewerWindow(IManga manga) => _createViewer(manga);
         public void CreateEditWindow(Manga manga) => new EditWindow {
-            DataContext = new EditWindowViewModel(manga, _providerService, _liteDb)
+            DataContext = new EditWindowViewModel(manga, _providerService, _liteDb),
+            Owner = Application.Current.MainWindow,
+            WindowStartupLocation = WindowStartupLocation.CenterOwner
         }.Show();
 
         private void _createViewer(IManga manga) {
@@ -39,8 +41,8 @@ namespace MangaCheckerV3.Common {
             }
             var viewerWindow = new ViewerWindow {
                 DataContext = new ViewerWindowViewModel(manga, provider),
-                WindowStartupLocation = WindowStartupLocation.CenterOwner,
-                Owner = Application.Current.MainWindow
+                Owner = Application.Current.MainWindow,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
             };
             viewerWindow.Show();
         }

@@ -186,11 +186,7 @@ namespace MangaCheckerV3.ViewModels {
         }
 
         private void EditManga() {
-            var e = new EditWindow {
-                DataContext = new EditWindowViewModel(SelectedManga, _providerService, _liteDb),
-                WindowStartupLocation = WindowStartupLocation.CenterOwner
-            };
-            e.Show();
+            _windowFactory.CreateEditWindow(SelectedManga);
         }
 
         private void FillMangaList(string site) {
