@@ -1,5 +1,5 @@
 ﻿using System.Windows.Input;
-using MangaChecker.Data.Interface;
+using MangaChecker.Data.Interfaces;
 using MangaCheckerV3.ViewModels.Adding_ViewModels;
 using PropertyChanged;
 

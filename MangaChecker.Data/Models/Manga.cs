@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using MangaChecker.Data.Enum;
-using MangaChecker.Data.Interface;
+using MangaChecker.Data.Enums;
+using MangaChecker.Data.Interfaces;
 using PropertyChanged;
 
-namespace MangaChecker.Data.Model {
+namespace MangaChecker.Data.Models {
     [ImplementPropertyChanged]
     public class Manga : IManga {
         public int MangaId { get; set; }

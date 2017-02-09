@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using MangaChecker.Data.Interface;
+using MangaChecker.Data.Interfaces;
 
 namespace MangaChecker.Providers {
     public class Mangahere : IProvider {

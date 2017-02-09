@@ -2,8 +2,8 @@
 using System.Diagnostics;
 using System.Windows;
 using MahApps.Metro.Controls;
-using MangaChecker.Data.Interface;
-using MangaChecker.Data.Model;
+using MangaChecker.Data.Interfaces;
+using MangaChecker.Data.Models;
 using MangaChecker.Utilities;
 using MangaCheckerV3.ViewModels.Window_ViewModels;
 using MangaCheckerV3.Views.Windows;
@@ -11,9 +11,10 @@ using MangaCheckerV3.Views.Windows;
 namespace MangaCheckerV3.Common {
     public class Utilities {
         private ViewerWindow _viewerWindow;
+        private Logger _logger;
         private readonly IProviderService _providerService;
 
-        public Utilities(ViewerWindow viewerWindow, IProviderService providerService) {
+        public Utilities(ViewerWindow viewerWindow, IProviderService providerService, Logger logger) {
             _viewerWindow = viewerWindow;
             _providerService = providerService;
         }
@@ -24,7 +25,7 @@ namespace MangaCheckerV3.Common {
                     Process.Start(manga.Link);
                 }
                 catch (Exception e) {
-                    Logger.Log.Error($"{manga.Link}\n{e}");
+                    _logger.Log.Error($"{manga.Link}\n{e}");
                 }
                 return;
             }

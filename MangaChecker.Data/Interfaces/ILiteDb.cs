@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using MangaChecker.Data.Enum;
-using MangaChecker.Data.Model;
+using MangaChecker.Data.Enums;
+using MangaChecker.Data.Models;
 
-namespace MangaChecker.Data.Interface {
+namespace MangaChecker.Data.Interfaces {
     public interface ILiteDb {
         event EventHandler<MangaEnum> MangaEvent;
         event EventHandler<DatabaseEnum> DbEvent;

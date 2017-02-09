@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using DBMigration.ViewModels;
 using DBMigration.Views;
-using MangaChecker.Data.Interface;
+using MangaChecker.Data.Interfaces;
 
 namespace DBMigration {
     [Export(typeof(IPlugin)), ExportMetadata("Title", "Migration"),

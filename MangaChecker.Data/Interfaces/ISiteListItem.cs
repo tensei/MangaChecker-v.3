@@ -1,4 +1,4 @@
-﻿namespace MangaChecker.Data.Interface {
+﻿namespace MangaChecker.Data.Interfaces {
     public interface ISiteListItem {
         string Name { get; set; }
         bool Overrideable { get; set; }

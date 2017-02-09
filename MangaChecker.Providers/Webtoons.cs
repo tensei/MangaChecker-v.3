@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using MangaChecker.Data.Interface;
+using MangaChecker.Data.Interfaces;
 using MangaChecker.Database;
 using MangaChecker.Utilities;
 
@@ -30,7 +30,7 @@ namespace MangaChecker.Providers {
                     var nc =
                         Regex.Match(rssItemObject.Title, @"ep\. ([0-9\.]+)", RegexOptions.IgnoreCase).Groups[1].Value;
                     var isNew = _newChapterHelper.IsNew(manga, nc.Trim('.').Trim(), rssItemObject.PubDate,
-                        rssItemObject.Link, openlink, _liteDb);
+                        rssItemObject.Link, openlink);
                 }
             }
         }

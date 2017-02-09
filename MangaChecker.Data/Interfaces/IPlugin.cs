@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MangaChecker.Data.Interface {
+namespace MangaChecker.Data.Interfaces {
     public interface IPlugin : IDisposable {
         object SettingsView();
         void Initialize();

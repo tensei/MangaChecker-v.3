@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AngleSharp.Dom.Html;
-using MangaChecker.Data.Model;
+using MangaChecker.Data.Models;
 
-namespace MangaChecker.Data.Interface {
+namespace MangaChecker.Data.Interfaces {
     public interface IWebParser {
         Task<string> GetHtmlSourceStringAsync(string url);
         Task<byte[]> GetHtmlDataAsync(string url);

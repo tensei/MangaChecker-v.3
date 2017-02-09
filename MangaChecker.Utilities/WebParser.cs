@@ -10,8 +10,8 @@ using AngleSharp.Parser.Html;
 using AngleSharp.Parser.Xml;
 using CloudFlareUtilities;
 using MangaChecker.Data;
-using MangaChecker.Data.Interface;
-using MangaChecker.Data.Model;
+using MangaChecker.Data.Interfaces;
+using MangaChecker.Data.Models;
 
 namespace MangaChecker.Utilities {
     public class WebParser : IWebParser {

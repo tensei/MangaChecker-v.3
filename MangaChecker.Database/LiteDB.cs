@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using LiteDB;
-using MangaChecker.Data.Enum;
-using MangaChecker.Data.Interface;
-using MangaChecker.Data.Model;
+using MangaChecker.Data.Enums;
+using MangaChecker.Data.Interfaces;
+using MangaChecker.Data.Models;
 
 namespace MangaChecker.Database {
     public class LiteDb : ILiteDb , IDisposable {

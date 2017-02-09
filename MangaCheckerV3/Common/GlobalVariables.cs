@@ -1,4 +1,4 @@
-﻿using MangaChecker.Data.Interface;
+﻿using MangaChecker.Data.Interfaces;
 using MaterialDesignThemes.Wpf;
 using PropertyChanged;
 

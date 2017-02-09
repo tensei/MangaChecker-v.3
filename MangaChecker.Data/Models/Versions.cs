@@ -1,8 +1,8 @@
 ﻿//using SQLite;
 
-using MangaChecker.Data.Interface;
+using MangaChecker.Data.Interfaces;
 
-namespace MangaChecker.Data.Model {
+namespace MangaChecker.Data.Models {
     public class Versions : IVersions {
         public int Id { get; set; }
         public string Name { get; set; }

@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using MangaChecker.Data.Interface;
+using MangaChecker.Data.Interfaces;
 using MangaChecker.Database;
 using MangaCheckerV3.ViewModels;
 

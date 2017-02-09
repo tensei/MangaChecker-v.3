@@ -5,10 +5,7 @@ using log4net.Config;
 [assembly: XmlConfigurator(Watch = true)]
 
 namespace MangaChecker.Utilities {
-    public static class Logger {
-        public static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        static Logger() {
-        }
+    public class Logger {
+        public readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
     }
 }

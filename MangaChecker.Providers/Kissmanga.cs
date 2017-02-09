@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using MangaChecker.Data.Interface;
+using MangaChecker.Data.Interfaces;
 using MangaChecker.Database;
 using MangaChecker.Utilities;
 
@@ -45,7 +45,7 @@ namespace MangaChecker.Providers {
                         nc = nc.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries)[0];
                     }
                     var isNew = _newChapterHelper.IsNew(manga, nc, newDate,
-                        link, openlink, _liteDb);
+                        link, openlink);
                 }
                 await Task.Delay(500);
             }

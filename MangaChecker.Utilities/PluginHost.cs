@@ -4,18 +4,15 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Reflection;
-using MangaChecker.Data.Interface;
+using MangaChecker.Data.Interfaces;
+using MangaChecker.Utilities.Interfaces;
 
 namespace MangaChecker.Utilities {
-    public class PluginHost : IDisposable {
+    public class PluginHost : IDisposable, IPluginHost {
         private const string PluginsDirectory = "Plugins";
         private readonly CompositionContainer _container;
 
-        static PluginHost() {
-        }
-
-
-        private PluginHost() {
+        public PluginHost() {
             var catalog = new AggregateCatalog(new AssemblyCatalog(Assembly.GetExecutingAssembly()));
             var current = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location);
             if (current == null) {
@@ -30,9 +27,9 @@ namespace MangaChecker.Utilities {
                 catalog.Catalogs.Add(new DirectoryCatalog(folder));
             }
             _container = new CompositionContainer(catalog);
+            Initialize();
         }
-
-        public static PluginHost Instance { get; } = new PluginHost();
+        
 
         [ImportMany]
         public IEnumerable<Lazy<IPlugin, IPluginMetadata>> Plugins { get; set; }

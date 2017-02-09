@@ -1,7 +1,7 @@
-﻿using MangaChecker.Data.Interface;
+﻿using MangaChecker.Data.Interfaces;
 using PropertyChanged;
 
-namespace MangaChecker.Data.Model {
+namespace MangaChecker.Data.Models {
     [ImplementPropertyChanged]
     public class SiteListItem : ISiteListItem {
         public string Name { get; set; }

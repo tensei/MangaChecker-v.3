@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
-using MangaChecker.Data.Interface;
+using MangaChecker.Data.Interfaces;
 using MangaChecker.Utilities;
 using MangaCheckerV3.Common;
 using MaterialDesignThemes.Wpf;
@@ -14,8 +14,9 @@ namespace MangaCheckerV3.ViewModels {
         /// <summary>
         ///     Initializes a new instance of the MainWindowViewModel class.
         /// </summary>
-        public MainWindowViewModel(IProviderService providerService, IViewModelFactory viewModelFactory, ILiteDb liteDb) {
+        public MainWindowViewModel(IProviderService providerService, IViewModelFactory viewModelFactory, ILiteDb liteDb, Logger logger) {
             _liteDb = liteDb;
+            _logger = logger;
             Instance = this;
             ProviderService = providerService;
             _viewModelFactory = viewModelFactory;
@@ -32,11 +33,12 @@ namespace MangaCheckerV3.ViewModels {
             //WebParser.GetRssFeedAsync("http://bato.to/myfollows_rss?secret=dd5831f7430c7ed7ea7055db4fe7b7ad&l=English").ConfigureAwait(false);
             //WebParser.GetRssFeedAsync("http://read.tomochan.today/rss").ConfigureAwait(false);
             //WebParser.GetRssFeedAsync("http://www.webtoons.com/en/fantasy/tower-of-god/rss?title_no=95").ConfigureAwait(false);
-            Logger.Log.Info("starting");
+            _logger.Log.Info("starting");
             SnackbarQueue.Enqueue("Starting...", true);
         }
 
-        private ILiteDb _liteDb;
+        private readonly ILiteDb _liteDb;
+        private readonly Logger _logger;
         public IProviderService ProviderService { get; }
         private readonly IViewModelFactory _viewModelFactory;
 

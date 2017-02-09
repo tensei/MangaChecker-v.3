@@ -2,10 +2,11 @@
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
-using MangaChecker.Data.Interface;
+using MangaChecker.Data.Interfaces;
 using MangaChecker.Database;
 using MangaChecker.Providers;
 using MangaChecker.Utilities;
+using MangaChecker.Utilities.Interfaces;
 using MangaCheckerV3.Common;
 using MangaCheckerV3.Helpers;
 using MangaCheckerV3.ViewModels;
@@ -29,6 +30,9 @@ namespace MangaCheckerV3 {
             container.RegisterType<INewChapterHelper, NewChapterHelper>();
             container.RegisterType<IWebParser, WebParser>();
             container.RegisterType<Utilities>();
+            container.RegisterType<Logger>();
+            var pluginhost = new PluginHost();
+            container.RegisterInstance<IPluginHost>(pluginhost);
             //container.RegisterType<IWebParser, WebParser>();
             container.RegisterType<IProvider, Mangastream>("ms");
             container.RegisterType<IProvider, Batoto>("b");
@@ -59,7 +63,6 @@ namespace MangaCheckerV3 {
             container.RegisterType<ThemeHelper>();
             container.RegisterType<ViewerWindow>();
             var p = container.Resolve<IProviderService>();
-            PluginHost.Instance.Initialize();
             if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db"))) {
                 db.CheckDbVersion(p.Providers);
             }

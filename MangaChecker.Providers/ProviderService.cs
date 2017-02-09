@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MangaChecker.Data.Interface;
+using MangaChecker.Data.Interfaces;
 using MangaChecker.Database;
 using MangaChecker.Utilities;
 using PropertyChanged;
@@ -11,9 +11,10 @@ namespace MangaChecker.Providers {
     [ImplementPropertyChanged]
     public class ProviderService : IProviderService, IDisposable {
 
-        public ProviderService(IEnumerable<IProvider> provider, ILiteDb liteDb) {
+        public ProviderService(IEnumerable<IProvider> provider, ILiteDb liteDb, Logger logger) {
             Providers = provider.ToList();
             _liteDb = liteDb;
+            _logger = logger;
         }
 
         public void Dispose() {
@@ -22,6 +23,7 @@ namespace MangaChecker.Providers {
 
         public List<IProvider> Providers { get; }
         private readonly ILiteDb _liteDb;
+        private readonly Logger _logger;
         public bool Pause { get; set; } = false;
         public bool Stop { get; set; }
         public int Timer { get; set; }
@@ -64,7 +66,7 @@ namespace MangaChecker.Providers {
                             await provider.CheckAll();
                         }
                         catch (Exception e) {
-                            Logger.Log.Error(e);
+                            _logger.Log.Error(e);
                         }
                         await Task.Delay(1000);
                     }

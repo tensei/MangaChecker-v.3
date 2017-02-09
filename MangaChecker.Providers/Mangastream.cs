@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using MangaChecker.Data.Interface;
+using MangaChecker.Data.Interfaces;
 using MangaChecker.Database;
 using MangaChecker.Utilities;
 
@@ -32,7 +32,7 @@ namespace MangaChecker.Providers {
                 }
                 var nc = rssItemObject.Title.ToLower().Replace(manga.Name.ToLower(), string.Empty).Trim();
                 var isNew = _newChapterHelper.IsNew(manga, nc, rssItemObject.PubDate,
-                    rssItemObject.Link, openlink, _liteDb);
+                    rssItemObject.Link, openlink);
             }
         }
 

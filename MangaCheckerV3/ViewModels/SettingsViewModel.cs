@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using MangaChecker.Data.Interface;
-using MangaChecker.Data.Model;
+using MangaChecker.Data.Interfaces;
+using MangaChecker.Data.Models;
 using MangaChecker.Database;
 using PropertyChanged;
 

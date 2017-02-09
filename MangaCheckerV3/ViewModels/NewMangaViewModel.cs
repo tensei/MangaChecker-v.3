@@ -2,9 +2,9 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using MangaChecker.Data.Enum;
-using MangaChecker.Data.Interface;
-using MangaChecker.Data.Model;
+using MangaChecker.Data.Enums;
+using MangaChecker.Data.Interfaces;
+using MangaChecker.Data.Models;
 using MangaChecker.Database;
 using MangaCheckerV3.Common;
 using PropertyChanged;

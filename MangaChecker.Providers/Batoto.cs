@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using MangaChecker.Data.Interface;
+using MangaChecker.Data.Interfaces;
 using MangaChecker.Database;
 using MangaChecker.Utilities;
 
@@ -11,11 +11,13 @@ namespace MangaChecker.Providers {
         private readonly IWebParser _webParser;
         private readonly ILiteDb _liteDb;
         private readonly INewChapterHelper _newChapterHelper;
+        private readonly Logger _logger;
 
-        public Batoto(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
+        public Batoto(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper, Logger logger) {
             _webParser = webParser;
             _liteDb = liteDb;
             _newChapterHelper = newChapterHelper;
+            _logger = logger;
         }
         public async Task CheckAll() {
             var all = _liteDb.GetMangasFrom(DbName);
@@ -37,11 +39,11 @@ namespace MangaChecker.Providers {
                     RegexOptions.IgnoreCase);
                 var ch = ncn.Groups["chapter"]?.Value.Trim() ?? ncn.Groups["chaptername"]?.Value.Trim();
                 if (string.IsNullOrEmpty(ch)) {
-                    Logger.Log.Warn($"var ch={ch}, var Rss title={rssItemObject.Title}");
+                    _logger.Log.Warn($"var ch={ch}, var Rss title={rssItemObject.Title}");
                     continue;
                 }
                 var isNew = _newChapterHelper.IsNew(manga, ch.Trim('.'), rssItemObject.PubDate,
-                    rssItemObject.Link, openlink, _liteDb);
+                    rssItemObject.Link, openlink);
             }
         }
 

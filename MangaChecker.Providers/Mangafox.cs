@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using MangaChecker.Data.Interface;
+using MangaChecker.Data.Interfaces;
 using MangaChecker.Database;
 using MangaChecker.Utilities;
 
@@ -11,18 +11,20 @@ namespace MangaChecker.Providers {
         private readonly IWebParser _webParser;
         private readonly ILiteDb _liteDb;
         private readonly INewChapterHelper _newChapterHelper;
+        private readonly Logger _logger;
 
-        public Mangafox(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
+        public Mangafox(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper, Logger logger) {
             _webParser = webParser;
             _liteDb = liteDb;
             _newChapterHelper = newChapterHelper;
+            _logger = logger;
         }
         public async Task CheckAll() {
             var all = _liteDb.GetMangasFrom(DbName);
             var openlink = _liteDb.GetOpenLinks();
             foreach (var manga in all) {
                 if (string.IsNullOrEmpty(manga.Rss)) {
-                    Logger.Log.Warn($"MANGAFOX {manga.Name} missing rss feed link");
+                    _logger.Log.Warn($"MANGAFOX {manga.Name} missing rss feed link");
                     continue;
                 }
                 var rss = await _webParser.GetRssFeedAsync(manga.Rss);
@@ -38,7 +40,7 @@ namespace MangaChecker.Providers {
                         ? rssItemObject.Title.Replace(manga.Name.ToLower(), string.Empty)
                         : re.Groups["chapter"].Value.Trim('.').Trim();
                     var isNew = _newChapterHelper.IsNew(manga, nc, rssItemObject.PubDate,
-                        rssItemObject.Link, openlink, _liteDb);
+                        rssItemObject.Link, openlink);
                     await Task.Delay(100);
                 }
             }

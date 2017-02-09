@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using MangaChecker.Data.Interface;
-using MangaChecker.Data.Model;
+using MangaChecker.Data.Interfaces;
+using MangaChecker.Data.Models;
 using MangaChecker.Utilities;
 using PropertyChanged;
 
