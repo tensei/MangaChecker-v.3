@@ -30,12 +30,12 @@ namespace MangaCheckerV3.ViewModels {
 
         private SiteListItem _selectedSite;
         private string _sortMode = "Updated";
-        private readonly Utilities _utilities;
+        private readonly IWindowFactory _windowFactory;
         private readonly ILiteDb _liteDb;
-        public MangaListViewModel(IProviderService providerService, Utilities utilities, ILiteDb liteDb) {
+        public MangaListViewModel(IProviderService providerService, IWindowFactory windowFactory, ILiteDb liteDb) {
             _providerService = providerService;
             _liteDb = liteDb;
-            _utilities = utilities;
+            _windowFactory = windowFactory;
             SetupSites();
             _liteDb.SettingEvent += DatabaseOnSettingEvent;
             Mangas = new ReadOnlyObservableCollection<Manga>(_mangas);
@@ -182,7 +182,7 @@ namespace MangaCheckerV3.ViewModels {
         }
 
         private void ViewManga() {
-            _utilities.OpenViewer(SelectedManga);
+            _windowFactory.CreateViewerWindow(SelectedManga);
         }
 
         private void EditManga() {

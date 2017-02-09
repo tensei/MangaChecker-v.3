@@ -9,6 +9,7 @@ using MangaChecker.Utilities;
 using MangaChecker.Utilities.Interfaces;
 using MangaCheckerV3.Common;
 using MangaCheckerV3.Helpers;
+using MangaCheckerV3.Interfaces;
 using MangaCheckerV3.ViewModels;
 using MangaCheckerV3.Views.Windows;
 using MaterialDesignThemes.Wpf;
@@ -29,7 +30,7 @@ namespace MangaCheckerV3 {
             container.RegisterInstance<ILiteDb>(db);
             container.RegisterType<INewChapterHelper, NewChapterHelper>();
             container.RegisterType<IWebParser, WebParser>();
-            container.RegisterType<Utilities>();
+            container.RegisterType<IWindowFactory, WindowFactory>();
             container.RegisterType<Logger>();
             var pluginhost = new PluginHost();
             container.RegisterInstance<IPluginHost>(pluginhost);

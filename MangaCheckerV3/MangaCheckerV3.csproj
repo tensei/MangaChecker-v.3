@@ -142,8 +142,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Common\GlobalVariables.cs" />
-    <Compile Include="Common\IViewModelFactory.cs" />
-    <Compile Include="Common\Utilities.cs" />
+    <Compile Include="Common\WindowFactory.cs" />
+    <Compile Include="Interfaces\IViewModelFactory.cs" />
     <Compile Include="Common\ViewModelFactory.cs" />
     <Compile Include="Helpers\ThemeHelper.cs" />
     <Compile Include="ViewModels\ActionCommand.cs" />
@@ -335,9 +335,7 @@
   <ItemGroup>
     <Resource Include="Assets\m.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.4\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.4\build\dotnet\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

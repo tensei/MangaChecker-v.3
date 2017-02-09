@@ -64,6 +64,7 @@
     <Compile Include="Interfaces\ISiteListItem.cs" />
     <Compile Include="Interfaces\IRssItem.cs" />
     <Compile Include="Interfaces\IWebParser.cs" />
+    <Compile Include="Interfaces\IWindowFactory.cs" />
     <Compile Include="Models\Manga.cs" />
     <Compile Include="Models\PluginModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -13,10 +13,10 @@ namespace MangaCheckerV3.ViewModels {
     [ImplementPropertyChanged]
     public class NewMangaViewModel {
         private readonly ObservableCollection<Manga> _newManga = new ObservableCollection<Manga>();
-        private readonly Utilities _utilities;
+        private readonly IWindowFactory _windowFactory;
         private readonly ILiteDb _liteDb;
-        public NewMangaViewModel(Utilities utilities, ILiteDb liteDb) {
-            _utilities = utilities;
+        public NewMangaViewModel(IWindowFactory windowFactory, ILiteDb liteDb) {
+            _windowFactory = windowFactory;
             _liteDb = liteDb;
             ViewCommand = new ActionCommand(v => View((Manga) v));
             RemoveCommand = new ActionCommand(r => Remove((Manga) r));
@@ -36,8 +36,8 @@ namespace MangaCheckerV3.ViewModels {
 
         public string LastRefresh { get; set; }
 
-        private void View(Manga manga) {
-            _utilities.OpenViewer(manga);
+        private void View(IManga manga) {
+            _windowFactory.CreateViewerWindow(manga);
         }
 
         private void Remove(Manga manga) {

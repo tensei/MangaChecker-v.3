@@ -17,7 +17,7 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
     [ImplementPropertyChanged]
     public class ViewerWindowViewModel : IDisposable {
         private readonly ObservableCollection<object> _images = new ObservableCollection<object>();
-        private readonly Manga _manga;
+        private readonly IManga _manga;
 
         private readonly ObservableCollection<int> _pages = new ObservableCollection<int>();
 
@@ -27,7 +27,7 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
 
         private bool _isClosing;
 
-        public ViewerWindowViewModel(Manga manga, IProvider provider) {
+        public ViewerWindowViewModel(IManga manga, IProvider provider) {
             Pages = new ReadOnlyObservableCollection<int>(_pages);
             Images = new ReadOnlyObservableCollection<object>(_images);
             LoadImages(manga, provider).ConfigureAwait(false);
@@ -71,7 +71,7 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
             GC.Collect();
         }
 
-        private async Task LoadImages(Manga manga, IProvider provider) {
+        private async Task LoadImages(IManga manga, IProvider provider) {
             var imgs = await provider.GetImagesTaskAsync(manga.Link);
             _imgs = imgs.Item1;
             PageIntList();

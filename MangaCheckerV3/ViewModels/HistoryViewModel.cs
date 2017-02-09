@@ -13,10 +13,10 @@ namespace MangaCheckerV3.ViewModels {
     [ImplementPropertyChanged]
     public class HistoryViewModel {
         private readonly ObservableCollection<Manga> _history = new ObservableCollection<Manga>();
-        private readonly Utilities _utilities;
+        private readonly IWindowFactory _windowFactory;
         private readonly ILiteDb _liteDb;
-        public HistoryViewModel(Utilities utilities, ILiteDb liteDb) {
-            _utilities = utilities;
+        public HistoryViewModel(IWindowFactory windowFactory, ILiteDb liteDb) {
+            _windowFactory = windowFactory;
             _liteDb = liteDb;
             RefreshListCommand = new ActionCommand(Refresh);
             RemoveCommand = new ActionCommand(m => Remove((Manga) m));
@@ -71,8 +71,8 @@ namespace MangaCheckerV3.ViewModels {
             _history.Remove(manga);
         }
 
-        private void View(Manga manga) {
-            _utilities.OpenViewer(manga);
+        private void View(IManga manga) {
+            _windowFactory.CreateViewerWindow(manga);
         }
     }
 }

@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
-using MahApps.Metro.Controls;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
 using MangaChecker.Utilities;
@@ -9,32 +12,37 @@ using MangaCheckerV3.ViewModels.Window_ViewModels;
 using MangaCheckerV3.Views.Windows;
 
 namespace MangaCheckerV3.Common {
-    public class Utilities {
-        private ViewerWindow _viewerWindow;
-        private Logger _logger;
+    public class WindowFactory : IWindowFactory {
         private readonly IProviderService _providerService;
-
-        public Utilities(ViewerWindow viewerWindow, IProviderService providerService, Logger logger) {
-            _viewerWindow = viewerWindow;
+        private readonly ILiteDb _liteDb;
+        private readonly Logger _logger;
+        public WindowFactory(Logger logger, IProviderService providerService, ILiteDb liteDb) {
+            _logger = logger;
             _providerService = providerService;
+            _liteDb = liteDb;
         }
-        public void OpenViewer(Manga manga) {
+
+        public void CreateViewerWindow(IManga manga) => _createViewer(manga);
+        public void CreateEditWindow(Manga manga) => new EditWindow {
+            DataContext = new EditWindowViewModel(manga, _providerService, _liteDb)
+        }.Show();
+
+        private void _createViewer(IManga manga) {
             var provider = _providerService.Providers.Find(p => p.DbName == manga.Site);
             if (!provider.ViewEnabled) {
                 try {
                     Process.Start(manga.Link);
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     _logger.Log.Error($"{manga.Link}\n{e}");
                 }
                 return;
             }
-            _viewerWindow = new ViewerWindow {
+            var viewerWindow = new ViewerWindow {
                 DataContext = new ViewerWindowViewModel(manga, provider),
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
                 Owner = Application.Current.MainWindow
             };
-            _viewerWindow.Show();
+            viewerWindow.Show();
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Windows.Input;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Utilities;
 using MangaCheckerV3.Common;
+using MangaCheckerV3.Interfaces;
 using MaterialDesignThemes.Wpf;
 using PropertyChanged;
 
