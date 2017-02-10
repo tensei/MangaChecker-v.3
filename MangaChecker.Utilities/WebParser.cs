@@ -12,6 +12,7 @@ using CloudFlareUtilities;
 using MangaChecker.Data;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
+using MangaChecker.Utilities.Interfaces;
 
 namespace MangaChecker.Utilities {
     public class WebParser : IWebParser {

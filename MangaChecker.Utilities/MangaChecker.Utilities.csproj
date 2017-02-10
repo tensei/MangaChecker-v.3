@@ -55,7 +55,9 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\INewChapterHelper.cs" />
     <Compile Include="Interfaces\IPluginHost.cs" />
+    <Compile Include="Interfaces\IWebParser.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="NewChapterHelper.cs" />
     <Compile Include="PluginHost.cs" />

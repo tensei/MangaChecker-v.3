@@ -142,6 +142,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Common\GlobalVariables.cs" />
+    <Compile Include="Common\LinkParser.cs" />
     <Compile Include="Common\WindowFactory.cs" />
     <Compile Include="Common\ViewModelFactory.cs" />
     <Compile Include="Helpers\ThemeHelper.cs" />
@@ -327,8 +328,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interfaces\" />
-    <Folder Include="ViewModels\Adding ViewModels\" />
-    <Folder Include="ViewModels\Window ViewModels\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.4\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.4\build\dotnet\Fody.targets')" />

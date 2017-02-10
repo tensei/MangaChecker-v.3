@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using MangaChecker.Data.Interfaces;
 
-namespace MangaChecker.Data.Interfaces {
+namespace MangaChecker.Providers.Interfaces {
     public interface IProviderService {
         bool Pause { get; set; }
         List<IProvider> Providers { get; }
@@ -10,7 +11,7 @@ namespace MangaChecker.Data.Interfaces {
         int Timer { get; set; }
 
         bool Add(IProvider site);
-        void Dispose();
+        void Close();
         bool Remove(IProvider site);
         Task Run();
     }

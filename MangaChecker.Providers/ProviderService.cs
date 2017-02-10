@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MangaChecker.Data.Interfaces;
-using MangaChecker.Database;
+using MangaChecker.Providers.Interfaces;
 using MangaChecker.Utilities;
 using PropertyChanged;
 
@@ -11,13 +11,13 @@ namespace MangaChecker.Providers {
     [ImplementPropertyChanged]
     public class ProviderService : IProviderService {
 
-        public ProviderService(IEnumerable<IProvider> provider, ILiteDb liteDb, Logger logger) {
-            Providers = provider.ToList();
+        public ProviderService(IProviderSet providerSet, ILiteDb liteDb, Logger logger) {
+            Providers = providerSet.GetAll;
             _liteDb = liteDb;
             _logger = logger;
         }
 
-        public void Dispose() {
+        public void Close() {
             Stop = true;
         }
 

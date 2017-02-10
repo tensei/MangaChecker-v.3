@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using MangaChecker.Data.Interfaces;
+using MangaChecker.Providers.Interfaces;
 using MangaChecker.Utilities;
 using PropertyChanged;
 

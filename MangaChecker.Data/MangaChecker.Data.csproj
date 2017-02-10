@@ -57,17 +57,13 @@
     <Compile Include="Enums\SettingEnum.cs" />
     <Compile Include="Interfaces\ILiteDb.cs" />
     <Compile Include="Interfaces\IManga.cs" />
-    <Compile Include="Interfaces\INewChapterHelper.cs" />
     <Compile Include="Interfaces\IPluginMetadata.cs" />
     <Compile Include="Interfaces\IPlugin.cs" />
-    <Compile Include="Interfaces\IProvider.cs" />
-    <Compile Include="Interfaces\IProviderService.cs" />
     <Compile Include="Interfaces\ISettings.cs" />
     <Compile Include="Interfaces\IThemeHelper.cs" />
     <Compile Include="Interfaces\IVersions.cs" />
     <Compile Include="Interfaces\ISiteListItem.cs" />
     <Compile Include="Interfaces\IRssItem.cs" />
-    <Compile Include="Interfaces\IWebParser.cs" />
     <Compile Include="Interfaces\IWindowFactory.cs" />
     <Compile Include="Models\Manga.cs" />
     <Compile Include="Models\PluginModel.cs" />

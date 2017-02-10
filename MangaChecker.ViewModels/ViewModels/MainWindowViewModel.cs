@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Windows.Input;
 using MangaChecker.Data.Interfaces;
+using MangaChecker.Providers.Interfaces;
 using MangaChecker.Utilities;
+using MangaChecker.ViewModels.Interfaces;
 using MaterialDesignThemes.Wpf;
 using PropertyChanged;
 

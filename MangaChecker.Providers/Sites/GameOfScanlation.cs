@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MangaChecker.Data.Interfaces;
-using MangaChecker.Database;
-using MangaChecker.Utilities;
+using MangaChecker.Providers.Interfaces;
+using MangaChecker.Utilities.Interfaces;
 
-namespace MangaChecker.Providers {
-    public class Webtoons : IProvider {
+namespace MangaChecker.Providers.Sites {
+    public class GameOfScanlation : IProvider {
         private readonly IWebParser _webParser;
         private readonly ILiteDb _liteDb;
         private readonly INewChapterHelper _newChapterHelper;
 
-        public Webtoons(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
+        public GameOfScanlation(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
             _webParser = webParser;
             _liteDb = liteDb;
             _newChapterHelper = newChapterHelper;
@@ -27,14 +27,12 @@ namespace MangaChecker.Providers {
                 }
                 rss.Reverse();
                 foreach (var rssItemObject in rss) {
-                    var title = rssItemObject.Title;
                     var nc =
-                        Regex.Match(title, @"(?<other>ep\. |episode )(?<chapter>\d+.?\d+)", RegexOptions.IgnoreCase);
-                    var ch = nc.Groups["chapter"].Value;
-                    if (string.IsNullOrWhiteSpace(ch)) {
-                        ch = rssItemObject.Title;
+                        rssItemObject.Title.ToLower().Replace($"{manga.Name.ToLower()} chapter", string.Empty).Trim();
+                    if (nc.Contains(" ")) {
+                        nc = nc.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries)[0];
                     }
-                    var isNew = _newChapterHelper.IsNew(manga, ch.Trim('.').Trim(), rssItemObject.PubDate,
+                    var isNew = _newChapterHelper.IsNew(manga, nc, rssItemObject.PubDate,
                         rssItemObject.Link, openlink);
                 }
             }
@@ -52,13 +50,13 @@ namespace MangaChecker.Providers {
             throw new NotImplementedException();
         }
 
-        public string DbName => "Webtoons";
+        public string DbName => "GameOfScanlation";
 
         public Regex LinkRegex() {
             return new Regex("");
         }
 
         public bool ViewEnabled => false;
-        public string LinktoSite => "http://www.webtoons.com/";
+        public string LinktoSite => "https://gameofscanlation.moe/";
     }
 }

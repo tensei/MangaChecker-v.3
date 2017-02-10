@@ -158,7 +158,7 @@ namespace MangaChecker.Database {
             return query.OpenLinks;
         }
 
-        public void UpdateDatabase(Versions dbv, List<IProvider> providers) {
+        public void UpdateDatabase(Versions dbv, Dictionary<string, string> providers) {
 
             var set = _db.GetCollection<Settings>("Settings");
             _db.GetCollection<Manga>("History");
@@ -170,10 +170,10 @@ namespace MangaChecker.Database {
             var versions = ver.FindAll().Select(v => v.Name).ToArray();
 
             foreach (var defaultSetting in providers) {
-                if (!setting.Contains(defaultSetting.DbName)) {
+                if (!setting.Contains(defaultSetting.Key)) {
                     set.Insert(new Settings {
-                        Setting = defaultSetting.DbName,
-                        Link = defaultSetting.LinktoSite,
+                        Setting = defaultSetting.Key,
+                        Link = defaultSetting.Value,
                         Active = 0,
                         Created = DateTime.Now
                         //OpenLinks = true
@@ -216,7 +216,7 @@ namespace MangaChecker.Database {
             DbEvent?.Invoke(dbv, DatabaseEnum.Update);
         }
 
-        public void CreateDatabase(List<IProvider> providers) {
+        public void CreateDatabase(Dictionary<string, string> providers) {
 
             var set = _db.GetCollection<Settings>("Settings");
             _db.GetCollection<Manga>("Manga");
@@ -231,8 +231,8 @@ namespace MangaChecker.Database {
 
             foreach (var sites in providers) {
                 set.Insert(new Settings {
-                    Setting = sites.DbName,
-                    Link = sites.LinktoSite,
+                    Setting = sites.Key,
+                    Link = sites.Value,
                     Active = 0,
                     Created = DateTime.Now
                 });
@@ -264,7 +264,7 @@ namespace MangaChecker.Database {
             DbEvent?.Invoke(null, DatabaseEnum.Create);
         }
 
-        public string CheckDbVersion(List<IProvider> providers) {
+        public string CheckDbVersion(Dictionary<string, string> providers) {
 
             var dbv = _db.GetCollection<Versions>("Versions").FindOne(v => v.Name == "db");
             if (dbv.Version == DatabaseVersion) {

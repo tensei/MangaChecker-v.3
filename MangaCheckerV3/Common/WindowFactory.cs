@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
+using MangaChecker.Providers.Interfaces;
 using MangaChecker.Utilities;
 using MangaChecker.ViewModels.ViewModels.Window_ViewModels;
 using MangaCheckerV3.Views.Windows;
@@ -23,6 +24,7 @@ namespace MangaCheckerV3.Common {
         }
 
         public void CreateViewerWindow(IManga manga) => _createViewer(manga);
+        public void CreateViewerWindowFromLink(IManga manga) => _createViewer(manga);
         public void CreateEditWindow(Manga manga) => new EditWindow {
             DataContext = new EditWindowViewModel(manga, _providerService, _liteDb),
         }.Show();
@@ -42,5 +44,7 @@ namespace MangaCheckerV3.Common {
             };
             viewerWindow.Show();
         }
+
+
     }
 }

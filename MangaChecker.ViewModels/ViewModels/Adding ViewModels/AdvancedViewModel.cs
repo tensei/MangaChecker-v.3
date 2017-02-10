@@ -6,6 +6,7 @@ using System.Windows.Input;
 using MangaChecker.Data.Enums;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
+using MangaChecker.Providers.Interfaces;
 using PropertyChanged;
 
 namespace MangaChecker.ViewModels.ViewModels.Adding_ViewModels {
@@ -13,10 +14,10 @@ namespace MangaChecker.ViewModels.ViewModels.Adding_ViewModels {
     public class AdvancedViewModel {
         private readonly ObservableCollection<Genre> _genres = new ObservableCollection<Genre>();
 
-        private readonly IProviderService _providerService;
+        private readonly IProviderSet _providerService;
         private readonly ILiteDb _liteDb;
 
-        public AdvancedViewModel(IProviderService providerService, ILiteDb liteDb) {
+        public AdvancedViewModel(IProviderSet providerService, ILiteDb liteDb) {
             _providerService = providerService;
             _liteDb = liteDb;
             Manga = new Manga();
@@ -32,7 +33,7 @@ namespace MangaChecker.ViewModels.ViewModels.Adding_ViewModels {
         public List<Genre> Genres => Enum.GetValues(typeof(Genre)).Cast<Genre>().ToList();
         public ReadOnlyObservableCollection<Genre> GenresAdded { get; }
 
-        public List<string> Sites => Enumerable.ToList<string>(_providerService.Providers.Select(p => p.DbName));
+        public List<string> Sites => _providerService.GetAll.Select(p => p.DbName).ToList();
         public string SiteSelected { get; set; }
 
         public Genre SelectedGenre { get; set; }

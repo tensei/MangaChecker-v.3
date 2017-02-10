@@ -1,12 +1,13 @@
 ﻿using System.Windows.Input;
 using MangaChecker.Data.Interfaces;
+using MangaChecker.Providers.Interfaces;
 using MangaChecker.ViewModels.ViewModels.Adding_ViewModels;
 using PropertyChanged;
 
 namespace MangaChecker.ViewModels.ViewModels {
     [ImplementPropertyChanged]
     public class AddMangaViewModel {
-        public AddMangaViewModel(IProviderService providerService, ILiteDb liteDb) {
+        public AddMangaViewModel(IProviderSet providerService, ILiteDb liteDb) {
             NormalDataContext = new NormalViewModel();
             NormalCommand = new ActionCommand(() => {
                 if (TranIndex == 0) {

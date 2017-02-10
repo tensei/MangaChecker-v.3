@@ -5,16 +5,16 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MangaChecker.Data.Interfaces;
-using MangaChecker.Database;
-using MangaChecker.Utilities;
+using MangaChecker.Providers.Interfaces;
+using MangaChecker.Utilities.Interfaces;
 
-namespace MangaChecker.Providers {
-    public class Kissmanga : IProvider {
+namespace MangaChecker.Providers.Sites {
+    public class Mangareader : IProvider {
         private readonly IWebParser _webParser;
         private readonly ILiteDb _liteDb;
         private readonly INewChapterHelper _newChapterHelper;
 
-        public Kissmanga(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
+        public Mangareader(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
             _webParser = webParser;
             _liteDb = liteDb;
             _newChapterHelper = newChapterHelper;
@@ -23,30 +23,33 @@ namespace MangaChecker.Providers {
             var all = _liteDb.GetMangasFrom(DbName);
             var openlink = _liteDb.GetOpenLinks();
             foreach (var manga in all) {
-                var html = await _webParser.GetHtmlSourceDucumentAsync(manga.BaseMangaLink);
+                if (string.IsNullOrEmpty(manga.BaseMangaLink)) {
+                    continue;
+                }
+                var html = await _webParser.GetHtmlSourceDucumentAsync(manga.BaseMangaLink.TrimEnd('/'));
                 if (html == null) {
                     continue;
                 }
-                var tr = html.All.Where(t => t.LocalName == "tr" && t.Children.Length == 2);
-                foreach (var element in tr.Reverse()) {
-                    var title = element.Children[0].TextContent.Trim();
+                var tr =
+                    html.All.Where(
+                        t => t.LocalName == "tr" && t.Children.Length == 2 && t.Children[0].InnerHtml.Contains("chico"));
+                foreach (var element in tr) {
+                    var title = element.Children[0].Children[1].TextContent.Trim();
                     if (title.Contains("Chapter Name")) {
                         continue;
                     }
                     var newDate = DateTime.Parse(element.Children[1].TextContent.Trim('\n').Trim(),
                         CultureInfo.InvariantCulture);
-                    var link = "http://kissmanga.com" + element.Children[0].Children[0].GetAttribute("href");
+                    var link = "http://mangareader.net" + element.Children[0].Children[1].GetAttribute("href");
                     if (!title.ToLower().Contains(manga.Name.ToLower())) {
                         continue;
                     }
                     var nc =
-                        title.ToLower().Replace($"{manga.Name.ToLower()}", string.Empty).Trim();
-                    var nnc = Regex.Match(nc, @"(ch\. | chapter )?(\d+\.?\d+):?(.+)?", RegexOptions.IgnoreCase);
-                    var ch = nnc.Groups[2].Value;
-                    if (string.IsNullOrWhiteSpace(ch)) {
-                        ch = nnc.Groups[0].Value;
+                        title.ToLower().Replace(manga.Name.ToLower(), string.Empty).Trim();
+                    if (nc.Contains(" ")) {
+                        nc = nc.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries)[0];
                     }
-                    var isNew = _newChapterHelper.IsNew(manga, ch, newDate,
+                    var isNew = _newChapterHelper.IsNew(manga, nc, newDate,
                         link, openlink);
                 }
                 await Task.Delay(500);
@@ -65,13 +68,13 @@ namespace MangaChecker.Providers {
             throw new NotImplementedException();
         }
 
-        public string DbName => "Kissmanga";
+        public string DbName => "Mangareader";
 
         public Regex LinkRegex() {
             return new Regex("");
         }
 
         public bool ViewEnabled => false;
-        public string LinktoSite => "http://kissmanga.com/";
+        public string LinktoSite => "http://www.mangareader.net/";
     }
 }

@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MangaChecker.Data.Interfaces;
-using MangaChecker.Database;
-using MangaChecker.Utilities;
+using MangaChecker.Providers.Interfaces;
+using MangaChecker.Utilities.Interfaces;
 
-namespace MangaChecker.Providers {
-    public class Jaiminisbox : IProvider {
+namespace MangaChecker.Providers.Sites {
+    public class KireiCake : IProvider {
         private readonly IWebParser _webParser;
         private readonly ILiteDb _liteDb;
         private readonly INewChapterHelper _newChapterHelper;
 
-        public Jaiminisbox(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
+        public KireiCake(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
             _webParser = webParser;
             _liteDb = liteDb;
             _newChapterHelper = newChapterHelper;
@@ -23,7 +23,7 @@ namespace MangaChecker.Providers {
             // /en/0/24/ == 24
             var all = _liteDb.GetMangasFrom(DbName);
             var openlink = _liteDb.GetOpenLinks();
-            var rss = await _webParser.GetRssFeedAsync("https://jaiminisbox.com/reader/feeds/rss");
+            var rss = await _webParser.GetRssFeedAsync("https://reader.kireicake.com/rss.xml");
             if (rss == null) {
                 return;
             }
@@ -59,8 +59,7 @@ namespace MangaChecker.Providers {
             var html = await _webParser.GetHtmlSourceDucumentAsync(url);
             imges.Add(html.All.First(i => i.LocalName == "img" && i.ClassList.Contains("open")
                                           && i.HasAttribute("src") &&
-                                          i.GetAttribute("src")
-                                              .Contains("https://jaiminisbox.com/reader/content/comics/"))
+                                          i.GetAttribute("src").Contains("https://reader.kireicake.com/content/comics/"))
                 .GetAttribute("src"));
             var pages =
                 Regex.Match(html.DocumentElement.InnerHtml, @">([0-9]+) ⤵</div>", RegexOptions.IgnoreCase).Groups[1]
@@ -72,7 +71,7 @@ namespace MangaChecker.Providers {
                 imges.Add(html.All.First(x => x.LocalName == "img" && x.ClassList.Contains("open")
                                               && x.HasAttribute("src") &&
                                               x.GetAttribute("src")
-                                                  .Contains("https://jaiminisbox.com/reader/content/comics/"))
+                                                  .Contains("https://reader.kireicake.com/content/comics/"))
                     .GetAttribute("src"));
             }
             return new Tuple<List<object>, int>(imges, intpages);
@@ -86,13 +85,13 @@ namespace MangaChecker.Providers {
             throw new NotImplementedException();
         }
 
-        public string DbName => "Jaiminisbox";
+        public string DbName => "KireiCake";
 
         public Regex LinkRegex() {
             return new Regex("");
         }
 
         public bool ViewEnabled => true;
-        public string LinktoSite => "https://jaiminisbox.com/";
+        public string LinktoSite => "http://kireicake.com/";
     }
 }

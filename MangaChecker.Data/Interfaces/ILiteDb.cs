@@ -26,9 +26,9 @@ namespace MangaChecker.Data.Interfaces {
         void SaveSettings(List<Settings> settings);
         int GetRefreshTime();
         bool GetOpenLinks();
-        void UpdateDatabase(Versions dbv, List<IProvider> providers);
-        void CreateDatabase(List<IProvider> providers);
-        string CheckDbVersion(List<IProvider> providers);
+        void UpdateDatabase(Versions dbv, Dictionary<string, string> providers);
+        void CreateDatabase(Dictionary<string, string> providers);
+        string CheckDbVersion(Dictionary<string, string> providers);
         void Dispose();
     }
 }

@@ -1,6 +1,6 @@
 ﻿using MangaChecker.ViewModels.ViewModels;
 
-namespace MangaChecker.ViewModels {
+namespace MangaChecker.ViewModels.Interfaces {
     public interface IViewModelFactory {
         MangaListViewModel CreateMangaListViewModel { get; }
         AddMangaViewModel CreateAddMangaViewModel { get; }

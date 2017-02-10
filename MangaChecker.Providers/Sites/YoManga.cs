@@ -4,45 +4,36 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MangaChecker.Data.Interfaces;
-using MangaChecker.Database;
-using MangaChecker.Utilities;
+using MangaChecker.Providers.Interfaces;
+using MangaChecker.Utilities.Interfaces;
 
-namespace MangaChecker.Providers {
-    public class KireiCake : IProvider {
+namespace MangaChecker.Providers.Sites {
+    public class YoManga : IProvider {
         private readonly IWebParser _webParser;
         private readonly ILiteDb _liteDb;
         private readonly INewChapterHelper _newChapterHelper;
 
-        public KireiCake(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
+        public YoManga(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
             _webParser = webParser;
             _liteDb = liteDb;
             _newChapterHelper = newChapterHelper;
         }
         public async Task CheckAll() {
-            // /en/0/87/5/ == 87.5
-            // /en/0/24/ == 24
             var all = _liteDb.GetMangasFrom(DbName);
             var openlink = _liteDb.GetOpenLinks();
-            var rss = await _webParser.GetRssFeedAsync("https://reader.kireicake.com/rss.xml");
+            var rss = await _webParser.GetRssFeedAsync("https://yomanga.co/reader/feeds/rss");
             if (rss == null) {
                 return;
             }
-            rss.Reverse();
+            //rss.Reverse();
             foreach (var manga in all)
             foreach (var rssItemObject in rss) {
                 if (!rssItemObject.Title.ToLower().Contains(manga.Name.ToLower())) {
                     continue;
                 }
-                var ncs = rssItemObject.Link.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
-                string nc;
-                if (ncs[ncs.Length - 4] == "en") {
-                    nc = $"{ncs[ncs.Length - 2]}.{ncs[ncs.Length - 1]}";
-                }
-                else if (ncs[ncs.Length - 3] == "en") {
-                    nc = $"{ncs.Last()}";
-                }
-                else {
-                    continue;
+                var nc = rssItemObject.Title.ToLower().Replace($"{manga.Name.ToLower()} chapter", string.Empty).Trim();
+                if (nc.Contains(" ")) {
+                    nc = nc.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries)[0];
                 }
                 var isNew = _newChapterHelper.IsNew(manga, nc, rssItemObject.PubDate,
                     rssItemObject.Link, openlink);
@@ -59,7 +50,7 @@ namespace MangaChecker.Providers {
             var html = await _webParser.GetHtmlSourceDucumentAsync(url);
             imges.Add(html.All.First(i => i.LocalName == "img" && i.ClassList.Contains("open")
                                           && i.HasAttribute("src") &&
-                                          i.GetAttribute("src").Contains("https://reader.kireicake.com/content/comics/"))
+                                          i.GetAttribute("src").Contains("https://yomanga.co/reader/content/comics/"))
                 .GetAttribute("src"));
             var pages =
                 Regex.Match(html.DocumentElement.InnerHtml, @">([0-9]+) ⤵</div>", RegexOptions.IgnoreCase).Groups[1]
@@ -71,7 +62,7 @@ namespace MangaChecker.Providers {
                 imges.Add(html.All.First(x => x.LocalName == "img" && x.ClassList.Contains("open")
                                               && x.HasAttribute("src") &&
                                               x.GetAttribute("src")
-                                                  .Contains("https://reader.kireicake.com/content/comics/"))
+                                                  .Contains("https://yomanga.co/reader/content/comics/"))
                     .GetAttribute("src"));
             }
             return new Tuple<List<object>, int>(imges, intpages);
@@ -85,13 +76,13 @@ namespace MangaChecker.Providers {
             throw new NotImplementedException();
         }
 
-        public string DbName => "KireiCake";
+        public string DbName => "YoManga";
 
         public Regex LinkRegex() {
             return new Regex("");
         }
 
         public bool ViewEnabled => true;
-        public string LinktoSite => "http://kireicake.com/";
+        public string LinktoSite => "http://yomanga.co/";
     }
 }

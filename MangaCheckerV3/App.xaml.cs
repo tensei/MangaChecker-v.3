@@ -1,13 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Database;
 using MangaChecker.Providers;
+using MangaChecker.Providers.Interfaces;
+using MangaChecker.Providers.Sites;
 using MangaChecker.Utilities;
 using MangaChecker.Utilities.Interfaces;
 using MangaChecker.ViewModels;
+using MangaChecker.ViewModels.Interfaces;
 using MangaChecker.ViewModels.ViewModels;
 using MangaCheckerV3.Common;
 using MangaCheckerV3.Helpers;
@@ -50,6 +55,10 @@ namespace MangaCheckerV3 {
             container.RegisterType<IProvider, YoManga>("y");
 
             container.RegisterType<IEnumerable<IProvider>, IProvider[]>();
+
+            var collection = container.Resolve<IProvider[]>();
+            container.RegisterInstance<IProviderSet>(new ProviderSet(collection));
+
             container.RegisterType<IProviderService, ProviderService>();
             container.RegisterType<IViewModelFactory, ViewModelFactory>();
             container.RegisterType<IThemeHelper, ThemeHelper>();
@@ -67,18 +76,19 @@ namespace MangaCheckerV3 {
             container.RegisterType<MainWindow>();
 
             var db = container.Resolve<ILiteDb>();
-            var p = container.Resolve<IProviderService>();
+            var pdict = collection.ToDictionary(k => k.DbName, v => v.LinktoSite);
             if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db"))) {
-                db.CheckDbVersion(p.Providers);
+                db.CheckDbVersion(pdict);
             }
             else {
-                db.CreateDatabase(p.Providers);
+                db.CreateDatabase(pdict);
             }
+
             var mainWindow = container.Resolve<MainWindow>();
             var th = container.Resolve<ThemeViewModel>();
             th.SetupTheme();
             await Task.Delay(400);
-            mainWindow.ShowDialog();
+            mainWindow.Show();
         }
     }
 }

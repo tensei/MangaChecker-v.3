@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Database;
+using MangaChecker.Providers.Interfaces;
 using MangaChecker.Utilities;
 using MangaChecker.ViewModels;
+using MangaChecker.ViewModels.Interfaces;
 using MangaChecker.ViewModels.ViewModels;
 
 namespace MangaCheckerV3 {

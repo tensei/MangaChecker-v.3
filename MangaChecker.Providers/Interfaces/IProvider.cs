@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace MangaChecker.Data.Interfaces {
+namespace MangaChecker.Providers.Interfaces {
     public interface IProvider {
         string DbName { get; }
         bool ViewEnabled { get; }

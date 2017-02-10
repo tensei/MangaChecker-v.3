@@ -9,6 +9,7 @@ using System.Windows.Input;
 using MangaChecker.Data.Enums;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
+using MangaChecker.Providers.Interfaces;
 using PropertyChanged;
 
 namespace MangaChecker.ViewModels.ViewModels {
@@ -19,7 +20,7 @@ namespace MangaChecker.ViewModels.ViewModels {
         /// </summary>
         private readonly ObservableCollection<Manga> _mangas = new ObservableCollection<Manga>();
 
-        private readonly IProviderService _providerService;
+        private readonly IProviderSet _providerService;
 
         private readonly ObservableCollection<SiteListItem> _sites = new ObservableCollection<SiteListItem>();
 
@@ -27,7 +28,7 @@ namespace MangaChecker.ViewModels.ViewModels {
         private string _sortMode = "Updated";
         private readonly IWindowFactory _windowFactory;
         private readonly ILiteDb _liteDb;
-        public MangaListViewModel(IProviderService providerService, IWindowFactory windowFactory, ILiteDb liteDb) {
+        public MangaListViewModel(IProviderSet providerService, IWindowFactory windowFactory, ILiteDb liteDb) {
             _providerService = providerService;
             _liteDb = liteDb;
             _windowFactory = windowFactory;
@@ -91,7 +92,7 @@ namespace MangaChecker.ViewModels.ViewModels {
                 new SiteListItem {Name = "Backlog", Overrideable = false, IsEnabled = 1},
                 new SiteListItem {Name = "All", Overrideable = false, IsEnabled = 1}
             };
-            _providerService.Providers.ForEach(p => s.Add(new SiteListItem {Name = p.DbName}));
+            _providerService.GetAll.ForEach(p => s.Add(new SiteListItem {Name = p.DbName}));
             s.OrderBy(x => x.Name).ToList().ForEach(_sites.Add);
         }
 
@@ -172,7 +173,7 @@ namespace MangaChecker.ViewModels.ViewModels {
         }
 
         private async Task RefreshManga() {
-            var provider = _providerService.Providers.Find(p => p.DbName == SelectedManga.Site);
+            var provider = _providerService.GetFirstOrDefault(p => p.DbName == SelectedManga.Site);
             await provider.CheckOne(SelectedManga);
         }
 

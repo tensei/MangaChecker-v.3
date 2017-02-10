@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MangaChecker.Data.Interfaces;
-using MangaChecker.Database;
-using MangaChecker.Utilities;
+using MangaChecker.Providers.Interfaces;
+using MangaChecker.Utilities.Interfaces;
 
-namespace MangaChecker.Providers {
+namespace MangaChecker.Providers.Sites {
     public class Tomochan : IProvider {
         private readonly IWebParser _webParser;
         private readonly ILiteDb _liteDb;

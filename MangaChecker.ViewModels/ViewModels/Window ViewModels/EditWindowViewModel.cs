@@ -6,6 +6,7 @@ using System.Windows.Input;
 using MangaChecker.Data.Enums;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
+using MangaChecker.Providers.Interfaces;
 using PropertyChanged;
 
 namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
