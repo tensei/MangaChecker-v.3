@@ -25,14 +25,14 @@ namespace MangaCheckerV3 {
             //ThemeHelper.ChangeAccentColorTo("red", "red", false);
 
             var container = new UnityContainer();
-            var db = new LiteDb();
-            container.RegisterInstance<ILiteDb>(db);
+            container.RegisterInstance<ILiteDb>(new LiteDb());
             container.RegisterType<INewChapterHelper, NewChapterHelper>();
             container.RegisterType<IWebParser, WebParser>();
             container.RegisterType<IWindowFactory, WindowFactory>();
             container.RegisterType<Logger>();
-            var pluginhost = new PluginHost();
-            container.RegisterInstance<IPluginHost>(pluginhost);
+            
+            container.RegisterInstance<IPluginHost>(new PluginHost());
+
             container.RegisterType<IProvider, Mangastream>("ms");
             container.RegisterType<IProvider, Batoto>("b");
             container.RegisterType<IProvider, Crunchyroll>("c");
@@ -48,10 +48,12 @@ namespace MangaCheckerV3 {
             container.RegisterType<IProvider, Tomochan>("t");
             container.RegisterType<IProvider, Webtoons>("w");
             container.RegisterType<IProvider, YoManga>("y");
+
             container.RegisterType<IEnumerable<IProvider>, IProvider[]>();
             container.RegisterType<IProviderService, ProviderService>();
             container.RegisterType<IViewModelFactory, ViewModelFactory>();
             container.RegisterType<IThemeHelper, ThemeHelper>();
+
             container.RegisterType<MainWindowViewModel>();
             container.RegisterType<SettingsViewModel>();
             container.RegisterType<AddMangaViewModel>();
@@ -60,7 +62,11 @@ namespace MangaCheckerV3 {
             container.RegisterType<HistoryViewModel>();
             container.RegisterType<NewMangaViewModel>();
             container.RegisterType<ThemeViewModel>();
+
             container.RegisterType<ViewerWindow>();
+            container.RegisterType<MainWindow>();
+
+            var db = container.Resolve<ILiteDb>();
             var p = container.Resolve<IProviderService>();
             if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db"))) {
                 db.CheckDbVersion(p.Providers);
@@ -68,9 +74,7 @@ namespace MangaCheckerV3 {
             else {
                 db.CreateDatabase(p.Providers);
             }
-            var mainWindow = new MainWindow {
-                DataContext = container.Resolve<MainWindowViewModel>()
-            };
+            var mainWindow = container.Resolve<MainWindow>();
             var th = container.Resolve<ThemeViewModel>();
             th.SetupTheme();
             await Task.Delay(400);

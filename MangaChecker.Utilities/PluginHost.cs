@@ -14,11 +14,11 @@ namespace MangaChecker.Utilities {
 
         public PluginHost() {
             var catalog = new AggregateCatalog(new AssemblyCatalog(Assembly.GetExecutingAssembly()));
-            var current = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location);
-            if (current == null) {
-                return;
-            }
-            var pluginsPath = Path.Combine(current, PluginsDirectory);
+            //var current = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location);
+            //if (current == null) {
+            //    return;
+            //}
+            var pluginsPath = Path.Combine(Directory.GetCurrentDirectory(), PluginsDirectory);
             if (!Directory.Exists(pluginsPath)) {
                 return;
             }

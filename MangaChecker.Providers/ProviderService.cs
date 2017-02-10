@@ -9,7 +9,7 @@ using PropertyChanged;
 
 namespace MangaChecker.Providers {
     [ImplementPropertyChanged]
-    public class ProviderService : IProviderService, IDisposable {
+    public class ProviderService : IProviderService {
 
         public ProviderService(IEnumerable<IProvider> provider, ILiteDb liteDb, Logger logger) {
             Providers = provider.ToList();

@@ -41,7 +41,6 @@ namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
         }
 
         public ReadOnlyObservableCollection<object> Images { get; }
-
         public string Title { get; set; }
 
         public int TargetImages { get; private set; }
@@ -130,6 +129,7 @@ namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
                 using (var stream = new FileStream($"{Path.Combine(folder, $"{i + 1}.png")}", FileMode.Create)) {
                     encoder.Save(stream);
                 }
+                await Task.Delay(50);
             }
             SaveProgress = "Collapsed";
             SaveEnabled = true;

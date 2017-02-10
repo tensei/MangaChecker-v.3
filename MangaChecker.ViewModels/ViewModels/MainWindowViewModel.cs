@@ -7,7 +7,7 @@ using PropertyChanged;
 
 namespace MangaChecker.ViewModels.ViewModels {
     [ImplementPropertyChanged]
-    public class MainWindowViewModel : IDisposable{
+    public class MainWindowViewModel {
         public static MainWindowViewModel Instance;
 
         /// <summary>
