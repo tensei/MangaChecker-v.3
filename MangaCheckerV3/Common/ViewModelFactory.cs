@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Utilities;
 using MangaChecker.Utilities.Interfaces;
+using MangaChecker.ViewModels;
+using MangaChecker.ViewModels.ViewModels;
 using MangaCheckerV3.Helpers;
-using MangaCheckerV3.Interfaces;
-using MangaCheckerV3.ViewModels;
 
 namespace MangaCheckerV3.Common {
     public class ViewModelFactory : IViewModelFactory {

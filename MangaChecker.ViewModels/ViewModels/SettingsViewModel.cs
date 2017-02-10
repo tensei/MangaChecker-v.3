@@ -4,10 +4,9 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
-using MangaChecker.Database;
 using PropertyChanged;
 
-namespace MangaCheckerV3.ViewModels {
+namespace MangaChecker.ViewModels.ViewModels {
     [ImplementPropertyChanged]
     public class SettingsViewModel {
         private readonly ObservableCollection<Settings> _settings = new ObservableCollection<Settings>();

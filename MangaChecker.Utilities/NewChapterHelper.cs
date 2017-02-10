@@ -18,12 +18,10 @@ namespace MangaChecker.Utilities {
             var isFloat = float.TryParse(newChapter, NumberStyles.Float, CultureInfo.InvariantCulture,
                 out float floatChapter);
             var isDateNew = newDate > manga.Updated;
-
-            if (newChapter.StartsWith("Bonus")) {
-                Console.WriteLine("hmmmmm");
-            }
-            if (isFloat && Math.Abs(floatChapter - manga.Chapter) <= 0  || newChapter == manga.Newest || Math.Abs(floatChapter) > 0 &&
-                floatChapter < manga.Chapter) {
+            //if (newChapter.StartsWith("Bonus")) {
+            //    _logger.Log.Debug("hmm");
+            //}
+            if (isFloat && floatChapter <= manga.Chapter || newChapter == manga.Newest) {
                 return true;
             }
 
@@ -33,6 +31,9 @@ namespace MangaChecker.Utilities {
             if (!isFloat && isDateNew && !manga.OtherChapters.Contains(newChapter)) {
                 manga.OtherChapters.Add(newChapter);
                 return Update(manga, floatChapter, false, newLink, newDate, openLink, newChapter);
+            }
+            if (!isDateNew && !isFloat) {
+                return false;
             }
             //this should never be reached!!
             _logger.Log.Error($"Current manga.Name={manga.Name}," +

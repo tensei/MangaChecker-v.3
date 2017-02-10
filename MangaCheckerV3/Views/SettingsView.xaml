@@ -6,7 +6,7 @@
     xmlns:local="clr-namespace:MangaCheckerV3.Views"
     xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    xmlns:viewModel="clr-namespace:MangaCheckerV3.ViewModels"
+    xmlns:viewModel="clr-namespace:MangaChecker.ViewModels.ViewModels;assembly=MangaChecker.ViewModels"
     x:Class="MangaCheckerV3.Views.SettingsView"
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="300"

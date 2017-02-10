@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using MangaChecker.Data.Interfaces;
 using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 
 namespace MangaCheckerV3.Helpers {
-    public class ThemeHelper {
-        public readonly IEnumerable<Swatch> Swatches = new SwatchesProvider().Swatches;
-
-        public readonly IEnumerable<Swatch> Accents =
-            new SwatchesProvider().Swatches.Where(a => a.IsAccented);
+    public class ThemeHelper : IThemeHelper {
+        private SwatchesProvider _swatchesProvider;
+        public ThemeHelper() {
+            _swatchesProvider = new SwatchesProvider();
+        }
 
         public async Task ChangeAccentColorTo(Swatch accentColor) {
             //pallet.SetLightDark(theme);
@@ -35,6 +36,10 @@ namespace MangaCheckerV3.Helpers {
                 var palletHelper = new PaletteHelper();
                 palletHelper.SetLightDark(isDark);
             }));
+        }
+
+        public IEnumerable<Swatch> Swatches() {
+            return _swatchesProvider.Swatches;
         }
     }
 }

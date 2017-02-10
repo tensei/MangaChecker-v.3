@@ -9,11 +9,10 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using MangaChecker.Data.Interfaces;
-using MangaChecker.Data.Models;
 using MangaChecker.Utilities;
 using PropertyChanged;
 
-namespace MangaCheckerV3.ViewModels.Window_ViewModels {
+namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
     [ImplementPropertyChanged]
     public class ViewerWindowViewModel : IDisposable {
         private readonly ObservableCollection<object> _images = new ObservableCollection<object>();
@@ -35,7 +34,7 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
             _manga = manga;
             ChangeModeCommand = new ActionCommand(ChangeMode);
             SaveImagesCommand = new ActionCommand(async () => {
-                if (SaveProgress == Visibility.Collapsed) {
+                if (SaveProgress == "Collapsed") {
                     await SaveImagesAsync();
                 }
             });
@@ -58,7 +57,7 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
         public string Mode { get; set; } = "Long Strip";
 
 
-        public Visibility SaveProgress { get; set; } = Visibility.Collapsed;
+        public string SaveProgress { get; set; } = "Collapsed";
 
         public int ProgressValue { get; set; }
 
@@ -115,7 +114,7 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
             if (!Directory.Exists(folder)) {
                 Directory.CreateDirectory(folder);
             }
-            SaveProgress = Visibility.Visible;
+            SaveProgress = "Visible";
             for (var i = 0; i < _images.Count; i++) {
                 if (_isClosing) {
                     break;
@@ -132,7 +131,7 @@ namespace MangaCheckerV3.ViewModels.Window_ViewModels {
                     encoder.Save(stream);
                 }
             }
-            SaveProgress = Visibility.Collapsed;
+            SaveProgress = "Collapsed";
             SaveEnabled = true;
         }
 

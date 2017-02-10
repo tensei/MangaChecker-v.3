@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaChecker.Utilities", "M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaChecker.Providers", "MangaChecker.Providers\MangaChecker.Providers.csproj", "{AFE3B063-4C45-4F63-8F3D-48FAB20B7425}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaChecker.ViewModels", "MangaChecker.ViewModels\MangaChecker.ViewModels.csproj", "{C618F2DF-DCD7-4D5D-BAA6-63D5B8B0B8F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{AFE3B063-4C45-4F63-8F3D-48FAB20B7425}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFE3B063-4C45-4F63-8F3D-48FAB20B7425}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFE3B063-4C45-4F63-8F3D-48FAB20B7425}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C618F2DF-DCD7-4D5D-BAA6-63D5B8B0B8F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C618F2DF-DCD7-4D5D-BAA6-63D5B8B0B8F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C618F2DF-DCD7-4D5D-BAA6-63D5B8B0B8F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C618F2DF-DCD7-4D5D-BAA6-63D5B8B0B8F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

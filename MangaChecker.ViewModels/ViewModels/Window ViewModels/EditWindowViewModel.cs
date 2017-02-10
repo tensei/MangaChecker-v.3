@@ -2,32 +2,35 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows.Input;
 using MangaChecker.Data.Enums;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
-using MangaChecker.Database;
 using PropertyChanged;
 
-namespace MangaCheckerV3.ViewModels.Adding_ViewModels {
+namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
     [ImplementPropertyChanged]
-    public class AdvancedViewModel {
+    public class EditWindowViewModel {
         private readonly ObservableCollection<Genre> _genres = new ObservableCollection<Genre>();
-
+        private readonly ObservableCollection<string> _otherChapters = new ObservableCollection<string>();
         private readonly IProviderService _providerService;
         private readonly ILiteDb _liteDb;
 
-        public AdvancedViewModel(IProviderService providerService, ILiteDb liteDb) {
+        public EditWindowViewModel(Manga manga, IProviderService providerService, ILiteDb liteDb) {
             _providerService = providerService;
             _liteDb = liteDb;
-            Manga = new Manga();
+            Manga = manga;
             DeleteGenreCommand = new ActionCommand(DeleteGenre);
             AddGenreCommand = new ActionCommand(AddGenre);
-            AddMangaCommand = new ActionCommand(AddManga);
+            AddOtherChapterCommand = new ActionCommand(AddOtherChapter);
+            DeleteOtherChapterCommand = new ActionCommand(o => DeleteOtherChapter((string) o));
+            SaveMangaCommand = new ActionCommand(SaveManga);
             GenresAdded = new ReadOnlyObservableCollection<Genre>(_genres);
-            SiteSelected = Sites?[0];
+            OtherChapters = new ReadOnlyObservableCollection<string>(_otherChapters);
+            SiteSelected = Manga.Site;
             SelectedGenre = Genres[0];
+            manga.Genres.ForEach(_genres.Add);
+            manga.OtherChapters.ForEach(_otherChapters.Add);
         }
 
         public Manga Manga { get; set; }
@@ -36,6 +39,7 @@ namespace MangaCheckerV3.ViewModels.Adding_ViewModels {
 
         public List<string> Sites => Enumerable.ToList<string>(_providerService.Providers.Select(p => p.DbName));
         public string SiteSelected { get; set; }
+        public string OtherChapter { get; set; }
 
         public Genre SelectedGenre { get; set; }
 
@@ -43,7 +47,13 @@ namespace MangaCheckerV3.ViewModels.Adding_ViewModels {
 
         public ICommand DeleteGenreCommand { get; }
 
-        public ICommand AddMangaCommand { get; }
+        public ICommand SaveMangaCommand { get; }
+
+        public ReadOnlyObservableCollection<string> OtherChapters { get; }
+
+        public ICommand DeleteOtherChapterCommand { get; }
+
+        public ICommand AddOtherChapterCommand { get; }
 
         private void AddGenre() {
             if (Manga.Genres.Contains(SelectedGenre)) {
@@ -62,10 +72,25 @@ namespace MangaCheckerV3.ViewModels.Adding_ViewModels {
             _genres.Remove(enumVal);
         }
 
-        private void AddManga() {
+        private void AddOtherChapter() {
+            if (Manga.OtherChapters.Contains(OtherChapter)) {
+                return;
+            }
+            Manga.OtherChapters.Add(OtherChapter);
+            _otherChapters.Add(OtherChapter);
+        }
+
+        private void DeleteOtherChapter(string otherChapter) {
+            if (!Manga.OtherChapters.Contains(otherChapter)) {
+                return;
+            }
+            Manga.OtherChapters.Remove(otherChapter);
+            _otherChapters.Remove(otherChapter);
+        }
+
+        private void SaveManga() {
             try {
-                Manga.Site = SiteSelected;
-                _liteDb.InsertManga(Manga);
+                _liteDb.Update(Manga);
             }
             catch (Exception e) {
                 Console.WriteLine(e);

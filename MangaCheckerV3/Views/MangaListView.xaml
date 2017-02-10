@@ -8,7 +8,7 @@
     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
-    xmlns:viewModels="clr-namespace:MangaCheckerV3.ViewModels"
+    xmlns:viewModels="clr-namespace:MangaChecker.ViewModels.ViewModels;assembly=MangaChecker.ViewModels"
     x:Class="MangaCheckerV3.Views.MangaListView"
     mc:Ignorable="d"
     d:DesignHeight="500" d:DesignWidth="700"

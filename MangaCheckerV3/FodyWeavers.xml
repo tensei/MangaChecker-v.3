@@ -6,6 +6,7 @@
 			MangaChecker.Data
 			MangaChecker.Utilities
 			MangaChecker.Providers
+			MangaChecker.ViewModels
 		</ExcludeAssemblies>
 	</Costura>
   <PropertyChanged />

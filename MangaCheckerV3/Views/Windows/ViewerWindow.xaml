@@ -8,7 +8,7 @@
                       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                       xmlns:viewerViews="clr-namespace:MangaCheckerV3.Views.Viewer_Views"
                       xmlns:properties="clr-namespace:MangaCheckerV3.Properties"
-                      xmlns:windowViewModels="clr-namespace:MangaCheckerV3.ViewModels.Window_ViewModels"
+                      xmlns:windowViewModels="clr-namespace:MangaChecker.ViewModels.ViewModels.Window_ViewModels;assembly=MangaChecker.ViewModels"
                       mc:Ignorable="d"
                       TitleCharacterCasing="Normal" BorderThickness="1" GlowBrush="Black" SaveWindowPosition="True"
                       NonActiveBorderBrush="Black" AllowsTransparency="True"

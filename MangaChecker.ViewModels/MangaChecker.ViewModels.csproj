@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6EE3B643-8E39-418F-B863-C0D9D006927F}</ProjectGuid>
+    <ProjectGuid>{C618F2DF-DCD7-4D5D-BAA6-63D5B8B0B8F8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MangaChecker.ViewModels</RootNamespace>
@@ -47,16 +47,38 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IViewModelFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\ActionCommand.cs" />
+    <Compile Include="ViewModels\Adding ViewModels\AdvancedViewModel.cs" />
+    <Compile Include="ViewModels\Adding ViewModels\NormalViewModel.cs" />
+    <Compile Include="ViewModels\AddMangaViewModel.cs" />
+    <Compile Include="ViewModels\HistoryViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\MangaListViewModel.cs" />
+    <Compile Include="ViewModels\NewMangaViewModel.cs" />
+    <Compile Include="ViewModels\PluginsViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\ThemeViewModel.cs" />
+    <Compile Include="ViewModels\Window ViewModels\EditWindowViewModel.cs" />
+    <Compile Include="ViewModels\Window ViewModels\ViewerWindowViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
@@ -64,35 +86,35 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MangaChecker.Database\MangaChecker.Database.csproj">
-      <Project>{BC2C4EAE-6D63-4594-A062-80330ED4B591}</Project>
+      <Project>{bc2c4eae-6d63-4594-a062-80330ed4b591}</Project>
       <Name>MangaChecker.Database</Name>
     </ProjectReference>
     <ProjectReference Include="..\MangaChecker.Data\MangaChecker.Data.csproj">
-      <Project>{F5132764-7A38-42F8-B54F-F7D4DCCBB4BA}</Project>
+      <Project>{f5132764-7a38-42f8-b54f-f7d4dccbb4ba}</Project>
       <Name>MangaChecker.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MangaChecker.Providers\MangaChecker.Providers.csproj">
+      <Project>{afe3b063-4c45-4f63-8f3d-48fab20b7425}</Project>
+      <Name>MangaChecker.Providers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MangaChecker.Utilities\MangaChecker.Utilities.csproj">
-      <Project>{11E83B6E-A665-423F-8089-42F7D5A2E98C}</Project>
+      <Project>{11e83b6e-a665-423f-8089-42f7d5a2e98c}</Project>
       <Name>MangaChecker.Utilities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MangaCheckerV3\MangaCheckerV3.csproj">
-      <Project>{7DCCB58B-72D8-4F5E-9B55-944C438536E6}</Project>
-      <Name>MangaCheckerV3</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\Adding ViewModels\" />
-    <Folder Include="ViewModels\Window ViewModels\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Fody.1.29.2\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.2\build\dotnet\Fody.targets')" />
+  <Import Project="..\packages\Fody.1.29.4\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.4\build\dotnet\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Fody.1.29.2\build\dotnet\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.1.29.2\build\dotnet\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\Fody.1.29.4\build\dotnet\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.1.29.4\build\dotnet\Fody.targets'))" />
   </Target>
 </Project>

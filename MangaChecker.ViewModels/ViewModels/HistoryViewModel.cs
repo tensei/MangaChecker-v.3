@@ -5,11 +5,9 @@ using System.Windows.Input;
 using MangaChecker.Data.Enums;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
-using MangaChecker.Database;
-using MangaCheckerV3.Common;
 using PropertyChanged;
 
-namespace MangaCheckerV3.ViewModels {
+namespace MangaChecker.ViewModels.ViewModels {
     [ImplementPropertyChanged]
     public class HistoryViewModel {
         private readonly ObservableCollection<Manga> _history = new ObservableCollection<Manga>();

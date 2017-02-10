@@ -8,7 +8,7 @@ using System.Windows;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
 using MangaChecker.Utilities;
-using MangaCheckerV3.ViewModels.Window_ViewModels;
+using MangaChecker.ViewModels.ViewModels.Window_ViewModels;
 using MangaCheckerV3.Views.Windows;
 
 namespace MangaCheckerV3.Common {

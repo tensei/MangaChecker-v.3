@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
-using MangaCheckerV3.Helpers;
-using MangaCheckerV3.Properties;
+using MangaChecker.Data.Interfaces;
+using MangaChecker.ViewModels.Properties;
 using MaterialDesignColors;
 using PropertyChanged;
 
-namespace MangaCheckerV3.ViewModels {
+namespace MangaChecker.ViewModels.ViewModels {
     [ImplementPropertyChanged]
     public class ThemeViewModel {
         private string _theme;
-        private readonly ThemeHelper _themeHelper;
-        public ThemeViewModel(ThemeHelper themeHelper) {
+        private readonly IThemeHelper _themeHelper;
+        public ThemeViewModel(IThemeHelper themeHelper) {
             Instance = this;
             _themeHelper = themeHelper;
             ApplyPrimaryCommand = new ActionCommand(s => ApplyPrimary((Swatch) s));
@@ -23,8 +23,8 @@ namespace MangaCheckerV3.ViewModels {
         /// </summary>
         public static ThemeViewModel Instance { get; private set; }
 
-        public IEnumerable<Swatch> PrimaryColors => _themeHelper.Swatches;
-        public IEnumerable<Swatch> AccentColors => _themeHelper.Accents;
+        public IEnumerable<Swatch> PrimaryColors => _themeHelper.Swatches();
+        public IEnumerable<Swatch> AccentColors => _themeHelper.Swatches().Where(s=> s.IsAccented);
 
         public ICommand ApplyPrimaryCommand { get; }
         public ICommand ApplyAccentCommand { get; }

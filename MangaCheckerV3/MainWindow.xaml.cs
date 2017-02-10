@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Database;
-using MangaCheckerV3.ViewModels;
+using MangaChecker.ViewModels.ViewModels;
 
 namespace MangaCheckerV3 {
     /// <summary>

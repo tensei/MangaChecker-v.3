@@ -2,8 +2,8 @@
 using System.ComponentModel;
 using System.Windows.Input;
 using MahApps.Metro.Controls;
+using MangaChecker.ViewModels.ViewModels.Window_ViewModels;
 using MangaCheckerV3.Properties;
-using MangaCheckerV3.ViewModels.Window_ViewModels;
 
 namespace MangaCheckerV3.Views.Windows {
     /// <summary>

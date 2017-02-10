@@ -2,12 +2,10 @@
 using System.Windows.Input;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Utilities;
-using MangaCheckerV3.Common;
-using MangaCheckerV3.Interfaces;
 using MaterialDesignThemes.Wpf;
 using PropertyChanged;
 
-namespace MangaCheckerV3.ViewModels {
+namespace MangaChecker.ViewModels.ViewModels {
     [ImplementPropertyChanged]
     public class MainWindowViewModel : IDisposable{
         public static MainWindowViewModel Instance;
@@ -21,7 +19,6 @@ namespace MangaCheckerV3.ViewModels {
             Instance = this;
             ProviderService = providerService;
             _viewModelFactory = viewModelFactory;
-            GlobalVariables.ProviderService = providerService;
             SnackbarQueue = new SnackbarMessageQueue();
             StartStopCommand = new ActionCommand(StartStop);
             RefreshCommand = new ActionCommand(() => ProviderService.Timer = 5);
@@ -35,7 +32,7 @@ namespace MangaCheckerV3.ViewModels {
             //WebParser.GetRssFeedAsync("http://read.tomochan.today/rss").ConfigureAwait(false);
             //WebParser.GetRssFeedAsync("http://www.webtoons.com/en/fantasy/tower-of-god/rss?title_no=95").ConfigureAwait(false);
             _logger.Log.Info("starting");
-            SnackbarQueue.Enqueue("Starting...", true);
+            //SnackbarQueue.Enqueue("Starting...", true);
         }
 
         private readonly ILiteDb _liteDb;

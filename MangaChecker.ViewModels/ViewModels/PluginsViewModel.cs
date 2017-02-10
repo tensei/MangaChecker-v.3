@@ -1,10 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using MangaChecker.Data.Models;
-using MangaChecker.Utilities;
 using MangaChecker.Utilities.Interfaces;
 using PropertyChanged;
 
-namespace MangaCheckerV3.ViewModels {
+namespace MangaChecker.ViewModels.ViewModels {
     [ImplementPropertyChanged]
     public class PluginsViewModel {
         private readonly ObservableCollection<PluginModel> _plugins = new ObservableCollection<PluginModel>();

@@ -1,9 +1,9 @@
 ﻿using System.Windows.Input;
 using MangaChecker.Data.Interfaces;
-using MangaCheckerV3.ViewModels.Adding_ViewModels;
+using MangaChecker.ViewModels.ViewModels.Adding_ViewModels;
 using PropertyChanged;
 
-namespace MangaCheckerV3.ViewModels {
+namespace MangaChecker.ViewModels.ViewModels {
     [ImplementPropertyChanged]
     public class AddMangaViewModel {
         public AddMangaViewModel(IProviderService providerService, ILiteDb liteDb) {

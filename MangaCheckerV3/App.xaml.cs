@@ -7,12 +7,11 @@ using MangaChecker.Database;
 using MangaChecker.Providers;
 using MangaChecker.Utilities;
 using MangaChecker.Utilities.Interfaces;
+using MangaChecker.ViewModels;
+using MangaChecker.ViewModels.ViewModels;
 using MangaCheckerV3.Common;
 using MangaCheckerV3.Helpers;
-using MangaCheckerV3.Interfaces;
-using MangaCheckerV3.ViewModels;
 using MangaCheckerV3.Views.Windows;
-using MaterialDesignThemes.Wpf;
 using Microsoft.Practices.Unity;
 
 namespace MangaCheckerV3 {
@@ -34,7 +33,6 @@ namespace MangaCheckerV3 {
             container.RegisterType<Logger>();
             var pluginhost = new PluginHost();
             container.RegisterInstance<IPluginHost>(pluginhost);
-            //container.RegisterType<IWebParser, WebParser>();
             container.RegisterType<IProvider, Mangastream>("ms");
             container.RegisterType<IProvider, Batoto>("b");
             container.RegisterType<IProvider, Crunchyroll>("c");
@@ -53,6 +51,7 @@ namespace MangaCheckerV3 {
             container.RegisterType<IEnumerable<IProvider>, IProvider[]>();
             container.RegisterType<IProviderService, ProviderService>();
             container.RegisterType<IViewModelFactory, ViewModelFactory>();
+            container.RegisterType<IThemeHelper, ThemeHelper>();
             container.RegisterType<MainWindowViewModel>();
             container.RegisterType<SettingsViewModel>();
             container.RegisterType<AddMangaViewModel>();
@@ -61,7 +60,6 @@ namespace MangaCheckerV3 {
             container.RegisterType<HistoryViewModel>();
             container.RegisterType<NewMangaViewModel>();
             container.RegisterType<ThemeViewModel>();
-            container.RegisterType<ThemeHelper>();
             container.RegisterType<ViewerWindow>();
             var p = container.Resolve<IProviderService>();
             if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db"))) {

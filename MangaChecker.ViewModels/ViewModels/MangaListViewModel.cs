@@ -5,18 +5,13 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using MangaChecker.Data.Enums;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
-using MangaChecker.Database;
-using MangaCheckerV3.Common;
-using MangaCheckerV3.ViewModels.Window_ViewModels;
-using MangaCheckerV3.Views.Windows;
 using PropertyChanged;
 
-namespace MangaCheckerV3.ViewModels {
+namespace MangaChecker.ViewModels.ViewModels {
     [ImplementPropertyChanged]
     public class MangaListViewModel {
         /// <summary>

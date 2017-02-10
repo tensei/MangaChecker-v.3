@@ -3,7 +3,7 @@ using System.Windows.Input;
 using MangaChecker.Data.Models;
 using PropertyChanged;
 
-namespace MangaCheckerV3.ViewModels.Adding_ViewModels {
+namespace MangaChecker.ViewModels.ViewModels.Adding_ViewModels {
     [ImplementPropertyChanged]
     public class NormalViewModel {
         public NormalViewModel() {
