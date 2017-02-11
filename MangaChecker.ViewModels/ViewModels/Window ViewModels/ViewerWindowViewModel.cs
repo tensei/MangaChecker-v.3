@@ -15,7 +15,7 @@ using PropertyChanged;
 
 namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
     [ImplementPropertyChanged]
-    public class ViewerWindowViewModel : IDisposable {
+    public class ViewerWindowViewModel {
         private readonly ObservableCollection<object> _images = new ObservableCollection<object>();
         private readonly IManga _manga;
 
@@ -27,7 +27,8 @@ namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
 
         private bool _isClosing;
 
-        public ViewerWindowViewModel(IManga manga, IProvider provider) {
+        public ViewerWindowViewModel(IManga manga, IProvider provider, bool saveEnabled = true) {
+            SaveEnabled = saveEnabled;
             Pages = new ReadOnlyObservableCollection<int>(_pages);
             Images = new ReadOnlyObservableCollection<object>(_images);
             LoadImages(manga, provider).ConfigureAwait(false);
@@ -40,7 +41,7 @@ namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
                 }
             });
         }
-
+        
         public ReadOnlyObservableCollection<object> Images { get; }
         public string Title { get; set; }
 

@@ -24,14 +24,14 @@ namespace MangaCheckerV3.Common {
         }
 
         public void CreateViewerWindow(IManga manga) => _createViewer(manga);
-        public void CreateViewerWindowFromLink(IManga manga) => _createViewer(manga);
+        public void CreateViewerWindow(IManga manga, object provider) => _createViewer(manga, false, provider);
         public void CreateEditWindow(Manga manga) => new EditWindow {
             DataContext = new EditWindowViewModel(manga, _providerService, _liteDb),
         }.Show();
 
-        private void _createViewer(IManga manga) {
-            var provider = _providerService.Providers.Find(p => p.DbName == manga.Site);
-            if (!provider.ViewEnabled) {
+        private void _createViewer(IManga manga, bool saveEnabled = false, object provider = null) {
+            var p = (IProvider) provider ?? _providerService.Providers.Find(x => x.DbName == manga.Site);
+            if (!p.ViewEnabled) {
                 try {
                     Process.Start(manga.Link);
                 } catch (Exception e) {
@@ -40,7 +40,7 @@ namespace MangaCheckerV3.Common {
                 return;
             }
             var viewerWindow = new ViewerWindow {
-                DataContext = new ViewerWindowViewModel(manga, provider),
+                DataContext = new ViewerWindowViewModel(manga, p, saveEnabled),
             };
             viewerWindow.Show();
         }

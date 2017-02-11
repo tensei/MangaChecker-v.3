@@ -19,16 +19,16 @@
     d:DataContext="{d:DesignInstance {x:Type viewModels:MainWindowViewModel}, IsDesignTimeCreatable=False}">
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
+            <Button Command="{Binding OpenViewerCommand}" ToolTip="Home" >
+				<materialDesign:PackIcon Kind="Eye"/>
+			</Button>
             <Button ToolTip="Start/Stop" Command="{Binding StartStopCommand}">
                 <materialDesign:PackIcon Kind="{Binding PausePlayButtonIcon, FallbackValue=Pause}" />
             </Button>
             <Button Command="{Binding RefreshCommand}" ToolTip="Re-Check">
                 <materialDesign:PackIcon Kind="Refresh" />
             </Button>
-            <!--<Button Command="{Binding FillListCommand}" ToolTip="Home" >
-				<materialDesign:PackIcon Kind="Home"/>
-			</Button>
-			<Button Command="{Binding NewCommand}" Content="New!"
+			<!--<Button Command="{Binding NewCommand}" Content="New!"
 					Visibility="{Binding NewMangas.Count, Converter={StaticResource NotZeroToVisibilityConverter}, Mode=OneWay}" />-->
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>

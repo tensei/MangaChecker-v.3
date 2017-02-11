@@ -63,6 +63,7 @@ namespace MangaCheckerV3 {
             container.RegisterType<IProviderService, ProviderService>();
             container.RegisterType<IViewModelFactory, ViewModelFactory>();
             container.RegisterType<IThemeHelper, ThemeHelper>();
+            container.RegisterType<ILinkParser, LinkParser>();
 
             container.RegisterType<ThemeViewModel>();
             container.RegisterType<MainWindowViewModel>();

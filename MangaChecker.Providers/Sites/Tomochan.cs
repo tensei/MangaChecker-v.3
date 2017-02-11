@@ -48,8 +48,9 @@ namespace MangaChecker.Providers.Sites {
 
         public string DbName => "Tomochan";
 
-        public Regex LinkRegex() {
-            return new Regex("");
+        public bool LinkIsMatch(string link) {
+            var regex = new Regex("");
+            return regex.IsMatch(link);
         }
 
         public bool ViewEnabled => false;

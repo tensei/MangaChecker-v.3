@@ -8,7 +8,7 @@ namespace MangaChecker.Providers.Interfaces {
         string DbName { get; }
         bool ViewEnabled { get; }
         string LinktoSite { get; }
-        Regex LinkRegex();
+        bool LinkIsMatch(string link);
         Task CheckAll();
         Task<object> CheckOne(object manga);
         Task<Tuple<List<object>, int>> GetImagesTaskAsync(string url);

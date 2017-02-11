@@ -64,8 +64,9 @@ namespace MangaChecker.Providers.Sites {
 
         public string DbName => "HeyManga";
 
-        public Regex LinkRegex() {
-            return new Regex("");
+        public bool LinkIsMatch(string link) {
+            var regex = new Regex("");
+            return regex.IsMatch(link);
         }
 
         public string LinktoSite => "https://www.heymanga.me/";

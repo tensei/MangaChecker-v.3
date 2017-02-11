@@ -81,8 +81,9 @@ namespace MangaChecker.Providers.Sites {
             throw new NotImplementedException();
         }
 
-        public Regex LinkRegex() {
-            return new Regex("");
+        public bool LinkIsMatch(string link) {
+            var regex = new Regex("^http://sensescans.com/reader/read/.+/en/[0-9]+/[0-9]+/?[0-9]+?/$");
+            return regex.IsMatch(link);
         }
 
         public string DbName => "Sensescans";

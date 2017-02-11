@@ -87,8 +87,9 @@ namespace MangaChecker.Providers.Sites {
 
         public string DbName => "KireiCake";
 
-        public Regex LinkRegex() {
-            return new Regex("");
+        public bool LinkIsMatch(string link) {
+            var regex = new Regex("^https://reader.kireicake.com/read/.+/en/[0-9]+/[0-9]+/?[0-9]+?/$");
+            return regex.IsMatch(link);
         }
 
         public bool ViewEnabled => true;

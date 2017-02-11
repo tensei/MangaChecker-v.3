@@ -12,9 +12,10 @@ namespace MangaCheckerV3 {
     ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow {
-        public MainWindow(IProviderService providerService, IViewModelFactory viewModelFactory, ILiteDb liteDb, Logger logger) {
+        public MainWindow(IProviderService providerService, ILinkParser linkParser, IWindowFactory windowFactory,
+            IViewModelFactory viewModelFactory, ILiteDb liteDb, Logger logger) {
             InitializeComponent();
-            DataContext = new MainWindowViewModel(providerService, viewModelFactory, liteDb, logger);
+            DataContext = new MainWindowViewModel(providerService, linkParser, windowFactory , viewModelFactory, liteDb, logger);
         }
         private void MainWindow_OnClosing(object sender, CancelEventArgs e) {
             var ctx = (MainWindowViewModel) DataContext;

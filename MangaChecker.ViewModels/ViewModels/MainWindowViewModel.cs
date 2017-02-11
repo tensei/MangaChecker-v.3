@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using MangaChecker.Data.Interfaces;
+using MangaChecker.Data.Models;
 using MangaChecker.Providers.Interfaces;
 using MangaChecker.Utilities;
 using MangaChecker.ViewModels.Interfaces;
@@ -15,15 +18,19 @@ namespace MangaChecker.ViewModels.ViewModels {
         /// <summary>
         ///     Initializes a new instance of the MainWindowViewModel class.
         /// </summary>
-        public MainWindowViewModel(IProviderService providerService, IViewModelFactory viewModelFactory, ILiteDb liteDb, Logger logger) {
+        public MainWindowViewModel(IProviderService providerService, ILinkParser linkParser, IWindowFactory windowFactory,
+            IViewModelFactory viewModelFactory, ILiteDb liteDb, Logger logger) {
             _liteDb = liteDb;
             _logger = logger;
+            _linkParser = linkParser;
+            _windowFactory = windowFactory;
             Instance = this;
             ProviderService = providerService;
             _viewModelFactory = viewModelFactory;
             SnackbarQueue = new SnackbarMessageQueue();
             StartStopCommand = new ActionCommand(StartStop);
             RefreshCommand = new ActionCommand(() => ProviderService.Timer = 5);
+            OpenViewerCommand = new ActionCommand(ParseLink);
 
             ProviderService.Run().ConfigureAwait(false);
 
@@ -38,6 +45,8 @@ namespace MangaChecker.ViewModels.ViewModels {
         }
 
         private readonly ILiteDb _liteDb;
+        private readonly ILinkParser _linkParser;
+        private readonly IWindowFactory _windowFactory;
         private readonly Logger _logger;
         public IProviderService ProviderService { get; }
         private readonly IViewModelFactory _viewModelFactory;
@@ -49,6 +58,7 @@ namespace MangaChecker.ViewModels.ViewModels {
 
         public ICommand StartStopCommand { get; }
         public ICommand RefreshCommand { get; }
+        public ICommand OpenViewerCommand { get; }
         public string PausePlayButtonIcon { get; set; } = "Pause";
 
         public MangaListViewModel MangaListContext => _viewModelFactory.CreateMangaListViewModel;
@@ -58,6 +68,7 @@ namespace MangaChecker.ViewModels.ViewModels {
         public ThemeViewModel ThemeContext => _viewModelFactory.CreateThemeViewModel;
         public NewMangaViewModel NewContext => _viewModelFactory.CreateNewMangaViewModel;
         public HistoryViewModel HistoryContext => _viewModelFactory.CreateHistoryViewModel;
+
 
         private void StartStop() {
             if (!ProviderService.Pause) {
@@ -71,6 +82,16 @@ namespace MangaChecker.ViewModels.ViewModels {
 
         public void Dispose() {
             _liteDb.Dispose();
+        }
+
+        private void ParseLink() {
+            var link = Clipboard.GetText().ToLower();
+            if (string.IsNullOrWhiteSpace(link)) return;
+            var provider = _linkParser.GetProviderFirstOrDefault(p => p.LinkIsMatch(link) && link.Contains(p.DbName.ToLower()) && p.ViewEnabled);
+            if (provider != null) {
+                _windowFactory.CreateViewerWindow(new Manga { Name = link, Link = link,
+                    Site = provider.DbName}, provider);
+            }
         }
     }
 }
