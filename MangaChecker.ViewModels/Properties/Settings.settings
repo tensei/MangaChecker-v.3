@@ -8,8 +8,8 @@
     <Setting Name="Accents" Type="System.String" Scope="User">
       <Value Profile="(Default)">blue</Value>
     </Setting>
-    <Setting Name="Theme" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Dark</Value>
+    <Setting Name="Theme" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

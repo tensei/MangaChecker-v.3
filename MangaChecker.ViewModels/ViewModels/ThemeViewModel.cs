@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using MangaChecker.Data.Interfaces;
@@ -9,36 +10,31 @@ using PropertyChanged;
 namespace MangaChecker.ViewModels.ViewModels {
     [ImplementPropertyChanged]
     public class ThemeViewModel {
-        private string _theme;
         private readonly IThemeHelper _themeHelper;
+
         public ThemeViewModel(IThemeHelper themeHelper) {
-            Instance = this;
             _themeHelper = themeHelper;
             ApplyPrimaryCommand = new ActionCommand(s => ApplyPrimary((Swatch) s));
             ApplyAccentCommand = new ActionCommand(s => ApplyAccent((Swatch) s));
+            ToggleBaseCommand = new ActionCommand(s => ApplyTheme((bool) s));
+            SetupTheme();
         }
-
-        /// <summary>
-        ///     Initializes a new instance of the ThemeViewModel class.
-        /// </summary>
-        public static ThemeViewModel Instance { get; private set; }
-
+        
         public IEnumerable<Swatch> PrimaryColors => _themeHelper.Swatches();
-        public IEnumerable<Swatch> AccentColors => _themeHelper.Swatches().Where(s=> s.IsAccented);
+        private IEnumerable<Swatch> AccentColors => _themeHelper.Swatches().Where(s=> s.IsAccented);
 
         public ICommand ApplyPrimaryCommand { get; }
         public ICommand ApplyAccentCommand { get; }
 
-        public string Theme {
-            get { return _theme; }
-            set {
-                _theme = value;
-                _themeHelper.ChangeThemeTo(value == "Dark").ConfigureAwait(false);
-                Settings.Default.Theme = value;
-                Settings.Default.Save();
-            }
-        }
+        public bool Theme { get; set; }
 
+        public ICommand ToggleBaseCommand { get; }
+
+        private void ApplyTheme(bool isDark) {
+            _themeHelper.ChangeThemeTo(isDark).ConfigureAwait(false);
+            Settings.Default.Theme = isDark;
+            Settings.Default.Save();
+        }
         private void ApplyPrimary(Swatch swatch) {
             _themeHelper.ChangePrimaryColorTo(swatch).ConfigureAwait(false);
             Settings.Default.Primary = swatch.Name;
@@ -54,10 +50,10 @@ namespace MangaChecker.ViewModels.ViewModels {
         public void SetupTheme() {
             var primary = Settings.Default.Primary;
             var accents = Settings.Default.Accents;
-            var theme = Settings.Default.Theme;
             ApplyPrimary(PrimaryColors.FirstOrDefault(s => s.Name == primary));
             ApplyAccent(AccentColors.FirstOrDefault(s => s.Name == accents));
-            Theme = theme;
+            Theme = Settings.Default.Theme;
+            ApplyTheme(Theme);
         }
     }
 }

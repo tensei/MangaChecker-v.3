@@ -7,6 +7,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:materialDesignColors="clr-namespace:MaterialDesignColors;assembly=MaterialDesignColors"
              xmlns:viewModels="clr-namespace:MangaChecker.ViewModels.ViewModels;assembly=MangaChecker.ViewModels"
+             xmlns:properties="clr-namespace:MangaCheckerV3.Properties"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance {x:Type viewModels:ThemeViewModel}, IsDesignTimeCreatable=False}">
@@ -15,16 +16,13 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal">
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0">
-                <Run Text="Theme" />
-            </TextBlock>
-            <ComboBox HorizontalAlignment="Center" VerticalAlignment="Center" IsEditable="False"
-                      IsReadOnly="True"
-                      Text="{Binding Theme}" MinWidth="100">
-                <ComboBoxItem>Dark</ComboBoxItem>
-                <ComboBoxItem>Light</ComboBoxItem>
-            </ComboBox>
+
+        <StackPanel Orientation="Horizontal" Margin="8">
+            <TextBlock VerticalAlignment="Center">Light</TextBlock>
+            <ToggleButton Margin="8 0 16 0" IsChecked="{Binding Theme}"
+                          Command="{Binding ToggleBaseCommand}" 
+                          CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}"/>
+            <TextBlock VerticalAlignment="Center">Dark</TextBlock>
         </StackPanel>
         <!--<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0">Settings</TextBlock>
 			<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4" Grid.Column="0">Settings</TextBlock>
@@ -40,10 +38,10 @@
                     <DataTemplate DataType="materialDesignColors:Swatch">
 
                         <DataTemplate.Resources>
-                            <Style BasedOn="{StaticResource MaterialDesignFlatButton}" TargetType="{x:Type Button}">
+                            <Style BasedOn="{StaticResource MaterialDesignFlatButton}" TargetType="Button">
                                 <Setter Property="Foreground">
                                     <Setter.Value>
-                                        <SolidColorBrush Color="{Binding ExemplarHue.Foreground}" />
+                                        <SolidColorBrush Color="{Binding ExemplarHue.Foreground, Mode=OneTime}" />
                                     </Setter.Value>
                                 </Setter>
                                 <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -67,7 +65,7 @@
 
                                 <Border Grid.Row="1" Grid.Column="0" Width="100" Height="30">
                                     <Border.Background>
-                                        <SolidColorBrush Color="{Binding ExemplarHue.Color}" />
+                                        <SolidColorBrush Color="{Binding ExemplarHue.Color, Mode=OneTime}" />
                                     </Border.Background>
 
                                     <Button
@@ -78,7 +76,7 @@
                                 <Border Grid.Row="1" Grid.Column="1" Width="100" Height="30"
                                         Visibility="{Binding IsAccented, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneTime}">
                                     <Border.Background>
-                                        <SolidColorBrush Color="{Binding AccentExemplarHue.Color}" />
+                                        <SolidColorBrush Color="{Binding AccentExemplarHue.Color, Mode=OneTime}" />
                                     </Border.Background>
 
                                     <Button

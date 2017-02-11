@@ -11,7 +11,7 @@
     x:Class="MangaCheckerV3.MainWindow"
     mc:Ignorable="d"
     Title="MangaChecker" Height="550" Width="725" SaveWindowPosition="True"
-    TitleCharacterCasing="Normal" BorderThickness="1" GlowBrush="Black"
+    TitleCharacterCasing="Normal" BorderThickness="1" BorderBrush="{DynamicResource AccentColorBrush}"
     NonActiveBorderBrush="Black"
     NonActiveGlowBrush="Black"
     Closing="MainWindow_OnClosing"

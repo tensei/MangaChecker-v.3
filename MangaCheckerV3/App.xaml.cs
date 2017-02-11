@@ -16,6 +16,7 @@ using MangaChecker.ViewModels.Interfaces;
 using MangaChecker.ViewModels.ViewModels;
 using MangaCheckerV3.Common;
 using MangaCheckerV3.Helpers;
+using MangaCheckerV3.Views;
 using MangaCheckerV3.Views.Windows;
 using Microsoft.Practices.Unity;
 
@@ -63,6 +64,7 @@ namespace MangaCheckerV3 {
             container.RegisterType<IViewModelFactory, ViewModelFactory>();
             container.RegisterType<IThemeHelper, ThemeHelper>();
 
+            container.RegisterType<ThemeViewModel>();
             container.RegisterType<MainWindowViewModel>();
             container.RegisterType<SettingsViewModel>();
             container.RegisterType<AddMangaViewModel>();
@@ -70,7 +72,6 @@ namespace MangaCheckerV3 {
             container.RegisterType<PluginsViewModel>();
             container.RegisterType<HistoryViewModel>();
             container.RegisterType<NewMangaViewModel>();
-            container.RegisterType<ThemeViewModel>();
 
             container.RegisterType<ViewerWindow>();
             container.RegisterType<MainWindow>();
@@ -85,9 +86,7 @@ namespace MangaCheckerV3 {
             }
 
             var mainWindow = container.Resolve<MainWindow>();
-            var th = container.Resolve<ThemeViewModel>();
-            th.SetupTheme();
-            await Task.Delay(400);
+            await Task.Delay(200);
             mainWindow.Show();
         }
     }

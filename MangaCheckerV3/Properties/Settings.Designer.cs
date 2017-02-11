@@ -49,10 +49,10 @@ namespace MangaCheckerV3.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Dark")]
-        public string Theme {
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Theme {
             get {
-                return ((string)(this["Theme"]));
+                return ((bool)(this["Theme"]));
             }
             set {
                 this["Theme"] = value;
