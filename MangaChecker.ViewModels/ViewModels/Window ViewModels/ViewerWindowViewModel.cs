@@ -26,9 +26,10 @@ namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
         private List<object> _imgs;
 
         private bool _isClosing;
-
-        public ViewerWindowViewModel(IManga manga, IProvider provider, bool saveEnabled = true) {
+        private Action _closeAction;
+        public ViewerWindowViewModel(IManga manga, IProvider provider, Action close, bool saveEnabled = true) {
             SaveEnabled = saveEnabled;
+            _closeAction = close;
             Pages = new ReadOnlyObservableCollection<int>(_pages);
             Images = new ReadOnlyObservableCollection<object>(_images);
             LoadImages(manga, provider).ConfigureAwait(false);
@@ -73,6 +74,9 @@ namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
 
         private async Task LoadImages(IManga manga, IProvider provider) {
             var imgs = await provider.GetImagesTaskAsync(manga.Link);
+            if (imgs.Item1.Count <=0) {
+                _closeAction.Invoke();
+            }
             _imgs = imgs.Item1;
             PageIntList();
             TargetImages = imgs.Item2;

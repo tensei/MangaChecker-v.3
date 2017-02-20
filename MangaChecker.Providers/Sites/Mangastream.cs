@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MangaChecker.Data.Interfaces;
@@ -37,7 +38,18 @@ namespace MangaChecker.Providers.Sites {
         }
 
         public async Task<Tuple<List<object>, int>> GetImagesTaskAsync(string url) {
-            throw new NotImplementedException();
+            var l = new List<object>();
+            var blankurl = url.Remove(url.Length - 1);
+            //Last Page (20)
+            var document = await _webParser.GetHtmlSourceDucumentAsync(url);
+            var pages = Regex.Match(document.DocumentElement.InnerHtml, @"Last Page \((\d+)\)").Groups[1].Value;
+            var intpages = int.TryParse(pages, out int p);
+            l.Add(document.All.First(i=> i.LocalName=="img" && i.GetAttribute("id") == "manga-page").GetAttribute("src"));
+            for (var i = 2; i <= p; i++) {
+                document = await _webParser.GetHtmlSourceDucumentAsync(blankurl + i);
+                l.Add(document.All.First(im => im.LocalName == "img" && im.GetAttribute("id") == "manga-page").GetAttribute("src"));
+            }
+            return new Tuple<List<object>, int>(l, p);
         }
 
         public async Task<object> CheckOne(object manga) {
@@ -55,7 +67,7 @@ namespace MangaChecker.Providers.Sites {
             return regex.IsMatch(link);
         }
 
-        public bool ViewEnabled => false;
+        public bool ViewEnabled => true;
         public string LinktoSite => "http://mangastream.com/";
     }
 }

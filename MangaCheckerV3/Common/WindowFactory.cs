@@ -39,9 +39,7 @@ namespace MangaCheckerV3.Common {
                 }
                 return;
             }
-            var viewerWindow = new ViewerWindow {
-                DataContext = new ViewerWindowViewModel(manga, p, saveEnabled),
-            };
+            var viewerWindow = new ViewerWindow(manga, p, saveEnabled);
             viewerWindow.Show();
         }
 

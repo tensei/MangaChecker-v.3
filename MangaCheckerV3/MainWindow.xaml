@@ -56,7 +56,16 @@
                      Background="{DynamicResource HighlightBrush}"
                      Visibility="{Binding MenuToggleButton, Converter={StaticResource BooleanToVisibilityConverter}}"
                      Foreground="{Binding TitleForeground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:MetroWindow}}}">
-
+                <!-- TODO make seleted item more visible out of focus -->
+                <!--<ListBox.ItemContainerStyle>
+                    <Style BasedOn="{StaticResource MaterialDesignListBoxItem}" TargetType="{x:Type ListBoxItem}">
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource AccentColor2}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.ItemContainerStyle>-->
                 <materialDesign:PackIcon Kind="Home" Height="20" Width="20" ToolTip="Home" />
                 <materialDesign:PackIcon Kind="PlusBox" Height="20" Width="20" ToolTip="Add Manga" />
                 <Separator Style="{DynamicResource MaterialDesignLightSeparator}" />
