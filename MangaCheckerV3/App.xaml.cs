@@ -28,10 +28,10 @@ namespace MangaCheckerV3 {
         private async void AppStartup(object sender, StartupEventArgs args) {
             //if (!Debugger.IsAttached)
             //	ExceptionHandler.AddGlobalHandlers();
-            //ThemeHelper.ChangeAccentColorTo("red", "red", false);
 
             var container = new UnityContainer();
             container.RegisterInstance<ILiteDb>(new LiteDb());
+
             container.RegisterType<INewChapterHelper, NewChapterHelper>();
             container.RegisterType<IWebParser, WebParser>();
             container.RegisterType<IWindowFactory, WindowFactory>();

@@ -63,7 +63,7 @@ namespace MangaChecker.Providers.Sites {
         public string DbName => "Mangastream";
 
         public bool LinkIsMatch(string link) {
-            var regex = new Regex("");
+            var regex = new Regex("^http://mangastream.com/r/(.+)/[0-9]+/[0-9]+/1$");
             return regex.IsMatch(link);
         }
 
