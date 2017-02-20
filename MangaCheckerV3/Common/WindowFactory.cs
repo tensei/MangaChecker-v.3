@@ -29,7 +29,7 @@ namespace MangaCheckerV3.Common {
             DataContext = new EditWindowViewModel(manga, _providerService, _liteDb),
         }.Show();
 
-        private void _createViewer(IManga manga, bool saveEnabled = false, object provider = null) {
+        private void _createViewer(IManga manga, bool saveEnabled = true, object provider = null) {
             var p = (IProvider) provider ?? _providerService.Providers.Find(x => x.DbName == manga.Site);
             if (!p.ViewEnabled) {
                 try {

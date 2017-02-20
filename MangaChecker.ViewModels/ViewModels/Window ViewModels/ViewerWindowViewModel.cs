@@ -26,7 +26,7 @@ namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
         private List<object> _imgs;
 
         private bool _isClosing;
-        private Action _closeAction;
+        private readonly Action _closeAction;
         public ViewerWindowViewModel(IManga manga, IProvider provider, Action close, bool saveEnabled = true) {
             SaveEnabled = saveEnabled;
             _closeAction = close;
@@ -63,7 +63,7 @@ namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
 
         public int ProgressValue { get; set; }
 
-        public bool SaveEnabled { get; set; } = true;
+        public bool SaveEnabled { get; set; }
 
         public void Dispose() {
             _isClosing = true;
