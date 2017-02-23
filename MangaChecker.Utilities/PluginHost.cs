@@ -35,6 +35,9 @@ namespace MangaChecker.Utilities {
         public IEnumerable<Lazy<IPlugin, IPluginMetadata>> Plugins { get; set; }
 
         public void Dispose() {
+            foreach (var plugin in Plugins) {
+                plugin.Value.Dispose();
+            }
             _container?.Dispose();
         }
 

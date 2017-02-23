@@ -32,6 +32,8 @@ namespace MangaCheckerV3 {
             var container = new UnityContainer();
             container.RegisterInstance<ILiteDb>(new LiteDb());
 
+            var db = container.Resolve<ILiteDb>();
+            GlobalVariables.LiteDb = db;
             container.RegisterType<INewChapterHelper, NewChapterHelper>();
             container.RegisterType<IWebParser, WebParser>();
             container.RegisterType<IWindowFactory, WindowFactory>();
@@ -77,7 +79,6 @@ namespace MangaCheckerV3 {
             container.RegisterType<ViewerWindow>();
             container.RegisterType<MainWindow>();
 
-            var db = container.Resolve<ILiteDb>();
             var pdict = collection.ToDictionary(k => k.DbName, v => v.LinktoSite);
             if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db"))) {
                 db.CheckDbVersion(pdict);
