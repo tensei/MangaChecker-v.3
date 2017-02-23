@@ -23,7 +23,7 @@ namespace MangaChecker.Providers.Sites {
             var all = _liteDb.GetMangasFrom(DbName);
             var openlink = _liteDb.GetOpenLinks();
             foreach (var manga in all) {
-                var html = await _webParser.GetHtmlSourceDucumentAsync(manga.BaseMangaLink);
+                var html = await _webParser.GetHtmlSourceDocumentAsync(manga.BaseMangaLink);
                 if (html == null) {
                     continue;
                 }

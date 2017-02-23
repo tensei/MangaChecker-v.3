@@ -65,7 +65,7 @@ namespace MangaChecker.Utilities {
             }
         }
 
-        public async Task<IHtmlDocument> GetHtmlSourceDucumentAsync(string url, bool js = false) {
+        public async Task<IHtmlDocument> GetHtmlSourceDocumentAsync(string url, bool js = false) {
             try {
                 // Use the HttpClient as usual. Any JS challenge will be solved automatically for you.
                 string content;

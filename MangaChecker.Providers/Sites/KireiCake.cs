@@ -56,7 +56,7 @@ namespace MangaChecker.Providers.Sites {
             if (!url.EndsWith("page/1")) {
                 url = url + "page/1";
             }
-            var html = await _webParser.GetHtmlSourceDucumentAsync(url);
+            var html = await _webParser.GetHtmlSourceDocumentAsync(url);
             imges.Add(html.All.First(i => i.LocalName == "img" && i.ClassList.Contains("open")
                                           && i.HasAttribute("src") &&
                                           i.GetAttribute("src").Contains("https://reader.kireicake.com/content/comics/"))
@@ -67,7 +67,7 @@ namespace MangaChecker.Providers.Sites {
             var intpages = int.Parse(pages);
             for (var i = 2; i <= intpages; i++) {
                 url = baserl + $"page/{i}";
-                html = await _webParser.GetHtmlSourceDucumentAsync(url);
+                html = await _webParser.GetHtmlSourceDocumentAsync(url);
                 imges.Add(html.All.First(x => x.LocalName == "img" && x.ClassList.Contains("open")
                                               && x.HasAttribute("src") &&
                                               x.GetAttribute("src")

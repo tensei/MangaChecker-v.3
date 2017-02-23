@@ -26,7 +26,7 @@ namespace MangaChecker.Providers.Sites {
                 if (string.IsNullOrEmpty(manga.BaseMangaLink)) {
                     continue;
                 }
-                var html = await _webParser.GetHtmlSourceDucumentAsync(manga.BaseMangaLink.TrimEnd('/'));
+                var html = await _webParser.GetHtmlSourceDocumentAsync(manga.BaseMangaLink.TrimEnd('/'));
                 if (html == null) {
                     continue;
                 }

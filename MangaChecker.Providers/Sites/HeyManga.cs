@@ -73,7 +73,7 @@ namespace MangaChecker.Providers.Sites {
 
         private async Task<Dictionary<string, string>> _load2Pages(string link) {
             var m = new Dictionary<string, string>();
-            var html = await _webParser.GetHtmlSourceDucumentAsync(link);
+            var html = await _webParser.GetHtmlSourceDocumentAsync(link);
             var a =
                 html.All.Where(
                     x =>
