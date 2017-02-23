@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="DiscordMC.Views.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DiscordMC.Views"
+             xmlns:viewModel="clr-namespace:DiscordMC.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance {x:Type viewModel:MainViewModel}, IsDesignTimeCreatable=False}">
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Button VerticalAlignment="Center" Command="{Binding ConnectCommand}" HorizontalAlignment="Left" Margin="5,0">Connect</Button>
+        <Button Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Command="{Binding DisconnectCommand}">Disconnect</Button>
+        
+        
+        <TextBlock Grid.Row="1" Grid.Column="0" Margin="5,0" VerticalAlignment="Center">Auto Connect</TextBlock>
+        <ToggleButton Grid.Row="1" Grid.Column="1" IsChecked="{Binding IsAutoConnect}"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Center"></ToggleButton>
+        
+        
+        <TextBlock Grid.Row="2" Grid.Column="0" Margin="5,0" VerticalAlignment="Center">Token:</TextBlock>
+        <TextBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"
+                 Text="{Binding Token}"></TextBox>
+        
+        
+        <TextBlock Grid.Row="3" Grid.Column="0" Margin="5,0" VerticalAlignment="Center">Server Id:</TextBlock>
+        <TextBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center"
+                 Text="{Binding ServerId}"></TextBox>
+        
+        
+        <TextBlock Grid.Row="4" Grid.Column="0" Margin="5,0" VerticalAlignment="Center">Channel Id:</TextBlock>
+        <TextBox Grid.Row="4" Grid.Column="1" VerticalAlignment="Center"
+                 Text="{Binding ChannelId}"></TextBox>
+        
+    </Grid>
+</UserControl>
