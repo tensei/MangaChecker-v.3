@@ -87,7 +87,7 @@ namespace MangaChecker.ViewModels.ViewModels {
         private void ParseLink() {
             var link = Clipboard.GetText().ToLower();
             if (string.IsNullOrWhiteSpace(link)) return;
-            var provider = _linkParser.GetProviderFirstOrDefault(p => p.LinkIsMatch(link) && link.Contains(p.DbName.ToLower()) && p.ViewEnabled);
+            var provider = _linkParser.GetProviderFirstOrDefault(p => p.LinkIsMatch(link) && link.ToLower().Contains(p.DbName.ToLower()) && p.ViewEnabled);
             if (provider != null) {
                 _windowFactory.CreateViewerWindow(new Manga { Name = link, Link = link,
                     Site = provider.DbName}, provider);

@@ -19,7 +19,7 @@
     d:DataContext="{d:DesignInstance {x:Type viewModels:MainWindowViewModel}, IsDesignTimeCreatable=False}">
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
-            <Button Command="{Binding OpenViewerCommand}" ToolTip="Home" >
+            <Button Command="{Binding OpenViewerCommand}" ToolTip="Quick Viewer" >
 				<materialDesign:PackIcon Kind="Eye"/>
 			</Button>
             <Button ToolTip="Start/Stop" Command="{Binding StartStopCommand}">
