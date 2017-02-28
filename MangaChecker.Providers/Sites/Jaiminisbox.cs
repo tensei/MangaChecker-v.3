@@ -89,7 +89,7 @@ namespace MangaChecker.Providers.Sites {
         public string DbName => "Jaiminisbox";
 
         public bool LinkIsMatch(string link) {
-            var regex = new Regex("^https?://jaiminisbox.com/reader/read/.+/en/[0-9]+/[0-9]+/?[0-9]+?/$");
+            var regex = new Regex(@"^https?://jaiminisbox.com/reader/read/.+/en/\d+/\d+/(\d+/)?$");
             return regex.IsMatch(link);
         }
 
