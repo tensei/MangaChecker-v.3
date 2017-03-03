@@ -39,9 +39,8 @@
     <Reference Include="AngleSharp.Scripting.JavaScript, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\AngleSharp.Scripting.JavaScript.0.5.0\lib\portable-windows8+net45+windowsphone8+wpa+monoandroid+monotouch\AngleSharp.Scripting.JavaScript.dll</HintPath>
     </Reference>
-    <Reference Include="CloudFlareUtilities, Version=0.3.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CloudFlareUtilities.0.3.3-alpha\lib\portable45-net45+win8+wpa81\CloudFlareUtilities.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="CloudFlareUtilities, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CloudFlareUtilities.0.4.0-alpha\lib\portable45-net45+win8+wpa81\CloudFlareUtilities.dll</HintPath>
     </Reference>
     <Reference Include="jint, Version=2.10.3.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
       <HintPath>..\packages\jint.2.10.3\lib\net45\jint.dll</HintPath>

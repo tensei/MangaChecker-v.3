@@ -118,9 +118,16 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <ListBox ItemsSource="{Binding Mangas}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3"
-                 HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"
-                 SelectedItem="{Binding SelectedManga}">
+        <ListView ItemsSource="{Binding Mangas}" Grid.Row="1" Grid.Column="1" 
+                 SelectedItem="{Binding SelectedManga}" >
+            <ListView.View>
+                <GridView AllowsColumnReorder="False">
+                    <GridViewColumn Header="Ch." DisplayMemberBinding="{Binding Chapter}" Width="50" />
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="310"/>
+                    <GridViewColumn Header="Site" DisplayMemberBinding="{Binding Site}" Width="120"/>
+                    <GridViewColumn Header="Updated" DisplayMemberBinding="{Binding DaysAgo}" Width="100"/>
+                </GridView>
+            </ListView.View>
             <!--<ListBox.Template>
 				<ControlTemplate>
 					<ScrollViewer VerticalScrollBarVisibility="Auto" CanContentScroll="True">
@@ -129,7 +136,7 @@
 					</ScrollViewer>
 				</ControlTemplate>
 			</ListBox.Template>-->
-            <ListBox.ItemTemplate>
+            <!--<ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -137,17 +144,17 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="95" />
-                            <!--<ColumnDefinition Width="85" />-->
+                            --><!--<ColumnDefinition Width="85" />--><!--
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="{Binding Chapter}" Margin="5,0" HorizontalAlignment="Left" />
                         <TextBlock Text="{Binding Name}" Grid.Column="1" HorizontalAlignment="Left" Margin="5,0" />
                         <TextBlock Text="{Binding Site}" Grid.Column="2" HorizontalAlignment="Right" Margin="5,0" />
                         <TextBlock Text="{Binding DaysAgo}" Grid.Column="3" HorizontalAlignment="Left" Margin="5,0" />
-                        <!--<TextBlock Grid.Column="3" Text="{Binding Site}" Margin="5,0" HorizontalAlignment="Left" />-->
+                        --><!--<TextBlock Grid.Column="3" Text="{Binding Site}" Margin="5,0" HorizontalAlignment="Left" />--><!--
                     </Grid>
                 </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-
+            </ListBox.ItemTemplate>-->
+        </ListView>
+        
     </Grid>
 </UserControl>
