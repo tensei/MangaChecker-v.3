@@ -57,7 +57,7 @@ namespace DiscordMC.ViewModels {
             try {
                 var server = _client?.GetServer(ServerId);
                 var ch = server?.GetChannel(ChannelId);
-                ch?.SendMessage($"New Release!!\n{m.Name} {m.Newest},\n{m.Link}");
+                ch?.SendMessage($"New Release!!\n{m.Name} {m.Newest},\n<{m.Link}>");
             } catch {
                 // hmm
             }

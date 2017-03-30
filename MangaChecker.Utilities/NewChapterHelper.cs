@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Globalization;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
-using MangaChecker.Database;
 using MangaChecker.Utilities.Interfaces;
 using static MangaChecker.Utilities.Logger;
 
