@@ -43,11 +43,17 @@ namespace MangaChecker.Providers.Sites {
             //Last Page (20)
             var document = await _webParser.GetHtmlSourceDocumentAsync(url);
             var pages = Regex.Match(document.DocumentElement.InnerHtml, @"Last Page \((\d+)\)").Groups[1].Value;
-            var intpages = int.TryParse(pages, out int p);
-            l.Add(document.All.First(i=> i.LocalName=="img" && i.GetAttribute("id") == "manga-page").GetAttribute("src"));
-            for (var i = 2; i <= p; i++) {
+            int.TryParse(pages, out int p);
+            //l.Add(document.All.First(i=> i.LocalName=="img" && i.GetAttribute("id") == "manga-page").GetAttribute("src"));
+            for (var i = 1; i <= p; i++) {
                 document = await _webParser.GetHtmlSourceDocumentAsync(blankurl + i);
-                l.Add(document.All.First(im => im.LocalName == "img" && im.GetAttribute("id") == "manga-page").GetAttribute("src"));
+                var img =
+                    document.All.First(im => im.LocalName == "img" && im.GetAttribute("id") == "manga-page")
+                        .GetAttribute("src");
+                if (img.StartsWith("//")) {
+                    img = $"http:{img}";
+                }
+                l.Add(img);
             }
             return new Tuple<List<object>, int>(l, p);
         }
