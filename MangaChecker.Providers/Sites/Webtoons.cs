@@ -29,7 +29,7 @@ namespace MangaChecker.Providers.Sites {
                 foreach (var rssItemObject in rss) {
                     var title = rssItemObject.Title;
                     var nc =
-                        Regex.Match(title, @"(?<other>ep\. |episode )(?<chapter>\d+.?\d+)", RegexOptions.IgnoreCase);
+                        Regex.Match(title, @"(?<other>ep\.|episode ) ?(?<chapter>\d+.?\d+|[0-9])", RegexOptions.IgnoreCase);
                     var ch = nc.Groups["chapter"].Value;
                     if (string.IsNullOrWhiteSpace(ch)) {
                         ch = rssItemObject.Title;

@@ -12,8 +12,8 @@ namespace DiscordMC {
     public class DiscordMc : IPlugin {
         public MainViewModel _mainViewModel;
         public MainView _mainView;
-        public void Dispose() {
-            _mainViewModel.CloseAsync();
+        public async void Dispose() {
+            await _mainViewModel.CloseAsync();
         }
 
         public object SettingsView() {
