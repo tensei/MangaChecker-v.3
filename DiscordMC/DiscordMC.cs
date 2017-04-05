@@ -10,8 +10,8 @@ namespace DiscordMC {
      ExportMetadata("Description", "Announcing new releases"), ExportMetadata("Version", "0.1"),
      ExportMetadata("Author", "Tensei")]
     public class DiscordMc : IPlugin {
-        public MainViewModel _mainViewModel;
-        public MainView _mainView;
+        private MainViewModel _mainViewModel;
+        private MainView _mainView;
         public async void Dispose() {
             await _mainViewModel.CloseAsync();
         }
