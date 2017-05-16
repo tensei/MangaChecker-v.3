@@ -10,7 +10,7 @@ using MangaChecker.Data.Models;
 namespace MangaChecker.Database {
     public class LiteDb : ILiteDb {
 
-        private const string DatabaseVersion = "1.0.0.6";
+        private const string DatabaseVersion = "1.0.0.7";
         private readonly string _databasePath = Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db");
 
         private readonly Dictionary<string, string> _defaultVersions = new Dictionary<string, string> {

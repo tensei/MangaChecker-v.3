@@ -33,7 +33,7 @@ namespace MangaChecker.ViewModels.ViewModels {
             _liteDb = liteDb;
             _windowFactory = windowFactory;
             SetupSites();
-            _liteDb.SettingEvent += DatabaseOnSettingEvent;
+            //_liteDb.SettingEvent += DatabaseOnSettingEvent;
             Mangas = new ReadOnlyObservableCollection<Manga>(_mangas);
             Sites = new ReadOnlyObservableCollection<SiteListItem>(_sites);
             IncreaseCommand = new ActionCommand(IncreaseChapter);
@@ -92,25 +92,25 @@ namespace MangaChecker.ViewModels.ViewModels {
                 new SiteListItem {Name = "Backlog", Overrideable = false, IsEnabled = 1},
                 new SiteListItem {Name = "All", Overrideable = false, IsEnabled = 1}
             };
-            _providerService.GetAll.ForEach(p => s.Add(new SiteListItem {Name = p.DbName}));
+            _providerService.GetAll.ForEach(p => s.Add(new SiteListItem {Name = p.DbName, IsEnabled = 1}));
             s.OrderBy(x => x.Name).ToList().ForEach(_sites.Add);
         }
 
-        private void DatabaseOnSettingEvent(object sender, SettingEnum settingEnum) {
-            if (settingEnum != SettingEnum.Get && settingEnum != SettingEnum.Update) {
-                return;
-            }
-            var settings = sender as List<Settings>;
-            if (settings == null) {
-                return;
-            }
-            foreach (var setting in settings) {
-                var v = _sites.FirstOrDefault(s => s.Name == setting.Setting);
-                if (v != null) {
-                    v.IsEnabled = setting.Active;
-                }
-            }
-        }
+        //private void DatabaseOnSettingEvent(object sender, SettingEnum settingEnum) {
+        //    if (settingEnum != SettingEnum.Get && settingEnum != SettingEnum.Update) {
+        //        return;
+        //    }
+        //    var settings = sender as List<Settings>;
+        //    if (settings == null) {
+        //        return;
+        //    }
+        //    foreach (var setting in settings) {
+        //        var v = _sites.FirstOrDefault(s => s.Name == setting.Setting);
+        //        if (v != null) {
+        //            v.IsEnabled = setting.Active;
+        //        }
+        //    }
+        //}
 
 
         private List<Manga> Sortby(string sort, List<Manga> mangas) {

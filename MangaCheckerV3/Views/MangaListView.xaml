@@ -24,7 +24,7 @@
             <ColumnDefinition Width="Auto" MinWidth="100" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <materialDesign:ColorZone Grid.Column="1">
+        <materialDesign:ColorZone Grid.Column="1" Mode="Standard">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
@@ -53,7 +53,7 @@
                 </StackPanel>
             </Grid>
         </materialDesign:ColorZone>
-        <materialDesign:ColorZone Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Mode="PrimaryMid"
+        <materialDesign:ColorZone Grid.Row="2" Grid.Column="1" Mode="PrimaryMid"
                                   materialDesign:ShadowAssist.ShadowDepth="Depth2" Padding="4"
                                   Visibility="{Binding SelectedManga, Converter={StaticResource NullableToVisibilityConverter}}">
             <Grid>

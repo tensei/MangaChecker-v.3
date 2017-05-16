@@ -46,6 +46,7 @@
         <Canvas Grid.Row="1" Height="Auto" MouseDown="Canvas_MouseDown"
                 MouseUp="Canvas_MouseUp" Background="Transparent"
                 MouseLeave="Canvas_MouseLeave"
+                Margin="0,0,17,0" 
                 Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=ToggleButton}" />
         <materialDesign:ColorZone Grid.Row="2">
             <TextBlock Margin="10,0">

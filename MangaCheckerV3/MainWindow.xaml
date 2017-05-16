@@ -10,7 +10,7 @@
     xmlns:viewModels="clr-namespace:MangaChecker.ViewModels.ViewModels;assembly=MangaChecker.ViewModels"
     x:Class="MangaCheckerV3.MainWindow"
     mc:Ignorable="d"
-    Title="MangaChecker" Height="550" Width="725" SaveWindowPosition="True"
+    Title="MangaChecker" Height="600" Width="900" SaveWindowPosition="True" ShowSystemMenuOnRightClick="True"
     TitleCharacterCasing="Normal" BorderThickness="1" BorderBrush="{DynamicResource AccentColorBrush}"
     NonActiveBorderBrush="Black"
     NonActiveGlowBrush="Black"
@@ -87,7 +87,7 @@
                 <Separator />
                 <views:SettingsView DataContext="{Binding SettingsContext}" />
             </materialDesign:Transitioner>
-            <materialDesign:ColorZone Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Padding="4"
+            <materialDesign:ColorZone Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Padding="4" Mode="Standard"
                                       materialDesign:ShadowAssist.ShadowDepth="Depth2">
                 <Grid>
                     <TextBlock Text="{Binding ProviderService.Timer}" HorizontalAlignment="Right" />

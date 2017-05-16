@@ -36,7 +36,12 @@ namespace MangaChecker.Utilities {
 
         public void Dispose() {
             foreach (var plugin in Plugins) {
-                plugin.Value.Dispose();
+                try {
+                    plugin?.Value?.Dispose();
+                }
+                catch (Exception e) {
+                    Console.WriteLine(e);
+                }
             }
             _container?.Dispose();
         }

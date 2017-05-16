@@ -8,12 +8,12 @@ using MangaChecker.Providers.Interfaces;
 using MangaChecker.Utilities.Interfaces;
 
 namespace MangaChecker.Providers.Sites {
-    public class YoManga : IProvider {
+    public class Mangazuki : IProvider {
         private readonly IWebParser _webParser;
         private readonly ILiteDb _liteDb;
         private readonly INewChapterHelper _newChapterHelper;
 
-        public YoManga(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
+        public Mangazuki(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
             _webParser = webParser;
             _liteDb = liteDb;
             _newChapterHelper = newChapterHelper;
@@ -44,28 +44,13 @@ namespace MangaChecker.Providers.Sites {
             //<div class="text">18 ⤵</div>
             var baserl = url;
             var imges = new List<object>();
-            if (!url.EndsWith("page/1")) {
-                url = url + "page/1";
-            }
+
             var html = await _webParser.GetHtmlSourceDocumentAsync(url);
-            imges.Add(html.All.First(i => i.LocalName == "img" && i.ClassList.Contains("open")
+            imges.AddRange(html.All.Where(i => i.LocalName == "img" && i.ClassList.Contains("img-lazy")
                                           && i.HasAttribute("src") &&
-                                          i.GetAttribute("src").Contains("https://yomanga.co/reader/content/comics/"))
-                .GetAttribute("src"));
-            var pages =
-                Regex.Match(html.DocumentElement.InnerHtml, @">([0-9]+) ⤵</div>", RegexOptions.IgnoreCase).Groups[1]
-                    .Value.Trim().Trim('.');
-            var intpages = int.Parse(pages);
-            for (var i = 2; i <= intpages; i++) {
-                url = baserl + $"page/{i}";
-                html = await _webParser.GetHtmlSourceDocumentAsync(url);
-                imges.Add(html.All.First(x => x.LocalName == "img" && x.ClassList.Contains("open")
-                                              && x.HasAttribute("src") &&
-                                              x.GetAttribute("src")
-                                                  .Contains("https://yomanga.co/reader/content/comics/"))
-                    .GetAttribute("src"));
-            }
-            return new Tuple<List<object>, int>(imges, intpages);
+                                          i.GetAttribute("src").Contains("https://mangazuki.co/img/series/")).Select(i=> i.GetAttribute("src")));
+            var pages = imges.Count;
+            return new Tuple<List<object>, int>(imges, pages);
         }
 
         public async Task<object> CheckOne(object manga) {
@@ -76,14 +61,14 @@ namespace MangaChecker.Providers.Sites {
             throw new NotImplementedException();
         }
 
-        public string DbName => "YoManga";
+        public string DbName => "Mangazuki";
 
         public bool LinkIsMatch(string link) {
-            var regex = new Regex("^https://yomanga.co/reader/read/.+/en/[0-9]+/[0-9]+/?[0-9]+?/$");
+            var regex = new Regex("^https://mangazuki.co/read/.+/[0-9]+$");
             return regex.IsMatch(link);
         }
 
         public bool ViewEnabled => true;
-        public string LinktoSite => "http://yomanga.co/";
+        public string LinktoSite => "https://mangazuki.co/";
     }
 }

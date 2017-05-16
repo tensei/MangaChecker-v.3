@@ -55,7 +55,7 @@ namespace MangaCheckerV3 {
             container.RegisterType<IProvider, Mangareader>("mr");
             container.RegisterType<IProvider, Tomochan>("t");
             container.RegisterType<IProvider, Webtoons>("w");
-            container.RegisterType<IProvider, YoManga>("y");
+            container.RegisterType<IProvider, Mangazuki>("y");
 
             container.RegisterType<IEnumerable<IProvider>, IProvider[]>();
 

@@ -65,7 +65,7 @@
     <Compile Include="Sites\Sensescans.cs" />
     <Compile Include="Sites\Tomochan.cs" />
     <Compile Include="Sites\Webtoons.cs" />
-    <Compile Include="Sites\YoManga.cs" />
+    <Compile Include="Sites\Mangazuki.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MangaChecker.Database\MangaChecker.Database.csproj">
