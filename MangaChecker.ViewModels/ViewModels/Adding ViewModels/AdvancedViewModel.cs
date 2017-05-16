@@ -14,26 +14,28 @@ namespace MangaChecker.ViewModels.ViewModels.Adding_ViewModels {
     public class AdvancedViewModel {
         private readonly ObservableCollection<Genre> _genres = new ObservableCollection<Genre>();
 
-        private readonly IProviderSet _providerService;
         private readonly ILiteDb _liteDb;
 
         public AdvancedViewModel(IProviderSet providerService, ILiteDb liteDb) {
-            _providerService = providerService;
             _liteDb = liteDb;
             Manga = new Manga();
             DeleteGenreCommand = new ActionCommand(DeleteGenre);
             AddGenreCommand = new ActionCommand(AddGenre);
             AddMangaCommand = new ActionCommand(AddManga);
             GenresAdded = new ReadOnlyObservableCollection<Genre>(_genres);
-            SiteSelected = Sites?[0];
             SelectedGenre = Genres[0];
+
+            Sites = providerService.GetAll.Select(p => p.DbName).ToList();
+            Sites?.Add("Backlog");
+
+            SiteSelected = Sites?[0];
         }
 
         public Manga Manga { get; set; }
         public List<Genre> Genres => Enum.GetValues(typeof(Genre)).Cast<Genre>().ToList();
         public ReadOnlyObservableCollection<Genre> GenresAdded { get; }
 
-        public List<string> Sites => _providerService.GetAll.Select(p => p.DbName).ToList();
+        public List<string> Sites { get; }
         public string SiteSelected { get; set; }
 
         public Genre SelectedGenre { get; set; }

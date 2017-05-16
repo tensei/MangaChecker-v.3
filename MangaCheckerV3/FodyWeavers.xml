@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Weavers>
-	<Costura IncludeDebugSymbols='false'>
-		<ExcludeAssemblies>
-			MangaChecker.Database
-			MangaChecker.Data
-			MangaChecker.Utilities
-			MangaChecker.Providers
-			MangaChecker.ViewModels
-		</ExcludeAssemblies>
-	</Costura>
+  <Costura IncludeDebugSymbols='false'>
+    <ExcludeAssemblies>
+      MangaChecker.Database
+      MangaChecker.Data
+      MangaChecker.Utilities
+      MangaChecker.Providers
+      MangaChecker.ViewModels
+    </ExcludeAssemblies>
+  </Costura>
   <PropertyChanged />
 </Weavers>
