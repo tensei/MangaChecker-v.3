@@ -18,7 +18,7 @@ namespace MangaChecker.Providers.Sites {
             _liteDb = liteDb;
             _newChapterHelper = newChapterHelper;
         }
-        public async Task CheckAll() {
+        public async Task CheckAll(Action<IManga> status) {
             var all = _liteDb.GetMangasFrom(DbName);
             var openlink = _liteDb.GetOpenLinks();
             var rss = await _webParser.GetRssFeedAsync("https://yomanga.co/reader/feeds/rss");
@@ -28,6 +28,7 @@ namespace MangaChecker.Providers.Sites {
             //rss.Reverse();
             foreach (var manga in all)
             foreach (var rssItemObject in rss) {
+                status.Invoke(manga);
                 if (!rssItemObject.Title.ToLower().Contains(manga.Name.ToLower())) {
                     continue;
                 }

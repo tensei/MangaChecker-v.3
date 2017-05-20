@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using MangaChecker.Data.Interfaces;
 
 namespace MangaChecker.Providers.Interfaces {
     public interface IProvider {
@@ -9,7 +10,7 @@ namespace MangaChecker.Providers.Interfaces {
         bool ViewEnabled { get; }
         string LinktoSite { get; }
         bool LinkIsMatch(string link);
-        Task CheckAll();
+        Task CheckAll(Action<IManga> status);
         Task<object> CheckOne(object manga);
         Task<Tuple<List<object>, int>> GetImagesTaskAsync(string url);
         Task<object> FindMangaInfoOnSite(string url);

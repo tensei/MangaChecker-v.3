@@ -18,7 +18,7 @@ namespace MangaChecker.Providers.Sites {
             _liteDb = liteDb;
             _newChapterHelper = newChapterHelper;
         }
-        public async Task CheckAll() {
+        public async Task CheckAll(Action<IManga> status) {
             var all = _liteDb.GetMangasFrom(DbName);
             var openlink = _liteDb.GetOpenLinks();
             var m = await _load2Pages("https://www.heymanga.me/latest-manga/");
@@ -36,6 +36,7 @@ namespace MangaChecker.Providers.Sites {
             }
             foreach (var manga in all)
             foreach (var rssItemObject in m) {
+                status.Invoke(manga);
                 if (!rssItemObject.Value.ToLower().Contains(manga.Name.ToLower())) {
                     continue;
                 }

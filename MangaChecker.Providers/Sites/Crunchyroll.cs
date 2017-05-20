@@ -9,7 +9,7 @@ namespace MangaChecker.Providers.Sites {
     public class Crunchyroll : IProvider {
         //http://utils.senpai.moe/
 
-        public async Task CheckAll() {
+        public async Task CheckAll(Action<IManga> status) {
             throw new NotImplementedException();
         }
 

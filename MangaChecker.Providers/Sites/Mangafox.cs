@@ -6,8 +6,10 @@ using MangaChecker.Data.Interfaces;
 using MangaChecker.Providers.Interfaces;
 using MangaChecker.Utilities;
 using MangaChecker.Utilities.Interfaces;
+using PropertyChanged;
 
 namespace MangaChecker.Providers.Sites {
+    [ImplementPropertyChanged]
     public class Mangafox : IProvider {
         private readonly IWebParser _webParser;
         private readonly ILiteDb _liteDb;
@@ -20,10 +22,11 @@ namespace MangaChecker.Providers.Sites {
             _newChapterHelper = newChapterHelper;
             _logger = logger;
         }
-        public async Task CheckAll() {
+        public async Task CheckAll(Action<IManga> status) {
             var all = _liteDb.GetMangasFrom(DbName);
             var openlink = _liteDb.GetOpenLinks();
             foreach (var manga in all) {
+                status.Invoke(manga);
                 if (string.IsNullOrEmpty(manga.Rss)) {
                     _logger.Log.Warn($"MANGAFOX {manga.Name} missing rss feed link");
                     continue;

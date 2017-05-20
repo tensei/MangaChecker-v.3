@@ -18,7 +18,7 @@ namespace MangaChecker.Providers.Sites {
             _newChapterHelper = newChapterHelper;
         }
         //http://read.tomochan.today/rss
-        public async Task CheckAll() {
+        public async Task CheckAll(Action<IManga> status) {
             var all = _liteDb.GetMangasFrom(DbName);
             var rss = await _webParser.GetRssFeedAsync("http://read.tomochan.today/rss");
             if (rss == null) {
@@ -28,6 +28,7 @@ namespace MangaChecker.Providers.Sites {
             var openlink = _liteDb.GetOpenLinks();
             foreach (var manga in all)
             foreach (var rssItemObject in rss) {
+                status.Invoke(manga);
                 var isNew = _newChapterHelper.IsNew(manga, rssItemObject.Category, rssItemObject.PubDate,
                     rssItemObject.Link, openlink);
                 await Task.Delay(100);

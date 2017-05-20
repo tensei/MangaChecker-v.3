@@ -45,6 +45,10 @@ namespace MangaChecker.Providers {
             return true;
         }
 
+        private void ChangeStatus(IManga manga) {
+            Status = $"[{_currentProviderIndex}/{Providers.Count}][{manga.Site}] Checking {manga.Name} ...";
+        }
+        private int _currentProviderIndex;
         public async Task Run() {
             Timer = 5;
             while (!Stop) {
@@ -56,14 +60,15 @@ namespace MangaChecker.Providers {
                     await Task.Delay(1000);
                 }
                 else {
-                    foreach (var provider in Providers) {
-                        var setting = _liteDb.GetSettingsFor(provider.DbName);
+                    for (var i = 0; i < Providers.Count; i++) {
+                        var setting = _liteDb.GetSettingsFor(Providers[i].DbName);
                         if (setting.Active == 0) {
                             continue;
                         }
-                        Status = $"Checking {provider.DbName}...";
+                        _currentProviderIndex = i;
+                        Status = $"[{i}/{Providers.Count}]Checking {Providers[i].DbName}...";
                         try {
-                            await provider.CheckAll();
+                            await Providers[i].CheckAll(ChangeStatus);
                         }
                         catch (Exception e) {
                             _logger.Log.Error(e);

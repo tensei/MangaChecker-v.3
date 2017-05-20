@@ -20,7 +20,7 @@ namespace MangaChecker.Providers.Sites {
             _newChapterHelper = newChapterHelper;
             _logger = logger;
         }
-        public async Task CheckAll() {
+        public async Task CheckAll(Action<IManga> status) {
             var all = _liteDb.GetMangasFrom(DbName);
             var brss = _liteDb.GetSettingsFor("Batoto Rss");
             var rss = await _webParser.GetRssFeedAsync(brss.Link);
@@ -32,6 +32,7 @@ namespace MangaChecker.Providers.Sites {
             foreach (var manga in all)
             foreach (var rssItemObject in rss) {
                 // example title Jitsu wa Watashi wa - English - Vol.18 Ch.156: Aizawa Nagisa and Aizawa Nagisa②
+                status.Invoke(manga);
                 if (!rssItemObject.Title.ToLower().Contains(manga.Name.ToLower())) {
                     continue;
                 }

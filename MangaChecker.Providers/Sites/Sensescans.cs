@@ -18,7 +18,7 @@ namespace MangaChecker.Providers.Sites {
             _liteDb = liteDb;
             _newChapterHelper = newChapterHelper;
         }
-        public async Task CheckAll() {
+        public async Task CheckAll(Action<IManga> status) {
             // /en/0/87/5/ == 87.5
             // /en/0/24/ == 24
             var all = _liteDb.GetMangasFrom(DbName);
@@ -30,6 +30,7 @@ namespace MangaChecker.Providers.Sites {
             rss.Reverse();
             foreach (var manga in all)
             foreach (var rssItemObject in rss) {
+                status.Invoke(manga);
                 if (!rssItemObject.Title.ToLower().Contains(manga.Name.ToLower())) {
                     continue;
                 }

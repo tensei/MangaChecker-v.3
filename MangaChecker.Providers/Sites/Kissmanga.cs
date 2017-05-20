@@ -19,10 +19,11 @@ namespace MangaChecker.Providers.Sites {
             _liteDb = liteDb;
             _newChapterHelper = newChapterHelper;
         }
-        public async Task CheckAll() {
+        public async Task CheckAll(Action<IManga> status) {
             var all = _liteDb.GetMangasFrom(DbName);
             var openlink = _liteDb.GetOpenLinks();
             foreach (var manga in all) {
+                status.Invoke(manga);
                 var html = await _webParser.GetHtmlSourceDocumentAsync(manga.BaseMangaLink);
                 if (html == null) {
                     continue;

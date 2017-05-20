@@ -7,7 +7,7 @@ using MangaChecker.Providers.Interfaces;
 
 namespace MangaChecker.Providers.Sites {
     public class Mangahere : IProvider {
-        public async Task CheckAll() {
+        public async Task CheckAll(Action<IManga> status) {
             throw new NotImplementedException();
         }
 

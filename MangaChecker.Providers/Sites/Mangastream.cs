@@ -18,7 +18,7 @@ namespace MangaChecker.Providers.Sites {
             _liteDb = liteDb;
             _newChapterHelper = newChapterHelper;
         }
-        public async Task CheckAll() {
+        public async Task CheckAll(Action<IManga> status) {
             var all = _liteDb.GetMangasFrom(DbName);
             var rss = await _webParser.GetRssFeedAsync("http://mangastream.com/rss");
             if (rss == null) {
@@ -28,6 +28,7 @@ namespace MangaChecker.Providers.Sites {
             var openlink = _liteDb.GetOpenLinks();
             foreach (var manga in all)
             foreach (var rssItemObject in rss) {
+                status.Invoke(manga);
                 if (!rssItemObject.Title.ToLower().Contains(manga.Name.ToLower())) {
                     continue;
                 }
