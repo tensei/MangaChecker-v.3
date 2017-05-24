@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
@@ -121,41 +122,25 @@ namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
             }
             SaveProgress = "Visible";
             for (var i = 0; i < _images.Count; i++) {
-                if (_isClosing) {
-                    break;
-                }
+                if (_isClosing) break;
                 var img = _images[i];
                 ProgressValue = i + 1;
-                if (img is string) {
-                    var client = await _webParser.GetHtmlDataAsync((string) img);
-                    img = BytesToBitmapImage(client);
-                }
-                var encoder = new PngBitmapEncoder();
-                encoder.Frames.Add(BitmapFrame.Create((BitmapSource) img));
-                using (var stream = new FileStream($"{Path.Combine(folder, $"{i + 1}.png")}", FileMode.Create)) {
-                    encoder.Save(stream);
-                }
+                await SaveImage(img.ToString(), i + 1, folder);
                 await Task.Delay(50);
             }
             SaveProgress = "Collapsed";
             SaveEnabled = true;
         }
-
-        private static BitmapImage BytesToBitmapImage(byte[] bytes) {
-            if (bytes == null) {
-                return null;
-            }
-            using (var mem = new MemoryStream(bytes, 0, bytes.Length)) {
-                mem.Position = 0;
-                var image = new BitmapImage();
-                image.BeginInit();
-                image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
-                image.CacheOption = BitmapCacheOption.OnLoad;
-                image.UriSource = null;
-                image.StreamSource = mem;
-                image.EndInit();
-                image.Freeze();
-                return image;
+        
+        private async Task SaveImage(string url, int num, string folder) {
+            try {
+                var lastSlash = url.LastIndexOf('/');
+                var guid = url.Substring(lastSlash + 1);
+                var client = new WebClient();
+                var extension = guid.Substring(guid.LastIndexOf(".", StringComparison.Ordinal) + 1);
+                await client.DownloadFileTaskAsync(url, Path.Combine(folder, $"{num}.{extension}"));
+            } catch (Exception e) {
+                Console.WriteLine(e);
             }
         }
     }
