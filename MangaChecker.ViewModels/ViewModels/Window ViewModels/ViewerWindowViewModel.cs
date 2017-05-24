@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
+using System.IO.Compression;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -123,11 +124,15 @@ namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
             SaveProgress = "Visible";
             for (var i = 0; i < _images.Count; i++) {
                 if (_isClosing) break;
-                var img = _images[i];
                 ProgressValue = i + 1;
-                await SaveImage(img.ToString(), i + 1, folder);
+                await SaveImage(_images[i].ToString(), i + 1, folder);
                 await Task.Delay(50);
             }
+            if (File.Exists($"{folder}.zip")) {
+                File.Delete($"{folder}.zip");
+            }
+            ZipFile.CreateFromDirectory(folder, $"{folder}.zip", CompressionLevel.Optimal, true);
+            Directory.Delete(folder, true);
             SaveProgress = "Collapsed";
             SaveEnabled = true;
         }
