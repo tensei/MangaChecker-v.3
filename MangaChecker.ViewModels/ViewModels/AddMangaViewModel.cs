@@ -1,12 +1,11 @@
-﻿using System.Windows.Input;
+﻿using System.ComponentModel;
+using System.Windows.Input;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Providers.Interfaces;
 using MangaChecker.ViewModels.ViewModels.Adding_ViewModels;
-using PropertyChanged;
 
 namespace MangaChecker.ViewModels.ViewModels {
-    [ImplementPropertyChanged]
-    public class AddMangaViewModel {
+    public class AddMangaViewModel : INotifyPropertyChanged {
         public AddMangaViewModel(IProviderSet providerService, ILiteDb liteDb) {
             NormalDataContext = new NormalViewModel();
             NormalCommand = new ActionCommand(() => {
@@ -34,5 +33,6 @@ namespace MangaChecker.ViewModels.ViewModels {
         public ICommand NormalCommand { get; }
 
         public ICommand AdvancedCommand { get; }
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

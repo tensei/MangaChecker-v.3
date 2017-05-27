@@ -9,10 +9,10 @@ using MangaChecker.Utilities.Interfaces;
 
 namespace MangaChecker.Providers.Sites {
     public class Batoto : IProvider {
-        private readonly IWebParser _webParser;
         private readonly ILiteDb _liteDb;
-        private readonly INewChapterHelper _newChapterHelper;
         private readonly Logger _logger;
+        private readonly INewChapterHelper _newChapterHelper;
+        private readonly IWebParser _webParser;
 
         public Batoto(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper, Logger logger) {
             _webParser = webParser;
@@ -20,6 +20,7 @@ namespace MangaChecker.Providers.Sites {
             _newChapterHelper = newChapterHelper;
             _logger = logger;
         }
+
         public async Task CheckAll(Action<IManga> status) {
             var all = _liteDb.GetMangasFrom(DbName);
             var brss = _liteDb.GetSettingsFor("Batoto Rss");

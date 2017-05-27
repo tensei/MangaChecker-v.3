@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using MangaChecker.Data.Interfaces;
@@ -8,17 +7,22 @@ using MangaChecker.Providers.Interfaces;
 using MangaChecker.Utilities;
 using MangaChecker.ViewModels.Interfaces;
 using MaterialDesignThemes.Wpf;
-using PropertyChanged;
 
 namespace MangaChecker.ViewModels.ViewModels {
-    [ImplementPropertyChanged]
-    public class MainWindowViewModel {
+    public class MainWindowViewModel : INotifyPropertyChanged {
         public static MainWindowViewModel Instance;
+        private readonly ILinkParser _linkParser;
+
+        private readonly ILiteDb _liteDb;
+        private readonly Logger _logger;
+        private readonly IViewModelFactory _viewModelFactory;
+        private readonly IWindowFactory _windowFactory;
 
         /// <summary>
         ///     Initializes a new instance of the MainWindowViewModel class.
         /// </summary>
-        public MainWindowViewModel(IProviderService providerService, ILinkParser linkParser, IWindowFactory windowFactory,
+        public MainWindowViewModel(IProviderService providerService, ILinkParser linkParser,
+            IWindowFactory windowFactory,
             IViewModelFactory viewModelFactory, ILiteDb liteDb, Logger logger) {
             _liteDb = liteDb;
             _logger = logger;
@@ -44,12 +48,7 @@ namespace MangaChecker.ViewModels.ViewModels {
             //SnackbarQueue.Enqueue("Starting...", true);
         }
 
-        private readonly ILiteDb _liteDb;
-        private readonly ILinkParser _linkParser;
-        private readonly IWindowFactory _windowFactory;
-        private readonly Logger _logger;
         public IProviderService ProviderService { get; }
-        private readonly IViewModelFactory _viewModelFactory;
 
         public ISnackbarMessageQueue SnackbarQueue { get; }
 
@@ -69,6 +68,9 @@ namespace MangaChecker.ViewModels.ViewModels {
         public NewMangaViewModel NewContext => _viewModelFactory.CreateNewMangaViewModel;
         public HistoryViewModel HistoryContext => _viewModelFactory.CreateHistoryViewModel;
 
+        public GalleryViewModel GalleryContext => _viewModelFactory.CreateGalleryViewModel;
+        public event PropertyChangedEventHandler PropertyChanged;
+
 
         private void StartStop() {
             if (!ProviderService.Pause) {
@@ -86,11 +88,19 @@ namespace MangaChecker.ViewModels.ViewModels {
 
         private void ParseLink() {
             var link = Clipboard.GetText().ToLower();
-            if (string.IsNullOrWhiteSpace(link)) return;
-            var provider = _linkParser.GetProviderFirstOrDefault(p => p.LinkIsMatch(link) && link.ToLower().Contains(p.DbName.ToLower()) && p.ViewEnabled);
+            if (string.IsNullOrWhiteSpace(link)) {
+                return;
+            }
+            var provider =
+                _linkParser.GetProviderFirstOrDefault(p => p.LinkIsMatch(link) &&
+                                                           link.ToLower().Contains(p.DbName.ToLower()) &&
+                                                           p.ViewEnabled);
             if (provider != null) {
-                _windowFactory.CreateViewerWindow(new Manga { Name = link, Link = link,
-                    Site = provider.DbName}, provider);
+                _windowFactory.CreateViewerWindow(new Manga {
+                    Name = link,
+                    Link = link,
+                    Site = provider.DbName
+                }, provider);
             }
         }
     }

@@ -4,16 +4,17 @@ using System.Globalization;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
 using MangaChecker.Utilities.Interfaces;
-using static MangaChecker.Utilities.Logger;
 
 namespace MangaChecker.Utilities {
     public class NewChapterHelper : INewChapterHelper {
         private readonly ILiteDb _liteDb;
         private readonly Logger _logger;
+
         public NewChapterHelper(ILiteDb liteDb, Logger logger) {
             _liteDb = liteDb;
             _logger = logger;
         }
+
         public bool IsNew(Manga manga, string newChapter, DateTime newDate, string newLink, bool openLink) {
             var isFloat = float.TryParse(newChapter, NumberStyles.Float, CultureInfo.InvariantCulture,
                 out float floatChapter);
@@ -37,11 +38,11 @@ namespace MangaChecker.Utilities {
             }
             //this should never be reached!!
             _logger.Log.Error($"Current manga.Name={manga.Name}," +
-                      $" manga.Chapter={manga.Chapter}," +
-                      $" manga.Newest={manga.Newest}, " +
-                      $" manga.Link={manga.Link}, " +
-                      $" manga.Rss={manga.Rss},\n" +
-                      $"newChapter={newChapter}, floatChapter={floatChapter}, newLink={newLink}, newDate={newDate}");
+                              $" manga.Chapter={manga.Chapter}," +
+                              $" manga.Newest={manga.Newest}, " +
+                              $" manga.Link={manga.Link}, " +
+                              $" manga.Rss={manga.Rss},\n" +
+                              $"newChapter={newChapter}, floatChapter={floatChapter}, newLink={newLink}, newDate={newDate}");
             return false;
         }
 

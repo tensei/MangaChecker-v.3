@@ -118,14 +118,14 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <ListView ItemsSource="{Binding Mangas}" Grid.Row="1" Grid.Column="1" 
-                 SelectedItem="{Binding SelectedManga}" >
+        <ListView ItemsSource="{Binding Mangas}" Grid.Row="1" Grid.Column="1"
+                  SelectedItem="{Binding SelectedManga}">
             <ListView.View>
                 <GridView AllowsColumnReorder="False">
                     <GridViewColumn Header="Ch." DisplayMemberBinding="{Binding Chapter}" Width="50" />
-                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="310"/>
-                    <GridViewColumn Header="Site" DisplayMemberBinding="{Binding Site}" Width="120"/>
-                    <GridViewColumn Header="Updated" DisplayMemberBinding="{Binding DaysAgo}" Width="100"/>
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="310" />
+                    <GridViewColumn Header="Site" DisplayMemberBinding="{Binding Site}" Width="120" />
+                    <GridViewColumn Header="Updated" DisplayMemberBinding="{Binding DaysAgo}" Width="100" />
                 </GridView>
             </ListView.View>
             <!--<ListBox.Template>
@@ -155,6 +155,6 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>-->
         </ListView>
-        
+
     </Grid>
 </UserControl>

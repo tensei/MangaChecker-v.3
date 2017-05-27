@@ -1,10 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
 using MangaChecker.Data.Interfaces;
-using PropertyChanged;
 
 namespace MangaChecker.Data.Models {
-    [ImplementPropertyChanged]
-    public class PluginModel : IPluginMetadata {
+    public class PluginModel : IPluginMetadata, INotifyPropertyChanged {
         private readonly IPluginMetadata _metadata;
         private readonly IPlugin _settings;
 
@@ -14,6 +13,7 @@ namespace MangaChecker.Data.Models {
         }
 
         public object SettingsView => _settings.SettingsView();
+        public event PropertyChangedEventHandler PropertyChanged;
         public string Title => _metadata.Title;
         public string Author => _metadata.Author;
         public string Version => _metadata.Version;

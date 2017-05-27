@@ -1,11 +1,10 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using MangaChecker.Data.Models;
 using MangaChecker.Utilities.Interfaces;
-using PropertyChanged;
 
 namespace MangaChecker.ViewModels.ViewModels {
-    [ImplementPropertyChanged]
-    public class PluginsViewModel {
+    public class PluginsViewModel : INotifyPropertyChanged {
         private readonly ObservableCollection<PluginModel> _plugins = new ObservableCollection<PluginModel>();
 
         public PluginsViewModel(IPluginHost pluginHost) {
@@ -16,5 +15,6 @@ namespace MangaChecker.ViewModels.ViewModels {
         }
 
         public ReadOnlyObservableCollection<PluginModel> Plugins { get; }
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

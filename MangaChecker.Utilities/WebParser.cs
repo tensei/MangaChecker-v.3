@@ -9,8 +9,6 @@ using AngleSharp.Dom.Html;
 using AngleSharp.Parser.Html;
 using AngleSharp.Parser.Xml;
 using CloudFlareUtilities;
-using MangaChecker.Data;
-using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
 using MangaChecker.Utilities.Interfaces;
 
@@ -26,9 +24,9 @@ namespace MangaChecker.Utilities {
                 Timeout = TimeSpan.FromSeconds(15)
             };
         }
+
         public async Task<string> GetHtmlSourceStringAsync(string url) {
             try {
-
                 // Use the HttpClient as usual. Any JS challenge will be solved automatically for you.
                 var content = await _client.GetByteArrayAsync(url);
 

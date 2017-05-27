@@ -24,7 +24,7 @@ namespace DBMigration.ViewModels {
         public ICommand Pause { get; }
 
         public string Output {
-            get { return _output; }
+            get => _output;
             set {
                 _output = value;
                 OnPropertyChanged();

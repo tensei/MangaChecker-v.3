@@ -9,15 +9,16 @@ using MangaChecker.Utilities.Interfaces;
 
 namespace MangaChecker.Providers.Sites {
     public class Mangazuki : IProvider {
-        private readonly IWebParser _webParser;
         private readonly ILiteDb _liteDb;
         private readonly INewChapterHelper _newChapterHelper;
+        private readonly IWebParser _webParser;
 
         public Mangazuki(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
             _webParser = webParser;
             _liteDb = liteDb;
             _newChapterHelper = newChapterHelper;
         }
+
         public async Task CheckAll(Action<IManga> status) {
             var all = _liteDb.GetMangasFrom(DbName);
             var openlink = _liteDb.GetOpenLinks();
@@ -48,8 +49,9 @@ namespace MangaChecker.Providers.Sites {
 
             var html = await _webParser.GetHtmlSourceDocumentAsync(url);
             imges.AddRange(html.All.Where(i => i.LocalName == "img" && i.ClassList.Contains("img-lazy")
-                                          && i.HasAttribute("src") &&
-                                          i.GetAttribute("src").Contains("https://mangazuki.co/img/series/")).Select(i=> i.GetAttribute("src")));
+                                               && i.HasAttribute("src") &&
+                                               i.GetAttribute("src").Contains("https://mangazuki.co/img/series/"))
+                .Select(i => i.GetAttribute("src")));
             var pages = imges.Count;
             return new Tuple<List<object>, int>(imges, pages);
         }

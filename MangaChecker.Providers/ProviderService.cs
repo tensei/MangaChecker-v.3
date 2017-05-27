@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Providers.Interfaces;
 using MangaChecker.Utilities;
-using PropertyChanged;
 
 namespace MangaChecker.Providers {
-    [ImplementPropertyChanged]
-    public class ProviderService : IProviderService {
+    public class ProviderService : IProviderService, INotifyPropertyChanged {
+        private readonly ILiteDb _liteDb;
+        private readonly Logger _logger;
+        private int _currentProviderIndex;
 
         public ProviderService(IProviderSet providerSet, ILiteDb liteDb, Logger logger) {
             Providers = providerSet.GetAll;
@@ -17,13 +19,13 @@ namespace MangaChecker.Providers {
             _logger = logger;
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public void Close() {
             Stop = true;
         }
 
         public List<IProvider> Providers { get; }
-        private readonly ILiteDb _liteDb;
-        private readonly Logger _logger;
         public bool Pause { get; set; } = false;
         public bool Stop { get; set; }
         public int Timer { get; set; }
@@ -45,10 +47,6 @@ namespace MangaChecker.Providers {
             return true;
         }
 
-        private void ChangeStatus(IManga manga) {
-            Status = $"[{_currentProviderIndex}/{Providers.Count}][{manga.Site}] Checking {manga.Name} ...";
-        }
-        private int _currentProviderIndex;
         public async Task Run() {
             Timer = 5;
             while (!Stop) {
@@ -79,6 +77,10 @@ namespace MangaChecker.Providers {
                     await Task.Delay(1000);
                 }
             }
+        }
+
+        private void ChangeStatus(IManga manga) {
+            Status = $"[{_currentProviderIndex}/{Providers.Count}][{manga.Site}] Checking {manga.Name} ...";
         }
     }
 }

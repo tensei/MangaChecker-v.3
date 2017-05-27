@@ -8,15 +8,16 @@ using MangaChecker.Utilities.Interfaces;
 
 namespace MangaChecker.Providers.Sites {
     public class Tomochan : IProvider {
-        private readonly IWebParser _webParser;
         private readonly ILiteDb _liteDb;
         private readonly INewChapterHelper _newChapterHelper;
+        private readonly IWebParser _webParser;
 
         public Tomochan(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
             _webParser = webParser;
             _liteDb = liteDb;
             _newChapterHelper = newChapterHelper;
         }
+
         //http://read.tomochan.today/rss
         public async Task CheckAll(Action<IManga> status) {
             var all = _liteDb.GetMangasFrom(DbName);

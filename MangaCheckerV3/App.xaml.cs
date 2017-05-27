@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,12 +10,10 @@ using MangaChecker.Providers.Interfaces;
 using MangaChecker.Providers.Sites;
 using MangaChecker.Utilities;
 using MangaChecker.Utilities.Interfaces;
-using MangaChecker.ViewModels;
 using MangaChecker.ViewModels.Interfaces;
 using MangaChecker.ViewModels.ViewModels;
 using MangaCheckerV3.Common;
 using MangaCheckerV3.Helpers;
-using MangaCheckerV3.Views;
 using MangaCheckerV3.Views.Windows;
 using Microsoft.Practices.Unity;
 
@@ -38,7 +35,7 @@ namespace MangaCheckerV3 {
             container.RegisterType<IWebParser, WebParser>();
             container.RegisterType<IWindowFactory, WindowFactory>();
             container.RegisterType<Logger>();
-            
+
             container.RegisterInstance<IPluginHost>(new PluginHost());
 
             container.RegisterType<IProvider, Mangastream>("ms");

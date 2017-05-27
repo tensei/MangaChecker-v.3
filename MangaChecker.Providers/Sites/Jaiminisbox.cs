@@ -9,15 +9,16 @@ using MangaChecker.Utilities.Interfaces;
 
 namespace MangaChecker.Providers.Sites {
     public class Jaiminisbox : IProvider {
-        private readonly IWebParser _webParser;
         private readonly ILiteDb _liteDb;
         private readonly INewChapterHelper _newChapterHelper;
+        private readonly IWebParser _webParser;
 
         public Jaiminisbox(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
             _webParser = webParser;
             _liteDb = liteDb;
             _newChapterHelper = newChapterHelper;
         }
+
         public async Task CheckAll(Action<IManga> status) {
             // /en/0/87/5/ == 87.5
             // /en/0/24/ == 24

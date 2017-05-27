@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
 using MangaChecker.Data.Interfaces;
+using MangaChecker.Data.Models;
 using MangaChecker.Providers.Interfaces;
 using MangaChecker.Utilities;
-using PropertyChanged;
 
 namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
-    [ImplementPropertyChanged]
-    public class ViewerWindowViewModel {
+    public class ViewerWindowViewModel : INotifyPropertyChanged {
+        private readonly Action _closeAction;
         private readonly ObservableCollection<object> _images = new ObservableCollection<object>();
         private readonly IManga _manga;
 
@@ -28,7 +27,7 @@ namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
         private List<object> _imgs;
 
         private bool _isClosing;
-        private readonly Action _closeAction;
+
         public ViewerWindowViewModel(IManga manga, IProvider provider, Action close, bool saveEnabled = true) {
             SaveEnabled = saveEnabled;
             _closeAction = close;
@@ -44,7 +43,15 @@ namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
                 }
             });
         }
-        
+
+        public ViewerWindowViewModel(GalleryChapter chapter) {
+            SaveEnabled = false;
+            Pages = new ReadOnlyObservableCollection<int>(_pages);
+            Images = new ReadOnlyObservableCollection<object>(_images);
+            foreach (var image in chapter.Path) {
+            }
+        }
+
         public ReadOnlyObservableCollection<object> Images { get; }
         public string Title { get; set; }
 
@@ -66,6 +73,7 @@ namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
         public int ProgressValue { get; set; }
 
         public bool SaveEnabled { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public void Dispose() {
             _isClosing = true;
@@ -76,7 +84,7 @@ namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
 
         private async Task LoadImages(IManga manga, IProvider provider) {
             var imgs = await provider.GetImagesTaskAsync(manga.Link);
-            if (imgs.Item1.Count <=0) {
+            if (imgs.Item1.Count <= 0) {
                 _closeAction.Invoke();
             }
             _imgs = imgs.Item1;
@@ -123,7 +131,9 @@ namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
             }
             SaveProgress = "Visible";
             for (var i = 0; i < _images.Count; i++) {
-                if (_isClosing) break;
+                if (_isClosing) {
+                    break;
+                }
                 ProgressValue = i + 1;
                 await SaveImage(_images[i].ToString(), i + 1, folder);
                 await Task.Delay(50);
@@ -136,7 +146,7 @@ namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
             SaveProgress = "Collapsed";
             SaveEnabled = true;
         }
-        
+
         private async Task SaveImage(string url, int num, string folder) {
             try {
                 var lastSlash = url.LastIndexOf('/');
@@ -144,7 +154,8 @@ namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
                 var client = new WebClient();
                 var extension = guid.Substring(guid.LastIndexOf(".", StringComparison.Ordinal) + 1);
                 await client.DownloadFileTaskAsync(url, Path.Combine(folder, $"{num}.{extension}"));
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 Console.WriteLine(e);
             }
         }

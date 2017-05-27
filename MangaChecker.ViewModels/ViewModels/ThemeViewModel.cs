@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.ViewModels.Properties;
 using MaterialDesignColors;
-using PropertyChanged;
 
 namespace MangaChecker.ViewModels.ViewModels {
-    [ImplementPropertyChanged]
-    public class ThemeViewModel {
+    public class ThemeViewModel : INotifyPropertyChanged {
         private readonly IThemeHelper _themeHelper;
 
         public ThemeViewModel(IThemeHelper themeHelper) {
@@ -19,9 +17,9 @@ namespace MangaChecker.ViewModels.ViewModels {
             ToggleBaseCommand = new ActionCommand(s => ApplyTheme((bool) s));
             SetupTheme();
         }
-        
+
         public IEnumerable<Swatch> PrimaryColors => _themeHelper.Swatches();
-        private IEnumerable<Swatch> AccentColors => _themeHelper.Swatches().Where(s=> s.IsAccented);
+        private IEnumerable<Swatch> AccentColors => _themeHelper.Swatches().Where(s => s.IsAccented);
 
         public ICommand ApplyPrimaryCommand { get; }
         public ICommand ApplyAccentCommand { get; }
@@ -29,12 +27,14 @@ namespace MangaChecker.ViewModels.ViewModels {
         public bool Theme { get; set; }
 
         public ICommand ToggleBaseCommand { get; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private void ApplyTheme(bool isDark) {
             _themeHelper.ChangeThemeTo(isDark).ConfigureAwait(false);
             Settings.Default.Theme = isDark;
             Settings.Default.Save();
         }
+
         private void ApplyPrimary(Swatch swatch) {
             _themeHelper.ChangePrimaryColorTo(swatch).ConfigureAwait(false);
             Settings.Default.Primary = swatch.Name;

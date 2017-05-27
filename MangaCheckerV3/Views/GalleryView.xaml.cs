@@ -2,10 +2,10 @@
 
 namespace MangaCheckerV3.Views {
     /// <summary>
-    ///     Interaction logic for ThemeView.xaml
+    ///     Interaction logic for GalleryView.xaml
     /// </summary>
-    public partial class ThemeView : UserControl {
-        public ThemeView() {
+    public partial class GalleryView : UserControl {
+        public GalleryView() {
             InitializeComponent();
         }
     }

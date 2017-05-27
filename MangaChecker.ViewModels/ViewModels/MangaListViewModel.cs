@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using MangaChecker.Data.Enums;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
 using MangaChecker.Providers.Interfaces;
-using PropertyChanged;
 
 namespace MangaChecker.ViewModels.ViewModels {
-    [ImplementPropertyChanged]
-    public class MangaListViewModel {
+    public class MangaListViewModel : INotifyPropertyChanged {
+        private readonly ILiteDb _liteDb;
+
         /// <summary>
         ///     Initializes a new instance of the MangaListViewModel class.
         /// </summary>
@@ -23,11 +23,11 @@ namespace MangaChecker.ViewModels.ViewModels {
         private readonly IProviderSet _providerService;
 
         private readonly ObservableCollection<SiteListItem> _sites = new ObservableCollection<SiteListItem>();
+        private readonly IWindowFactory _windowFactory;
 
         private SiteListItem _selectedSite;
         private string _sortMode = "Updated";
-        private readonly IWindowFactory _windowFactory;
-        private readonly ILiteDb _liteDb;
+
         public MangaListViewModel(IProviderSet providerService, IWindowFactory windowFactory, ILiteDb liteDb) {
             _providerService = providerService;
             _liteDb = liteDb;
@@ -65,7 +65,7 @@ namespace MangaChecker.ViewModels.ViewModels {
         public Manga SelectedManga { get; set; }
 
         public SiteListItem SelectedSite {
-            get { return _selectedSite; }
+            get => _selectedSite;
             set {
                 _selectedSite = value;
                 FillMangaList(value.Name);
@@ -75,7 +75,7 @@ namespace MangaChecker.ViewModels.ViewModels {
         public int SelectedSiteIndex { get; set; }
 
         public string SortMode {
-            get { return _sortMode; }
+            get => _sortMode;
             set {
                 if (_sortMode == value) {
                     return;
@@ -86,6 +86,7 @@ namespace MangaChecker.ViewModels.ViewModels {
         }
 
         public int AmountItem { get; set; } = 1;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private void SetupSites() {
             var s = new List<SiteListItem> {
@@ -157,12 +158,13 @@ namespace MangaChecker.ViewModels.ViewModels {
             if (!SelectedManga.Link.Contains("/")) {
                 return;
             }
-            Process.Start((string) SelectedManga.Link);
+            Process.Start(SelectedManga.Link);
         }
 
         private void DeleteManga() {
             _liteDb.Delete(SelectedManga);
-            MainWindowViewModel.Instance.SnackbarQueue.Enqueue($"Deleted {SelectedManga.Name}", "UNDO", HandleUndoMethod,
+            MainWindowViewModel.Instance.SnackbarQueue.Enqueue($"Deleted {SelectedManga.Name}", "UNDO",
+                HandleUndoMethod,
                 SelectedManga);
             _mangas.Remove(SelectedManga);
         }

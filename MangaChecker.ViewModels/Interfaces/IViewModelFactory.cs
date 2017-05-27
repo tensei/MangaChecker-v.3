@@ -9,5 +9,6 @@ namespace MangaChecker.ViewModels.Interfaces {
         ThemeViewModel CreateThemeViewModel { get; }
         NewMangaViewModel CreateNewMangaViewModel { get; }
         HistoryViewModel CreateHistoryViewModel { get; }
+        GalleryViewModel CreateGalleryViewModel { get; }
     }
 }

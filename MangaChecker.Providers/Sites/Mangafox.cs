@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Providers.Interfaces;
 using MangaChecker.Utilities;
 using MangaChecker.Utilities.Interfaces;
-using PropertyChanged;
 
 namespace MangaChecker.Providers.Sites {
-    [ImplementPropertyChanged]
-    public class Mangafox : IProvider {
-        private readonly IWebParser _webParser;
+    public class Mangafox : IProvider, INotifyPropertyChanged {
         private readonly ILiteDb _liteDb;
-        private readonly INewChapterHelper _newChapterHelper;
         private readonly Logger _logger;
+        private readonly INewChapterHelper _newChapterHelper;
+        private readonly IWebParser _webParser;
 
         public Mangafox(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper, Logger logger) {
             _webParser = webParser;
@@ -22,6 +21,9 @@ namespace MangaChecker.Providers.Sites {
             _newChapterHelper = newChapterHelper;
             _logger = logger;
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public async Task CheckAll(Action<IManga> status) {
             var all = _liteDb.GetMangasFrom(DbName);
             var openlink = _liteDb.GetOpenLinks();

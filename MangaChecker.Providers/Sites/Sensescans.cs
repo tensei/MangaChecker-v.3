@@ -9,15 +9,16 @@ using MangaChecker.Utilities.Interfaces;
 
 namespace MangaChecker.Providers.Sites {
     public class Sensescans : IProvider {
-        private readonly IWebParser _webParser;
         private readonly ILiteDb _liteDb;
         private readonly INewChapterHelper _newChapterHelper;
+        private readonly IWebParser _webParser;
 
         public Sensescans(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
             _webParser = webParser;
             _liteDb = liteDb;
             _newChapterHelper = newChapterHelper;
         }
+
         public async Task CheckAll(Action<IManga> status) {
             // /en/0/87/5/ == 87.5
             // /en/0/24/ == 24
@@ -60,7 +61,8 @@ namespace MangaChecker.Providers.Sites {
             var html = await _webParser.GetHtmlSourceDocumentAsync(url);
             imges.Add(html.All.First(i => i.LocalName == "img" && i.ClassList.Contains("open")
                                           && i.HasAttribute("src") &&
-                                          i.GetAttribute("src").Contains("http://sensescans.com/reader/content/comics/"))
+                                          i.GetAttribute("src")
+                                              .Contains("http://sensescans.com/reader/content/comics/"))
                 .GetAttribute("src"));
             var pages =
                 Regex.Match(html.DocumentElement.InnerHtml, @">([0-9]+) ⤵</div>", RegexOptions.IgnoreCase).Groups[1]

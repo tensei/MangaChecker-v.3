@@ -1,12 +1,13 @@
 ﻿using System;
+using System.ComponentModel;
 using MangaChecker.Data.Interfaces;
-using PropertyChanged;
 
 //using SQLite;
 
 namespace MangaChecker.Data.Models {
-    [ImplementPropertyChanged]
-    public class Settings : ISettings {
+    public class Settings : ISettings, INotifyPropertyChanged {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public int Id { get; set; }
 
         public string Setting { get; set; }

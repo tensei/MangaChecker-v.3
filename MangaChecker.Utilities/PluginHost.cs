@@ -29,10 +29,6 @@ namespace MangaChecker.Utilities {
             _container = new CompositionContainer(catalog);
             Initialize();
         }
-        
-
-        [ImportMany]
-        public IEnumerable<Lazy<IPlugin, IPluginMetadata>> Plugins { get; set; }
 
         public void Dispose() {
             foreach (var plugin in Plugins) {
@@ -45,6 +41,10 @@ namespace MangaChecker.Utilities {
             }
             _container?.Dispose();
         }
+
+
+        [ImportMany]
+        public IEnumerable<Lazy<IPlugin, IPluginMetadata>> Plugins { get; set; }
 
         public void Initialize() {
             _container.ComposeParts(this);

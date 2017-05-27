@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using MangaChecker.Data.Enums;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
-using PropertyChanged;
 
 namespace MangaChecker.ViewModels.ViewModels {
-    [ImplementPropertyChanged]
-    public class HistoryViewModel {
+    public class HistoryViewModel : INotifyPropertyChanged {
         private readonly ObservableCollection<Manga> _history = new ObservableCollection<Manga>();
-        private readonly IWindowFactory _windowFactory;
         private readonly ILiteDb _liteDb;
+        private readonly IWindowFactory _windowFactory;
+
         public HistoryViewModel(IWindowFactory windowFactory, ILiteDb liteDb) {
             _windowFactory = windowFactory;
             _liteDb = liteDb;
@@ -23,7 +23,7 @@ namespace MangaChecker.ViewModels.ViewModels {
             _liteDb.MangaEvent += DatabaseOnMangaEvent;
             Refresh();
         }
-        
+
         public ReadOnlyObservableCollection<Manga> History { get; }
 
         public ICommand RefreshListCommand { get; }
@@ -32,6 +32,7 @@ namespace MangaChecker.ViewModels.ViewModels {
         public ICommand ViewCommand { get; }
 
         public string LastRefresh { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private void DatabaseOnMangaEvent(object sender, MangaEnum mangaEnum) {
             if (mangaEnum != MangaEnum.Update) {

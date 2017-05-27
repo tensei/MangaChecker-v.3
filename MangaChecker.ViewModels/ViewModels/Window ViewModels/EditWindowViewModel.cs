@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using MangaChecker.Data.Enums;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
 using MangaChecker.Providers.Interfaces;
-using PropertyChanged;
 
 namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
-    [ImplementPropertyChanged]
-    public class EditWindowViewModel {
+    public class EditWindowViewModel : INotifyPropertyChanged {
         private readonly ObservableCollection<Genre> _genres = new ObservableCollection<Genre>();
-        private readonly ObservableCollection<string> _otherChapters = new ObservableCollection<string>();
         private readonly ILiteDb _liteDb;
+        private readonly ObservableCollection<string> _otherChapters = new ObservableCollection<string>();
 
         public EditWindowViewModel(Manga manga, IProviderService providerService, ILiteDb liteDb) {
             _liteDb = liteDb;
@@ -56,6 +55,8 @@ namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
         public ICommand DeleteOtherChapterCommand { get; }
 
         public ICommand AddOtherChapterCommand { get; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private void AddGenre() {
             if (Manga.Genres.Contains(SelectedGenre)) {

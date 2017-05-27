@@ -1,11 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using MangaChecker.Data.Models;
-using PropertyChanged;
 
 namespace MangaChecker.ViewModels.ViewModels.Adding_ViewModels {
-    [ImplementPropertyChanged]
-    public class NormalViewModel {
+    public class NormalViewModel : INotifyPropertyChanged {
         public NormalViewModel() {
             GetInfoCommand = new ActionCommand(async () => await GetInfo());
             AddMangaCommand = new ActionCommand(Add);
@@ -26,6 +25,7 @@ namespace MangaChecker.ViewModels.ViewModels.Adding_ViewModels {
         public bool GetIsEnabled { get; set; } = true;
 
         public bool InfoVisibility { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private async Task GetInfo() {
             InfoVisibility = false;

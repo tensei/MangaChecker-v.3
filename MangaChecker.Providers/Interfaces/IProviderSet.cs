@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using MangaChecker.Data.Interfaces;
 
 namespace MangaChecker.Providers.Interfaces {
     public interface IProviderSet {

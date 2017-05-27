@@ -19,16 +19,16 @@
     d:DataContext="{d:DesignInstance {x:Type viewModels:MainWindowViewModel}, IsDesignTimeCreatable=False}">
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
-            <Button Command="{Binding OpenViewerCommand}" ToolTip="Quick Viewer" >
-				<materialDesign:PackIcon Kind="Eye"/>
-			</Button>
+            <Button Command="{Binding OpenViewerCommand}" ToolTip="Quick Viewer">
+                <materialDesign:PackIcon Kind="Eye" />
+            </Button>
             <Button ToolTip="Start/Stop" Command="{Binding StartStopCommand}">
                 <materialDesign:PackIcon Kind="{Binding PausePlayButtonIcon, FallbackValue=Pause}" />
             </Button>
             <Button Command="{Binding RefreshCommand}" ToolTip="Re-Check">
                 <materialDesign:PackIcon Kind="Refresh" />
             </Button>
-			<!--<Button Command="{Binding NewCommand}" Content="New!"
+            <!--<Button Command="{Binding NewCommand}" Content="New!"
 					Visibility="{Binding NewMangas.Count, Converter={StaticResource NotZeroToVisibilityConverter}, Mode=OneWay}" />-->
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
@@ -73,6 +73,7 @@
                 <materialDesign:PackIcon Kind="Brush" Height="20" Width="20" ToolTip="Theme" />
                 <materialDesign:PackIcon Kind="NewBox" Height="20" Width="20" ToolTip="New Manga for Today" />
                 <materialDesign:PackIcon Kind="History" Height="20" Width="20" ToolTip="History" />
+                <materialDesign:PackIcon Kind="Book" Height="20" Width="20" ToolTip="Gallery" />
                 <Separator Style="{DynamicResource MaterialDesignLightSeparator}" />
                 <materialDesign:PackIcon Kind="Settings" Height="20" Width="20" ToolTip="Settings" />
             </ListBox>
@@ -84,6 +85,7 @@
                 <views:ThemeView DataContext="{Binding ThemeContext}" />
                 <views:NewView DataContext="{Binding NewContext}" />
                 <views:HistoryView DataContext="{Binding HistoryContext}" />
+                <views:GalleryView DataContext="{Binding GalleryContext}" />
                 <Separator />
                 <views:SettingsView DataContext="{Binding SettingsContext}" />
             </materialDesign:Transitioner>

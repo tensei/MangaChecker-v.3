@@ -20,8 +20,8 @@
         <StackPanel Orientation="Horizontal" Margin="8">
             <TextBlock VerticalAlignment="Center">Light</TextBlock>
             <ToggleButton Margin="8 0 16 0" IsChecked="{Binding Theme}"
-                          Command="{Binding ToggleBaseCommand}" 
-                          CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}"/>
+                          Command="{Binding ToggleBaseCommand}"
+                          CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}" />
             <TextBlock VerticalAlignment="Center">Dark</TextBlock>
         </StackPanel>
         <!--<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0">Settings</TextBlock>

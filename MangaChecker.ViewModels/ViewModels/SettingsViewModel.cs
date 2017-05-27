@@ -1,14 +1,13 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
-using PropertyChanged;
 
 namespace MangaChecker.ViewModels.ViewModels {
-    [ImplementPropertyChanged]
-    public class SettingsViewModel {
+    public class SettingsViewModel : INotifyPropertyChanged {
         private readonly ObservableCollection<Settings> _settings = new ObservableCollection<Settings>();
 
         public SettingsViewModel(ILiteDb liteDb) {
@@ -51,6 +50,8 @@ namespace MangaChecker.ViewModels.ViewModels {
 
         public ICommand SaveCommand { get; }
         public ICommand ToggleActive { get; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private void Toggle(Settings settings) {
             if (settings.Active == 1) {

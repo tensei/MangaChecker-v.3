@@ -10,15 +10,16 @@ using MangaChecker.Utilities.Interfaces;
 
 namespace MangaChecker.Providers.Sites {
     public class Mangareader : IProvider {
-        private readonly IWebParser _webParser;
         private readonly ILiteDb _liteDb;
         private readonly INewChapterHelper _newChapterHelper;
+        private readonly IWebParser _webParser;
 
         public Mangareader(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
             _webParser = webParser;
             _liteDb = liteDb;
             _newChapterHelper = newChapterHelper;
         }
+
         public async Task CheckAll(Action<IManga> status) {
             var all = _liteDb.GetMangasFrom(DbName);
             var openlink = _liteDb.GetOpenLinks();
@@ -33,7 +34,8 @@ namespace MangaChecker.Providers.Sites {
                 }
                 var tr =
                     html.All.Where(
-                        t => t.LocalName == "tr" && t.Children.Length == 2 && t.Children[0].InnerHtml.Contains("chico"));
+                        t => t.LocalName == "tr" && t.Children.Length == 2 &&
+                             t.Children[0].InnerHtml.Contains("chico"));
                 foreach (var element in tr) {
                     var title = element.Children[0].Children[1].TextContent.Trim();
                     if (title.Contains("Chapter Name")) {

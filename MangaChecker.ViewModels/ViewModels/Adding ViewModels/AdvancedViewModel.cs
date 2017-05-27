@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using MangaChecker.Data.Enums;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
 using MangaChecker.Providers.Interfaces;
-using PropertyChanged;
 
 namespace MangaChecker.ViewModels.ViewModels.Adding_ViewModels {
-    [ImplementPropertyChanged]
-    public class AdvancedViewModel {
+    public class AdvancedViewModel : INotifyPropertyChanged {
         private readonly ObservableCollection<Genre> _genres = new ObservableCollection<Genre>();
 
         private readonly ILiteDb _liteDb;
@@ -45,6 +44,7 @@ namespace MangaChecker.ViewModels.ViewModels.Adding_ViewModels {
         public ICommand DeleteGenreCommand { get; }
 
         public ICommand AddMangaCommand { get; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private void AddGenre() {
             if (Manga.Genres.Contains(SelectedGenre)) {

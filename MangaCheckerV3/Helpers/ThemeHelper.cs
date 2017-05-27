@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using MangaChecker.Data.Interfaces;
@@ -9,7 +8,8 @@ using MaterialDesignThemes.Wpf;
 
 namespace MangaCheckerV3.Helpers {
     public class ThemeHelper : IThemeHelper {
-        private SwatchesProvider _swatchesProvider;
+        private readonly SwatchesProvider _swatchesProvider;
+
         public ThemeHelper() {
             _swatchesProvider = new SwatchesProvider();
         }

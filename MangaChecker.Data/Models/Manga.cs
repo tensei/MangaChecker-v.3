@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using MangaChecker.Data.Enums;
 using MangaChecker.Data.Interfaces;
-using PropertyChanged;
 
 namespace MangaChecker.Data.Models {
-    [ImplementPropertyChanged]
-    public class Manga : IManga {
+    public class Manga : IManga, INotifyPropertyChanged {
         public int MangaId { get; set; }
 
         public string Name { get; set; }
@@ -38,6 +37,7 @@ namespace MangaChecker.Data.Models {
         public DateTime Updated { get; set; } = DateTime.Now;
 
         public string DaysAgo => DaysSinceUpdate();
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private string DaysSinceUpdate() {
             var dateNow = DateTime.Now;
