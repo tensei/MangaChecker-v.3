@@ -9,19 +9,19 @@ using MangaChecker.Utilities.Interfaces;
 
 namespace MangaChecker.Providers.Sites {
     public class Mangazuki : IProvider {
-        private readonly ILiteDb _liteDb;
+        private readonly IDbContext _dbContext;
         private readonly INewChapterHelper _newChapterHelper;
         private readonly IWebParser _webParser;
 
-        public Mangazuki(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
+        public Mangazuki(IWebParser webParser, IDbContext dbContext, INewChapterHelper newChapterHelper) {
             _webParser = webParser;
-            _liteDb = liteDb;
+            _dbContext = dbContext;
             _newChapterHelper = newChapterHelper;
         }
 
         public async Task CheckAll(Action<IManga> status) {
-            var all = _liteDb.GetMangasFrom(DbName);
-            var openlink = _liteDb.GetOpenLinks();
+            var all = _dbContext.GetMangasFrom(DbName);
+            var openlink = _dbContext.GetOpenLinks();
             var rss = await _webParser.GetRssFeedAsync("https://yomanga.co/reader/feeds/rss");
             if (rss == null) {
                 return;

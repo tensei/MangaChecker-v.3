@@ -6,7 +6,7 @@ using MangaChecker.ViewModels.ViewModels.Adding_ViewModels;
 
 namespace MangaChecker.ViewModels.ViewModels {
     public class AddMangaViewModel : INotifyPropertyChanged {
-        public AddMangaViewModel(IProviderSet providerService, ILiteDb liteDb) {
+        public AddMangaViewModel(IProviderSet providerService, IDbContext dbContext) {
             NormalDataContext = new NormalViewModel();
             NormalCommand = new ActionCommand(() => {
                 if (TranIndex == 0) {
@@ -20,7 +20,7 @@ namespace MangaChecker.ViewModels.ViewModels {
                     return;
                 }
                 TranIndex = 1;
-                AdvancedDataContext = new AdvancedViewModel(providerService, liteDb);
+                AdvancedDataContext = new AdvancedViewModel(providerService, dbContext);
             });
         }
 

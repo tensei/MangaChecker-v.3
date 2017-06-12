@@ -14,10 +14,10 @@ namespace MangaCheckerV3 {
         private readonly IPluginHost _pluginHost;
 
         public MainWindow(IProviderService providerService, ILinkParser linkParser, IWindowFactory windowFactory,
-            IViewModelFactory viewModelFactory, ILiteDb liteDb, Logger logger, IPluginHost pluginHost) {
+            IViewModelFactory viewModelFactory, IDbContext dbContext, Logger logger, IPluginHost pluginHost) {
             InitializeComponent();
             _pluginHost = pluginHost;
-            DataContext = new MainWindowViewModel(providerService, linkParser, windowFactory, viewModelFactory, liteDb,
+            DataContext = new MainWindowViewModel(providerService, linkParser, windowFactory, viewModelFactory, dbContext,
                 logger);
         }
 

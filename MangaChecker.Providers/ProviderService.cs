@@ -9,13 +9,13 @@ using MangaChecker.Utilities;
 
 namespace MangaChecker.Providers {
     public class ProviderService : IProviderService, INotifyPropertyChanged {
-        private readonly ILiteDb _liteDb;
+        private readonly IDbContext _dbContext;
         private readonly Logger _logger;
         private int _currentProviderIndex;
 
-        public ProviderService(IProviderSet providerSet, ILiteDb liteDb, Logger logger) {
+        public ProviderService(IProviderSet providerSet, IDbContext dbContext, Logger logger) {
             Providers = providerSet.GetAll;
-            _liteDb = liteDb;
+            _dbContext = dbContext;
             _logger = logger;
         }
 
@@ -59,7 +59,7 @@ namespace MangaChecker.Providers {
                 }
                 else {
                     for (var i = 0; i < Providers.Count; i++) {
-                        var setting = _liteDb.GetSettingsFor(Providers[i].DbName);
+                        var setting = _dbContext.GetSettingsFor(Providers[i].DbName);
                         if (setting.Active == 0) {
                             continue;
                         }
@@ -73,7 +73,7 @@ namespace MangaChecker.Providers {
                         }
                         await Task.Delay(1000);
                     }
-                    Timer = _liteDb.GetRefreshTime();
+                    Timer = _dbContext.GetRefreshTime();
                     await Task.Delay(1000);
                 }
             }

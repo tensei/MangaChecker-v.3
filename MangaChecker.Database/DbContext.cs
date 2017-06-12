@@ -8,7 +8,7 @@ using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
 
 namespace MangaChecker.Database {
-    public class LiteDb : ILiteDb {
+    public class DbContext : IDbContext {
         private const string DatabaseVersion = "1.0.0.7";
         private readonly string _databasePath = Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db");
 
@@ -18,7 +18,7 @@ namespace MangaChecker.Database {
             {"db", "1.0.0.0"}
         };
 
-        public LiteDb() {
+        public DbContext() {
             _db = new LiteDatabase(_databasePath);
         }
 

@@ -10,19 +10,19 @@ using MangaChecker.Utilities.Interfaces;
 
 namespace MangaChecker.Providers.Sites {
     public class Mangareader : IProvider {
-        private readonly ILiteDb _liteDb;
+        private readonly IDbContext _dbContext;
         private readonly INewChapterHelper _newChapterHelper;
         private readonly IWebParser _webParser;
 
-        public Mangareader(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
+        public Mangareader(IWebParser webParser, IDbContext dbContext, INewChapterHelper newChapterHelper) {
             _webParser = webParser;
-            _liteDb = liteDb;
+            _dbContext = dbContext;
             _newChapterHelper = newChapterHelper;
         }
 
         public async Task CheckAll(Action<IManga> status) {
-            var all = _liteDb.GetMangasFrom(DbName);
-            var openlink = _liteDb.GetOpenLinks();
+            var all = _dbContext.GetMangasFrom(DbName);
+            var openlink = _dbContext.GetOpenLinks();
             foreach (var manga in all) {
                 status.Invoke(manga);
                 if (string.IsNullOrEmpty(manga.BaseMangaLink)) {

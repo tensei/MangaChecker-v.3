@@ -10,17 +10,17 @@ using MangaChecker.Data.Models;
 namespace MangaChecker.ViewModels.ViewModels {
     public class HistoryViewModel : INotifyPropertyChanged {
         private readonly ObservableCollection<Manga> _history = new ObservableCollection<Manga>();
-        private readonly ILiteDb _liteDb;
+        private readonly IDbContext _dbContext;
         private readonly IWindowFactory _windowFactory;
 
-        public HistoryViewModel(IWindowFactory windowFactory, ILiteDb liteDb) {
+        public HistoryViewModel(IWindowFactory windowFactory, IDbContext dbContext) {
             _windowFactory = windowFactory;
-            _liteDb = liteDb;
+            _dbContext = dbContext;
             RefreshListCommand = new ActionCommand(Refresh);
             RemoveCommand = new ActionCommand(m => Remove((Manga) m));
             ViewCommand = new ActionCommand(m => View((Manga) m));
             History = new ReadOnlyObservableCollection<Manga>(_history);
-            _liteDb.MangaEvent += DatabaseOnMangaEvent;
+            _dbContext.MangaEvent += DatabaseOnMangaEvent;
             Refresh();
         }
 
@@ -54,19 +54,19 @@ namespace MangaChecker.ViewModels.ViewModels {
                 Newest = m.Newest
             };
             _history.Insert(0, (Manga) sender);
-            _liteDb.InsertHistory(nm);
+            _dbContext.InsertHistory(nm);
         }
 
         private void Refresh() {
             if (_history.Count > 0) {
                 _history?.Clear();
             }
-            _liteDb.GetHistory()?.ToList().ForEach(_history.Add);
+            _dbContext.GetHistory()?.ToList().ForEach(_history.Add);
             LastRefresh = DateTime.Now.ToLongTimeString();
         }
 
         private void Remove(Manga manga) {
-            _liteDb.DeleteHistory(manga);
+            _dbContext.DeleteHistory(manga);
             _history.Remove(manga);
         }
 

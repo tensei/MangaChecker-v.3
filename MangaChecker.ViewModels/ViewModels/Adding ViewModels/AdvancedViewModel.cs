@@ -13,10 +13,10 @@ namespace MangaChecker.ViewModels.ViewModels.Adding_ViewModels {
     public class AdvancedViewModel : INotifyPropertyChanged {
         private readonly ObservableCollection<Genre> _genres = new ObservableCollection<Genre>();
 
-        private readonly ILiteDb _liteDb;
+        private readonly IDbContext _dbContext;
 
-        public AdvancedViewModel(IProviderSet providerService, ILiteDb liteDb) {
-            _liteDb = liteDb;
+        public AdvancedViewModel(IProviderSet providerService, IDbContext dbContext) {
+            _dbContext = dbContext;
             Manga = new Manga();
             DeleteGenreCommand = new ActionCommand(DeleteGenre);
             AddGenreCommand = new ActionCommand(AddGenre);
@@ -66,7 +66,7 @@ namespace MangaChecker.ViewModels.ViewModels.Adding_ViewModels {
         private void AddManga() {
             try {
                 Manga.Site = SiteSelected;
-                _liteDb.InsertManga(Manga);
+                _dbContext.InsertManga(Manga);
                 Manga = new Manga();
             }
             catch (Exception e) {

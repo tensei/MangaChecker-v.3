@@ -2,6 +2,6 @@
 
 namespace MangaCheckerV3.Common {
     public static class GlobalVariables {
-        public static ILiteDb LiteDb { get; set; }
+        public static IDbContext DbContext { get; set; }
     }
 }

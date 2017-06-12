@@ -8,19 +8,19 @@ using MangaChecker.Utilities.Interfaces;
 
 namespace MangaChecker.Providers.Sites {
     public class GameOfScanlation : IProvider {
-        private readonly ILiteDb _liteDb;
+        private readonly IDbContext _dbContext;
         private readonly INewChapterHelper _newChapterHelper;
         private readonly IWebParser _webParser;
 
-        public GameOfScanlation(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
+        public GameOfScanlation(IWebParser webParser, IDbContext dbContext, INewChapterHelper newChapterHelper) {
             _webParser = webParser;
-            _liteDb = liteDb;
+            _dbContext = dbContext;
             _newChapterHelper = newChapterHelper;
         }
 
         public async Task CheckAll(Action<IManga> status) {
-            var all = _liteDb.GetMangasFrom(DbName);
-            var openlink = _liteDb.GetOpenLinks();
+            var all = _dbContext.GetMangasFrom(DbName);
+            var openlink = _dbContext.GetOpenLinks();
             foreach (var manga in all) {
                 status.Invoke(manga);
                 var rss = await _webParser.GetRssFeedAsync(manga.Rss);

@@ -12,11 +12,11 @@ using MangaChecker.Providers.Interfaces;
 namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
     public class EditWindowViewModel : INotifyPropertyChanged {
         private readonly ObservableCollection<Genre> _genres = new ObservableCollection<Genre>();
-        private readonly ILiteDb _liteDb;
+        private readonly IDbContext _dbContext;
         private readonly ObservableCollection<string> _otherChapters = new ObservableCollection<string>();
 
-        public EditWindowViewModel(Manga manga, IProviderService providerService, ILiteDb liteDb) {
-            _liteDb = liteDb;
+        public EditWindowViewModel(Manga manga, IProviderService providerService, IDbContext dbContext) {
+            _dbContext = dbContext;
             Manga = manga;
             DeleteGenreCommand = new ActionCommand(DeleteGenre);
             AddGenreCommand = new ActionCommand(AddGenre);
@@ -93,7 +93,7 @@ namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
 
         private void SaveManga() {
             try {
-                _liteDb.Update(Manga);
+                _dbContext.Update(Manga);
             }
             catch (Exception e) {
                 Console.WriteLine(e);

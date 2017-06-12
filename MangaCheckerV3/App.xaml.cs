@@ -27,10 +27,10 @@ namespace MangaCheckerV3 {
             //	ExceptionHandler.AddGlobalHandlers();
 
             var container = new UnityContainer();
-            container.RegisterInstance<ILiteDb>(new LiteDb());
+            container.RegisterInstance<IDbContext>(new DbContext());
 
-            var db = container.Resolve<ILiteDb>();
-            GlobalVariables.LiteDb = db;
+            var db = container.Resolve<IDbContext>();
+            GlobalVariables.DbContext = db;
             container.RegisterType<INewChapterHelper, NewChapterHelper>();
             container.RegisterType<IWebParser, WebParser>();
             container.RegisterType<IWindowFactory, WindowFactory>();

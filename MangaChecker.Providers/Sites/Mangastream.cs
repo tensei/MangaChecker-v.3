@@ -9,24 +9,24 @@ using MangaChecker.Utilities.Interfaces;
 
 namespace MangaChecker.Providers.Sites {
     public class Mangastream : IProvider {
-        private readonly ILiteDb _liteDb;
+        private readonly IDbContext _dbContext;
         private readonly INewChapterHelper _newChapterHelper;
         private readonly IWebParser _webParser;
 
-        public Mangastream(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper) {
+        public Mangastream(IWebParser webParser, IDbContext dbContext, INewChapterHelper newChapterHelper) {
             _webParser = webParser;
-            _liteDb = liteDb;
+            _dbContext = dbContext;
             _newChapterHelper = newChapterHelper;
         }
 
         public async Task CheckAll(Action<IManga> status) {
-            var all = _liteDb.GetMangasFrom(DbName);
+            var all = _dbContext.GetMangasFrom(DbName);
             var rss = await _webParser.GetRssFeedAsync("http://mangastream.com/rss");
             if (rss == null) {
                 return;
             }
             rss.Reverse();
-            var openlink = _liteDb.GetOpenLinks();
+            var openlink = _dbContext.GetOpenLinks();
             foreach (var manga in all)
             foreach (var rssItemObject in rss) {
                 status.Invoke(manga);

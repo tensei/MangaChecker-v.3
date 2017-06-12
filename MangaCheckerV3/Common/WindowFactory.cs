@@ -9,14 +9,14 @@ using MangaCheckerV3.Views.Windows;
 
 namespace MangaCheckerV3.Common {
     public class WindowFactory : IWindowFactory {
-        private readonly ILiteDb _liteDb;
+        private readonly IDbContext _dbContext;
         private readonly Logger _logger;
         private readonly IProviderService _providerService;
 
-        public WindowFactory(Logger logger, IProviderService providerService, ILiteDb liteDb) {
+        public WindowFactory(Logger logger, IProviderService providerService, IDbContext dbContext) {
             _logger = logger;
             _providerService = providerService;
-            _liteDb = liteDb;
+            _dbContext = dbContext;
         }
 
         public void CreateViewerWindow(IManga manga) {
@@ -29,7 +29,7 @@ namespace MangaCheckerV3.Common {
 
         public void CreateEditWindow(Manga manga) {
             new EditWindow {
-                DataContext = new EditWindowViewModel(manga, _providerService, _liteDb)
+                DataContext = new EditWindowViewModel(manga, _providerService, _dbContext)
             }.Show();
         }
 

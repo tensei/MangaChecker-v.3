@@ -13,7 +13,7 @@ namespace MangaChecker.ViewModels.ViewModels {
         public static MainWindowViewModel Instance;
         private readonly ILinkParser _linkParser;
 
-        private readonly ILiteDb _liteDb;
+        private readonly IDbContext _dbContext;
         private readonly Logger _logger;
         private readonly IViewModelFactory _viewModelFactory;
         private readonly IWindowFactory _windowFactory;
@@ -23,8 +23,8 @@ namespace MangaChecker.ViewModels.ViewModels {
         /// </summary>
         public MainWindowViewModel(IProviderService providerService, ILinkParser linkParser,
             IWindowFactory windowFactory,
-            IViewModelFactory viewModelFactory, ILiteDb liteDb, Logger logger) {
-            _liteDb = liteDb;
+            IViewModelFactory viewModelFactory, IDbContext dbContext, Logger logger) {
+            _dbContext = dbContext;
             _logger = logger;
             _linkParser = linkParser;
             _windowFactory = windowFactory;
@@ -83,7 +83,7 @@ namespace MangaChecker.ViewModels.ViewModels {
         }
 
         public void Dispose() {
-            _liteDb.Dispose();
+            _dbContext.Dispose();
         }
 
         private void ParseLink() {

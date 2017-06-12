@@ -13,7 +13,7 @@ using MangaChecker.Providers.Interfaces;
 
 namespace MangaChecker.ViewModels.ViewModels {
     public class MangaListViewModel : INotifyPropertyChanged {
-        private readonly ILiteDb _liteDb;
+        private readonly IDbContext _dbContext;
 
         /// <summary>
         ///     Initializes a new instance of the MangaListViewModel class.
@@ -28,12 +28,12 @@ namespace MangaChecker.ViewModels.ViewModels {
         private SiteListItem _selectedSite;
         private string _sortMode = "Updated";
 
-        public MangaListViewModel(IProviderSet providerService, IWindowFactory windowFactory, ILiteDb liteDb) {
+        public MangaListViewModel(IProviderSet providerService, IWindowFactory windowFactory, IDbContext dbContext) {
             _providerService = providerService;
-            _liteDb = liteDb;
+            _dbContext = dbContext;
             _windowFactory = windowFactory;
             SetupSites();
-            //_liteDb.SettingEvent += DatabaseOnSettingEvent;
+            //_dbContext.SettingEvent += DatabaseOnSettingEvent;
             Mangas = new ReadOnlyObservableCollection<Manga>(_mangas);
             Sites = new ReadOnlyObservableCollection<SiteListItem>(_sites);
             IncreaseCommand = new ActionCommand(IncreaseChapter);
@@ -136,7 +136,7 @@ namespace MangaChecker.ViewModels.ViewModels {
         }
 
         private void Fill() {
-            var x = Sortby(_sortMode, _liteDb.GetAllMangas().ToList());
+            var x = Sortby(_sortMode, _dbContext.GetAllMangas().ToList());
             x.ForEach(_mangas.Add);
         }
 
@@ -144,14 +144,14 @@ namespace MangaChecker.ViewModels.ViewModels {
             SelectedManga.Chapter += AmountItem;
             SelectedManga.Newest = SelectedManga.Chapter.ToString(CultureInfo.InvariantCulture);
             SelectedManga.Updated = DateTime.Now;
-            _liteDb.Update(SelectedManga, true);
+            _dbContext.Update(SelectedManga, true);
         }
 
         private void DecreaseChapter() {
             SelectedManga.Chapter -= AmountItem;
             SelectedManga.Newest = SelectedManga.Chapter.ToString(CultureInfo.InvariantCulture);
             SelectedManga.Updated -= TimeSpan.FromDays(1);
-            _liteDb.Update(SelectedManga, true);
+            _dbContext.Update(SelectedManga, true);
         }
 
         private void OpenMangaSite() {
@@ -162,7 +162,7 @@ namespace MangaChecker.ViewModels.ViewModels {
         }
 
         private void DeleteManga() {
-            _liteDb.Delete(SelectedManga);
+            _dbContext.Delete(SelectedManga);
             MainWindowViewModel.Instance.SnackbarQueue.Enqueue($"Deleted {SelectedManga.Name}", "UNDO",
                 HandleUndoMethod,
                 SelectedManga);
@@ -170,7 +170,7 @@ namespace MangaChecker.ViewModels.ViewModels {
         }
 
         private void HandleUndoMethod(Manga manga) {
-            _liteDb.InsertManga(manga);
+            _dbContext.InsertManga(manga);
             _mangas.Add(manga);
         }
 
@@ -193,7 +193,7 @@ namespace MangaChecker.ViewModels.ViewModels {
                     Fill();
                     break;
                 default:
-                    Sortby(_sortMode, _liteDb.GetMangasFrom(site).ToList()).ForEach(_mangas.Add);
+                    Sortby(_sortMode, _dbContext.GetMangasFrom(site).ToList()).ForEach(_mangas.Add);
                     break;
             }
         }

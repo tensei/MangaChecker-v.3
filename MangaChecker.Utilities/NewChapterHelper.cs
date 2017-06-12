@@ -7,11 +7,11 @@ using MangaChecker.Utilities.Interfaces;
 
 namespace MangaChecker.Utilities {
     public class NewChapterHelper : INewChapterHelper {
-        private readonly ILiteDb _liteDb;
+        private readonly IDbContext _dbContext;
         private readonly Logger _logger;
 
-        public NewChapterHelper(ILiteDb liteDb, Logger logger) {
-            _liteDb = liteDb;
+        public NewChapterHelper(IDbContext dbContext, Logger logger) {
+            _dbContext = dbContext;
             _logger = logger;
         }
 
@@ -61,7 +61,7 @@ namespace MangaChecker.Utilities {
             if (!openLink) {
                 return true;
             }
-            _liteDb.Update(manga);
+            _dbContext.Update(manga);
             Process.Start(newLink);
             return true;
         }

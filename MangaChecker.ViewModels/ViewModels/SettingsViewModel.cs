@@ -10,19 +10,19 @@ namespace MangaChecker.ViewModels.ViewModels {
     public class SettingsViewModel : INotifyPropertyChanged {
         private readonly ObservableCollection<Settings> _settings = new ObservableCollection<Settings>();
 
-        public SettingsViewModel(ILiteDb liteDb) {
+        public SettingsViewModel(IDbContext dbContext) {
             SaveCommand = new ActionCommand(() => {
                 Task.Run(() => {
                     var set = _settings.ToList();
                     set.Add(RefreshTime);
                     set.Add(OpenLinks);
                     set.Add(BatotoRss);
-                    liteDb.SaveSettings(set);
+                    dbContext.SaveSettings(set);
                 }).ConfigureAwait(false);
             });
             ToggleActive = new ActionCommand(s => Toggle((Settings) s));
             Settings = new ReadOnlyObservableCollection<Settings>(_settings);
-            var settings = liteDb.GetAllSettings();
+            var settings = dbContext.GetAllSettings();
             foreach (var s in settings) {
                 if (s.Setting.ToLower().StartsWith("refres")) {
                     RefreshTime = s;

@@ -10,14 +10,14 @@ using MangaChecker.Utilities.Interfaces;
 
 namespace MangaChecker.Providers.Sites {
     public class Mangafox : IProvider, INotifyPropertyChanged {
-        private readonly ILiteDb _liteDb;
+        private readonly IDbContext _dbContext;
         private readonly Logger _logger;
         private readonly INewChapterHelper _newChapterHelper;
         private readonly IWebParser _webParser;
 
-        public Mangafox(IWebParser webParser, ILiteDb liteDb, INewChapterHelper newChapterHelper, Logger logger) {
+        public Mangafox(IWebParser webParser, IDbContext dbContext, INewChapterHelper newChapterHelper, Logger logger) {
             _webParser = webParser;
-            _liteDb = liteDb;
+            _dbContext = dbContext;
             _newChapterHelper = newChapterHelper;
             _logger = logger;
         }
@@ -25,8 +25,8 @@ namespace MangaChecker.Providers.Sites {
         public event PropertyChangedEventHandler PropertyChanged;
 
         public async Task CheckAll(Action<IManga> status) {
-            var all = _liteDb.GetMangasFrom(DbName);
-            var openlink = _liteDb.GetOpenLinks();
+            var all = _dbContext.GetMangasFrom(DbName);
+            var openlink = _dbContext.GetOpenLinks();
             foreach (var manga in all) {
                 status.Invoke(manga);
                 if (string.IsNullOrEmpty(manga.Rss)) {

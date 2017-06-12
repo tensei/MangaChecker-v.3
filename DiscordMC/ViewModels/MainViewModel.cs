@@ -11,7 +11,7 @@ namespace DiscordMC.ViewModels {
         private DiscordClient _client;
 
         public MainViewModel() {
-            GlobalVariables.LiteDb.MangaEvent += LiteDbOnMangaEvent;
+            GlobalVariables.DbContext.MangaEvent += LiteDbOnMangaEvent;
 
             ConnectCommand = new ActionCommand(Start);
             DisconnectCommand = new ActionCommand(async () => await CloseAsync());
