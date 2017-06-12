@@ -5,7 +5,7 @@ using MangaChecker.Data.Enums;
 using MangaChecker.Data.Models;
 
 namespace MangaChecker.Data.Interfaces {
-    public interface IDbContext {
+    public interface IDbContext : IDisposable {
         event EventHandler<MangaEnum> MangaEvent;
         event EventHandler<DatabaseEnum> DbEvent;
         event EventHandler<SettingEnum> SettingEvent;
@@ -29,6 +29,6 @@ namespace MangaChecker.Data.Interfaces {
         void UpdateDatabase(Versions dbv, Dictionary<string, string> providers);
         void CreateDatabase(Dictionary<string, string> providers);
         string CheckDbVersion(Dictionary<string, string> providers);
-        void Dispose();
+        
     }
 }
