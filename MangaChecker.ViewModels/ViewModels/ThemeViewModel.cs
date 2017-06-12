@@ -47,12 +47,12 @@ namespace MangaChecker.ViewModels.ViewModels {
             Settings.Default.Save();
         }
 
-        public void SetupTheme() {
+        private void SetupTheme() {
             var primary = Settings.Default.Primary;
             var accents = Settings.Default.Accents;
+            Theme = Settings.Default.Theme;
             ApplyPrimary(PrimaryColors.FirstOrDefault(s => s.Name == primary));
             ApplyAccent(AccentColors.FirstOrDefault(s => s.Name == accents));
-            Theme = Settings.Default.Theme;
             ApplyTheme(Theme);
         }
     }
