@@ -7,35 +7,44 @@ using System.Reflection;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Utilities.Interfaces;
 
-namespace MangaChecker.Utilities {
-    public class PluginHost : IDisposable, IPluginHost {
+namespace MangaChecker.Utilities
+{
+    public class PluginHost : IDisposable, IPluginHost
+    {
         private const string PluginsDirectory = "Plugins";
         private readonly CompositionContainer _container;
 
-        public PluginHost() {
+        public PluginHost()
+        {
             var catalog = new AggregateCatalog(new AssemblyCatalog(Assembly.GetExecutingAssembly()));
             //var current = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location);
             //if (current == null) {
             //    return;
             //}
             var pluginsPath = Path.Combine(Directory.GetCurrentDirectory(), PluginsDirectory);
-            if (!Directory.Exists(pluginsPath)) {
+            if (!Directory.Exists(pluginsPath))
+            {
                 return;
             }
             var folders = Directory.GetDirectories(pluginsPath);
-            foreach (var folder in folders) {
+            foreach (var folder in folders)
+            {
                 catalog.Catalogs.Add(new DirectoryCatalog(folder));
             }
             _container = new CompositionContainer(catalog);
             Initialize();
         }
 
-        public void Dispose() {
-            foreach (var plugin in Plugins) {
-                try {
+        public void Dispose()
+        {
+            foreach (var plugin in Plugins)
+            {
+                try
+                {
                     plugin?.Value?.Dispose();
                 }
-                catch (Exception e) {
+                catch (Exception e)
+                {
                     Console.WriteLine(e);
                 }
             }
@@ -46,9 +55,11 @@ namespace MangaChecker.Utilities {
         [ImportMany]
         public IEnumerable<Lazy<IPlugin, IPluginMetadata>> Plugins { get; set; }
 
-        public void Initialize() {
+        public void Initialize()
+        {
             _container.ComposeParts(this);
-            foreach (var plugin in Plugins) {
+            foreach (var plugin in Plugins)
+            {
                 plugin.Value.Initialize();
             }
         }

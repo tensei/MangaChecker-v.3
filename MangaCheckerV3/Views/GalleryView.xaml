@@ -24,20 +24,26 @@
                             <ItemsControl ItemsSource="{Binding Mangas}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate DataType="{x:Type models:GalleryManga}">
-                                        <Expander Header="{Binding Name}" Margin="5" >
-                                            <ListBox ItemsSource="{Binding Chapters}" HorizontalContentAlignment="Stretch">
+                                        <Expander Header="{Binding Name}" Margin="5">
+                                            <ListBox ItemsSource="{Binding Chapters}"
+                                                     HorizontalContentAlignment="Stretch">
                                                 <ListBox.ItemTemplate>
                                                     <DataTemplate>
                                                         <Grid>
                                                             <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="*"/>
-                                                                <ColumnDefinition Width="Auto"/>
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="Auto" />
                                                             </Grid.ColumnDefinitions>
-                                                            <TextBlock VerticalAlignment="Center" Margin="20,0,0,0" Text="{Binding Number}"/>
-                                                            <Button Grid.Column="1" Style="{DynamicResource MaterialDesignToolButton}" Padding="2"
-                                                                    VerticalAlignment="Stretch" Width="70" Height="25" Margin="-2"
-                                                                    materialDesign:RippleAssist.ClipToBounds="True" materialDesign:RippleAssist.IsCentered="True">
-                                                                <materialDesign:PackIcon Kind="Eye"></materialDesign:PackIcon>
+                                                            <TextBlock VerticalAlignment="Center" Margin="20,0,0,0"
+                                                                       Text="{Binding Number}" />
+                                                            <Button Grid.Column="1"
+                                                                    Style="{DynamicResource MaterialDesignToolButton}"
+                                                                    Padding="2"
+                                                                    VerticalAlignment="Stretch" Width="70" Height="25"
+                                                                    Margin="-2"
+                                                                    materialDesign:RippleAssist.ClipToBounds="True"
+                                                                    materialDesign:RippleAssist.IsCentered="True">
+                                                                <materialDesign:PackIcon Kind="Eye" />
                                                             </Button>
                                                         </Grid>
                                                     </DataTemplate>

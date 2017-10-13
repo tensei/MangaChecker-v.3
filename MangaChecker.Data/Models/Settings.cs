@@ -4,8 +4,10 @@ using MangaChecker.Data.Interfaces;
 
 //using SQLite;
 
-namespace MangaChecker.Data.Models {
-    public class Settings : ISettings, INotifyPropertyChanged {
+namespace MangaChecker.Data.Models
+{
+    public class Settings : ISettings, INotifyPropertyChanged
+    {
         public event PropertyChangedEventHandler PropertyChanged;
 
         public int Id { get; set; }

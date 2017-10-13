@@ -2,12 +2,15 @@
 using System.ComponentModel;
 using MangaChecker.Data.Interfaces;
 
-namespace MangaChecker.Data.Models {
-    public class PluginModel : IPluginMetadata, INotifyPropertyChanged {
+namespace MangaChecker.Data.Models
+{
+    public class PluginModel : IPluginMetadata, INotifyPropertyChanged
+    {
         private readonly IPluginMetadata _metadata;
         private readonly IPlugin _settings;
 
-        public PluginModel(Lazy<IPlugin, IPluginMetadata> settings) {
+        public PluginModel(Lazy<IPlugin, IPluginMetadata> settings)
+        {
             _settings = settings.Value;
             _metadata = settings.Metadata;
         }

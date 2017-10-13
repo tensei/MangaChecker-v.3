@@ -11,8 +11,10 @@ using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
 using MangaChecker.Providers.Interfaces;
 
-namespace MangaChecker.ViewModels.ViewModels {
-    public class MangaListViewModel : INotifyPropertyChanged {
+namespace MangaChecker.ViewModels.ViewModels
+{
+    public class MangaListViewModel : INotifyPropertyChanged
+    {
         private readonly IDbContext _dbContext;
 
         /// <summary>
@@ -28,7 +30,8 @@ namespace MangaChecker.ViewModels.ViewModels {
         private SiteListItem _selectedSite;
         private string _sortMode = "Updated";
 
-        public MangaListViewModel(IProviderSet providerService, IWindowFactory windowFactory, IDbContext dbContext) {
+        public MangaListViewModel(IProviderSet providerService, IWindowFactory windowFactory, IDbContext dbContext)
+        {
             _providerService = providerService;
             _dbContext = dbContext;
             _windowFactory = windowFactory;
@@ -64,9 +67,11 @@ namespace MangaChecker.ViewModels.ViewModels {
 
         public Manga SelectedManga { get; set; }
 
-        public SiteListItem SelectedSite {
+        public SiteListItem SelectedSite
+        {
             get => _selectedSite;
-            set {
+            set
+            {
                 _selectedSite = value;
                 FillMangaList(value.Name);
             }
@@ -74,10 +79,13 @@ namespace MangaChecker.ViewModels.ViewModels {
 
         public int SelectedSiteIndex { get; set; }
 
-        public string SortMode {
+        public string SortMode
+        {
             get => _sortMode;
-            set {
-                if (_sortMode == value) {
+            set
+            {
+                if (_sortMode == value)
+                {
                     return;
                 }
                 _sortMode = value;
@@ -88,8 +96,10 @@ namespace MangaChecker.ViewModels.ViewModels {
         public int AmountItem { get; set; } = 1;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void SetupSites() {
-            var s = new List<SiteListItem> {
+        private void SetupSites()
+        {
+            var s = new List<SiteListItem>
+            {
                 new SiteListItem {Name = "Backlog", Overrideable = false, IsEnabled = 1},
                 new SiteListItem {Name = "All", Overrideable = false, IsEnabled = 1}
             };
@@ -114,12 +124,15 @@ namespace MangaChecker.ViewModels.ViewModels {
         //}
 
 
-        private List<Manga> Sortby(string sort, List<Manga> mangas) {
+        private List<Manga> Sortby(string sort, List<Manga> mangas)
+        {
             var m = mangas;
-            if (_mangas.Count > 0) {
+            if (_mangas.Count > 0)
+            {
                 _mangas.Clear();
             }
-            switch (sort.ToLower()) {
+            switch (sort.ToLower())
+            {
                 case "updated":
                     return m?.OrderByDescending(x => x.Updated).ToList();
                 case "name":
@@ -135,33 +148,39 @@ namespace MangaChecker.ViewModels.ViewModels {
             }
         }
 
-        private void Fill() {
+        private void Fill()
+        {
             var x = Sortby(_sortMode, _dbContext.GetAllMangas().ToList());
             x.ForEach(_mangas.Add);
         }
 
-        private void IncreaseChapter() {
+        private void IncreaseChapter()
+        {
             SelectedManga.Chapter += AmountItem;
             SelectedManga.Newest = SelectedManga.Chapter.ToString(CultureInfo.InvariantCulture);
             SelectedManga.Updated = DateTime.Now;
             _dbContext.Update(SelectedManga, true);
         }
 
-        private void DecreaseChapter() {
+        private void DecreaseChapter()
+        {
             SelectedManga.Chapter -= AmountItem;
             SelectedManga.Newest = SelectedManga.Chapter.ToString(CultureInfo.InvariantCulture);
             SelectedManga.Updated -= TimeSpan.FromDays(1);
             _dbContext.Update(SelectedManga, true);
         }
 
-        private void OpenMangaSite() {
-            if (!SelectedManga.Link.Contains("/")) {
+        private void OpenMangaSite()
+        {
+            if (!SelectedManga.Link.Contains("/"))
+            {
                 return;
             }
             Process.Start(SelectedManga.Link);
         }
 
-        private void DeleteManga() {
+        private void DeleteManga()
+        {
             _dbContext.Delete(SelectedManga);
             MainWindowViewModel.Instance.SnackbarQueue.Enqueue($"Deleted {SelectedManga.Name}", "UNDO",
                 HandleUndoMethod,
@@ -169,26 +188,32 @@ namespace MangaChecker.ViewModels.ViewModels {
             _mangas.Remove(SelectedManga);
         }
 
-        private void HandleUndoMethod(Manga manga) {
+        private void HandleUndoMethod(Manga manga)
+        {
             _dbContext.InsertManga(manga);
             _mangas.Add(manga);
         }
 
-        private async Task RefreshManga() {
+        private async Task RefreshManga()
+        {
             var provider = _providerService.GetFirstOrDefault(p => p.DbName == SelectedManga.Site);
             await provider.CheckOne(SelectedManga);
         }
 
-        private void ViewManga() {
+        private void ViewManga()
+        {
             _windowFactory.CreateViewerWindow(SelectedManga);
         }
 
-        private void EditManga() {
+        private void EditManga()
+        {
             _windowFactory.CreateEditWindow(SelectedManga);
         }
 
-        private void FillMangaList(string site) {
-            switch (site) {
+        private void FillMangaList(string site)
+        {
+            switch (site)
+            {
                 case "All":
                     Fill();
                     break;

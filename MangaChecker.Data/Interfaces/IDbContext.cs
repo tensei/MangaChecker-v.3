@@ -4,8 +4,10 @@ using System.Linq;
 using MangaChecker.Data.Enums;
 using MangaChecker.Data.Models;
 
-namespace MangaChecker.Data.Interfaces {
-    public interface IDbContext {
+namespace MangaChecker.Data.Interfaces
+{
+    public interface IDbContext
+    {
         event EventHandler<MangaEnum> MangaEvent;
         event EventHandler<DatabaseEnum> DbEvent;
         event EventHandler<SettingEnum> SettingEvent;

@@ -1,7 +1,9 @@
 ﻿using SQLite;
 
-namespace DBMigration.Old_Tables {
-    public class batoto {
+namespace DBMigration.Old_Tables
+{
+    public class batoto
+    {
         [PrimaryKey, AutoIncrement]
         public int id { get; set; }
 

@@ -1,7 +1,9 @@
 ﻿using SQLite;
 
-namespace DBMigration.Old_Tables {
-    public class goscanlation {
+namespace DBMigration.Old_Tables
+{
+    public class goscanlation
+    {
         [PrimaryKey, AutoIncrement]
         public int id { get; set; }
 

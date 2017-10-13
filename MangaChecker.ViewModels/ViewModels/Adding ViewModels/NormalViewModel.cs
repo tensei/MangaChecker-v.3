@@ -3,9 +3,12 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using MangaChecker.Data.Models;
 
-namespace MangaChecker.ViewModels.ViewModels.Adding_ViewModels {
-    public class NormalViewModel : INotifyPropertyChanged {
-        public NormalViewModel() {
+namespace MangaChecker.ViewModels.ViewModels.Adding_ViewModels
+{
+    public class NormalViewModel : INotifyPropertyChanged
+    {
+        public NormalViewModel()
+        {
             GetInfoCommand = new ActionCommand(async () => await GetInfo());
             AddMangaCommand = new ActionCommand(Add);
         }
@@ -27,7 +30,8 @@ namespace MangaChecker.ViewModels.ViewModels.Adding_ViewModels {
         public bool InfoVisibility { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private async Task GetInfo() {
+        private async Task GetInfo()
+        {
             InfoVisibility = false;
             Loading = true;
             GetIsEnabled = false;
@@ -48,7 +52,8 @@ namespace MangaChecker.ViewModels.ViewModels.Adding_ViewModels {
 #endif
         }
 
-        private void Add() {
+        private void Add()
+        {
             GetIsEnabled = true;
             AddIsEnabled = false;
         }

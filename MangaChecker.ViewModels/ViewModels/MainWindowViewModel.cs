@@ -8,12 +8,14 @@ using MangaChecker.Utilities;
 using MangaChecker.ViewModels.Interfaces;
 using MaterialDesignThemes.Wpf;
 
-namespace MangaChecker.ViewModels.ViewModels {
-    public class MainWindowViewModel : INotifyPropertyChanged {
+namespace MangaChecker.ViewModels.ViewModels
+{
+    public class MainWindowViewModel : INotifyPropertyChanged
+    {
         public static MainWindowViewModel Instance;
-        private readonly ILinkParser _linkParser;
 
         private readonly IDbContext _dbContext;
+        private readonly ILinkParser _linkParser;
         private readonly Logger _logger;
         private readonly IViewModelFactory _viewModelFactory;
         private readonly IWindowFactory _windowFactory;
@@ -23,7 +25,8 @@ namespace MangaChecker.ViewModels.ViewModels {
         /// </summary>
         public MainWindowViewModel(IProviderService providerService, ILinkParser linkParser,
             IWindowFactory windowFactory,
-            IViewModelFactory viewModelFactory, IDbContext dbContext, Logger logger) {
+            IViewModelFactory viewModelFactory, IDbContext dbContext, Logger logger)
+        {
             _dbContext = dbContext;
             _logger = logger;
             _linkParser = linkParser;
@@ -72,8 +75,10 @@ namespace MangaChecker.ViewModels.ViewModels {
         public event PropertyChangedEventHandler PropertyChanged;
 
 
-        private void StartStop() {
-            if (!ProviderService.Pause) {
+        private void StartStop()
+        {
+            if (!ProviderService.Pause)
+            {
                 PausePlayButtonIcon = "Play";
                 ProviderService.Pause = true;
                 return;
@@ -82,21 +87,26 @@ namespace MangaChecker.ViewModels.ViewModels {
             PausePlayButtonIcon = "Pause";
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             _dbContext.Dispose();
         }
 
-        private void ParseLink() {
+        private void ParseLink()
+        {
             var link = Clipboard.GetText().ToLower();
-            if (string.IsNullOrWhiteSpace(link)) {
+            if (string.IsNullOrWhiteSpace(link))
+            {
                 return;
             }
             var provider =
                 _linkParser.GetProviderFirstOrDefault(p => p.LinkIsMatch(link) &&
                                                            link.ToLower().Contains(p.DbName.ToLower()) &&
                                                            p.ViewEnabled);
-            if (provider != null) {
-                _windowFactory.CreateViewerWindow(new Manga {
+            if (provider != null)
+            {
+                _windowFactory.CreateViewerWindow(new Manga
+                {
                     Name = link,
                     Link = link,
                     Site = provider.DbName

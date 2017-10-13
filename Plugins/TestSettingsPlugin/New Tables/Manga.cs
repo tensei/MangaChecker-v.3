@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using LiteDB;
 
-namespace DBMigration.New_Tables {
-    public class Manga {
+namespace DBMigration.New_Tables
+{
+    public class Manga
+    {
         [BsonId]
         public int MangaId { get; set; }
 

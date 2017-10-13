@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MangaChecker.Data.Interfaces;
 
-namespace MangaChecker.Providers.Interfaces {
-    public interface IProvider {
+namespace MangaChecker.Providers.Interfaces
+{
+    public interface IProvider
+    {
         string DbName { get; }
         bool ViewEnabled { get; }
         string LinktoSite { get; }

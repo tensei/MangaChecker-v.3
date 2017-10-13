@@ -7,13 +7,16 @@ using MangaChecker.Data.Enums;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
 
-namespace MangaChecker.ViewModels.ViewModels {
-    public class NewMangaViewModel : INotifyPropertyChanged {
+namespace MangaChecker.ViewModels.ViewModels
+{
+    public class NewMangaViewModel : INotifyPropertyChanged
+    {
         private readonly IDbContext _dbContext;
         private readonly ObservableCollection<Manga> _newManga = new ObservableCollection<Manga>();
         private readonly IWindowFactory _windowFactory;
 
-        public NewMangaViewModel(IWindowFactory windowFactory, IDbContext dbContext) {
+        public NewMangaViewModel(IWindowFactory windowFactory, IDbContext dbContext)
+        {
             _windowFactory = windowFactory;
             _dbContext = dbContext;
             ViewCommand = new ActionCommand(v => View((Manga) v));
@@ -35,28 +38,35 @@ namespace MangaChecker.ViewModels.ViewModels {
         public string LastRefresh { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void View(IManga manga) {
+        private void View(IManga manga)
+        {
             _windowFactory.CreateViewerWindow(manga);
         }
 
-        private void Remove(Manga manga) {
+        private void Remove(Manga manga)
+        {
             _dbContext.DeleteNewManga(manga);
             _newManga.Remove(manga);
         }
 
-        private void RemoveAll() {
-            if (_newManga.Count == 0) {
+        private void RemoveAll()
+        {
+            if (_newManga.Count == 0)
+            {
                 return;
             }
             var nm = _newManga.ToList();
-            foreach (var manga in nm) {
+            foreach (var manga in nm)
+            {
                 _dbContext.DeleteNewManga(manga);
             }
             _newManga.Clear();
         }
 
-        private void GetNewMangas() {
-            if (_newManga.Count > 0) {
+        private void GetNewMangas()
+        {
+            if (_newManga.Count > 0)
+            {
                 _newManga.Clear();
             }
             var nm = _dbContext.GetAllNewMangas();
@@ -64,12 +74,15 @@ namespace MangaChecker.ViewModels.ViewModels {
             LastRefresh = DateTime.Now.ToLongTimeString();
         }
 
-        private void DatabaseOnMangaEvent(object sender, MangaEnum mangaEnum) {
-            if (mangaEnum != MangaEnum.Update) {
+        private void DatabaseOnMangaEvent(object sender, MangaEnum mangaEnum)
+        {
+            if (mangaEnum != MangaEnum.Update)
+            {
                 return;
             }
             var m = (Manga) sender;
-            var nm = new Manga {
+            var nm = new Manga
+            {
                 Name = m.Name,
                 Chapter = m.Chapter,
                 Added = DateTime.Now,

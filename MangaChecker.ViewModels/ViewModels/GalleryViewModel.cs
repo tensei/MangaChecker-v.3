@@ -5,9 +5,12 @@ using System.IO;
 using System.Linq;
 using MangaChecker.Data.Models;
 
-namespace MangaChecker.ViewModels.ViewModels {
-    public class GalleryViewModel : INotifyPropertyChanged {
-        public GalleryViewModel() {
+namespace MangaChecker.ViewModels.ViewModels
+{
+    public class GalleryViewModel : INotifyPropertyChanged
+    {
+        public GalleryViewModel()
+        {
             Sites = new ObservableCollection<GallerySiteModel>();
             Load();
         }
@@ -15,19 +18,24 @@ namespace MangaChecker.ViewModels.ViewModels {
         public ObservableCollection<GallerySiteModel> Sites { get; }
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void Load() {
+        private void Load()
+        {
             var saves = Path.Combine(Directory.GetCurrentDirectory(), "Saves");
-            if (!Directory.Exists(saves)) {
+            if (!Directory.Exists(saves))
+            {
                 return;
             }
             var sites = Directory.GetDirectories(saves);
             GetSites(sites);
         }
 
-        private void GetSites(string[] paths) {
-            foreach (var site in paths) {
+        private void GetSites(string[] paths)
+        {
+            foreach (var site in paths)
+            {
                 var sitename = Path.GetFileName(site);
-                var galleryitem = new GallerySiteModel {
+                var galleryitem = new GallerySiteModel
+                {
                     Site = sitename,
                     Path = site,
                     Mangas = new ObservableCollection<GalleryManga>()
@@ -37,11 +45,14 @@ namespace MangaChecker.ViewModels.ViewModels {
             }
         }
 
-        private void GetMangas(string path, string sitename, GallerySiteModel galleryitem) {
+        private void GetMangas(string path, string sitename, GallerySiteModel galleryitem)
+        {
             var mangas = Directory.GetDirectories(path);
-            foreach (var manga in mangas) {
+            foreach (var manga in mangas)
+            {
                 var manganame = Path.GetFileName(manga);
-                var gallerymangaitem = new GalleryManga {
+                var gallerymangaitem = new GalleryManga
+                {
                     Name = manganame,
                     Site = sitename,
                     Path = manga,
@@ -53,11 +64,14 @@ namespace MangaChecker.ViewModels.ViewModels {
             }
         }
 
-        private void GetChapters(string path, string sitename, string manganame, GalleryManga gallerymangaitem) {
+        private void GetChapters(string path, string sitename, string manganame, GalleryManga gallerymangaitem)
+        {
             var chapters = Directory.GetDirectories(path);
-            foreach (var chapter in chapters) {
+            foreach (var chapter in chapters)
+            {
                 var images = Directory.GetFiles(chapter);
-                var gallerychapteritem = new GalleryChapter {
+                var gallerychapteritem = new GalleryChapter
+                {
                     Number = Path.GetFileName(chapter),
                     Site = sitename,
                     Name = manganame,

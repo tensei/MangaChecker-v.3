@@ -6,8 +6,10 @@ using MangaChecker.ViewModels.Interfaces;
 using MangaChecker.ViewModels.ViewModels;
 using MangaCheckerV3.Helpers;
 
-namespace MangaCheckerV3.Common {
-    public class ViewModelFactory : IViewModelFactory {
+namespace MangaCheckerV3.Common
+{
+    public class ViewModelFactory : IViewModelFactory
+    {
         private readonly IDbContext _dbContext;
         private readonly Logger _logger;
         private readonly IPluginHost _pluginHost;
@@ -16,7 +18,8 @@ namespace MangaCheckerV3.Common {
         private readonly IWindowFactory _windowFactory;
 
         public ViewModelFactory(IProviderSet providerSet, IWindowFactory windowFactory,
-            IDbContext dbContext, ThemeHelper themeHelper, Logger logger, IPluginHost pluginHost) {
+            IDbContext dbContext, ThemeHelper themeHelper, Logger logger, IPluginHost pluginHost)
+        {
             _dbContext = dbContext;
             _providerSet = providerSet;
             _windowFactory = windowFactory;

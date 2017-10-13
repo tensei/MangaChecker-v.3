@@ -7,13 +7,16 @@ using MangaChecker.Data.Enums;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
 
-namespace MangaChecker.ViewModels.ViewModels {
-    public class HistoryViewModel : INotifyPropertyChanged {
-        private readonly ObservableCollection<Manga> _history = new ObservableCollection<Manga>();
+namespace MangaChecker.ViewModels.ViewModels
+{
+    public class HistoryViewModel : INotifyPropertyChanged
+    {
         private readonly IDbContext _dbContext;
+        private readonly ObservableCollection<Manga> _history = new ObservableCollection<Manga>();
         private readonly IWindowFactory _windowFactory;
 
-        public HistoryViewModel(IWindowFactory windowFactory, IDbContext dbContext) {
+        public HistoryViewModel(IWindowFactory windowFactory, IDbContext dbContext)
+        {
             _windowFactory = windowFactory;
             _dbContext = dbContext;
             RefreshListCommand = new ActionCommand(Refresh);
@@ -34,12 +37,15 @@ namespace MangaChecker.ViewModels.ViewModels {
         public string LastRefresh { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void DatabaseOnMangaEvent(object sender, MangaEnum mangaEnum) {
-            if (mangaEnum != MangaEnum.Update) {
+        private void DatabaseOnMangaEvent(object sender, MangaEnum mangaEnum)
+        {
+            if (mangaEnum != MangaEnum.Update)
+            {
                 return;
             }
             var m = (Manga) sender;
-            var nm = new Manga {
+            var nm = new Manga
+            {
                 Name = m.Name,
                 Chapter = m.Chapter,
                 Added = DateTime.Now,
@@ -57,20 +63,24 @@ namespace MangaChecker.ViewModels.ViewModels {
             _dbContext.InsertHistory(nm);
         }
 
-        private void Refresh() {
-            if (_history.Count > 0) {
+        private void Refresh()
+        {
+            if (_history.Count > 0)
+            {
                 _history?.Clear();
             }
             _dbContext.GetHistory()?.ToList().ForEach(_history.Add);
             LastRefresh = DateTime.Now.ToLongTimeString();
         }
 
-        private void Remove(Manga manga) {
+        private void Remove(Manga manga)
+        {
             _dbContext.DeleteHistory(manga);
             _history.Remove(manga);
         }
 
-        private void View(IManga manga) {
+        private void View(IManga manga)
+        {
             _windowFactory.CreateViewerWindow(manga);
         }
     }

@@ -6,13 +6,18 @@ using System.Windows.Input;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
 
-namespace MangaChecker.ViewModels.ViewModels {
-    public class SettingsViewModel : INotifyPropertyChanged {
+namespace MangaChecker.ViewModels.ViewModels
+{
+    public class SettingsViewModel : INotifyPropertyChanged
+    {
         private readonly ObservableCollection<Settings> _settings = new ObservableCollection<Settings>();
 
-        public SettingsViewModel(IDbContext dbContext) {
-            SaveCommand = new ActionCommand(() => {
-                Task.Run(() => {
+        public SettingsViewModel(IDbContext dbContext)
+        {
+            SaveCommand = new ActionCommand(() =>
+            {
+                Task.Run(() =>
+                {
                     var set = _settings.ToList();
                     set.Add(RefreshTime);
                     set.Add(OpenLinks);
@@ -23,14 +28,18 @@ namespace MangaChecker.ViewModels.ViewModels {
             ToggleActive = new ActionCommand(s => Toggle((Settings) s));
             Settings = new ReadOnlyObservableCollection<Settings>(_settings);
             var settings = dbContext.GetAllSettings();
-            foreach (var s in settings) {
-                if (s.Setting.ToLower().StartsWith("refres")) {
+            foreach (var s in settings)
+            {
+                if (s.Setting.ToLower().StartsWith("refres"))
+                {
                     RefreshTime = s;
                 }
-                if (s.Setting.ToLower().StartsWith("open")) {
+                if (s.Setting.ToLower().StartsWith("open"))
+                {
                     OpenLinks = s;
                 }
-                if (s.Setting.ToLower().StartsWith("batoto rss")) {
+                if (s.Setting.ToLower().StartsWith("batoto rss"))
+                {
                     BatotoRss = s;
                 }
             }
@@ -38,7 +47,8 @@ namespace MangaChecker.ViewModels.ViewModels {
                                     || s.Setting.ToLower().StartsWith("backlog")
                                     || s.Setting.ToLower().StartsWith("batoto rss")
                                     || s.Setting.ToLower().StartsWith("open "));
-            foreach (var setting in settings) {
+            foreach (var setting in settings)
+            {
                 _settings.Add(setting);
             }
         }
@@ -53,8 +63,10 @@ namespace MangaChecker.ViewModels.ViewModels {
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void Toggle(Settings settings) {
-            if (settings.Active == 1) {
+        private void Toggle(Settings settings)
+        {
+            if (settings.Active == 1)
+            {
                 settings.Active = 0;
                 return;
             }

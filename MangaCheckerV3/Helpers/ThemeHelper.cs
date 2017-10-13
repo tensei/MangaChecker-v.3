@@ -1,44 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Collections.Generic;
 using MangaChecker.Data.Interfaces;
 using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 
-namespace MangaCheckerV3.Helpers {
-    public class ThemeHelper : IThemeHelper {
+namespace MangaCheckerV3.Helpers
+{
+    public class ThemeHelper : IThemeHelper
+    {
+        private readonly PaletteHelper _paletteHelper;
         private readonly SwatchesProvider _swatchesProvider;
 
-        public ThemeHelper() {
-            _swatchesProvider = new SwatchesProvider();
+        public ThemeHelper(SwatchesProvider swatchesProvider, PaletteHelper paletteHelper)
+        {
+            _swatchesProvider = swatchesProvider;
+            _paletteHelper = paletteHelper;
         }
 
-        public async Task ChangeAccentColorTo(Swatch accentColor) {
+        public void ChangeAccentColorTo(Swatch accentColor)
+        {
             //pallet.SetLightDark(theme);
-            await Application.Current.Dispatcher.BeginInvoke(new Action(() => {
-                var palletHelper = new PaletteHelper();
-                palletHelper.ReplaceAccentColor(accentColor);
-            }));
+            //            await Application.Current.Dispatcher.BeginInvoke(new Action(() => {
+            _paletteHelper.ReplaceAccentColor(accentColor);
+            //            }));
         }
 
-        public async Task ChangePrimaryColorTo(Swatch primaryColor) {
+        public void ChangePrimaryColorTo(Swatch primaryColor)
+        {
             //pallet.SetLightDark(theme);
-            await Application.Current.Dispatcher.BeginInvoke(new Action(() => {
-                var palletHelper = new PaletteHelper();
-                palletHelper.ReplacePrimaryColor(primaryColor);
-            }));
+            _paletteHelper.ReplacePrimaryColor(primaryColor);
         }
 
-        public async Task ChangeThemeTo(bool isDark) {
+        public void ChangeThemeTo(bool isDark)
+        {
             //pallet.SetLightDark(theme);
-            await Application.Current.Dispatcher.BeginInvoke(new Action(() => {
-                var palletHelper = new PaletteHelper();
-                palletHelper.SetLightDark(isDark);
-            }));
+            _paletteHelper.SetLightDark(isDark);
         }
 
-        public IEnumerable<Swatch> Swatches() {
+        public IEnumerable<Swatch> Swatches()
+        {
             return _swatchesProvider.Swatches;
         }
     }

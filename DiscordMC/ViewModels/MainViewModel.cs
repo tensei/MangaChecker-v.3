@@ -1,16 +1,16 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using Discord;
-using MangaChecker.Data.Enums;
-using MangaChecker.Data.Models;
-using MangaCheckerV3.Common;
-using Settings = DiscordMC.Properties.Settings;
+using DiscordMC.Properties;
 
-namespace DiscordMC.ViewModels {
-    public class MainViewModel {
+namespace DiscordMC.ViewModels
+{
+    public class MainViewModel
+    {
         private DiscordClient _client;
 
-        public MainViewModel() {
+        public MainViewModel()
+        {
             GlobalVariables.DbContext.MangaEvent += LiteDbOnMangaEvent;
 
             ConnectCommand = new ActionCommand(Start);
@@ -19,7 +19,8 @@ namespace DiscordMC.ViewModels {
             Token = Settings.Default.Token;
             ServerId = Settings.Default.ServerId;
             ChannelId = Settings.Default.ChannelId;
-            if (IsAutoConnect) {
+            if (IsAutoConnect)
+            {
                 Start();
             }
         }
@@ -36,7 +37,8 @@ namespace DiscordMC.ViewModels {
 
         public ulong ChannelId { get; set; }
 
-        public async Task CloseAsync() {
+        public async Task CloseAsync()
+        {
             await _client.Disconnect();
             _client?.Dispose();
             Settings.Default.AutoConnect = IsAutoConnect;
@@ -47,27 +49,34 @@ namespace DiscordMC.ViewModels {
             _client = null;
         }
 
-        private void LiteDbOnMangaEvent(object sender, MangaEnum mangaEnum) {
-            if (mangaEnum != MangaEnum.Update) {
+        private void LiteDbOnMangaEvent(object sender, MangaEnum mangaEnum)
+        {
+            if (mangaEnum != MangaEnum.Update)
+            {
                 return;
             }
             var m = (Manga) sender;
-            try {
+            try
+            {
                 var server = _client?.GetServer(ServerId);
                 var ch = server?.GetChannel(ChannelId);
                 ch?.SendMessage($"New Release!!\n{m.Name} {m.Newest},\n<{m.Link}>");
             }
-            catch {
+            catch
+            {
                 // hmm
             }
         }
 
-        private void Start() {
-            if (_client != null || ServerId == 0 || ChannelId == 0 || string.IsNullOrWhiteSpace(Token)) {
+        private void Start()
+        {
+            if (_client != null || ServerId == 0 || ChannelId == 0 || string.IsNullOrWhiteSpace(Token))
+            {
                 return;
             }
 
-            Task.Run(() => {
+            Task.Run(() =>
+            {
                 _client = new DiscordClient();
                 _client.ExecuteAndWait(async () => { await _client.Connect(Token, TokenType.Bot); });
                 _client.SetGame("Looking for new Memes");

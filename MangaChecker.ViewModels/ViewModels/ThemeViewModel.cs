@@ -6,11 +6,14 @@ using MangaChecker.Data.Interfaces;
 using MangaChecker.ViewModels.Properties;
 using MaterialDesignColors;
 
-namespace MangaChecker.ViewModels.ViewModels {
-    public class ThemeViewModel : INotifyPropertyChanged {
+namespace MangaChecker.ViewModels.ViewModels
+{
+    public class ThemeViewModel : INotifyPropertyChanged
+    {
         private readonly IThemeHelper _themeHelper;
 
-        public ThemeViewModel(IThemeHelper themeHelper) {
+        public ThemeViewModel(IThemeHelper themeHelper)
+        {
             _themeHelper = themeHelper;
             ApplyPrimaryCommand = new ActionCommand(s => ApplyPrimary((Swatch) s));
             ApplyAccentCommand = new ActionCommand(s => ApplyAccent((Swatch) s));
@@ -29,25 +32,29 @@ namespace MangaChecker.ViewModels.ViewModels {
         public ICommand ToggleBaseCommand { get; }
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void ApplyTheme(bool isDark) {
-            _themeHelper.ChangeThemeTo(isDark).ConfigureAwait(false);
+        private void ApplyTheme(bool isDark)
+        {
+            _themeHelper.ChangeThemeTo(isDark);
             Settings.Default.Theme = isDark;
             Settings.Default.Save();
         }
 
-        private void ApplyPrimary(Swatch swatch) {
-            _themeHelper.ChangePrimaryColorTo(swatch).ConfigureAwait(false);
+        private void ApplyPrimary(Swatch swatch)
+        {
+            _themeHelper.ChangePrimaryColorTo(swatch);
             Settings.Default.Primary = swatch.Name;
             Settings.Default.Save();
         }
 
-        private void ApplyAccent(Swatch swatch) {
-            _themeHelper.ChangeAccentColorTo(swatch).ConfigureAwait(false);
+        private void ApplyAccent(Swatch swatch)
+        {
+            _themeHelper.ChangeAccentColorTo(swatch);
             Settings.Default.Accents = swatch.Name;
             Settings.Default.Save();
         }
 
-        private void SetupTheme() {
+        private void SetupTheme()
+        {
             var primary = Settings.Default.Primary;
             var accents = Settings.Default.Accents;
             Theme = Settings.Default.Theme;

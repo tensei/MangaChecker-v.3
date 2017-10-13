@@ -7,43 +7,53 @@ using MangaChecker.Data.Interfaces;
 using MangaChecker.Providers.Interfaces;
 using MangaChecker.Utilities.Interfaces;
 
-namespace MangaChecker.Providers.Sites {
-    public class KireiCake : IProvider {
+namespace MangaChecker.Providers.Sites
+{
+    public class KireiCake : IProvider
+    {
         private readonly IDbContext _dbContext;
         private readonly INewChapterHelper _newChapterHelper;
         private readonly IWebParser _webParser;
 
-        public KireiCake(IWebParser webParser, IDbContext dbContext, INewChapterHelper newChapterHelper) {
+        public KireiCake(IWebParser webParser, IDbContext dbContext, INewChapterHelper newChapterHelper)
+        {
             _webParser = webParser;
             _dbContext = dbContext;
             _newChapterHelper = newChapterHelper;
         }
 
-        public async Task CheckAll(Action<IManga> status) {
+        public async Task CheckAll(Action<IManga> status)
+        {
             // /en/0/87/5/ == 87.5
             // /en/0/24/ == 24
             var all = _dbContext.GetMangasFrom(DbName);
             var openlink = _dbContext.GetOpenLinks();
             var rss = await _webParser.GetRssFeedAsync("https://reader.kireicake.com/rss.xml");
-            if (rss == null) {
+            if (rss == null)
+            {
                 return;
             }
             rss.Reverse();
             foreach (var manga in all)
-            foreach (var rssItemObject in rss) {
+            foreach (var rssItemObject in rss)
+            {
                 status.Invoke(manga);
-                if (!rssItemObject.Title.ToLower().Contains(manga.Name.ToLower())) {
+                if (!rssItemObject.Title.ToLower().Contains(manga.Name.ToLower()))
+                {
                     continue;
                 }
                 var ncs = rssItemObject.Link.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
                 string nc;
-                if (ncs[ncs.Length - 4] == "en") {
+                if (ncs[ncs.Length - 4] == "en")
+                {
                     nc = $"{ncs[ncs.Length - 2]}.{ncs[ncs.Length - 1]}";
                 }
-                else if (ncs[ncs.Length - 3] == "en") {
+                else if (ncs[ncs.Length - 3] == "en")
+                {
                     nc = $"{ncs.Last()}";
                 }
-                else {
+                else
+                {
                     continue;
                 }
                 var isNew = _newChapterHelper.IsNew(manga, nc, rssItemObject.PubDate,
@@ -51,11 +61,13 @@ namespace MangaChecker.Providers.Sites {
             }
         }
 
-        public async Task<Tuple<List<object>, int>> GetImagesTaskAsync(string url) {
+        public async Task<Tuple<List<object>, int>> GetImagesTaskAsync(string url)
+        {
             //<div class="text">18 ⤵</div>
             var baserl = url;
             var imges = new List<object>();
-            if (!url.EndsWith("page/1")) {
+            if (!url.EndsWith("page/1"))
+            {
                 url = url + "page/1";
             }
             var html = await _webParser.GetHtmlSourceDocumentAsync(url);
@@ -68,7 +80,8 @@ namespace MangaChecker.Providers.Sites {
                 Regex.Match(html.DocumentElement.InnerHtml, @">([0-9]+) ⤵</div>", RegexOptions.IgnoreCase).Groups[1]
                     .Value.Trim().Trim('.');
             var intpages = int.Parse(pages);
-            for (var i = 2; i <= intpages; i++) {
+            for (var i = 2; i <= intpages; i++)
+            {
                 url = baserl + $"page/{i}";
                 html = await _webParser.GetHtmlSourceDocumentAsync(url);
                 imges.Add(html.All.First(x => x.LocalName == "img" && x.ClassList.Contains("open")
@@ -80,17 +93,20 @@ namespace MangaChecker.Providers.Sites {
             return new Tuple<List<object>, int>(imges, intpages);
         }
 
-        public async Task<object> CheckOne(object manga) {
+        public async Task<object> CheckOne(object manga)
+        {
             throw new NotImplementedException();
         }
 
-        public async Task<object> FindMangaInfoOnSite(string url) {
+        public async Task<object> FindMangaInfoOnSite(string url)
+        {
             throw new NotImplementedException();
         }
 
         public string DbName => "KireiCake";
 
-        public bool LinkIsMatch(string link) {
+        public bool LinkIsMatch(string link)
+        {
             var regex = new Regex("^https://reader.kireicake.com/read/.+/en/[0-9]+/[0-9]+/?[0-9]+?/$");
             return regex.IsMatch(link);
         }

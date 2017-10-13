@@ -1,7 +1,9 @@
 ﻿using SQLite;
 
-namespace DBMigration.Old_Tables {
-    public class mangareader {
+namespace DBMigration.Old_Tables
+{
+    public class mangareader
+    {
         [PrimaryKey, AutoIncrement]
         public int id { get; set; }
 

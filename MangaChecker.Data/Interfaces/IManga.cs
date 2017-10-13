@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using MangaChecker.Data.Enums;
 
-namespace MangaChecker.Data.Interfaces {
-    public interface IManga {
+namespace MangaChecker.Data.Interfaces
+{
+    public interface IManga
+    {
         int MangaId { get; set; }
         string Name { get; set; }
         float Chapter { get; set; }

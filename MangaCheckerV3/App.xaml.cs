@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Database;
@@ -15,14 +14,19 @@ using MangaChecker.ViewModels.ViewModels;
 using MangaCheckerV3.Common;
 using MangaCheckerV3.Helpers;
 using MangaCheckerV3.Views.Windows;
+using MaterialDesignColors;
+using MaterialDesignThemes.Wpf;
 using Microsoft.Practices.Unity;
 
-namespace MangaCheckerV3 {
+namespace MangaCheckerV3
+{
     /// <summary>
     ///     Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application {
-        private async void AppStartup(object sender, StartupEventArgs args) {
+    public partial class App : Application
+    {
+        private void AppStartup(object sender, StartupEventArgs args)
+        {
             //if (!Debugger.IsAttached)
             //	ExceptionHandler.AddGlobalHandlers();
 
@@ -59,6 +63,9 @@ namespace MangaCheckerV3 {
             var collection = container.Resolve<IProvider[]>();
             container.RegisterInstance<IProviderSet>(new ProviderSet(collection));
 
+            container.RegisterInstance(new SwatchesProvider());
+            container.RegisterInstance(new PaletteHelper());
+
             container.RegisterType<IProviderService, ProviderService>();
             container.RegisterType<IViewModelFactory, ViewModelFactory>();
             container.RegisterType<IThemeHelper, ThemeHelper>();
@@ -77,15 +84,16 @@ namespace MangaCheckerV3 {
             container.RegisterType<MainWindow>();
 
             var pdict = collection.ToDictionary(k => k.DbName, v => v.LinktoSite);
-            if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db"))) {
+            if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db")))
+            {
                 db.CheckDbVersion(pdict);
             }
-            else {
+            else
+            {
                 db.CreateDatabase(pdict);
             }
 
             var mainWindow = container.Resolve<MainWindow>();
-            await Task.Delay(200);
             mainWindow.Show();
         }
     }

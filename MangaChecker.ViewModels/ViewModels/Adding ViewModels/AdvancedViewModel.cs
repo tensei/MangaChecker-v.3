@@ -9,13 +9,15 @@ using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
 using MangaChecker.Providers.Interfaces;
 
-namespace MangaChecker.ViewModels.ViewModels.Adding_ViewModels {
-    public class AdvancedViewModel : INotifyPropertyChanged {
+namespace MangaChecker.ViewModels.ViewModels.Adding_ViewModels
+{
+    public class AdvancedViewModel : INotifyPropertyChanged
+    {
+        private readonly IDbContext _dbContext;
         private readonly ObservableCollection<Genre> _genres = new ObservableCollection<Genre>();
 
-        private readonly IDbContext _dbContext;
-
-        public AdvancedViewModel(IProviderSet providerService, IDbContext dbContext) {
+        public AdvancedViewModel(IProviderSet providerService, IDbContext dbContext)
+        {
             _dbContext = dbContext;
             Manga = new Manga();
             DeleteGenreCommand = new ActionCommand(DeleteGenre);
@@ -46,30 +48,37 @@ namespace MangaChecker.ViewModels.ViewModels.Adding_ViewModels {
         public ICommand AddMangaCommand { get; }
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void AddGenre() {
-            if (Manga.Genres.Contains(SelectedGenre)) {
+        private void AddGenre()
+        {
+            if (Manga.Genres.Contains(SelectedGenre))
+            {
                 return;
             }
             Manga.Genres.Add(SelectedGenre);
             _genres.Add(SelectedGenre);
         }
 
-        private void DeleteGenre(object genre) {
+        private void DeleteGenre(object genre)
+        {
             var enumVal = (Genre) Enum.Parse(typeof(Genre), genre.ToString());
-            if (!Manga.Genres.Contains(enumVal)) {
+            if (!Manga.Genres.Contains(enumVal))
+            {
                 return;
             }
             Manga.Genres.Remove(enumVal);
             _genres.Remove(enumVal);
         }
 
-        private void AddManga() {
-            try {
+        private void AddManga()
+        {
+            try
+            {
                 Manga.Site = SiteSelected;
                 _dbContext.InsertManga(Manga);
                 Manga = new Manga();
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Console.WriteLine(e);
                 throw;
             }

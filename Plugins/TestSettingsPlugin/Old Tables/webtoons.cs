@@ -1,7 +1,9 @@
 ﻿using SQLite;
 
-namespace DBMigration.Old_Tables {
-    public class webtoons {
+namespace DBMigration.Old_Tables
+{
+    public class webtoons
+    {
         [PrimaryKey, AutoIncrement]
         public int id { get; set; }
 

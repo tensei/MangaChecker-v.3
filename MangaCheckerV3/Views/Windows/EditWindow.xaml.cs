@@ -1,9 +1,12 @@
-﻿namespace MangaCheckerV3.Views.Windows {
+﻿namespace MangaCheckerV3.Views.Windows
+{
     /// <summary>
     ///     Interaction logic for EditWindow.xaml
     /// </summary>
-    public partial class EditWindow {
-        public EditWindow() {
+    public partial class EditWindow
+    {
+        public EditWindow()
+        {
             InitializeComponent();
         }
     }

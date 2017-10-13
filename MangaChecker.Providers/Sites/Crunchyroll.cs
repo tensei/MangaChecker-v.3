@@ -5,29 +5,36 @@ using System.Threading.Tasks;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Providers.Interfaces;
 
-namespace MangaChecker.Providers.Sites {
-    public class Crunchyroll : IProvider {
+namespace MangaChecker.Providers.Sites
+{
+    public class Crunchyroll : IProvider
+    {
         //http://utils.senpai.moe/
 
-        public async Task CheckAll(Action<IManga> status) {
+        public async Task CheckAll(Action<IManga> status)
+        {
             throw new NotImplementedException();
         }
 
-        public async Task<object> CheckOne(object manga) {
+        public async Task<object> CheckOne(object manga)
+        {
             throw new NotImplementedException();
         }
 
-        public async Task<Tuple<List<object>, int>> GetImagesTaskAsync(string url) {
+        public async Task<Tuple<List<object>, int>> GetImagesTaskAsync(string url)
+        {
             throw new NotImplementedException();
         }
 
-        public async Task<object> FindMangaInfoOnSite(string url) {
+        public async Task<object> FindMangaInfoOnSite(string url)
+        {
             throw new NotImplementedException();
         }
 
         public string DbName => "Crunchyroll";
 
-        public bool LinkIsMatch(string link) {
+        public bool LinkIsMatch(string link)
+        {
             var regex = new Regex("");
             return regex.IsMatch(link);
         }

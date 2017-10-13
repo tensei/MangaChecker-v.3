@@ -4,19 +4,26 @@ using MangaChecker.Data.Interfaces;
 using MangaChecker.Providers.Interfaces;
 using MangaChecker.ViewModels.ViewModels.Adding_ViewModels;
 
-namespace MangaChecker.ViewModels.ViewModels {
-    public class AddMangaViewModel : INotifyPropertyChanged {
-        public AddMangaViewModel(IProviderSet providerService, IDbContext dbContext) {
+namespace MangaChecker.ViewModels.ViewModels
+{
+    public class AddMangaViewModel : INotifyPropertyChanged
+    {
+        public AddMangaViewModel(IProviderSet providerService, IDbContext dbContext)
+        {
             NormalDataContext = new NormalViewModel();
-            NormalCommand = new ActionCommand(() => {
-                if (TranIndex == 0) {
+            NormalCommand = new ActionCommand(() =>
+            {
+                if (TranIndex == 0)
+                {
                     return;
                 }
                 TranIndex = 0;
                 NormalDataContext = new NormalViewModel();
             });
-            AdvancedCommand = new ActionCommand(() => {
-                if (TranIndex == 1) {
+            AdvancedCommand = new ActionCommand(() =>
+            {
+                if (TranIndex == 1)
+                {
                     return;
                 }
                 TranIndex = 1;

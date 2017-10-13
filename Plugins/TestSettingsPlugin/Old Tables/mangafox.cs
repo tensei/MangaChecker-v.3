@@ -1,7 +1,9 @@
 ﻿using SQLite;
 
-namespace DBMigration.Old_Tables {
-    public class mangafox {
+namespace DBMigration.Old_Tables
+{
+    public class mangafox
+    {
         [PrimaryKey, AutoIncrement]
         public int id { get; set; }
 

@@ -1,7 +1,9 @@
 ﻿using SQLite;
 
-namespace DBMigration.Old_Tables {
-    public class mangastream {
+namespace DBMigration.Old_Tables
+{
+    public class mangastream
+    {
         [PrimaryKey, AutoIncrement]
         public int id { get; set; }
 

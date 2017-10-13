@@ -7,13 +7,18 @@ using MangaChecker.Data.Interfaces;
 using MangaChecker.Providers.Interfaces;
 using MangaChecker.Utilities;
 
-namespace MangaChecker.Providers {
-    public class ProviderService : IProviderService, INotifyPropertyChanged {
+namespace MangaChecker.Providers
+{
+    public class ProviderService : IProviderService, INotifyPropertyChanged
+    {
         private readonly IDbContext _dbContext;
         private readonly Logger _logger;
+
+        private int _active;
         private int _currentProviderIndex;
 
-        public ProviderService(IProviderSet providerSet, IDbContext dbContext, Logger logger) {
+        public ProviderService(IProviderSet providerSet, IDbContext dbContext, Logger logger)
+        {
             Providers = providerSet.GetAll;
             _dbContext = dbContext;
             _logger = logger;
@@ -21,7 +26,8 @@ namespace MangaChecker.Providers {
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void Close() {
+        public void Close()
+        {
             Stop = true;
         }
 
@@ -31,44 +37,59 @@ namespace MangaChecker.Providers {
         public int Timer { get; set; }
         public string Status { get; set; }
 
-        public bool Add(IProvider site) {
-            if (Providers.ToList().Contains(site)) {
+        public bool Add(IProvider site)
+        {
+            if (Providers.ToList().Contains(site))
+            {
                 return false;
             }
             Providers.Add(site);
             return true;
         }
 
-        public bool Remove(IProvider site) {
-            if (!Providers.Contains(site)) {
+        public bool Remove(IProvider site)
+        {
+            if (!Providers.Contains(site))
+            {
                 return false;
             }
             Providers.Remove(site);
             return true;
         }
 
-        public async Task Run() {
+        public async Task Run()
+        {
             Timer = 5;
-            while (!Stop) {
-                if (Timer > 0) {
+            while (!Stop)
+            {
+                if (Timer > 0)
+                {
                     Status = $"Checking in {Timer} seconds.";
-                    if (!Pause) {
+                    if (!Pause)
+                    {
                         Timer--;
                     }
                     await Task.Delay(1000);
                 }
-                else {
-                    for (var i = 0; i < Providers.Count; i++) {
-                        var setting = _dbContext.GetSettingsFor(Providers[i].DbName);
-                        if (setting.Active == 0) {
+                else
+                {
+                    var settings = _dbContext.GetAllSettings();
+                    _active = settings.Count(s => s.Active == 1);
+                    for (var i = 0; i < Providers.Count; i++)
+                    {
+                        var setting = settings.First(s => s.Setting == Providers[i].DbName);
+                        if (setting.Active == 0)
+                        {
                             continue;
                         }
                         _currentProviderIndex = i;
-                        Status = $"[{i}/{Providers.Count}]Checking {Providers[i].DbName}...";
-                        try {
+                        Status = $"[{i}/{_active}]Checking {Providers[i].DbName}...";
+                        try
+                        {
                             await Providers[i].CheckAll(ChangeStatus);
                         }
-                        catch (Exception e) {
+                        catch (Exception e)
+                        {
                             _logger.Log.Error(e);
                         }
                         await Task.Delay(1000);
@@ -79,8 +100,9 @@ namespace MangaChecker.Providers {
             }
         }
 
-        private void ChangeStatus(IManga manga) {
-            Status = $"[{_currentProviderIndex}/{Providers.Count}][{manga.Site}] Checking {manga.Name} ...";
+        private void ChangeStatus(IManga manga)
+        {
+            Status = $"{DateTime.Now:t} [{_currentProviderIndex}/{_active}] [{manga.Site}] Checking {manga.Name} ...";
         }
     }
 }

@@ -1,5 +1,7 @@
-namespace MangaChecker.Data.Enums {
-    public enum Genre {
+namespace MangaChecker.Data.Enums
+{
+    public enum Genre
+    {
         Action,
         Adventure,
         Cars,

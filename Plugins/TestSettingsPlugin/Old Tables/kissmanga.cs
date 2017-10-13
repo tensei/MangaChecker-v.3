@@ -1,7 +1,9 @@
 ﻿using SQLite;
 
-namespace DBMigration.Old_Tables {
-    public class kissmanga {
+namespace DBMigration.Old_Tables
+{
+    public class kissmanga
+    {
         [PrimaryKey, AutoIncrement]
         public int id { get; set; }
 

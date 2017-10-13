@@ -1,7 +1,9 @@
 ﻿using System;
 
-namespace MangaChecker.Data.Interfaces {
-    public interface ISettings {
+namespace MangaChecker.Data.Interfaces
+{
+    public interface ISettings
+    {
         int Id { get; set; }
         string Setting { get; set; }
         string Link { get; set; }

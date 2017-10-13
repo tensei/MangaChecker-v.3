@@ -1,7 +1,9 @@
 ﻿using System;
 
-namespace MangaChecker.Data.Interfaces {
-    public interface IRssItem {
+namespace MangaChecker.Data.Interfaces
+{
+    public interface IRssItem
+    {
         string Title { get; set; }
         string Author { get; set; }
         string Link { get; set; }

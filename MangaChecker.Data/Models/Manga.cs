@@ -4,8 +4,10 @@ using System.ComponentModel;
 using MangaChecker.Data.Enums;
 using MangaChecker.Data.Interfaces;
 
-namespace MangaChecker.Data.Models {
-    public class Manga : IManga, INotifyPropertyChanged {
+namespace MangaChecker.Data.Models
+{
+    public class Manga : IManga, INotifyPropertyChanged
+    {
         public int MangaId { get; set; }
 
         public string Name { get; set; }
@@ -39,10 +41,12 @@ namespace MangaChecker.Data.Models {
         public string DaysAgo => DaysSinceUpdate();
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private string DaysSinceUpdate() {
+        private string DaysSinceUpdate()
+        {
             var dateNow = DateTime.Now;
             var diff = dateNow - Updated;
-            if (diff.Days < 0) {
+            if (diff.Days < 0)
+            {
                 return "Unknown";
             }
             return diff.Days == 0 ? "Today" : $"{diff.Days} day(s) ago";

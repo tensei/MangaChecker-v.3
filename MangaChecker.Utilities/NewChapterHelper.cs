@@ -5,35 +5,43 @@ using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
 using MangaChecker.Utilities.Interfaces;
 
-namespace MangaChecker.Utilities {
-    public class NewChapterHelper : INewChapterHelper {
+namespace MangaChecker.Utilities
+{
+    public class NewChapterHelper : INewChapterHelper
+    {
         private readonly IDbContext _dbContext;
         private readonly Logger _logger;
 
-        public NewChapterHelper(IDbContext dbContext, Logger logger) {
+        public NewChapterHelper(IDbContext dbContext, Logger logger)
+        {
             _dbContext = dbContext;
             _logger = logger;
         }
 
-        public bool IsNew(Manga manga, string newChapter, DateTime newDate, string newLink, bool openLink) {
+        public bool IsNew(Manga manga, string newChapter, DateTime newDate, string newLink, bool openLink)
+        {
             var isFloat = float.TryParse(newChapter, NumberStyles.Float, CultureInfo.InvariantCulture,
                 out float floatChapter);
             var isDateNew = newDate > manga.Updated;
             //if (newChapter.StartsWith("Bonus")) {
             //    _logger.Log.Debug("hmm");
             //}
-            if (isFloat && floatChapter <= manga.Chapter || newChapter == manga.Newest) {
+            if (isFloat && floatChapter <= manga.Chapter || newChapter == manga.Newest)
+            {
                 return true;
             }
 
-            if (isFloat && floatChapter > manga.Chapter) {
+            if (isFloat && floatChapter > manga.Chapter)
+            {
                 return Update(manga, floatChapter, true, newLink, newDate, openLink, newChapter);
             }
-            if (!isFloat && isDateNew && !manga.OtherChapters.Contains(newChapter)) {
+            if (!isFloat && isDateNew && !manga.OtherChapters.Contains(newChapter))
+            {
                 manga.OtherChapters.Add(newChapter);
                 return Update(manga, floatChapter, false, newLink, newDate, openLink, newChapter);
             }
-            if (!isDateNew && !isFloat) {
+            if (!isDateNew && !isFloat)
+            {
                 return false;
             }
             //this should never be reached!!
@@ -47,9 +55,11 @@ namespace MangaChecker.Utilities {
         }
 
         public bool Update(Manga manga, float floatChapter, bool isFloat, string newLink, DateTime newDate,
-            bool openLink, object newChapter) {
+            bool openLink, object newChapter)
+        {
             manga.Newest = newChapter;
-            if (isFloat) {
+            if (isFloat)
+            {
                 manga.Chapter = floatChapter;
                 manga.Newest = floatChapter.ToString(CultureInfo.InvariantCulture).Contains(".")
                     ? floatChapter.ToString("0.00", CultureInfo.InvariantCulture)
@@ -58,7 +68,8 @@ namespace MangaChecker.Utilities {
             manga.Updated = newDate;
             manga.Link = newLink;
             manga.New = true;
-            if (!openLink) {
+            if (!openLink)
+            {
                 return true;
             }
             _dbContext.Update(manga);

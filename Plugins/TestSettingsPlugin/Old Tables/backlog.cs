@@ -1,7 +1,9 @@
 ﻿using SQLite;
 
-namespace DBMigration.Old_Tables {
-    public class backlog {
+namespace DBMigration.Old_Tables
+{
+    public class backlog
+    {
         [PrimaryKey, AutoIncrement]
         public int id { get; set; }
 

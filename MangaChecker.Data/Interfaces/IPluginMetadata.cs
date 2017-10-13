@@ -1,5 +1,7 @@
-﻿namespace MangaChecker.Data.Interfaces {
-    public interface IPluginMetadata {
+﻿namespace MangaChecker.Data.Interfaces
+{
+    public interface IPluginMetadata
+    {
         string Title { get; }
 
         string Description { get; }

@@ -1,5 +1,7 @@
-﻿namespace MangaChecker.Data.Enums {
-    public enum SettingEnum {
+﻿namespace MangaChecker.Data.Enums
+{
+    public enum SettingEnum
+    {
         Insert,
         Update,
         Delete,

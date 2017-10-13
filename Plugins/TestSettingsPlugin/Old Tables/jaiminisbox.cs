@@ -1,7 +1,9 @@
 ﻿using SQLite;
 
-namespace DBMigration.Old_Tables {
-    public class jaiminisbox {
+namespace DBMigration.Old_Tables
+{
+    public class jaiminisbox
+    {
         [PrimaryKey, AutoIncrement]
         public int id { get; set; }
 

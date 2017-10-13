@@ -9,13 +9,16 @@ using MangaChecker.Data.Interfaces;
 using MangaChecker.Data.Models;
 using MangaChecker.Providers.Interfaces;
 
-namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
-    public class EditWindowViewModel : INotifyPropertyChanged {
-        private readonly ObservableCollection<Genre> _genres = new ObservableCollection<Genre>();
+namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels
+{
+    public class EditWindowViewModel : INotifyPropertyChanged
+    {
         private readonly IDbContext _dbContext;
+        private readonly ObservableCollection<Genre> _genres = new ObservableCollection<Genre>();
         private readonly ObservableCollection<string> _otherChapters = new ObservableCollection<string>();
 
-        public EditWindowViewModel(Manga manga, IProviderService providerService, IDbContext dbContext) {
+        public EditWindowViewModel(Manga manga, IProviderService providerService, IDbContext dbContext)
+        {
             _dbContext = dbContext;
             Manga = manga;
             DeleteGenreCommand = new ActionCommand(DeleteGenre);
@@ -58,44 +61,55 @@ namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels {
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void AddGenre() {
-            if (Manga.Genres.Contains(SelectedGenre)) {
+        private void AddGenre()
+        {
+            if (Manga.Genres.Contains(SelectedGenre))
+            {
                 return;
             }
             Manga.Genres.Add(SelectedGenre);
             _genres.Add(SelectedGenre);
         }
 
-        private void DeleteGenre(object genre) {
+        private void DeleteGenre(object genre)
+        {
             var enumVal = (Genre) Enum.Parse(typeof(Genre), genre.ToString());
-            if (!Manga.Genres.Contains(enumVal)) {
+            if (!Manga.Genres.Contains(enumVal))
+            {
                 return;
             }
             Manga.Genres.Remove(enumVal);
             _genres.Remove(enumVal);
         }
 
-        private void AddOtherChapter() {
-            if (Manga.OtherChapters.Contains(OtherChapter)) {
+        private void AddOtherChapter()
+        {
+            if (Manga.OtherChapters.Contains(OtherChapter))
+            {
                 return;
             }
             Manga.OtherChapters.Add(OtherChapter);
             _otherChapters.Add(OtherChapter);
         }
 
-        private void DeleteOtherChapter(string otherChapter) {
-            if (!Manga.OtherChapters.Contains(otherChapter)) {
+        private void DeleteOtherChapter(string otherChapter)
+        {
+            if (!Manga.OtherChapters.Contains(otherChapter))
+            {
                 return;
             }
             Manga.OtherChapters.Remove(otherChapter);
             _otherChapters.Remove(otherChapter);
         }
 
-        private void SaveManga() {
-            try {
+        private void SaveManga()
+        {
+            try
+            {
                 _dbContext.Update(Manga);
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Console.WriteLine(e);
                 throw;
             }

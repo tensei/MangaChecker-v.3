@@ -1,7 +1,9 @@
 ﻿using SQLite;
 
-namespace DBMigration.Old_Tables {
-    public class kireicake {
+namespace DBMigration.Old_Tables
+{
+    public class kireicake
+    {
         [PrimaryKey, AutoIncrement]
         public int id { get; set; }
 

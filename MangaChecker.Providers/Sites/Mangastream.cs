@@ -7,30 +7,37 @@ using MangaChecker.Data.Interfaces;
 using MangaChecker.Providers.Interfaces;
 using MangaChecker.Utilities.Interfaces;
 
-namespace MangaChecker.Providers.Sites {
-    public class Mangastream : IProvider {
+namespace MangaChecker.Providers.Sites
+{
+    public class Mangastream : IProvider
+    {
         private readonly IDbContext _dbContext;
         private readonly INewChapterHelper _newChapterHelper;
         private readonly IWebParser _webParser;
 
-        public Mangastream(IWebParser webParser, IDbContext dbContext, INewChapterHelper newChapterHelper) {
+        public Mangastream(IWebParser webParser, IDbContext dbContext, INewChapterHelper newChapterHelper)
+        {
             _webParser = webParser;
             _dbContext = dbContext;
             _newChapterHelper = newChapterHelper;
         }
 
-        public async Task CheckAll(Action<IManga> status) {
+        public async Task CheckAll(Action<IManga> status)
+        {
             var all = _dbContext.GetMangasFrom(DbName);
             var rss = await _webParser.GetRssFeedAsync("http://mangastream.com/rss");
-            if (rss == null) {
+            if (rss == null)
+            {
                 return;
             }
             rss.Reverse();
             var openlink = _dbContext.GetOpenLinks();
             foreach (var manga in all)
-            foreach (var rssItemObject in rss) {
+            foreach (var rssItemObject in rss)
+            {
                 status.Invoke(manga);
-                if (!rssItemObject.Title.ToLower().Contains(manga.Name.ToLower())) {
+                if (!rssItemObject.Title.ToLower().Contains(manga.Name.ToLower()))
+                {
                     continue;
                 }
                 var nc = rssItemObject.Title.ToLower().Replace(manga.Name.ToLower(), string.Empty).Trim();
@@ -39,7 +46,8 @@ namespace MangaChecker.Providers.Sites {
             }
         }
 
-        public async Task<Tuple<List<object>, int>> GetImagesTaskAsync(string url) {
+        public async Task<Tuple<List<object>, int>> GetImagesTaskAsync(string url)
+        {
             var l = new List<object>();
             var blankurl = url.Remove(url.Length - 1);
             //Last Page (20)
@@ -47,12 +55,14 @@ namespace MangaChecker.Providers.Sites {
             var pages = Regex.Match(document.DocumentElement.InnerHtml, @"Last Page \((\d+)\)").Groups[1].Value;
             int.TryParse(pages, out int p);
             //l.Add(document.All.First(i=> i.LocalName=="img" && i.GetAttribute("id") == "manga-page").GetAttribute("src"));
-            for (var i = 1; i <= p; i++) {
+            for (var i = 1; i <= p; i++)
+            {
                 document = await _webParser.GetHtmlSourceDocumentAsync(blankurl + i);
                 var img =
                     document.All.First(im => im.LocalName == "img" && im.GetAttribute("id") == "manga-page")
                         .GetAttribute("src");
-                if (img.StartsWith("//")) {
+                if (img.StartsWith("//"))
+                {
                     img = $"http:{img}";
                 }
                 l.Add(img);
@@ -60,17 +70,20 @@ namespace MangaChecker.Providers.Sites {
             return new Tuple<List<object>, int>(l, p);
         }
 
-        public async Task<object> CheckOne(object manga) {
+        public async Task<object> CheckOne(object manga)
+        {
             throw new NotImplementedException();
         }
 
-        public async Task<object> FindMangaInfoOnSite(string url) {
+        public async Task<object> FindMangaInfoOnSite(string url)
+        {
             throw new NotImplementedException();
         }
 
         public string DbName => "Mangastream";
 
-        public bool LinkIsMatch(string link) {
+        public bool LinkIsMatch(string link)
+        {
             var regex = new Regex("^http://mangastream.com/r/(.+)/[0-9]+/[0-9]+/1$");
             return regex.IsMatch(link);
         }
