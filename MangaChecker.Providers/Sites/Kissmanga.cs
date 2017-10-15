@@ -52,7 +52,7 @@ namespace MangaChecker.Providers.Sites
                     }
                     var nc =
                         title.ToLower().Replace($"{manga.Name.ToLower()}", string.Empty).Trim();
-                    var nnc = Regex.Match(nc, @"(ch\. | chapter )?(\d+\.?\d+):?(.+)?", RegexOptions.IgnoreCase);
+                    var nnc = Regex.Match(nc, @".*(ch\. | chapter )?(\d+\.?\d+):?.*", RegexOptions.IgnoreCase);
                     var ch = nnc.Groups[2].Value;
                     if (string.IsNullOrWhiteSpace(ch))
                     {
