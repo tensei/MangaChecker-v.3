@@ -17,6 +17,7 @@ using MangaCheckerV3.Views.Windows;
 using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Practices.Unity;
+using Unity;
 
 namespace MangaCheckerV3
 {

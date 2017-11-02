@@ -74,19 +74,21 @@ namespace MangaChecker.Providers
                 else
                 {
                     var settings = _dbContext.GetAllSettings();
+                    var an = settings.Where(s => s.Active == 1).Select(s => s.Setting).ToList();
                     _active = settings.Count(s => s.Active == 1);
-                    for (var i = 0; i < Providers.Count; i++)
+                    var providers = Providers.Where(p => an.Contains(p.DbName)).ToList();
+                    for (var i = 0; i < providers.Count; i++)
                     {
-                        var setting = settings.First(s => s.Setting == Providers[i].DbName);
+                        var setting = settings.First(s => s.Setting == providers[i].DbName);
                         if (setting.Active == 0)
                         {
                             continue;
                         }
                         _currentProviderIndex = i;
-                        Status = $"[{i}/{_active}]Checking {Providers[i].DbName}...";
+                        Status = $"[{i}/{_active}]Checking {providers[i].DbName}...";
                         try
                         {
-                            await Providers[i].CheckAll(ChangeStatus);
+                            await providers[i].CheckAll(ChangeStatus);
                         }
                         catch (Exception e)
                         {

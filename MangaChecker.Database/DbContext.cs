@@ -102,11 +102,7 @@ namespace MangaChecker.Database
         public void UpdateMangaTrans(List<Manga> manga, bool history = false)
         {
             var query = _db.GetCollection<Manga>("Manga");
-            using (var trans1 = _db.BeginTrans())
-            {
-                query.Update(manga);
-                trans1.Commit();
-            }
+            query.Update(manga);
             if (history)
             {
                 return;
@@ -145,11 +141,7 @@ namespace MangaChecker.Database
         public void SaveSettings(List<Settings> settings)
         {
             var query = _db.GetCollection<Settings>("Settings");
-            using (var trans1 = _db.BeginTrans())
-            {
-                query.Update(settings);
-                trans1.Commit();
-            }
+            query.Update(settings);
             SettingEvent?.Invoke(settings, SettingEnum.Update);
         }
 
