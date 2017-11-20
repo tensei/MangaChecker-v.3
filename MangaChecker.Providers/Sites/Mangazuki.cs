@@ -26,7 +26,7 @@ namespace MangaChecker.Providers.Sites
         {
             var all = _dbContext.GetMangasFrom(DbName);
             var openlink = _dbContext.GetOpenLinks();
-            var rss = await _webParser.GetRssFeedAsync("https://yomanga.co/reader/feeds/rss");
+            var rss = await _webParser.GetRssFeedAsync("https://mangazuki.co/feed");
             if (rss == null)
             {
                 return;
@@ -40,13 +40,13 @@ namespace MangaChecker.Providers.Sites
                 {
                     continue;
                 }
-                var nc = rssItemObject.Title.ToLower().Replace($"{manga.Name.ToLower()} chapter", string.Empty).Trim();
+                var nc = rssItemObject.Title.ToLower().Replace($"{manga.Name.ToLower()} #", string.Empty).Trim();
                 if (nc.Contains(" "))
                 {
                     nc = nc.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries)[0];
                 }
                 var isNew = _newChapterHelper.IsNew(manga, nc, rssItemObject.PubDate,
-                    rssItemObject.Link, openlink);
+                    rssItemObject.Id, openlink);
             }
         }
 

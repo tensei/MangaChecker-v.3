@@ -173,8 +173,9 @@ namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels
         {
             try
             {
-                var lastSlash = url.LastIndexOf('/');
-                var guid = url.Substring(lastSlash + 1);
+                var uri = new Uri(url);
+                var lastSlash = uri.AbsolutePath.LastIndexOf('/');
+                var guid = uri.AbsolutePath.Substring(lastSlash + 1);
                 var client = new WebClient();
                 var extension = guid.Substring(guid.LastIndexOf(".", StringComparison.Ordinal) + 1);
                 await client.DownloadFileTaskAsync(url, Path.Combine(folder, $"{num}.{extension}"));
