@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Weavers>
-  <Costura IncludeDebugSymbols='false'>
+  <Costura IncludeDebugSymbols="false">
     <ExcludeAssemblies>
       MangaChecker.Database
       MangaChecker.Data
@@ -9,5 +9,4 @@
       MangaChecker.ViewModels
     </ExcludeAssemblies>
   </Costura>
-  <PropertyChanged />
 </Weavers>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,10 @@ namespace MangaChecker.Utilities
             {
                 Timeout = TimeSpan.FromSeconds(15)
             };
+            _client.DefaultRequestHeaders.Add("User-Agent",
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36");
+            _client.DefaultRequestHeaders.Add("DNT", "1");
+            _client.DefaultRequestHeaders.Add("Accept", "*/*");
         }
 
         public async Task<string> GetHtmlSourceStringAsync(string url)

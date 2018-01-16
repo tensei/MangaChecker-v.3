@@ -70,11 +70,9 @@ namespace MangaChecker.Providers.Sites
             {
                 url = url + "page/1";
             }
-            var html = await _webParser.GetHtmlSourceDocumentAsync(url);
+            var html = await _webParser.GetHtmlSourceDocumentAsync(url, true);
             imges.Add(html.All.First(i => i.LocalName == "img" && i.ClassList.Contains("open")
-                                          && i.HasAttribute("src") &&
-                                          i.GetAttribute("src")
-                                              .Contains("jaiminisbox.com/reader/content/comics/"))
+                                          && i.HasAttribute("src"))
                 .GetAttribute("src"));
             var pages =
                 Regex.Match(html.DocumentElement.InnerHtml, @">([0-9]+) ⤵</div>", RegexOptions.IgnoreCase).Groups[1]
@@ -85,9 +83,7 @@ namespace MangaChecker.Providers.Sites
                 url = baserl + $"page/{i}";
                 html = await _webParser.GetHtmlSourceDocumentAsync(url);
                 imges.Add(html.All.First(x => x.LocalName == "img" && x.ClassList.Contains("open")
-                                              && x.HasAttribute("src") &&
-                                              x.GetAttribute("src")
-                                                  .Contains("jaiminisbox.com/reader/content/comics/"))
+                                              && x.HasAttribute("src"))
                     .GetAttribute("src"));
             }
             return new Tuple<List<object>, int>(imges, intpages);
