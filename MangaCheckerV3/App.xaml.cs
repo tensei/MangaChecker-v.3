@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using MangaChecker.Data.Interfaces;
+using MangaChecker.Data;
 using MangaChecker.Database;
 using MangaChecker.Providers;
 using MangaChecker.Providers.Interfaces;
