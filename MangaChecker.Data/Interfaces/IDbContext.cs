@@ -26,6 +26,7 @@ namespace MangaChecker.Data.Interfaces
         List<Settings> GetAllSettings();
         Settings GetSettingsFor(string setting);
         void SaveSettings(List<Settings> settings);
+        void SaveSetting(Settings settings);
         int GetRefreshTime();
         bool GetOpenLinks();
         void UpdateDatabase(Versions dbv, Dictionary<string, string> providers);

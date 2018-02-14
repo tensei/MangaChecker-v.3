@@ -123,6 +123,6 @@
                 </StackPanel>
             </Grid>
         </ScrollViewer>
-        <Button Grid.Row="1" Margin="8" Content="Save" Command="{Binding SaveCommand}" VerticalAlignment="Bottom" />
+        <!--<Button Grid.Row="1" Margin="8" Content="Save" Command="{Binding SaveCommand}" VerticalAlignment="Bottom" />-->
     </Grid>
 </UserControl>

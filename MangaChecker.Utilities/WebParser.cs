@@ -42,7 +42,13 @@ namespace MangaChecker.Utilities
             try
             {
                 // Use the HttpClient as usual. Any JS challenge will be solved automatically for you.
-                var content = await _client.GetByteArrayAsync(url);
+                var response = await _client.GetAsync(url);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return null;
+                }
+
+                var content = await response.Content.ReadAsByteArrayAsync();
 
                 var responseString = Encoding.UTF8.GetString(content, 0, content.Length);
 
@@ -59,6 +65,10 @@ namespace MangaChecker.Utilities
                 // Maybe you should increase client.Timeout as each attempt will take about five seconds.
                 return null;
             }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public async Task<byte[]> GetHtmlDataAsync(string url)
@@ -66,9 +76,13 @@ namespace MangaChecker.Utilities
             try
             {
                 // Use the HttpClient as usual. Any JS challenge will be solved automatically for you.
-                var content = await _client.GetByteArrayAsync(url);
+                var response = await _client.GetAsync(url);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return null;
+                }
 
-                return content;
+                return await response.Content.ReadAsByteArrayAsync();
             }
             catch (AggregateException ex) when (ex.InnerException is CloudFlareClearanceException)
             {
@@ -79,45 +93,27 @@ namespace MangaChecker.Utilities
             {
                 // Looks like we ran into a timeout. Too many clearance attempts?
                 // Maybe you should increase client.Timeout as each attempt will take about five seconds.
+                return null;
+            }
+            catch (Exception)
+            {
                 return null;
             }
         }
 
         public async Task<IHtmlDocument> GetHtmlSourceDocumentAsync(string url, bool js = false)
         {
+            // Use the HttpClient as usual. Any JS challenge will be solved automatically for you.
+            string content;
             try
             {
-                // Use the HttpClient as usual. Any JS challenge will be solved automatically for you.
-                string content;
-                try
+                var response = await _client.GetAsync(url);
+                if (!response.IsSuccessStatusCode)
                 {
-                    content = await _client.GetStringAsync(url);
-                }
-                catch (AggregateException ex) when (ex.InnerException is CloudFlareClearanceException)
-                {
-                    // After all retries, clearance still failed.
                     return null;
                 }
-                catch (AggregateException ex) when (ex.InnerException is TaskCanceledException)
-                {
-                    // Looks like we ran into a timeout. Too many clearance attempts?
-                    // Maybe you should increase client.Timeout as each attempt will take about five seconds.
-                    return null;
-                }
-                IHtmlDocument document;
-                HtmlParser parser;
-                if (js)
-                {
-                    //We require a custom configuration
-                    var config = Configuration.Default.WithJavaScript();
-                    //Let's create a new parser using this configuration
-                    parser = new HtmlParser(config);
-                    document = await parser.ParseAsync(content);
-                    return document;
-                }
-                parser = new HtmlParser();
-                document = await parser.ParseAsync(content);
-                return document;
+
+                content = await response.Content.ReadAsStringAsync();
             }
             catch (AggregateException ex) when (ex.InnerException is CloudFlareClearanceException)
             {
@@ -130,6 +126,14 @@ namespace MangaChecker.Utilities
                 // Maybe you should increase client.Timeout as each attempt will take about five seconds.
                 return null;
             }
+            catch (Exception)
+            {
+                return null;
+            }
+            // Use javascript parser on js true
+            var parser = js ? new HtmlParser(Configuration.Default.WithJavaScript()) : new HtmlParser();
+            var document = await parser.ParseAsync(content);
+            return document;
         }
 
         public async Task<List<RssItem>> GetRssFeedAsync(string url)

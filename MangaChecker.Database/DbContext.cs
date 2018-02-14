@@ -144,6 +144,12 @@ namespace MangaChecker.Database
             query.Update(settings);
             SettingEvent?.Invoke(settings, SettingEnum.Update);
         }
+        public void SaveSetting(Settings settings)
+        {
+            var query = _db.GetCollection<Settings>("Settings");
+            query.Update(settings);
+            SettingEvent?.Invoke(settings, SettingEnum.Update);
+        }
 
         public int GetRefreshTime()
         {

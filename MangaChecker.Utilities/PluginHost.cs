@@ -39,6 +39,10 @@ namespace MangaChecker.Utilities
         {
             foreach (var plugin in Plugins)
             {
+                if (!plugin.IsValueCreated)
+                {
+                    continue;
+                }
                 try
                 {
                     plugin?.Value?.Dispose();

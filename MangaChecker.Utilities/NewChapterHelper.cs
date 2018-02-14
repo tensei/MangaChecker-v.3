@@ -54,7 +54,7 @@ namespace MangaChecker.Utilities
             return false;
         }
 
-        public bool Update(Manga manga, float floatChapter, bool isFloat, string newLink, DateTime newDate,
+        private bool Update(Manga manga, float floatChapter, bool isFloat, string newLink, DateTime newDate,
             bool openLink, object newChapter)
         {
             manga.Newest = newChapter;
