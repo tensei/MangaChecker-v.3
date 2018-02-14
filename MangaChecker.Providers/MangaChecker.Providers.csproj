@@ -31,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AngleSharp, Version=0.9.9.0, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
@@ -49,6 +50,7 @@
     <Compile Include="Interfaces\IProvider.cs" />
     <Compile Include="Interfaces\IProviderSet.cs" />
     <Compile Include="Interfaces\IProviderService.cs" />
+    <Compile Include="ProviderBase.cs" />
     <Compile Include="ProviderSet.cs" />
     <Compile Include="Sites\Batoto.cs" />
     <Compile Include="Sites\Crunchyroll.cs" />

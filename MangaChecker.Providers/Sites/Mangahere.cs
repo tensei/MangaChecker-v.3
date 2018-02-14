@@ -7,37 +7,12 @@ using MangaChecker.Providers.Interfaces;
 
 namespace MangaChecker.Providers.Sites
 {
-    public class Mangahere : IProvider
+    public class Mangahere : ProviderBase
     {
-        public async Task CheckAll(Action<IManga> status)
+        public Mangahere()
         {
-            throw new NotImplementedException();
+            DbName = nameof(Mangahere);
+            LinktoSite = "http://mangahere.co/";
         }
-
-        public async Task<Tuple<List<object>, int>> GetImagesTaskAsync(string url)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<object> CheckOne(object manga)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<object> FindMangaInfoOnSite(string url)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string DbName => "Mangahere";
-
-        public bool LinkIsMatch(string link)
-        {
-            var regex = new Regex("");
-            return regex.IsMatch(link);
-        }
-
-        public bool ViewEnabled => false;
-        public string LinktoSite => "http://mangahere.co/";
     }
 }

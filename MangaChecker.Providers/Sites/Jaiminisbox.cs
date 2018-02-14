@@ -9,7 +9,7 @@ using MangaChecker.Utilities.Interfaces;
 
 namespace MangaChecker.Providers.Sites
 {
-    public class Jaiminisbox : IProvider
+    public class Jaiminisbox : ProviderBase
     {
         private readonly IDbContext _dbContext;
         private readonly INewChapterHelper _newChapterHelper;
@@ -20,9 +20,12 @@ namespace MangaChecker.Providers.Sites
             _webParser = webParser;
             _dbContext = dbContext;
             _newChapterHelper = newChapterHelper;
+            DbName = nameof(Jaiminisbox);
+            ViewEnabled = true;
+            LinktoSite = "https://jaiminisbox.com/";
         }
 
-        public async Task CheckAll(Action<IManga> status)
+        public override async Task CheckAll(Action<IManga> status)
         {
             // /en/0/87/5/ == 87.5
             // /en/0/24/ == 24
@@ -61,7 +64,7 @@ namespace MangaChecker.Providers.Sites
             }
         }
 
-        public async Task<Tuple<List<object>, int>> GetImagesTaskAsync(string url)
+        public override async Task<(List<object>, int)> GetImagesTaskAsync(string url)
         {
             //<div class="text">18 ⤵</div>
             var baserl = url;
@@ -86,28 +89,15 @@ namespace MangaChecker.Providers.Sites
                                               && x.HasAttribute("src"))
                     .GetAttribute("src"));
             }
-            return new Tuple<List<object>, int>(imges, intpages);
+            return (imges, intpages);
         }
+        
 
-        public async Task<object> CheckOne(object manga)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<object> FindMangaInfoOnSite(string url)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string DbName => "Jaiminisbox";
-
-        public bool LinkIsMatch(string link)
+        public override bool LinkIsMatch(string link)
         {
             var regex = new Regex(@"^https?://jaiminisbox.com/reader/read/.+/en/\d+/\d+/(\d+/)?$");
             return regex.IsMatch(link);
         }
 
-        public bool ViewEnabled => true;
-        public string LinktoSite => "https://jaiminisbox.com/";
     }
 }

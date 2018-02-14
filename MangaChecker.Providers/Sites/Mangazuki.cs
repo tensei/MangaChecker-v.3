@@ -9,7 +9,7 @@ using MangaChecker.Utilities.Interfaces;
 
 namespace MangaChecker.Providers.Sites
 {
-    public class Mangazuki : IProvider
+    public class Mangazuki : ProviderBase
     {
         private readonly IDbContext _dbContext;
         private readonly INewChapterHelper _newChapterHelper;
@@ -20,9 +20,12 @@ namespace MangaChecker.Providers.Sites
             _webParser = webParser;
             _dbContext = dbContext;
             _newChapterHelper = newChapterHelper;
+            DbName = nameof(Mangazuki);
+            ViewEnabled = true;
+            LinktoSite = "https://mangazuki.co/";
         }
 
-        public async Task CheckAll(Action<IManga> status)
+        public override async Task CheckAll(Action<IManga> status)
         {
             var all = _dbContext.GetMangasFrom(DbName);
             var openlink = _dbContext.GetOpenLinks();
@@ -50,7 +53,7 @@ namespace MangaChecker.Providers.Sites
             }
         }
 
-        public async Task<Tuple<List<object>, int>> GetImagesTaskAsync(string url)
+        public override async Task<(List<object>, int)> GetImagesTaskAsync(string url)
         {
             //<div class="text">18 ⤵</div>
             var baserl = url;
@@ -62,28 +65,13 @@ namespace MangaChecker.Providers.Sites
                                                i.GetAttribute("src").Contains("https://mangazuki.co/img/series/"))
                 .Select(i => i.GetAttribute("src")));
             var pages = imges.Count;
-            return new Tuple<List<object>, int>(imges, pages);
+            return (imges, pages);
         }
 
-        public async Task<object> CheckOne(object manga)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<object> FindMangaInfoOnSite(string url)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string DbName => "Mangazuki";
-
-        public bool LinkIsMatch(string link)
+        public override bool LinkIsMatch(string link)
         {
             var regex = new Regex("^https://mangazuki.co/read/.+/[0-9]+$");
             return regex.IsMatch(link);
         }
-
-        public bool ViewEnabled => true;
-        public string LinktoSite => "https://mangazuki.co/";
     }
 }

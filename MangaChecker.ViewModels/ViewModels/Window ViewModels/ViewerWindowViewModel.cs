@@ -24,8 +24,6 @@ namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels
 
         private readonly ObservableCollection<int> _pages = new ObservableCollection<int>();
 
-        private readonly WebParser _webParser = new WebParser();
-
         private List<object> _imgs;
 
         private bool _isClosing;

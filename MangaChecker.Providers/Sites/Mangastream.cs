@@ -9,7 +9,7 @@ using MangaChecker.Utilities.Interfaces;
 
 namespace MangaChecker.Providers.Sites
 {
-    public class Mangastream : IProvider
+    public class Mangastream : ProviderBase
     {
         private readonly IDbContext _dbContext;
         private readonly INewChapterHelper _newChapterHelper;
@@ -20,9 +20,12 @@ namespace MangaChecker.Providers.Sites
             _webParser = webParser;
             _dbContext = dbContext;
             _newChapterHelper = newChapterHelper;
+            DbName = nameof(Mangastream);
+            ViewEnabled = true;
+            LinktoSite = "http://mangastream.com/";
         }
 
-        public async Task CheckAll(Action<IManga> status)
+        public override async Task CheckAll(Action<IManga> status)
         {
             var all = _dbContext.GetMangasFrom(DbName);
             var rss = await _webParser.GetRssFeedAsync("http://mangastream.com/rss");
@@ -46,7 +49,7 @@ namespace MangaChecker.Providers.Sites
             }
         }
 
-        public async Task<Tuple<List<object>, int>> GetImagesTaskAsync(string url)
+        public override async Task<(List<object>, int)> GetImagesTaskAsync(string url)
         {
             var l = new List<object>();
             var blankurl = url.Remove(url.Length - 1);
@@ -67,28 +70,13 @@ namespace MangaChecker.Providers.Sites
                 }
                 l.Add(img);
             }
-            return new Tuple<List<object>, int>(l, p);
+            return (l, p);
         }
 
-        public async Task<object> CheckOne(object manga)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<object> FindMangaInfoOnSite(string url)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string DbName => "Mangastream";
-
-        public bool LinkIsMatch(string link)
+        public override bool LinkIsMatch(string link)
         {
             var regex = new Regex("^http://mangastream.com/r/(.+)/[0-9]+/[0-9]+/1$");
             return regex.IsMatch(link);
         }
-
-        public bool ViewEnabled => true;
-        public string LinktoSite => "http://mangastream.com/";
     }
 }

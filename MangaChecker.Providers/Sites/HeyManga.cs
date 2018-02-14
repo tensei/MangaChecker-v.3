@@ -9,7 +9,7 @@ using MangaChecker.Utilities.Interfaces;
 
 namespace MangaChecker.Providers.Sites
 {
-    public class HeyManga : IProvider
+    public class HeyManga : ProviderBase
     {
         private readonly IDbContext _dbContext;
         private readonly INewChapterHelper _newChapterHelper;
@@ -20,9 +20,11 @@ namespace MangaChecker.Providers.Sites
             _webParser = webParser;
             _dbContext = dbContext;
             _newChapterHelper = newChapterHelper;
+            DbName = nameof(HeyManga);
+            LinktoSite = "https://www.heymanga.me/";
         }
 
-        public async Task CheckAll(Action<IManga> status)
+        public override async Task CheckAll(Action<IManga> status)
         {
             var all = _dbContext.GetMangasFrom(DbName);
             var openlink = _dbContext.GetOpenLinks();
@@ -60,33 +62,6 @@ namespace MangaChecker.Providers.Sites
                     rssItemObject.Key, openlink);
             }
         }
-
-        public async Task<Tuple<List<object>, int>> GetImagesTaskAsync(string url)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<object> CheckOne(object manga)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<object> FindMangaInfoOnSite(string url)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool ViewEnabled => false;
-
-        public string DbName => "HeyManga";
-
-        public bool LinkIsMatch(string link)
-        {
-            var regex = new Regex("");
-            return regex.IsMatch(link);
-        }
-
-        public string LinktoSite => "https://www.heymanga.me/";
 
         private async Task<Dictionary<string, string>> _load2Pages(string link)
         {

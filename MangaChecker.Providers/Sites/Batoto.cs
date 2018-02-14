@@ -9,7 +9,7 @@ using MangaChecker.Utilities.Interfaces;
 
 namespace MangaChecker.Providers.Sites
 {
-    public class Batoto : IProvider
+    public class Batoto : ProviderBase
     {
         private readonly IDbContext _dbContext;
         private readonly Logger _logger;
@@ -22,9 +22,12 @@ namespace MangaChecker.Providers.Sites
             _dbContext = dbContext;
             _newChapterHelper = newChapterHelper;
             _logger = logger;
+            DbName = nameof(Batoto);
+            ViewEnabled = false;
+            LinktoSite = "http://bato.to/";
         }
 
-        public async Task CheckAll(Action<IManga> status)
+        public override async Task CheckAll(Action<IManga> status)
         {
             var all = _dbContext.GetMangasFrom(DbName);
             var brss = _dbContext.GetSettingsFor("Batoto Rss");
@@ -57,31 +60,5 @@ namespace MangaChecker.Providers.Sites
                     rssItemObject.Link, openlink);
             }
         }
-
-        public async Task<Tuple<List<object>, int>> GetImagesTaskAsync(string url)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<object> CheckOne(object manga)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<object> FindMangaInfoOnSite(string url)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string DbName => "Batoto";
-
-        public bool LinkIsMatch(string link)
-        {
-            var regex = new Regex("");
-            return regex.IsMatch(link);
-        }
-
-        public bool ViewEnabled => false;
-        public string LinktoSite => "http://bato.to/";
     }
 }

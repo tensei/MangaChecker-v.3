@@ -13,7 +13,7 @@ namespace MangaChecker.Providers.Interfaces
         bool LinkIsMatch(string link);
         Task CheckAll(Action<IManga> status);
         Task<object> CheckOne(object manga);
-        Task<Tuple<List<object>, int>> GetImagesTaskAsync(string url);
+        Task<(List<object>, int)> GetImagesTaskAsync(string url);
         Task<object> FindMangaInfoOnSite(string url);
     }
 }
