@@ -34,7 +34,7 @@ namespace MangaChecker.Providers.Sites
             {
                 return;
             }
-            //rss.Reverse();
+            rss.Reverse();
             foreach (var manga in all)
             foreach (var rssItemObject in rss)
             {
@@ -55,22 +55,22 @@ namespace MangaChecker.Providers.Sites
 
         public override async Task<(List<object>, int)> GetImagesTaskAsync(string url)
         {
-            //<div class="text">18 ⤵</div>
-            var baserl = url;
             var imges = new List<object>();
 
-            var html = await _webParser.GetHtmlSourceDocumentAsync(url);
-            imges.AddRange(html.All.Where(i => i.LocalName == "img" && i.ClassList.Contains("img-lazy")
-                                               && i.HasAttribute("src") &&
-                                               i.GetAttribute("src").Contains("https://mangazuki.co/img/series/"))
-                .Select(i => i.GetAttribute("src")));
+            var html = await _webParser.GetHtmlSourceDocumentAsync(url, true);
+            var imgTag = html.All.Where(i => i.LocalName == "img" && i.ClassList.Contains("img-responsive")
+                                                                  && i.HasAttribute("data-src") &&
+                                                                  i.GetAttribute("data-src")
+                                                                      .Contains("mangazuki.co/uploads/manga/"))
+                .Select(i => i.GetAttribute("data-src"));
+            imges.AddRange(imgTag);
             var pages = imges.Count;
             return (imges, pages);
         }
 
         public override bool LinkIsMatch(string link)
         {
-            var regex = new Regex("^https://mangazuki.co/read/.+/[0-9]+$");
+            var regex = new Regex("^https://mangazuki.co/manga/[a-zA-Z0-9-]+/[0-9.]+/[0-9.]+$");
             return regex.IsMatch(link);
         }
     }

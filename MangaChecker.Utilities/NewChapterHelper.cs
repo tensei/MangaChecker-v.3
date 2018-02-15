@@ -73,7 +73,19 @@ namespace MangaChecker.Utilities
                 return true;
             }
             _dbContext.Update(manga);
-            Process.Start(newLink);
+            if (newLink.StartsWith("//"))
+            {
+                newLink = $"https:{newLink}";
+            }
+
+            try
+            {
+                Process.Start(newLink);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
             return true;
         }
     }
