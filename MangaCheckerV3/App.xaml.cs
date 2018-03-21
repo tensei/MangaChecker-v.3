@@ -45,7 +45,7 @@ namespace MangaCheckerV3
             container.RegisterInstance<IPluginHost>(new PluginHost());
 
             container.RegisterType<IProvider, Mangastream>("ms");
-            container.RegisterType<IProvider, Batoto>("b");
+            container.RegisterType<IProvider, Mangadex>("b");
             container.RegisterType<IProvider, Crunchyroll>("c");
             container.RegisterType<IProvider, GameOfScanlation>("g");
             container.RegisterType<IProvider, HeyManga>("h");

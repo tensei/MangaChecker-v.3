@@ -113,9 +113,9 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Text="{Binding BatotoRss.Setting}" Margin="8,0"
+                                    <TextBlock Text="{Binding MangadexRss.Setting}" Margin="8,0"
                                                VerticalAlignment="Center" />
-                                    <TextBox Grid.Column="1" Text="{Binding BatotoRss.Link}" />
+                                    <TextBox Grid.Column="1" Text="{Binding MangadexRss.Link}" />
                                 </Grid>
                             </StackPanel>
                         </Grid>

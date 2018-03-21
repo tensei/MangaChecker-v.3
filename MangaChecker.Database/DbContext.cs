@@ -11,7 +11,7 @@ namespace MangaChecker.Database
 {
     public class DbContext : IDbContext
     {
-        private const string DatabaseVersion = "1.0.0.7";
+        private const string DatabaseVersion = "1.0.0.8";
         private readonly string _databasePath = Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db");
 
         private readonly LiteDatabase _db;
@@ -210,11 +210,11 @@ namespace MangaChecker.Database
                     Created = DateTime.Now
                 });
             }
-            if (!setting.Contains("Batoto Rss"))
+            if (!setting.Contains("Mangadex Rss"))
             {
                 set.Insert(new Settings
                 {
-                    Setting = "Batoto Rss",
+                    Setting = "Mangadex Rss",
                     Link = "/",
                     Active = 0,
                     Created = DateTime.Now
@@ -279,11 +279,11 @@ namespace MangaChecker.Database
                     Created = DateTime.Now
                 });
             }
-            if (set.FindOne(s => s.Setting == "Batoto Rss") == null)
+            if (set.FindOne(s => s.Setting == "Mangadex Rss") == null)
             {
                 set.Insert(new Settings
                 {
-                    Setting = "Batoto Rss",
+                    Setting = "Mangadex Rss",
                     Link = "/",
                     Active = 0,
                     Created = DateTime.Now

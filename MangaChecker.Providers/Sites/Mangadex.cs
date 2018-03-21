@@ -1,36 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MangaChecker.Data.Interfaces;
+using MangaChecker.Data.Models;
 using MangaChecker.Providers.Interfaces;
 using MangaChecker.Utilities;
 using MangaChecker.Utilities.Interfaces;
 
 namespace MangaChecker.Providers.Sites
 {
-    public class Batoto : ProviderBase
+    public class Mangadex : ProviderBase
     {
         private readonly IDbContext _dbContext;
         private readonly Logger _logger;
         private readonly INewChapterHelper _newChapterHelper;
         private readonly IWebParser _webParser;
 
-        public Batoto(IWebParser webParser, IDbContext dbContext, INewChapterHelper newChapterHelper, Logger logger)
+        public Mangadex(IWebParser webParser, IDbContext dbContext, INewChapterHelper newChapterHelper, Logger logger)
         {
             _webParser = webParser;
             _dbContext = dbContext;
             _newChapterHelper = newChapterHelper;
             _logger = logger;
-            DbName = nameof(Batoto);
+            DbName = nameof(Mangadex);
             ViewEnabled = false;
-            LinktoSite = "http://bato.to/";
+            LinktoSite = "https://mangadex.org/";
         }
 
         public override async Task CheckAll(Action<IManga> status)
         {
-            var all = _dbContext.GetMangasFrom(DbName);
-            var brss = _dbContext.GetSettingsFor("Batoto Rss");
+            var all = _dbContext.GetMangasFrom(DbName).ToList();
+            var b = _dbContext.GetMangasFrom("Batoto").ToList();
+            if (b.Any())
+            {
+                foreach (var manga in b)
+                {
+                    manga.Site = nameof(Mangadex);
+                }
+                _dbContext.UpdateMangaTrans(b);
+                all.AddRange(b);
+            }
+            var brss = _dbContext.GetSettingsFor("Mangadex Rss");
             var rss = await _webParser.GetRssFeedAsync(brss.Link);
             if (rss == null)
             {
@@ -48,7 +60,7 @@ namespace MangaChecker.Providers.Sites
                     continue;
                 }
                 var ncn = Regex.Match(rssItemObject.Title,
-                    @"(?<manga>.+) - .+ - ?([vol]+\.[0-9\.]+)? [ch\.]+?(?<chapter>[0-9\.]+)(\(.+\))?:?(?<chaptername>.+)",
+                    @"(?<manga>.+) - (Volume [0-9\.]+, )?Chapter (?<chapter>[0-9\.]+)",
                     RegexOptions.IgnoreCase);
                 var ch = ncn.Groups["chapter"]?.Value.Trim() ?? ncn.Groups["chaptername"]?.Value.Trim();
                 if (string.IsNullOrEmpty(ch))

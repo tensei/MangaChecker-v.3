@@ -33,15 +33,15 @@ namespace MangaChecker.ViewModels.ViewModels
                     OpenLinks = s;
                     OpenLinks.PropertyChanged += Setting_PropertyChanged;
                 }
-                if (s.Setting.ToLower().StartsWith("batoto rss"))
+                if (s.Setting.ToLower().StartsWith("mangadex rss"))
                 {
-                    BatotoRss = s;
-                    BatotoRss.PropertyChanged += Setting_PropertyChanged;
+                    MangadexRss = s;
+                    MangadexRss.PropertyChanged += Setting_PropertyChanged;
                 }
             }
             settings.RemoveAll(s => s.Setting.ToLower().StartsWith("refres")
                                     || s.Setting.ToLower().StartsWith("backlog")
-                                    || s.Setting.ToLower().StartsWith("batoto rss")
+                                    || s.Setting.ToLower().StartsWith("mangadex rss")
                                     || s.Setting.ToLower().StartsWith("open "));
             foreach (var setting in settings)
             {
@@ -62,7 +62,7 @@ namespace MangaChecker.ViewModels.ViewModels
 
         public Settings RefreshTime { get; set; }
         public Settings OpenLinks { get; set; }
-        public Settings BatotoRss { get; set; }
+        public Settings MangadexRss { get; set; }
         public ReadOnlyObservableCollection<Settings> Settings { get; }
         
         public ICommand ToggleActive { get; }
