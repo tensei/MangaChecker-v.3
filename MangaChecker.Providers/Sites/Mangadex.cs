@@ -54,15 +54,15 @@ namespace MangaChecker.Providers.Sites
             foreach (var rssItemObject in rss)
             {
                 // example title Jitsu wa Watashi wa - English - Vol.18 Ch.156: Aizawa Nagisa and Aizawa Nagisa②
-                status.Invoke(manga);
+                status(manga);
                 if (!rssItemObject.Title.ToLower().Contains(manga.Name.ToLower()))
                 {
                     continue;
                 }
                 var ncn = Regex.Match(rssItemObject.Title,
-                    @"(?<manga>.+) - (Volume [0-9\.]+, )?Chapter (?<chapter>[0-9\.]+)",
+                    @" Chapter (?<chapter>[0-9\.]+)",
                     RegexOptions.IgnoreCase);
-                var ch = ncn.Groups["chapter"]?.Value.Trim() ?? ncn.Groups["chaptername"]?.Value.Trim();
+                var ch = ncn.Groups["chapter"].Value.Trim();
                 if (string.IsNullOrEmpty(ch))
                 {
                     _logger.Log.Warn($"var ch={ch}, var Rss title={rssItemObject.Title}");

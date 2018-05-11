@@ -41,7 +41,7 @@ namespace MangaChecker.Providers.Sites
             foreach (var rssItemObject in rss)
             {
                 status.Invoke(manga);
-                if (!rssItemObject.Title.ToLower().Contains(manga.Name.ToLower()))
+                if (!rssItemObject.Title.ToLower().StartsWith(manga.Name.ToLower()))
                 {
                     continue;
                 }

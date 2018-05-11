@@ -21,7 +21,7 @@ namespace MangaChecker.Utilities
         public bool IsNew(Manga manga, string newChapter, DateTime newDate, string newLink, bool openLink)
         {
             var isFloat = float.TryParse(newChapter, NumberStyles.Float, CultureInfo.InvariantCulture,
-                out float floatChapter);
+                out var floatChapter);
             var isDateNew = newDate > manga.Updated;
             //if (newChapter.StartsWith("Bonus")) {
             //    _logger.Log.Debug("hmm");
