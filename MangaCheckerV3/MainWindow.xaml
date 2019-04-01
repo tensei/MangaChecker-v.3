@@ -69,7 +69,6 @@
                 <materialDesign:PackIcon Kind="Home" Height="20" Width="20" ToolTip="Home" />
                 <materialDesign:PackIcon Kind="PlusBox" Height="20" Width="20" ToolTip="Add Manga" />
                 <Separator Style="{DynamicResource MaterialDesignLightSeparator}" />
-                <materialDesign:PackIcon Kind="ViewModule" Height="20" Width="20" ToolTip="Plugins" />
                 <materialDesign:PackIcon Kind="Brush" Height="20" Width="20" ToolTip="Theme" />
                 <materialDesign:PackIcon Kind="NewBox" Height="20" Width="20" ToolTip="New Manga for Today" />
                 <materialDesign:PackIcon Kind="History" Height="20" Width="20" ToolTip="History" />
@@ -81,7 +80,6 @@
                 <views:MangaListView DataContext="{Binding MangaListContext}" />
                 <views:AddMangaView DataContext="{Binding AddContext}" />
                 <Separator /> <!--workaround to use same index-->
-                <views:PluginsView DataContext="{Binding PluginsContext}" />
                 <views:ThemeView DataContext="{Binding ThemeContext}" />
                 <views:NewView DataContext="{Binding NewContext}" />
                 <views:HistoryView DataContext="{Binding HistoryContext}" />

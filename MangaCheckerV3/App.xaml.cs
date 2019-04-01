@@ -38,11 +38,9 @@ namespace MangaCheckerV3
             var db = container.Resolve<IDbContext>();
             GlobalVariables.DbContext = db;
             container.RegisterType<INewChapterHelper, NewChapterHelper>();
-            container.RegisterType<IWebParser, WebParser>();
+            container.RegisterInstance<IWebParser>(new WebParser());
             container.RegisterType<IWindowFactory, WindowFactory>();
             container.RegisterType<Logger>();
-
-            container.RegisterInstance<IPluginHost>(new PluginHost());
 
             container.RegisterType<IProvider, Mangastream>("ms");
             container.RegisterType<IProvider, Mangadex>("b");
@@ -78,7 +76,6 @@ namespace MangaCheckerV3
             container.RegisterType<SettingsViewModel>();
             container.RegisterType<AddMangaViewModel>();
             container.RegisterType<MangaListViewModel>();
-            container.RegisterType<PluginsViewModel>();
             container.RegisterType<HistoryViewModel>();
             container.RegisterType<NewMangaViewModel>();
 

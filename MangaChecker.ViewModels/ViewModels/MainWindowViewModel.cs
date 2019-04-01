@@ -66,7 +66,6 @@ namespace MangaChecker.ViewModels.ViewModels
         public MangaListViewModel MangaListContext => _viewModelFactory.CreateMangaListViewModel;
         public AddMangaViewModel AddContext => _viewModelFactory.CreateAddMangaViewModel;
         public SettingsViewModel SettingsContext => _viewModelFactory.CreateSettingsViewModel;
-        public PluginsViewModel PluginsContext => _viewModelFactory.CreatePluginsViewModel;
         public ThemeViewModel ThemeContext => _viewModelFactory.CreateThemeViewModel;
         public NewMangaViewModel NewContext => _viewModelFactory.CreateNewMangaViewModel;
         public HistoryViewModel HistoryContext => _viewModelFactory.CreateHistoryViewModel;

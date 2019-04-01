@@ -31,6 +31,7 @@ namespace MangaChecker.Utilities
                 return true;
             }
 
+
             if (isFloat && floatChapter > manga.Chapter)
             {
                 return Update(manga, floatChapter, true, newLink, newDate, openLink, newChapter);

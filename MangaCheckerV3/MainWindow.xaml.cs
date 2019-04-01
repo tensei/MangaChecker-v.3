@@ -13,13 +13,11 @@ namespace MangaCheckerV3
     /// </summary>
     public partial class MainWindow
     {
-        private readonly IPluginHost _pluginHost;
 
         public MainWindow(IProviderService providerService, ILinkParser linkParser, IWindowFactory windowFactory,
-            IViewModelFactory viewModelFactory, IDbContext dbContext, Logger logger, IPluginHost pluginHost)
+            IViewModelFactory viewModelFactory, IDbContext dbContext, Logger logger)
         {
             InitializeComponent();
-            _pluginHost = pluginHost;
             DataContext = new MainWindowViewModel(providerService, linkParser, windowFactory, viewModelFactory,
                 dbContext,
                 logger);
@@ -29,7 +27,6 @@ namespace MangaCheckerV3
         {
             var ctx = (MainWindowViewModel) DataContext;
             ctx.Dispose();
-            _pluginHost.Dispose();
         }
     }
 }

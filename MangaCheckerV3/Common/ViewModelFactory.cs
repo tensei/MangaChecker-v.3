@@ -12,20 +12,18 @@ namespace MangaCheckerV3.Common
     {
         private readonly IDbContext _dbContext;
         private readonly Logger _logger;
-        private readonly IPluginHost _pluginHost;
         private readonly IProviderSet _providerSet;
         private readonly ThemeHelper _themeHelper;
         private readonly IWindowFactory _windowFactory;
 
         public ViewModelFactory(IProviderSet providerSet, IWindowFactory windowFactory,
-            IDbContext dbContext, ThemeHelper themeHelper, Logger logger, IPluginHost pluginHost)
+            IDbContext dbContext, ThemeHelper themeHelper, Logger logger)
         {
             _dbContext = dbContext;
             _providerSet = providerSet;
             _windowFactory = windowFactory;
             _themeHelper = themeHelper;
             _logger = logger;
-            _pluginHost = pluginHost;
         }
 
         public MangaListViewModel CreateMangaListViewModel => new MangaListViewModel(_providerSet, _windowFactory,
@@ -33,7 +31,6 @@ namespace MangaCheckerV3.Common
 
         public AddMangaViewModel CreateAddMangaViewModel => new AddMangaViewModel(_providerSet, _dbContext);
         public SettingsViewModel CreateSettingsViewModel => new SettingsViewModel(_dbContext);
-        public PluginsViewModel CreatePluginsViewModel => new PluginsViewModel(_pluginHost);
         public ThemeViewModel CreateThemeViewModel => new ThemeViewModel(_themeHelper);
         public NewMangaViewModel CreateNewMangaViewModel => new NewMangaViewModel(_windowFactory, _dbContext);
         public HistoryViewModel CreateHistoryViewModel => new HistoryViewModel(_windowFactory, _dbContext);
