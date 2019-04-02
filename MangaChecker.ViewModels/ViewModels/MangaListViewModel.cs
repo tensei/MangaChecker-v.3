@@ -22,7 +22,7 @@ namespace MangaChecker.ViewModels.ViewModels
         /// </summary>
         private readonly ObservableCollection<Manga> _mangas = new ObservableCollection<Manga>();
 
-        private readonly IProviderSet _providerService;
+        private readonly IEnumerable<IProvider> _providerService;
 
         private readonly ObservableCollection<SiteListItem> _sites = new ObservableCollection<SiteListItem>();
         private readonly IWindowFactory _windowFactory;
@@ -30,9 +30,9 @@ namespace MangaChecker.ViewModels.ViewModels
         private SiteListItem _selectedSite;
         private string _sortMode = "Updated";
 
-        public MangaListViewModel(IProviderSet providerService, IWindowFactory windowFactory, IDbContext dbContext)
+        public MangaListViewModel(IEnumerable<IProvider> providerSet, IWindowFactory windowFactory, IDbContext dbContext)
         {
-            _providerService = providerService;
+            _providerService = providerSet;
             _dbContext = dbContext;
             _windowFactory = windowFactory;
             SetupSites();
@@ -103,7 +103,7 @@ namespace MangaChecker.ViewModels.ViewModels
                 new SiteListItem {Name = "Backlog", Overrideable = false, IsEnabled = 1},
                 new SiteListItem {Name = "All", Overrideable = false, IsEnabled = 1}
             };
-            _providerService.GetAll.ForEach(p => s.Add(new SiteListItem {Name = p.DbName, IsEnabled = 1}));
+            _providerService.ToList().ForEach(p => s.Add(new SiteListItem {Name = p.DbName, IsEnabled = 1}));
             s.OrderBy(x => x.Name).ToList().ForEach(_sites.Add);
         }
 
@@ -196,7 +196,7 @@ namespace MangaChecker.ViewModels.ViewModels
 
         private async Task RefreshManga()
         {
-            var provider = _providerService.GetFirstOrDefault(p => p.DbName == SelectedManga.Site);
+            var provider = _providerService.FirstOrDefault(p => p.DbName == SelectedManga.Site);
             await provider.CheckOne(SelectedManga);
         }
 

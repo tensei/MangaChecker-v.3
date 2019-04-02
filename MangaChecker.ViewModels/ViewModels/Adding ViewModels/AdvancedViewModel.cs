@@ -16,7 +16,7 @@ namespace MangaChecker.ViewModels.ViewModels.Adding_ViewModels
         private readonly IDbContext _dbContext;
         private readonly ObservableCollection<Genre> _genres = new ObservableCollection<Genre>();
 
-        public AdvancedViewModel(IProviderSet providerService, IDbContext dbContext)
+        public AdvancedViewModel(IEnumerable<IProvider> providerService, IDbContext dbContext)
         {
             _dbContext = dbContext;
             Manga = new Manga();
@@ -26,7 +26,7 @@ namespace MangaChecker.ViewModels.ViewModels.Adding_ViewModels
             GenresAdded = new ReadOnlyObservableCollection<Genre>(_genres);
             SelectedGenre = Genres[0];
 
-            Sites = providerService.GetAll.Select(p => p.DbName).ToList();
+            Sites = providerService.Select(p => p.DbName).ToList();
             Sites?.Add("Backlog");
 
             SiteSelected = Sites?[0];

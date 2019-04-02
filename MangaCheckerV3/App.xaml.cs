@@ -17,8 +17,7 @@ using MangaCheckerV3.Helpers;
 using MangaCheckerV3.Views.Windows;
 using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
-using Microsoft.Practices.Unity;
-using Unity;
+using Ninject;
 
 namespace MangaCheckerV3
 {
@@ -31,57 +30,52 @@ namespace MangaCheckerV3
         {
             //if (!Debugger.IsAttached)
             //	ExceptionHandler.AddGlobalHandlers();
+            var kernel = new StandardKernel();
+            kernel.Bind<IDbContext>().To<DbContext>();
+            var db = kernel.Get<DbContext>();
 
-            var container = new UnityContainer();
-            container.RegisterInstance<IDbContext>(new DbContext());
-
-            var db = container.Resolve<IDbContext>();
             GlobalVariables.DbContext = db;
-            container.RegisterType<INewChapterHelper, NewChapterHelper>();
-            container.RegisterInstance<IWebParser>(new WebParser());
-            container.RegisterType<IWindowFactory, WindowFactory>();
-            container.RegisterType<Logger>();
+            kernel.Bind<INewChapterHelper>().To<NewChapterHelper>();
+            kernel.Bind<IWebParser>().To<WebParser>().InSingletonScope();
+            kernel.Bind<IWindowFactory>().To<WindowFactory>();
+            kernel.Bind<Logger>().To<Logger>();
 
-            container.RegisterType<IProvider, Mangastream>("ms");
-            container.RegisterType<IProvider, Mangadex>("b");
-            container.RegisterType<IProvider, Crunchyroll>("c");
-            container.RegisterType<IProvider, GameOfScanlation>("g");
-            container.RegisterType<IProvider, HeyManga>("h");
-            container.RegisterType<IProvider, Jaiminisbox>("j");
-            container.RegisterType<IProvider, KireiCake>("k");
-            container.RegisterType<IProvider, Sensescans>("s");
-            container.RegisterType<IProvider, Kissmanga>("ki");
-            container.RegisterType<IProvider, Mangafox>("mf");
-            container.RegisterType<IProvider, Mangahere>("mh");
-            container.RegisterType<IProvider, Mangareader>("mr");
-            container.RegisterType<IProvider, Tomochan>("t");
-            container.RegisterType<IProvider, Webtoons>("w");
-            container.RegisterType<IProvider, Mangazuki>("y");
+            kernel.Bind<IProvider>().To<Mangastream>().InSingletonScope();
+            kernel.Bind<IProvider>().To<Mangadex>().InSingletonScope();
+            kernel.Bind<IProvider>().To<Crunchyroll>().InSingletonScope();
+            kernel.Bind<IProvider>().To<GameOfScanlation>().InSingletonScope();
+            kernel.Bind<IProvider>().To<HeyManga>().InSingletonScope();
+            kernel.Bind<IProvider>().To<Jaiminisbox>().InSingletonScope();
+            kernel.Bind<IProvider>().To<KireiCake>().InSingletonScope();
+            kernel.Bind<IProvider>().To<Sensescans>().InSingletonScope();
+            kernel.Bind<IProvider>().To<Kissmanga>().InSingletonScope();
+            kernel.Bind<IProvider>().To<Mangafox>().InSingletonScope();
+            kernel.Bind<IProvider>().To<Mangahere>().InSingletonScope();
+            kernel.Bind<IProvider>().To<Mangareader>().InSingletonScope();
+            kernel.Bind<IProvider>().To<Tomochan>().InSingletonScope();
+            kernel.Bind<IProvider>().To<Webtoons>().InSingletonScope();
+            kernel.Bind<IProvider>().To<Mangazuki>().InSingletonScope();
+            
+            kernel.Bind<SwatchesProvider>().To<SwatchesProvider>().InSingletonScope();
+            kernel.Bind<PaletteHelper>().To<PaletteHelper>().InSingletonScope();
 
-            container.RegisterType<IEnumerable<IProvider>, IProvider[]>();
+            kernel.Bind<IProviderService>().To<ProviderService>().InSingletonScope();
+            kernel.Bind<IViewModelFactory>().To<ViewModelFactory>().InSingletonScope();
+            kernel.Bind<IThemeHelper>().To<ThemeHelper>().InSingletonScope();
+            kernel.Bind<ILinkParser>().To<LinkParser>().InSingletonScope();
 
-            var collection = container.Resolve<IProvider[]>();
-            container.RegisterInstance<IProviderSet>(new ProviderSet(collection));
+            kernel.Bind<ThemeViewModel>().To<ThemeViewModel>().InSingletonScope();
+            kernel.Bind<MainWindowViewModel>().To<MainWindowViewModel>().InSingletonScope();
+            kernel.Bind<SettingsViewModel>().To<SettingsViewModel>().InSingletonScope();
+            kernel.Bind<AddMangaViewModel>().To<AddMangaViewModel>().InSingletonScope();
+            kernel.Bind<MangaListViewModel>().To<MangaListViewModel>().InSingletonScope();
+            kernel.Bind<HistoryViewModel>().To<HistoryViewModel>().InSingletonScope();
+            kernel.Bind<NewMangaViewModel>().To<NewMangaViewModel>().InSingletonScope();
 
-            container.RegisterInstance(new SwatchesProvider());
-            container.RegisterInstance(new PaletteHelper());
+            kernel.Bind<ViewerWindow>().To<ViewerWindow>();
+            kernel.Bind<MainWindow>().To<MainWindow>();
 
-            container.RegisterType<IProviderService, ProviderService>();
-            container.RegisterType<IViewModelFactory, ViewModelFactory>();
-            container.RegisterType<IThemeHelper, ThemeHelper>();
-            container.RegisterType<ILinkParser, LinkParser>();
-
-            container.RegisterType<ThemeViewModel>();
-            container.RegisterType<MainWindowViewModel>();
-            container.RegisterType<SettingsViewModel>();
-            container.RegisterType<AddMangaViewModel>();
-            container.RegisterType<MangaListViewModel>();
-            container.RegisterType<HistoryViewModel>();
-            container.RegisterType<NewMangaViewModel>();
-
-            container.RegisterType<ViewerWindow>();
-            container.RegisterType<MainWindow>();
-
+            var collection = kernel.GetAll<IProvider>();
             var pdict = collection.ToDictionary(k => k.DbName, v => v.LinktoSite);
             if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "mcv3.db")))
             {
@@ -91,9 +85,7 @@ namespace MangaCheckerV3
             {
                 db.CreateDatabase(pdict);
             }
-
-            var mainWindow = container.Resolve<MainWindow>();
-            mainWindow.Show();
+            kernel.Get<MainWindow>().Show();
         }
     }
 }

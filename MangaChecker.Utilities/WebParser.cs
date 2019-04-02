@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using AngleSharp;
@@ -126,8 +124,9 @@ namespace MangaChecker.Utilities
                 // Maybe you should increase client.Timeout as each attempt will take about five seconds.
                 return null;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return null;
             }
             // Use javascript parser on js true

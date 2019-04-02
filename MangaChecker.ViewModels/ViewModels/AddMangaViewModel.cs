@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Input;
 using MangaChecker.Data.Interfaces;
 using MangaChecker.Providers.Interfaces;
@@ -8,7 +9,7 @@ namespace MangaChecker.ViewModels.ViewModels
 {
     public class AddMangaViewModel : INotifyPropertyChanged
     {
-        public AddMangaViewModel(IProviderSet providerService, IDbContext dbContext)
+        public AddMangaViewModel(IEnumerable<IProvider> providerService, IDbContext dbContext)
         {
             NormalDataContext = new NormalViewModel();
             NormalCommand = new ActionCommand(() =>

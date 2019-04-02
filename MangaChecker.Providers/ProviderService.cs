@@ -17,9 +17,9 @@ namespace MangaChecker.Providers
         private int _active;
         private int _currentProviderIndex;
 
-        public ProviderService(IProviderSet providerSet, IDbContext dbContext, Logger logger)
+        public ProviderService(IEnumerable<IProvider> providerSet, IDbContext dbContext, Logger logger)
         {
-            Providers = providerSet.GetAll;
+            Providers = providerSet.ToList();
             _dbContext = dbContext;
             _logger = logger;
         }

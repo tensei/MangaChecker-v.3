@@ -1,4 +1,6 @@
-﻿using MangaChecker.Data.Interfaces;
+﻿using System.Collections.Generic;
+using System.Linq;
+using MangaChecker.Data.Interfaces;
 using MangaChecker.Providers.Interfaces;
 using MangaChecker.Utilities;
 using MangaChecker.Utilities.Interfaces;
@@ -12,15 +14,15 @@ namespace MangaCheckerV3.Common
     {
         private readonly IDbContext _dbContext;
         private readonly Logger _logger;
-        private readonly IProviderSet _providerSet;
+        private readonly List<IProvider> _providerSet;
         private readonly ThemeHelper _themeHelper;
         private readonly IWindowFactory _windowFactory;
 
-        public ViewModelFactory(IProviderSet providerSet, IWindowFactory windowFactory,
+        public ViewModelFactory(IEnumerable<IProvider> providerSet, IWindowFactory windowFactory,
             IDbContext dbContext, ThemeHelper themeHelper, Logger logger)
         {
             _dbContext = dbContext;
-            _providerSet = providerSet;
+            _providerSet = providerSet.ToList();
             _windowFactory = windowFactory;
             _themeHelper = themeHelper;
             _logger = logger;

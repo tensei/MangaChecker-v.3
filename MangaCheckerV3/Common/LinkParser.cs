@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using MangaChecker.Providers.Interfaces;
 using MangaChecker.ViewModels.Interfaces;
 
@@ -6,22 +8,22 @@ namespace MangaCheckerV3.Common
 {
     public class LinkParser : ILinkParser
     {
-        private readonly IProviderSet _providerSet;
+        private readonly List<IProvider> _providerSet;
 
-        public LinkParser(IProviderSet providerSet)
+        public LinkParser(IEnumerable<IProvider> providerSet)
         {
-            _providerSet = providerSet;
+            _providerSet = providerSet.ToList();
             //GetProviderFirstOrDefault(p => p.LinkIsMatch("test"));
         }
 
         public IProvider GetProviderFirstOrDefault(string link)
         {
-            return _providerSet.GetFirstOrDefault(p => p.LinkIsMatch(link));
+            return _providerSet.FirstOrDefault(p => p.LinkIsMatch(link));
         }
 
         public IProvider GetProviderFirstOrDefault(Func<IProvider, bool> condition)
         {
-            return _providerSet.GetFirstOrDefault(condition);
+            return _providerSet.FirstOrDefault(condition);
         }
     }
 }
