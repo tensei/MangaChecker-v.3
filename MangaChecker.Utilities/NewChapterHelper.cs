@@ -26,6 +26,12 @@ namespace MangaChecker.Utilities
             //if (newChapter.StartsWith("Bonus")) {
             //    _logger.Log.Debug("hmm");
             //}
+
+            //if (isDateNew && string.Equals(manga.Site, "Webtoons"))
+            //{
+            //    return Update(manga, floatChapter, isFloat, newLink, newDate, openLink, newChapter);
+            //}
+
             if (isFloat && floatChapter <= manga.Chapter || newChapter == manga.Newest)
             {
                 return true;

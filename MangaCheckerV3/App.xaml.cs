@@ -31,14 +31,14 @@ namespace MangaCheckerV3
             //if (!Debugger.IsAttached)
             //	ExceptionHandler.AddGlobalHandlers();
             var kernel = new StandardKernel();
-            kernel.Bind<IDbContext>().To<DbContext>();
+            kernel.Bind<IDbContext>().To<DbContext>().InSingletonScope();
             var db = kernel.Get<DbContext>();
 
             GlobalVariables.DbContext = db;
             kernel.Bind<INewChapterHelper>().To<NewChapterHelper>();
             kernel.Bind<IWebParser>().To<WebParser>().InSingletonScope();
             kernel.Bind<IWindowFactory>().To<WindowFactory>();
-            kernel.Bind<Logger>().To<Logger>();
+            kernel.Bind<Logger>().ToSelf();
 
             kernel.Bind<IProvider>().To<Mangastream>().InSingletonScope();
             kernel.Bind<IProvider>().To<Mangadex>().InSingletonScope();
@@ -56,24 +56,24 @@ namespace MangaCheckerV3
             kernel.Bind<IProvider>().To<Webtoons>().InSingletonScope();
             kernel.Bind<IProvider>().To<Mangazuki>().InSingletonScope();
             
-            kernel.Bind<SwatchesProvider>().To<SwatchesProvider>().InSingletonScope();
-            kernel.Bind<PaletteHelper>().To<PaletteHelper>().InSingletonScope();
+            kernel.Bind<SwatchesProvider>().ToSelf().InSingletonScope();
+            kernel.Bind<PaletteHelper>().ToSelf().InSingletonScope();
 
             kernel.Bind<IProviderService>().To<ProviderService>().InSingletonScope();
             kernel.Bind<IViewModelFactory>().To<ViewModelFactory>().InSingletonScope();
             kernel.Bind<IThemeHelper>().To<ThemeHelper>().InSingletonScope();
             kernel.Bind<ILinkParser>().To<LinkParser>().InSingletonScope();
 
-            kernel.Bind<ThemeViewModel>().To<ThemeViewModel>().InSingletonScope();
-            kernel.Bind<MainWindowViewModel>().To<MainWindowViewModel>().InSingletonScope();
-            kernel.Bind<SettingsViewModel>().To<SettingsViewModel>().InSingletonScope();
-            kernel.Bind<AddMangaViewModel>().To<AddMangaViewModel>().InSingletonScope();
-            kernel.Bind<MangaListViewModel>().To<MangaListViewModel>().InSingletonScope();
-            kernel.Bind<HistoryViewModel>().To<HistoryViewModel>().InSingletonScope();
-            kernel.Bind<NewMangaViewModel>().To<NewMangaViewModel>().InSingletonScope();
+            kernel.Bind<ThemeViewModel>().ToSelf().InSingletonScope();
+            kernel.Bind<MainWindowViewModel>().ToSelf().InSingletonScope();
+            kernel.Bind<SettingsViewModel>().ToSelf().InSingletonScope();
+            kernel.Bind<AddMangaViewModel>().ToSelf().InSingletonScope();
+            kernel.Bind<MangaListViewModel>().ToSelf().InSingletonScope();
+            kernel.Bind<HistoryViewModel>().ToSelf().InSingletonScope();
+            kernel.Bind<NewMangaViewModel>().ToSelf().InSingletonScope();
 
-            kernel.Bind<ViewerWindow>().To<ViewerWindow>();
-            kernel.Bind<MainWindow>().To<MainWindow>();
+            kernel.Bind<ViewerWindow>().ToSelf();
+            kernel.Bind<MainWindow>().ToSelf();
 
             var collection = kernel.GetAll<IProvider>();
             var pdict = collection.ToDictionary(k => k.DbName, v => v.LinktoSite);
