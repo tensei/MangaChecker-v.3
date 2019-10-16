@@ -164,7 +164,7 @@ namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels
             ZipFile.CreateFromDirectory(folder, $"{folder}.zip", CompressionLevel.Optimal, true);
             Directory.Delete(folder, true);
             SaveProgress = "Collapsed";
-            SaveEnabled = true;
+            //SaveEnabled = true;
         }
 
         private async Task SaveImage(string url, int num, string folder)
@@ -174,8 +174,8 @@ namespace MangaChecker.ViewModels.ViewModels.Window_ViewModels
                 var uri = new Uri(url);
                 var lastSlash = uri.AbsolutePath.LastIndexOf('/');
                 var guid = uri.AbsolutePath.Substring(lastSlash + 1);
-                var client = new WebClient();
                 var extension = guid.Substring(guid.LastIndexOf(".", StringComparison.Ordinal) + 1);
+                using var client = new WebClient();
                 await client.DownloadFileTaskAsync(url, Path.Combine(folder, $"{num}.{extension}"));
             }
             catch (Exception e)

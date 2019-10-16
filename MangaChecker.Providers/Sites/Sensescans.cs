@@ -58,10 +58,10 @@ namespace MangaChecker.Providers.Sites
             }
         }
 
-        public async Task<object> CheckOne(object manga)
-        {
-            throw new NotImplementedException();
-        }
+        //public async Task<object> CheckOne(object manga)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public override async Task<(List<object>, int)> GetImagesTaskAsync(string url)
         {
@@ -70,7 +70,7 @@ namespace MangaChecker.Providers.Sites
             var imges = new List<object>();
             if (!url.EndsWith("page/1"))
             {
-                url = url + "page/1";
+                url += "page/1";
             }
             var html = await _webParser.GetHtmlSourceDocumentAsync(url);
             imges.Add(html.All.First(i => i.LocalName == "img" && i.ClassList.Contains("open")

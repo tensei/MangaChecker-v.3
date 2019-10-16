@@ -20,20 +20,22 @@ namespace MangaCheckerV3.Helpers
         {
             //pallet.SetLightDark(theme);
             //            await Application.Current.Dispatcher.BeginInvoke(new Action(() => {
-            _paletteHelper.ReplaceAccentColor(accentColor);
+            //_paletteHelper.ReplaceAccentColor(accentColor);
             //            }));
         }
 
         public void ChangePrimaryColorTo(Swatch primaryColor)
         {
-            //pallet.SetLightDark(theme);
-            _paletteHelper.ReplacePrimaryColor(primaryColor);
+
+            //_paletteHelper.ReplacePrimaryColor(primaryColor);
         }
 
         public void ChangeThemeTo(bool isDark)
         {
-            //pallet.SetLightDark(theme);
-            _paletteHelper.SetLightDark(isDark);
+            ITheme theme = _paletteHelper.GetTheme();
+            IBaseTheme baseTheme = isDark ? new MaterialDesignDarkTheme() : (IBaseTheme)new MaterialDesignLightTheme();
+            theme.SetBaseTheme(baseTheme);
+            _paletteHelper.SetTheme(theme);
         }
 
         public IEnumerable<Swatch> Swatches()
