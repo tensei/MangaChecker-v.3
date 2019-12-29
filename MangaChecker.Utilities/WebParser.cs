@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using AngleSharp;
 using AngleSharp.Dom;
-using AngleSharp.Dom.Html;
-using AngleSharp.Parser.Html;
-using AngleSharp.Parser.Xml;
+using AngleSharp.Html.Dom;
+using AngleSharp.Html.Parser;
+using AngleSharp.Xml;
+using AngleSharp.Xml.Parser;
 using CloudFlareUtilities;
 using MangaChecker.Data.Models;
 using MangaChecker.Utilities.Interfaces;
@@ -21,9 +23,15 @@ namespace MangaChecker.Utilities
 
         public WebParser()
         {
+            var innerHandler = new HttpClientHandler
+            {
+                CookieContainer = new CookieContainer()
+            };
+            innerHandler.CookieContainer.Add(new Cookie("ageGatePass", "true", "/", ".webtoons.com"));
             var handler = new ClearanceHandler
             {
-                MaxRetries = 2 // Optionally specify the number of retries, if clearance fails (default is 3).
+                MaxRetries = 2, // Optionally specify the number of retries, if clearance fails (default is 3).
+                InnerHandler = innerHandler,
             };
             _client = new HttpClient(handler)
             {
@@ -130,8 +138,11 @@ namespace MangaChecker.Utilities
                 return null;
             }
             // Use javascript parser on js true
-            var parser = js ? new HtmlParser(Configuration.Default.WithJavaScript()) : new HtmlParser();
-            var document = await parser.ParseAsync(content);
+            var config = js ? Configuration.Default.WithJavaScript(): Configuration.Default;
+            var context = BrowsingContext.New(config);
+            var parser = context.GetService<IHtmlParser>();
+
+            var document = await parser.ParseDocumentAsync(content);
             return document;
         }
 
@@ -148,7 +159,7 @@ namespace MangaChecker.Utilities
                 {
                     IsSuppressingErrors = true
                 });
-                var xml = await parser.ParseAsync(allXml);
+                var xml = await parser.ParseDocumentAsync(allXml);
                 var l = new List<RssItem>();
                 var ot = xml.All.Where(i => i.LocalName == "item" || i.LocalName == "entry");
                 var enumerable = ot as IList<IElement> ?? ot.ToList();

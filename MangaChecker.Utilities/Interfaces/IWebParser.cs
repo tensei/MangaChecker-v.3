@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AngleSharp.Dom.Html;
+using AngleSharp.Html.Dom;
 using MangaChecker.Data.Models;
 
 namespace MangaChecker.Utilities.Interfaces
