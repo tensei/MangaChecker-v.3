@@ -13,7 +13,6 @@ using MangaChecker.Utilities.Interfaces;
 using MangaChecker.ViewModels.Interfaces;
 using MangaChecker.ViewModels.ViewModels;
 using MangaCheckerV3.Common;
-using MangaCheckerV3.Helpers;
 using MangaCheckerV3.Views.Windows;
 using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
@@ -61,7 +60,6 @@ namespace MangaCheckerV3
 
             kernel.Bind<IProviderService>().To<ProviderService>().InSingletonScope();
             kernel.Bind<IViewModelFactory>().To<ViewModelFactory>().InSingletonScope();
-            kernel.Bind<IThemeHelper>().To<ThemeHelper>().InSingletonScope();
             kernel.Bind<ILinkParser>().To<LinkParser>().InSingletonScope();
 
             kernel.Bind<ThemeViewModel>().ToSelf().InSingletonScope();

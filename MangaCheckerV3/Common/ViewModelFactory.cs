@@ -6,7 +6,6 @@ using MangaChecker.Utilities;
 using MangaChecker.Utilities.Interfaces;
 using MangaChecker.ViewModels.Interfaces;
 using MangaChecker.ViewModels.ViewModels;
-using MangaCheckerV3.Helpers;
 
 namespace MangaCheckerV3.Common
 {
@@ -15,16 +14,14 @@ namespace MangaCheckerV3.Common
         private readonly IDbContext _dbContext;
         private readonly Logger _logger;
         private readonly List<IProvider> _providerSet;
-        private readonly ThemeHelper _themeHelper;
         private readonly IWindowFactory _windowFactory;
 
         public ViewModelFactory(IEnumerable<IProvider> providerSet, IWindowFactory windowFactory,
-            IDbContext dbContext, ThemeHelper themeHelper, Logger logger)
+            IDbContext dbContext, Logger logger)
         {
             _dbContext = dbContext;
             _providerSet = providerSet.ToList();
             _windowFactory = windowFactory;
-            _themeHelper = themeHelper;
             _logger = logger;
         }
 
@@ -33,7 +30,6 @@ namespace MangaCheckerV3.Common
 
         public AddMangaViewModel CreateAddMangaViewModel => new AddMangaViewModel(_providerSet, _dbContext);
         public SettingsViewModel CreateSettingsViewModel => new SettingsViewModel(_dbContext);
-        public ThemeViewModel CreateThemeViewModel => new ThemeViewModel(_themeHelper);
         public NewMangaViewModel CreateNewMangaViewModel => new NewMangaViewModel(_windowFactory, _dbContext);
         public HistoryViewModel CreateHistoryViewModel => new HistoryViewModel(_windowFactory, _dbContext);
         public GalleryViewModel CreateGalleryViewModel => new GalleryViewModel();
