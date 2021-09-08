@@ -39,6 +39,7 @@ namespace MangaChecker.ViewModels.ViewModels
             //_dbContext.SettingEvent += DatabaseOnSettingEvent;
             Mangas = new ReadOnlyObservableCollection<Manga>(_mangas);
             Sites = new ReadOnlyObservableCollection<SiteListItem>(_sites);
+            SelectedSite = Sites.FirstOrDefault();
             IncreaseCommand = new ActionCommand(IncreaseChapter);
             DecreaseCommand = new ActionCommand(DecreaseChapter);
             DeleteCommand = new ActionCommand(DeleteManga);
